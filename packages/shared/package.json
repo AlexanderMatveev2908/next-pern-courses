@@ -1,6 +1,7 @@
 {
   "name": "shared",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "build": "tsc --build"
   },
@@ -8,5 +9,8 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "exports": {
+    ".": "./dist/lib/index.js"
+  }
 }
