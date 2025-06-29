@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "globalEnv": ["ONLY_DEPLOY_MAIN"],
+  "tasks": {
+    "clean": {
+      "cache": false,
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["clean", "^build"]
+    },
+    "shared#build": {
+      "outputs": ["packages/shared/dist/**"]
+    },
+    "client#build": {
+      "dependsOn": ["shared#build"],
+      "outputs": ["apps/client/.next/**"]
+    },
+    "server#build": {
+      "dependsOn": ["shared#build"],
+      "outputs": ["apps/server/dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
