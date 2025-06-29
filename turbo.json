@@ -6,6 +6,10 @@
       "cache": false,
       "outputs": []
     },
+    "check": {
+      "cache": false,
+      "outputs": []
+    },
     "build": {
       "dependsOn": ["clean", "^build"]
     },

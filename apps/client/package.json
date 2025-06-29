@@ -6,7 +6,8 @@
     "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check": "next lint"
   },
   "dependencies": {
     "next": "15.3.4",
