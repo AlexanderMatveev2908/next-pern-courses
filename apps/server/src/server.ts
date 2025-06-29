@@ -3,6 +3,7 @@ import Fastify from "fastify";
 import router from "./routes/index.js";
 import decorators from "./decorators/index.js";
 import { sum } from "@shared/lib/index.js";
+import db from "./conf/db.js";
 
 const app = Fastify({
   logger: {
@@ -22,17 +23,18 @@ sum();
 const start = async () => {
   try {
     await app.register(env);
-
     await app.register(decorators);
-
     await app.register(router, {
       prefix: "/api/v1",
     });
+
+    await db.$connect();
 
     await app.listen({ port: app.env.PORT, host: app.env.HOST });
 
     console.log(app.printRoutes({ commonPrefix: false }));
   } catch (err) {
+    await db.$disconnect();
     app.log.error(err);
     process.exit(1);
   }
