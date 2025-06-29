@@ -10,7 +10,7 @@ COPY apps/server ./apps/server
 
 RUN yarn install
 
-RUN yarn workspace shared build && yarn workspace server build
+RUN yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && yarn workspace server build
 
 RUN mkdir -p apps/server/node_modules/@shared
 RUN cp -r packages/shared/dist/* apps/server/node_modules/@shared/
