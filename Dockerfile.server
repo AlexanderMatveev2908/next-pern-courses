@@ -1,0 +1,5 @@
+FROM node:20 AS builder
+
+WORKDIR ./
+
+RUN corepack enable && corepack prepare yarn@4.9.1 --activate
