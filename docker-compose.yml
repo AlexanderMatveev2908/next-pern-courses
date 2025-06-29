@@ -4,5 +4,4 @@ services:
       context: .
       dockerfile: Dockerfile.server
     ports:
-      # host and internal container port are the same
       - "3000:3000"
