@@ -2,6 +2,7 @@
   "name": "next-pern-courses",
   "packageManager": "yarn@4.9.2",
   "scripts": {
+    "clean": "find . -type f -name '*.tsbuildinfo' -delete && find . -type d -name 'dist' -exec rm -rf {} +",
     "dev": "yarn workspace shared build && turbo dev",
     "build": "turbo build --force",
     "start": "turbo start"
