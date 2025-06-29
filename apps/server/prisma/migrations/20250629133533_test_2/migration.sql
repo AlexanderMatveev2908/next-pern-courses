@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TestB" ALTER COLUMN "count" DROP NOT NULL;

@@ -7,3 +7,20 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model TestA {
+  id String @id @default(uuid())
+  name String
+  count Int
+
+  tests TestB[]  @relation("TestA_TestB")
+}
+
+model TestB {
+  id String @id @default(uuid())
+  name String
+  count Int?
+
+  testA_ID String
+  testA TestA @relation(fields: [testA_ID], references: [id], name: "TestA_TestB")
+}
