@@ -10,15 +10,15 @@
       "dependsOn": ["clean", "^build"]
     },
     "shared#build": {
-      "outputs": ["packages/shared/dist/**"]
+      "outputs": ["dist/**"]
     },
     "client#build": {
       "dependsOn": ["shared#build"],
-      "outputs": ["apps/client/.next/**"]
+      "outputs": [".next/**"]
     },
     "server#build": {
       "dependsOn": ["shared#build"],
-      "outputs": ["apps/server/dist/**"]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
