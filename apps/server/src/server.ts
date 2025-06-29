@@ -4,6 +4,7 @@ import router from "./routes/index.js";
 import decorators from "./decorators/index.js";
 import { sum } from "@shared/lib/index.js";
 import db from "./conf/db.js";
+import { doStuff, doStuffB } from "./dev_only/index.js";
 
 const app = Fastify({
   logger: {
@@ -19,6 +20,9 @@ const app = Fastify({
 });
 
 sum();
+
+// doStuff();
+// doStuffB();
 
 const start = async () => {
   try {
