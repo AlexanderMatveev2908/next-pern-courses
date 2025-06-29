@@ -56,3 +56,7 @@ packages/*/.turbo
 *.crt
 .env
 .env.*
+
+
+logger
+uploads
