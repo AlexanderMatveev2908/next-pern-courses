@@ -34,3 +34,11 @@
   // ? firefox accept thumb clr as 1 arg and track as 2
   scrollbar-color: var(--white__0) transparent;
 }
+
+.clamp__txt {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  word-break: break-word;
+}

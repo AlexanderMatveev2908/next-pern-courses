@@ -26,8 +26,9 @@
 
 .btn__app:enabled {
   cursor: pointer;
+  transition: 0.3s;
+
   &:hover {
-    transition: 0.3s;
     transform: scale(var(--scale__up));
   }
 }

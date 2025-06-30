@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, type FC } from "react";
-import { getCountSpinner } from "@/core/lib/style";
 import { SpinnerStyled } from "./Styled";
 import { motion } from "framer-motion";
+import { getCountSpinner } from "@/core/lib/style";
 
 const Spinner: FC = () => {
   const [ids, setIds] = useState<string[]>([]);
