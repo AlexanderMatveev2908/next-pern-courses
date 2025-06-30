@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { apiSlice } from "./apiSlice";
+import { api } from "./api";
 
 export const store = configureStore({
   reducer: {
-    api: apiSlice.reducer,
+    api: api.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 
   devTools: {
     name: "next-courses-app",

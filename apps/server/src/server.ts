@@ -5,6 +5,7 @@ import decorators from "./decorators/index.js";
 import { sum } from "@shared/lib/index.js";
 import db from "./conf/db.js";
 import { doStuff, doStuffB } from "./dev_only/index.js";
+import { __cg } from "@shared/lib/logger.js";
 
 const app = Fastify({
   logger: {
@@ -36,7 +37,7 @@ const start = async () => {
 
     await app.listen({ port: app.env.PORT, host: app.env.HOST });
 
-    console.log("[DEBUG] Starting Fastify on", app.env);
+    __cg("[DEBUG] Starting Fastify on", app.env);
   } catch (err) {
     await db.$disconnect();
     app.log.error(err);
