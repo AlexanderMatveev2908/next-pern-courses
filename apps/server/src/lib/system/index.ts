@@ -1,9 +1,10 @@
-import fs from "fs";
+import fs, { readFile, readFileSync } from "fs";
 import path from "path";
 import "dotenv/config";
+import { fileURLToPath } from "url";
 
 export const app_dir = path.resolve(
-  path.join(path.dirname(import.meta.url)),
+  path.dirname(fileURLToPath(import.meta.url)),
   "../../../"
 );
 
@@ -13,4 +14,20 @@ export const read_file = (p: string, type: "utf-8" | "hex") =>
 export const readCA = () => {
   const hex = process.env.DB_CA;
   return Buffer.from(hex!, "hex").toString("utf-8");
+};
+
+export const chain_path = (p: string) => path.resolve(app_dir, p);
+
+export const getPathENV = () => {
+  try {
+    const p = chain_path(".env");
+
+    readFileSync(p, "utf-8");
+
+    return p;
+  } catch (err) {
+    console.log(err);
+
+    return;
+  }
 };

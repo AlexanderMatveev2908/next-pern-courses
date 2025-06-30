@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import envPlugin from "@fastify/env";
 import { FastifyInstance } from "fastify";
+import { getPathENV } from "../lib/system/index.js";
 
 const schema = {
   type: "object",
@@ -12,10 +13,16 @@ const schema = {
   },
 };
 
+const p = getPathENV();
+
 const opt = {
   confKey: "env",
   schema,
-  dotenv: true,
+  ...(p
+    ? {
+        configPath: p,
+      }
+    : {}),
 };
 
 export default fp(async (app: FastifyInstance) => {

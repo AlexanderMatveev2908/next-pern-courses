@@ -36,7 +36,7 @@ const start = async () => {
 
     await app.listen({ port: app.env.PORT, host: app.env.HOST });
 
-    console.log(app.printRoutes({ commonPrefix: false }));
+    console.log("[DEBUG] Starting Fastify on", app.env);
   } catch (err) {
     await db.$disconnect();
     app.log.error(err);

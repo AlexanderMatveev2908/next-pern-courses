@@ -1,8 +1,6 @@
 import { FastifyInstance } from "fastify";
-import fp from "fastify-plugin";
+import helloRouter from "../features/feature_0/routes/index.js";
 
-export default fp(async (app: FastifyInstance) => {
-  app.get("/", (req, res) => {
-    res.res500();
-  });
-});
+export default async function router(app: FastifyInstance) {
+  app.register(helloRouter, { prefix: "/hello" });
+}
