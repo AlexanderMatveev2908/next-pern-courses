@@ -6,7 +6,8 @@
     "dev": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo dev",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo build --parallel",
     "build-client": "turbo build --filter=client...",
-    "start": "turbo start"
+    "start": "turbo start",
+    "check": "turbo check"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.10",

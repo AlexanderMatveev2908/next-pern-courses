@@ -16,7 +16,8 @@
       "@shared/*": ["../../packages/shared/dist/*"]
     }
   },
-  "include": ["src"],
+
+  "include": ["src", "../../packages/shared/dist/**/*"],
   // ? SHARED MUST HAVE COMPOSITE TRUE TO BE INCORPORATED
   "references": [{ "path": "../../packages/shared" }]
 }
