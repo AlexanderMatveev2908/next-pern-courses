@@ -1,1 +1,121 @@
 @import "tailwindcss";
+.tb {
+  @apply border-2 border-white;
+}
+
+.pad__app {
+  @apply px-[20px] sm:px-[50px];
+}
+
+.grad__txt {
+  background: linear-gradient(to right, var(--white__0), var(--neutral__600));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.scroll__app::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll__app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll__app::-webkit-scrollbar-thumb {
+  background: var(--white__0);
+  border-radius: 10px;
+  box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+}
+
+.scroll__app {
+  scrollbar-width: thin;
+  scrollbar-color: var(--white__0) transparent;
+}
+
+.link {
+  transition: 0.3s ease-in-out;
+  position: relative;
+}
+.link::after {
+  content: "";
+  position: absolute;
+  bottom: -3.5px;
+  width: 0%;
+  left: 50%;
+  height: 2px;
+  transition: 0.3s ease-in-out;
+  background-color: var(--white__0);
+}
+.link:hover {
+  text-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+}
+.link:hover::after {
+  width: 100%;
+  left: 0;
+  box-shadow: 0 0 5px var(--white__0), 0 0 10px var(--white__0);
+}
+
+.btn__app:enabled {
+  cursor: pointer;
+}
+.btn__app:enabled:hover {
+  transition: 0.3s;
+  transform: scale(var(--scale__up));
+}
+
+.btn__app:enabled:active {
+  transition: 0.15s;
+  transform: scale(0.8);
+}
+
+.txt__xs {
+  @apply text-xs lg:text-sm font-medium;
+}
+
+.txt__sm {
+  @apply text-sm lg:text-base font-medium;
+}
+
+.txt__md {
+  @apply text-base lg:text-lg font-semibold;
+}
+
+.txt__lg {
+  @apply text-lg lg:text-xl font-semibold;
+}
+
+.txt__xl {
+  @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+}
+
+.txt__2xl {
+  @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+}
+
+:root {
+  --white__0: #f5f5f5;
+  --gray__300: #d1d5dc;
+  --green__600: #16a34a;
+  --blue__600: #2563eb;
+  --red__600: #dc2626;
+  --orange__600: #ea580c;
+  --yellow__600: #ca8a04;
+  --neutral__50: #fafafa;
+  --neutral__100: #f5f5f5;
+  --neutral__200: #e5e5e5;
+  --neutral__300: #d4d4d4;
+  --neutral__400: #a3a3a3;
+  --neutral__500: #737373;
+  --neutral__600: #525252;
+  --neutral__700: #404040;
+  --neutral__800: #262626;
+  --neutral__900: #171717;
+  --neutral__950: #0a0a0a;
+}
+
+html {
+  scroll-behavior: smooth;
+}

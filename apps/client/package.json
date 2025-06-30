@@ -10,9 +10,20 @@
     "check": "next lint && tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@tailwindcss/typography": "^0.5.16",
+    "axios": "^1.10.0",
+    "framer-motion": "^12.19.2",
     "next": "15.3.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.59.0",
+    "react-markdown": "^10.1.0",
+    "react-redux": "^9.2.0",
+    "remark-gfm": "^4.0.1",
+    "uuid": "^11.1.0",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
