@@ -13,7 +13,8 @@ export const __cg = (title: string, ...args: any[]) => {
   const trace = new Error();
   const traces = trace.stack?.split("\n");
 
-  const firstTrace = traces?.[1];
+  const firstTrace = traces?.[2];
+
   const path = firstTrace?.split("src")?.[1];
 
   console.log(`=> ${path} ℹ️ \n ${formatDate(Date.now())} ⏰`);
