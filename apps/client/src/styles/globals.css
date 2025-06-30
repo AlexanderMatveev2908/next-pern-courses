@@ -35,6 +35,14 @@
   scrollbar-color: var(--white__0) transparent;
 }
 
+.clamp__txt {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  word-break: break-word;
+}
+
 .link {
   transition: 0.3s ease-in-out;
   position: relative;

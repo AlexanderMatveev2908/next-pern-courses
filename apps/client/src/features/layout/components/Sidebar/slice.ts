@@ -1,7 +1,11 @@
 import { AppStateType } from "@/core/store/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const init = {
+type SideStateType = {
+  isOpen: boolean;
+};
+
+const init: SideStateType = {
   isOpen: false,
 };
 
