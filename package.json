@@ -3,7 +3,6 @@
   "packageManager": "yarn@4.9.2",
   "scripts": {
     "install-vercel": "corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
-    "clean": "find . -type f -name '*.tsbuildinfo' -delete && find . -type d -name 'dist' -exec rm -rf {} +",
     "dev": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo dev",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo build --parallel",
     "build-client": "turbo build --filter=client... --force",
