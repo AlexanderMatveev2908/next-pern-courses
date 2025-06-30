@@ -53,6 +53,7 @@ const Sidebar: FC = ({}) => {
               <Link
                 href={el.href}
                 key={el.id}
+                onClick={() => dispatch(sideSlice.actions.setSide(false))}
                 className="link w-full flex gap-6 items-center py-2"
                 css={css`
                   &:hover {

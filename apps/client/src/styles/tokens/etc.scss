@@ -2,6 +2,10 @@
   @apply border-2 border-white;
 }
 
+.tc {
+  @apply text-4xl font-bold text-white;
+}
+
 .pad__app {
   @apply px-[20px] sm:px-[50px];
 }
