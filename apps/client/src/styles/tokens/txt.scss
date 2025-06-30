@@ -1,0 +1,23 @@
+.txt__xs {
+  @apply text-xs lg:text-sm font-medium;
+}
+
+.txt__sm {
+  @apply text-sm lg:text-base font-medium;
+}
+
+.txt__md {
+  @apply text-base lg:text-lg font-semibold;
+}
+
+.txt__lg {
+  @apply text-lg lg:text-xl font-semibold;
+}
+
+.txt__xl {
+  @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+}
+
+.txt__2xl {
+  @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+}

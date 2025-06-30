@@ -1,0 +1,36 @@
+.tb {
+  @apply border-2 border-white;
+}
+
+.pad__app {
+  @apply px-[20px] sm:px-[50px];
+}
+
+.grad__txt {
+  background: linear-gradient(to right, var(--white__0), var(--neutral__600));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.scroll__app::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll__app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll__app::-webkit-scrollbar-thumb {
+  background: var(--white__0);
+  border-radius: 10px;
+  box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+}
+
+.scroll__app {
+  scrollbar-width: thin;
+  // ? firefox accept thumb clr as 1 arg and track as 2
+  scrollbar-color: var(--white__0) transparent;
+}
