@@ -13,11 +13,11 @@
     "baseUrl": ".",
     // ? ALIAS READABILITY
     "paths": {
-      "@shared/*": ["../../packages/shared/dist/*"]
+      "@shared/first/*": ["../../packages/shared/dist/*"]
     }
   },
 
-  "include": ["src", "../../packages/shared/dist/**/*"],
+  "include": ["src"],
   // ? SHARED MUST HAVE COMPOSITE TRUE TO BE INCORPORATED
   "references": [{ "path": "../../packages/shared" }]
 }

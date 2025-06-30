@@ -29,6 +29,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@eslint/eslintrc": "^3",
+    "@shared/first": "*",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24.0.7",
     "@types/react": "^19",

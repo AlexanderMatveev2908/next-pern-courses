@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { axiosInstance } from "@/core/constants/axios";
-import { __cg } from "@shared/lib/logger.js";
+import { __cg } from "@shared/first/lib/logger.js";
 
 export const axiosBaseQuery = async ({
   url,

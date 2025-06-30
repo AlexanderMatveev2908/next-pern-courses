@@ -9,15 +9,15 @@
     "build": {
       "dependsOn": ["clean", "^build"]
     },
-    "shared#build": {
+    "@shared/first#build": {
       "outputs": ["dist/**"]
     },
     "client#build": {
-      "dependsOn": ["shared#build"],
+      "dependsOn": ["@shared/first#build"],
       "outputs": [".next/**"]
     },
     "server#build": {
-      "dependsOn": ["shared#build"],
+      "dependsOn": ["@shared/first#build"],
       "outputs": ["dist/**"]
     },
     "dev": {

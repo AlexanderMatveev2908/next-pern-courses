@@ -5,15 +5,12 @@ WORKDIR /app
 RUN corepack enable && corepack prepare yarn@4.9.2 --activate
 
 COPY package.json yarn.lock .yarnrc.yml turbo.json ./
-COPY packages/shared ./packages/shared
+COPY packages/ ./packages/
 COPY apps/server ./apps/server
 
 RUN yarn install
 
-RUN yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && yarn workspace server build
-
-RUN mkdir -p apps/server/node_modules/@shared
-RUN cp -r packages/shared/dist/* apps/server/node_modules/@shared/
+RUN yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace server build
 
 ENV NODE_PATH=/app/node_modules
 

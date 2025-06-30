@@ -2,10 +2,10 @@ import env from "./conf/env.js";
 import Fastify from "fastify";
 import router from "./routes/index.js";
 import decorators from "./decorators/index.js";
-import { sum } from "@shared/lib/index.js";
 import db from "./conf/db.js";
 import { doStuff, doStuffB } from "./dev_only/index.js";
-import { __cg } from "@shared/lib/logger.js";
+import { __cg } from "@shared/first/lib/logger.js";
+import { sum } from "@shared/first/lib/index.js";
 
 const app = Fastify({
   logger: {
