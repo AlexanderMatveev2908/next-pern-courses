@@ -95,6 +95,16 @@
   @apply text-3xl md:text-4xl lg:text-5xl font-bold;
 }
 
+@keyframes spin {
+  0% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
 :root {
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;

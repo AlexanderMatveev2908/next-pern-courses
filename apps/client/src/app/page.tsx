@@ -1,15 +1,19 @@
 import type { FC } from "react";
 import { sum } from "@shared/lib/index.js";
+import WrapClient from "@/core/layout/shells/WrapClient";
 
 const Home: FC = () => {
   sum();
 
   return (
-    <div className="text-green-600 text-5xl">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, optio sunt
-      placeat praesentium excepturi voluptatum laborum nulla animi, provident
-      enim sto veritatis doloribus eius quibusdam, sed sint molestias nam.
-    </div>
+    <WrapClient>
+      <div className="text-gray-300">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis esse
+        voluptatem at perferendis nobis earum sed consequatur reiciendis enim
+        eos cumque, minus autem quisquam culpa corrupti praesentium corporis
+        quas beatae!
+      </div>
+    </WrapClient>
   );
 };
 
