@@ -5,10 +5,8 @@
     "install-vercel": "corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
     "dev": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo dev",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn workspace shared build && turbo build --parallel",
-    "build-client": "turbo build --filter=client... --force",
-    "start": "turbo start",
-    "license-fix": "find . -name package.json -not -path '*/node_modules/*' -exec sh -c 'jq \".license = \\\"UNLICENSED\\\"\" \"$1\" > \"$1.tmp\" && mv \"$1.tmp\" \"$1\"' _ {} \\;",
-    "check": "yarn turbo check"
+    "build-client": "turbo build --filter=client...",
+    "start": "turbo start"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.10",

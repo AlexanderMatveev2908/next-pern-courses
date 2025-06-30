@@ -1,9 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "globalEnv": ["ONLY_DEPLOY_MAIN"],
-  "remoteCache": {
-    "enabled": false
-  },
   "tasks": {
     "check": {
       "cache": false,
