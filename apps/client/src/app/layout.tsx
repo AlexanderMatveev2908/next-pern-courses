@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import "../styles/globals.css";
-import Providers from "@/core/layout/shells/Providers";
+import AppLayout from "@/features/layout/shells/AppLayout";
 
 const fir_code = Fira_Code({
   subsets: ["latin"],
@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={`${fir_code.className} antialiased bg-neutral-950 pad__app pt-[20px] sm:pt-30px pb-[100px] sm:pb-[150px] min-h-screen min-w-screen flex flex-col`}
       >
-        <Providers>{children}</Providers>
+        <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );

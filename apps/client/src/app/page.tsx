@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import WrapClient from "@/core/layout/shells/WrapClient";
 import { sum } from "@shared/first/lib/index.js";
 import { __cg } from "@shared/first/lib/logger.js";
+import WrapClient from "@/features/layout/shells/WrapClient";
 
 const Home: FC = () => {
   sum();
