@@ -1,6 +1,7 @@
 .link {
   transition: 0.3s ease-in-out;
   position: relative;
+  max-width: fit-content;
 
   &::after {
     content: "";
