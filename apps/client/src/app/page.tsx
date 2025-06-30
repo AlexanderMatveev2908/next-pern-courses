@@ -1,10 +1,12 @@
 import type { FC } from "react";
 import { sum } from "@shared/lib/index.js";
 import WrapClient from "@/core/layout/shells/WrapClient";
+import { __cg } from "@shared/lib/logger.js";
 
 const Home: FC = () => {
   sum();
 
+  __cg("[DEBUG] Render Home", 1010);
   return (
     <WrapClient>
       <div className="text-gray-300">
