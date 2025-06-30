@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fir_code.className} antialiased bg-neutral-950 pad__app pt-[20px] sm:pt-30px pb-[100px] sm:pb-[150px] min-h-screen min-w-screen flex flex-col`}
+        className={`${fir_code.className} antialiased bg-neutral-950 min-h-screen min-w-screen`}
       >
         <AppLayout>{children}</AppLayout>
       </body>

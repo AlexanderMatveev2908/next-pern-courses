@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FC } from "react";
-import Spinner from "../../../clientShared/components/spinners/SpinnerPage/SpinnerPage";
+import Spinner from "../../../common/components/spinners/SpinnerPage/SpinnerPage";
 
 type PropsType = {
   children: React.ReactNode;
