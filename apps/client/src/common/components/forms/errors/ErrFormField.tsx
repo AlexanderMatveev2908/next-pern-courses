@@ -6,13 +6,13 @@ import { FieldErrors, FieldValues } from "react-hook-form";
 import { easeInOut, motion } from "framer-motion";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { useEffect, useState } from "react";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   errors: FieldErrors<T>;
   el: FormFieldType<T>;
   $customCSS?: {
-    css: string;
+    css: SerializedStyles;
   };
 };
 

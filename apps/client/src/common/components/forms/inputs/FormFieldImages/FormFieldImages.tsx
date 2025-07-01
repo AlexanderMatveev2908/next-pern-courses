@@ -8,8 +8,8 @@ import { Controller, FieldValues, useFormContext } from "react-hook-form";
 import ErrFormField from "../../errors/ErrFormField";
 import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
 import Anchor from "../../etc/Anchor";
-import PreviewImages from "./components/PreviewImages";
 import { css } from "@emotion/react";
+import PreviewImagesList from "./components/PreviewImagesList";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -29,6 +29,7 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
   const images = watch(el.name);
   const isUploadFiles = isArrOK(images, (el) => el instanceof File);
   const isURLs = isArrOK(images, (el) => typeof el === "string");
+  const isData = isUploadFiles || isURLs;
 
   console.log(images);
 
@@ -69,14 +70,17 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
         />
 
         <div className="w-full relative max-w-fit">
-          <PreviewImages {...{ images }} />
+          <PreviewImagesList {...{ images, setValue, el }} />
           <ErrFormField
             {...{
               el,
               errors,
-              $right: css`
-                right: 5%;
-              `,
+              $customCSS: {
+                css: css`
+                  min-width: 350px;
+                  ${isData ? "right:5%" : "left:5%"};
+                `,
+              },
             }}
           />
           <Anchor {...{ name: el.name, register }} />
@@ -87,7 +91,11 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
             <BtnShadow
               {...{
                 type: "button",
-                label: "Upload",
+                label: !isData
+                  ? "Upload"
+                  : isUploadFiles
+                  ? `${images.length} Files`
+                  : `${images.length} URLs`,
                 btnActType: BtnActType.info,
                 isEnabled: true,
                 handleClick: handleUpload,
