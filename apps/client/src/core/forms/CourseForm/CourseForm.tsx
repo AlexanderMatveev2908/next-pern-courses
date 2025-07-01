@@ -10,7 +10,7 @@ import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
-import FormFieldImages from "@/common/components/forms/inputs/FormFieldImages";
+import FormFieldImages from "@/common/components/forms/inputs/FormFieldImages/FormFieldImages";
 
 type PropsType = {
   handleSave: () => void;

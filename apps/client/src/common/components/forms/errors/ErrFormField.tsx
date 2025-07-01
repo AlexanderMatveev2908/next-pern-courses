@@ -6,13 +6,21 @@ import { FieldErrors, FieldValues } from "react-hook-form";
 import { easeInOut, motion } from "framer-motion";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { useEffect, useState } from "react";
+import { css } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   errors: FieldErrors<T>;
   el: FormFieldType<T>;
+  $customCSS?: {
+    css: string;
+  };
 };
 
-const ErrFormField = <T extends FieldValues>({ el, errors }: PropsType<T>) => {
+const ErrFormField = <T extends FieldValues>({
+  el,
+  errors,
+  $customCSS,
+}: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
   const msg = errors?.[el.name]?.message as string | undefined;
@@ -31,7 +39,13 @@ const ErrFormField = <T extends FieldValues>({ el, errors }: PropsType<T>) => {
         opacity: isStr(msg) ? 1 : 0,
         transform: isStr(msg) ? "translateY(-150%)" : "translateY(0%)",
       }}
-      className="absolute top-0 right-[-5%] w-full h-fit border-2 border-red-600 max-w-fit py-1 px-5 pointer-events-none z-60 bg-[#000] rounded-xl"
+      css={css`
+        ${$customCSS?.css ??
+        `
+          right: 5%;
+        `}
+      `}
+      className="absolute top-0 w-full h-fit border-2 border-red-600 max-w-fit py-1 px-5 pointer-events-none z-60 bg-[#000] rounded-xl"
     >
       <div className="w-full flex justify-center">
         <span className="txt__md text-red-600">{prevErr}</span>
