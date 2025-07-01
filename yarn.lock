@@ -6136,6 +6136,7 @@ __metadata:
   dependencies:
     "@flydotio/dockerfile": "npm:^0.7.10"
     immutable: "npm:^5.1.3"
+    tsx: "npm:^4.20.3"
     turbo: "npm:^2.5.4"
   languageName: unknown
   linkType: soft
