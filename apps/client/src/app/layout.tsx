@@ -3,8 +3,8 @@ import { Fira_Code } from "next/font/google";
 import "../styles/globals.css";
 import Providers from "@/features/layout/shells/Providers";
 import Header from "@/features/layout/components/Header/Header";
-import { Sidebar } from "lucide-react";
 import Footer from "@/features/layout/components/Footer/Footer";
+import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 
 const fir_code = Fira_Code({
   subsets: ["latin"],

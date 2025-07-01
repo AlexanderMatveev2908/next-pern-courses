@@ -2,8 +2,9 @@
   "name": "next-pern-courses",
   "packageManager": "yarn@4.9.2",
   "scripts": {
+    "install-packages": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
     "install-vercel": "corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
-    "dev": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo dev --parallel",
+    "dev": "yarn workspace @shared/first build && yarn install && turbo dev --parallel",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
     "build-client": "turbo build --filter=client...",
     "start": "turbo start",
