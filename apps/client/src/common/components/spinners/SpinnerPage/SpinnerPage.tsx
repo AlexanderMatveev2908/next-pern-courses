@@ -5,7 +5,7 @@ import { SpinnerStyled } from "./Styled";
 import { motion } from "framer-motion";
 import { getCountSpinner } from "@/core/lib/style";
 
-const Spinner: FC = () => {
+const SpinnerPage: FC = () => {
   const [ids, setIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -63,4 +63,4 @@ const Spinner: FC = () => {
   );
 };
 
-export default Spinner;
+export default SpinnerPage;

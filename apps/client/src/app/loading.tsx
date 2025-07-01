@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import Spinner from "@/common/components/spinners/SpinnerPage/SpinnerPage";
+import SpinnerPage from "@/common/components/spinners/SpinnerPage/SpinnerPage";
 import type { FC } from "react";
 
 const Loading: FC = () => {
-  return <Spinner />;
+  return <SpinnerPage />;
 };
 
 export default Loading;
