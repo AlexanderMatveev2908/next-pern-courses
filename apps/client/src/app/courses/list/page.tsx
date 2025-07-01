@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-const page: FC = () => {
+const ListCourses: FC = () => {
   return (
     <div>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt vitae
@@ -11,4 +11,4 @@ const page: FC = () => {
   );
 };
 
-export default page;
+export default ListCourses;
