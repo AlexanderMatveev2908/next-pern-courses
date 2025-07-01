@@ -3,9 +3,9 @@
 import { useEffect, useState, type FC } from "react";
 import { SpinnerStyled } from "./Styled";
 import { motion } from "framer-motion";
-import { getCountSpinner } from "@/core/lib/style";
+import { getCountSpinner } from "./lib";
 
-const Spinner: FC = () => {
+const SpinnerPage: FC = () => {
   const [ids, setIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Spinner: FC = () => {
         {ids.map((id, i) => (
           <div
             key={id}
-            className="__circle absolute inset-0"
+            className="absolute inset-0"
             // ? ooo all same place => add rotation all after are now relatively around ooo => add translateY now are now relatively around ooo but also distanced from center
             style={{
               transform: `rotate(${
@@ -63,4 +63,4 @@ const Spinner: FC = () => {
   );
 };
 
-export default Spinner;
+export default SpinnerPage;

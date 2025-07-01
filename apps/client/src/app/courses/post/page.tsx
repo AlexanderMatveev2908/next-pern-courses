@@ -1,16 +1,41 @@
 "use client";
 
+import CourseForm from "@/core/forms/CourseForm/CourseForm";
+import {
+  CourseFormType,
+  schemaCoursePost,
+} from "@shared/first/paperwork/courses/schema.post";
 import type { FC } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { __cg } from "@shared/first/lib/logger";
 
-const page: FC = () => {
+const PostCourse: FC = () => {
+  const formCtx = useForm<CourseFormType>({
+    resolver: zodResolver(schemaCoursePost),
+    mode: "onChange",
+  });
+
+  const { handleSubmit } = formCtx;
+
+  const handleSave = handleSubmit(
+    (data: CourseFormType) => {
+      __cg("data", data);
+    },
+    (err) => {
+      __cg("err", err);
+
+      return err;
+    }
+  );
+
   return (
-    <div>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, soluta.
-      Distinctio, ex, velit adipisci omnis consequuntur quidem ratione
-      inventore, cum at ipsam mollitia doloribus nesciunt voluptatem. Nulla enim
-      consequuntur aliquam.
+    <div className="w-full grid grid-cols-1 gap-10">
+      <FormProvider {...formCtx}>
+        <CourseForm {...{ handleSave }} />
+      </FormProvider>
     </div>
   );
 };
 
-export default page;
+export default PostCourse;

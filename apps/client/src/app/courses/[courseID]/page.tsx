@@ -4,7 +4,7 @@ type PropsType = {
   params: Promise<{ courseID: string }>;
 };
 
-const page: FC<PropsType> = async ({ params }) => {
+const CoursePage: FC<PropsType> = async ({ params }) => {
   const { courseID } = await params;
 
   console.log(courseID);
@@ -12,4 +12,4 @@ const page: FC<PropsType> = async ({ params }) => {
   return <div className="tc">{courseID}</div>;
 };
 
-export default page;
+export default CoursePage;

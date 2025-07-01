@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 "use client";
 
 import PageWrapper from "@/common/components/HOC/PageWrapper";
@@ -8,8 +7,12 @@ type PropsType = {
   children: React.ReactNode;
 };
 
-const layout: FC<PropsType> = ({ children }) => {
-  return <PageWrapper {...{ title: "Create course" }}>{children}</PageWrapper>;
+const Layout: FC<PropsType> = ({ children }) => {
+  return (
+    <PageWrapper {...{ title: "Create course", wrapHydrate: true }}>
+      {children}
+    </PageWrapper>
+  );
 };
 
-export default layout;
+export default Layout;
