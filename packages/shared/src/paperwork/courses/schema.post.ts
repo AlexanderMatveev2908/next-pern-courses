@@ -37,6 +37,14 @@ export const schemaCoursePost = z.object({
       (v) => Array.isArray(v) && v.length <= 5,
       "You can only upload 5 images"
     ),
+  video: z
+    .instanceof(File)
+    .optional()
+    .refine((v) => !v || v.type.startsWith("video"), "File must be a video")
+    .refine(
+      (v) => !v || v.size < 10 * 1024 * 1024,
+      "Video size must be less than 10MB"
+    ),
 
   markdown: z
     .instanceof(File)

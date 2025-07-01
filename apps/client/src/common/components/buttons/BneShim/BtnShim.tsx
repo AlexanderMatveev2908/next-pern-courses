@@ -4,15 +4,9 @@
 import { css } from "@emotion/react";
 import { useState, type FC } from "react";
 import InnerShadow from "./components/InnerShadow/InnerShadow";
+import { PropsTypeBtn } from "@/common/types/uiFactory";
 
-type PropsType = {
-  type: "button" | "submit";
-  handleClick?: () => void;
-  label: string;
-  isEnabled: boolean;
-};
-
-const BtnShim: FC<PropsType> = ({ type, handleClick, label, isEnabled }) => {
+const BtnShim: FC<PropsTypeBtn> = ({ type, handleClick, label, isEnabled }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (

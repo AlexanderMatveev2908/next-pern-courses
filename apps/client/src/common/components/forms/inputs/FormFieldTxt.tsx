@@ -30,6 +30,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
           <input
             ref={field.ref}
             name={el.name}
+            required={el.required}
             type={el.type ?? "text"}
             placeholder={getSomePlaceholder(el)}
             value={field.value ?? ""}

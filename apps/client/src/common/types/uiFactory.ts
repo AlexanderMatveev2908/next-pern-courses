@@ -21,3 +21,17 @@ export type FormFieldPropsType<T extends FieldValues, K extends Path<T>> = {
   isDisabled?: boolean;
   cb?: (val: T[K]) => void;
 };
+
+export type PropsTypeBtn = {
+  type: "button" | "submit";
+  handleClick?: () => void;
+  label: string;
+  isEnabled: boolean;
+};
+
+export enum BtnActType {
+  info = "info",
+  success = "success",
+  warning = "warning",
+  error = "error",
+}

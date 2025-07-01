@@ -23,6 +23,7 @@ const FormFieldArea = <T extends FieldValues, K extends Path<T>>({
           <textarea
             name={el.name}
             ref={field.ref}
+            required={el.required}
             placeholder={getSomePlaceholder(el)}
             value={field.value ?? ""}
             onChange={(e) => {

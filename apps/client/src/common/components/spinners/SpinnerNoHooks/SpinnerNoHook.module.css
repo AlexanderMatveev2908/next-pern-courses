@@ -1,0 +1,41 @@
+@keyframes spin {
+  0% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.__wrap {
+  min-height: 30vh;
+}
+
+.__dot {
+  position: absolute;
+  content: "";
+  background: #f5f5f5;
+  box-shadow: 0 0 10px #f5f5f5, 0 0 20px #f5f5f5, 0 0 30px #f5f5f5,
+    0 0 40px #f5f5f5, 0 0 50px #f5f5f5;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+
+  animation: spin 1s linear infinite;
+  animation-delay: var(--delay_page);
+}
+
+@media screen and (min-width: 500px) {
+  .__wrap {
+    min-height: 50vh;
+  }
+
+  .__dot {
+    width: 40px;
+    height: 40px;
+  }
+}

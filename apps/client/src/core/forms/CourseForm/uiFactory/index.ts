@@ -14,3 +14,10 @@ export const descriptionField: FormFieldType<CourseFormType> = {
   type: "text",
   required: false,
 };
+
+export const imagesField: FormFieldType<CourseFormType> = {
+  name: "images",
+  label: "Course images",
+  type: "file",
+  required: true,
+};

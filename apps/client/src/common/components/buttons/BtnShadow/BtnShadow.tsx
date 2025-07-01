@@ -1,0 +1,39 @@
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import { BtnActType, PropsTypeBtn } from "@/common/types/uiFactory";
+import { css } from "@emotion/react";
+import type { FC } from "react";
+import { btnColors } from "./uiFactory";
+
+const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
+  isEnabled,
+  label,
+  type,
+  handleClick,
+  btnActType,
+}) => {
+  const clr = btnColors[btnActType];
+
+  return (
+    <button
+      type={type}
+      disabled={!isEnabled}
+      onClick={handleClick}
+      className="btn__app w-full border-2 py-3 px-5 flex justify-center rounded-2xl"
+      style={{ "--scale__up": 1.1 } as React.CSSProperties}
+      css={css`
+        border: 2px solid ${clr};
+        &:hover {
+          box-shadow: 0 0 5px ${clr}, 0 0 10px ${clr}, 0 0 15px ${clr},
+            0 0 20px ${clr}, 0 0 25px ${clr}, 0 0 30px ${clr};
+        }
+      `}
+    >
+      {" "}
+      <span className="txt__lg text-gray-300">{label}</span>
+    </button>
+  );
+};
+
+export default BtnShadow;
