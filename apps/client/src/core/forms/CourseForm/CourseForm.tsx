@@ -15,12 +15,14 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
   const formCtx = useFormContext<CourseFormType>();
   const {
     control,
-    formState: { errors, isValid },
+    formState: { errors },
   } = formCtx;
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
-      <FormField {...{ el: titleField, control, errors }} />
+      <div className="max-w-1/2">
+        <FormField {...{ el: titleField, control, errors }} />
+      </div>
     </form>
   );
 };

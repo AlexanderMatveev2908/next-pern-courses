@@ -14,3 +14,15 @@ export const formatDate = (date: Date | string | number) => {
     hour12: true,
   }).format(param);
 };
+
+export const capt = (str?: string) =>
+  str ? str?.[0]?.toUpperCase() + str?.slice(1) : "";
+
+export const captAll = (str?: string) =>
+  !str
+    ? ""
+    : str
+        .split(" ")
+        .filter(Boolean)
+        .map((el) => capt(el))
+        .join(" ");
