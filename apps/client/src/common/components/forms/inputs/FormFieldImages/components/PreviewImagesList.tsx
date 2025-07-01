@@ -41,6 +41,7 @@ const PreviewImagesList = <T extends FieldValues>({
     <div
       className="w-full max-w-fit border-2 border-neutral-800 rounded-xl overflow-x-auto flex gap-8 snap-x snap-mandatory"
       css={css`
+        margin-top: ${isData ? "1rem" : "0px"};
         padding: ${isData ? "30px" : "0px"};
       `}
     >
