@@ -3,7 +3,6 @@
 import CourseForm from "@/core/forms/CourseForm/CourseForm";
 import {
   CourseFormType,
-  monkeyHOF,
   schemaCoursePost,
 } from "@shared/first/paperwork/courses/schema.post";
 import type { FC } from "react";
@@ -29,8 +28,6 @@ const PostCourse: FC = () => {
       return err;
     }
   );
-
-  monkeyHOF();
 
   return (
     <div className="w-full grid grid-cols-1 gap-10">

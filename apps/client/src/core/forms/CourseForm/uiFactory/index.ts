@@ -1,9 +1,16 @@
 import { FormFieldType } from "@/common/types/uiFactory";
+import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 
-export const titleField: FormFieldType<{ title: string }> = {
+export const titleField: FormFieldType<CourseFormType> = {
   name: "title",
   label: "Course title",
   type: "text",
   required: true,
-  place: "Course title",
+};
+
+export const descriptionField: FormFieldType<CourseFormType> = {
+  name: "description",
+  label: "Course description",
+  type: "text",
+  required: false,
 };

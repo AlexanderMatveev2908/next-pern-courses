@@ -23,7 +23,7 @@ const SpinnerPage: FC = () => {
 
   return (
     <SpinnerStyled className="w-full h-full min-h-screen overflow-hidden flex justify-center items-center">
-      <div className="__wrap relative w-full">
+      <div className="__wrap relative w-full tb">
         {ids.map((id, i) => (
           <div
             key={id}

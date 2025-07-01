@@ -1,0 +1,9 @@
+.el__input {
+  @apply w-full border-2 border-neutral-600 rounded-2xl py-2 px-5 text-gray-300 outline-0;
+
+  transition: 0.3s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 5px whitesmoke, 0 0 10px whitesmoke, 0 0 15px whitesmoke;
+  }
+}

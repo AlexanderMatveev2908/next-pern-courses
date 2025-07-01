@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import FormField from "@/common/components/forms/inputs/FormField";
+import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import type { FC } from "react";
-import { titleField } from "./uiFactory";
+import { descriptionField, titleField } from "./uiFactory";
 import { useFormContext } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
+import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
+import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
+import { useFocus } from "@/core/hooks/ui/useFocus";
 
 type PropsType = {
   handleSave: () => void;
@@ -17,13 +20,20 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
   const {
     control,
     formState: { errors },
+    setFocus,
   } = formCtx;
+
+  useFocus({ cb: () => setFocus("title") });
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
-      <div className="max-w-1/2">
-        <FormField {...{ el: titleField, control, errors }} />
-      </div>
+      <WrapSingleField>
+        <FormFieldTxt {...{ el: titleField, control, errors }} />
+      </WrapSingleField>
+
+      <WrapSingleField>
+        <FormFieldArea {...{ el: descriptionField, control, errors }} />
+      </WrapSingleField>
 
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />

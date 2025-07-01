@@ -16,7 +16,6 @@ const ErrFormField = <T extends FieldValues>({ el, errors }: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
   const msg = errors?.[el.name]?.message as string | undefined;
-  console.log(msg);
 
   useEffect(() => {
     if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {
@@ -32,7 +31,7 @@ const ErrFormField = <T extends FieldValues>({ el, errors }: PropsType<T>) => {
         opacity: isStr(msg) ? 1 : 0,
         transform: isStr(msg) ? "translateY(-150%)" : "translateY(0%)",
       }}
-      className="absolute top-0 right-[-5%] w-full h-fit border-2 border-red-600 max-w-fit py-2 px-5 pointer-events-none z-60 bg-[#000] rounded-xl"
+      className="absolute top-0 right-[-5%] w-full h-fit border-2 border-red-600 max-w-fit py-1 px-5 pointer-events-none z-60 bg-[#000] rounded-xl"
     >
       <div className="w-full flex justify-center">
         <span className="txt__md text-red-600">{prevErr}</span>
