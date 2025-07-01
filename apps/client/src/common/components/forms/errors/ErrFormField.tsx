@@ -1,0 +1,44 @@
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import { FormFieldType } from "@/common/types/uiFactory";
+import { FieldErrors, FieldValues } from "react-hook-form";
+import { easeInOut, motion } from "framer-motion";
+import { isStr } from "@shared/first/lib/dataStructure";
+import { useEffect, useState } from "react";
+
+type PropsType<T extends FieldValues> = {
+  errors: FieldErrors<T>;
+  el: FormFieldType<T>;
+};
+
+const ErrFormField = <T extends FieldValues>({ el, errors }: PropsType<T>) => {
+  const [prevErr, setPrevErr] = useState<string | null>(null);
+
+  const msg = errors?.[el.name]?.message as string | undefined;
+  console.log(msg);
+
+  useEffect(() => {
+    if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {
+      setPrevErr(msg as string);
+    }
+  }, [prevErr, msg]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, transform: "translateY(0%)" }}
+      transition={{ duration: 0.3, ease: easeInOut }}
+      animate={{
+        opacity: isStr(msg) ? 1 : 0,
+        transform: isStr(msg) ? "translateY(-120%)" : "translateY(0%)",
+      }}
+      className="absolute top-0 right-[-25%] w-full h-full border-2 border-red-600 max-w-fit py-2 px-5 pointer-events-none z-60 bg-neutral-950 rounded-xl"
+    >
+      <div className="w-full flex justify-center">
+        <span className="txt__md text-red-600">{prevErr}</span>
+      </div>
+    </motion.div>
+  );
+};
+
+export default ErrFormField;

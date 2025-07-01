@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import FormField from "@/common/components/inputs/FormField";
+import FormField from "@/common/components/forms/inputs/FormField";
 import type { FC } from "react";
 import { titleField } from "./uiFactory";
 import { useFormContext } from "react-hook-form";
@@ -25,7 +25,7 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
         <FormField {...{ el: titleField, control, errors }} />
       </div>
 
-      <div className="w-full max-w-[200px]">
+      <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>
     </form>
