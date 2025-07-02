@@ -6,7 +6,7 @@
     "install-vercel": "corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
     "dev": "yarn workspace @shared/first dev & yarn install && turbo dev --parallel",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
-    "build-client": "npx tsx vercel-ignore-build-step.ts && turbo build --filter=client...",
+    "build-client": "turbo build --filter=client...",
     "start": "turbo start",
     "check": "turbo check"
   },
