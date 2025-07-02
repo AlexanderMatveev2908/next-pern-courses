@@ -15,7 +15,7 @@ const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
   val,
 }: PropsType<T, K>) => {
   return (
-    <div
+    <button
       className="w-full rounded-2xl p-3 flex justify-center items-center max-w-[350px] h-fit"
       css={css`
         border: 2px solid var(--${isChecked ? "white__0" : "neutral__600"});
@@ -30,7 +30,7 @@ const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
       >
         {val}
       </span>
-    </div>
+    </button>
   );
 };
 

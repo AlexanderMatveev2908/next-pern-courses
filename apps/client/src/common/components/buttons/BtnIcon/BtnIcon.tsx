@@ -26,16 +26,16 @@ const BtnIcon: FC<
       css={css`
         border: 2px solid ${clr};
         color: ${clr};
-        &:hover {
+        &:enabled:hover {
           background: ${clr};
           color: var(--neutral__950);
         }
       `}
       style={{ "--scale__up": 1.25 } as React.CSSProperties}
     >
-      {Svg && <Svg className="min-w-[35px] min-h-[35px] tb" />}
+      {Svg && <Svg className="min-w-[35px] min-h-[35px]" />}
 
-      {isStr(label) && <span className="txt__lg tb">{label}</span>}
+      {isStr(label) && <span className="txt__lg">{label}</span>}
     </button>
   );
 };

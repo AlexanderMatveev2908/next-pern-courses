@@ -14,11 +14,11 @@ type PropsType = {
 
 const RowSwapBtns: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
   return (
-    <div className="w-full grid grid-cols-2 gap-5 items-center tb">
+    <div className="w-full grid grid-cols-2 gap-5 items-center">
       {rowBtns.map((btn, i) => (
         <div
           key={btn.id}
-          className="w-[75px] tb"
+          className="w-[75px]"
           css={css`
             justify-self: ${!i ? "start" : "end"};
           `}
