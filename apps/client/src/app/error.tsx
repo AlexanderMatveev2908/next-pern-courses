@@ -2,9 +2,10 @@
 "use client";
 
 import { __cg } from "@shared/first/lib/logger";
-import { CircleAlert } from "lucide-react";
 import type { FC } from "react";
-import { easeInOut, motion } from "framer-motion";
+import BounceErr from "@/common/components/elements/BounceErr";
+import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
 
 type PropsType = {
   error: Error;
@@ -16,17 +17,21 @@ const Err: FC<PropsType> = ({ error, reset }: PropsType) => {
 
   return (
     <div className="w-full min-h-[75vh] flex flex-col items-center justify-center gap-10 sm:gap-16">
-      <motion.div
-        className="w-full flex justify-center"
-        transition={{ duration: 0.8, ease: easeInOut }}
-        initial={{ scaleX: 0, scaleY: 0 }}
-        animate={{
-          scaleX: [1.6, 0.6, 1.3, 0.9, 1.05, 1],
-          scaleY: [0.4, 1.4, 0.7, 1.2, 0.95, 1],
+      <BounceErr
+        {...{
+          $customCSS: {
+            css: css`
+              width: 175px;
+              height: 175px;
+
+              ${resp("sm")} {
+                width: 300px;
+                height: 300px;
+              }
+            `,
+          },
         }}
-      >
-        <CircleAlert className="text-red-600 w-[175px] h-[175px] sm:w-[300px] sm:h-[300px]" />
-      </motion.div>
+      />
 
       <div className="w-full flex justify-center max-w-[90%] sm:max-w-[75%]">
         <span className="text-gray-300 txt__lg">

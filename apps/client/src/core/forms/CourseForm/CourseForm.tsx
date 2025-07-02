@@ -16,7 +16,7 @@ import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/FormFieldImages/FormFieldImages";
-import FormFieldVideo from "@/common/components/forms/inputs/FormFieldVideo";
+import FormFieldVideo from "@/common/components/forms/inputs/FormFieldVideo/FormFieldVideo";
 
 type PropsType = {
   handleSave: () => void;

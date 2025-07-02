@@ -9,8 +9,10 @@ if (branch !== "main") {
 
 console.log(`✅ Installing for branch: ${branch}`);
 execSync(
-  "rm -rf apps/server && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
+  "rm -rfv apps/server && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
   {
     stdio: "inherit",
   },
 );
+
+//

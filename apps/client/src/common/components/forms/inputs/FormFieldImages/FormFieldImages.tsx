@@ -4,12 +4,14 @@
 import { BtnActType, FormFieldType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure";
 import { useRef } from "react";
-import { Controller, FieldValues, useFormContext } from "react-hook-form";
-import ErrFormField from "../../errors/ErrFormField";
+import {
+  ControllerRenderProps,
+  FieldValues,
+  useFormContext,
+} from "react-hook-form";
 import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
-import Anchor from "../../etc/Anchor";
-import { css } from "@emotion/react";
 import PreviewImagesList from "./components/PreviewImagesList";
+import FieldFile from "../FieldFile";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -35,58 +37,40 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
     if (inputRef.current) inputRef.current.click();
   };
 
+  const handleChange = ({
+    field,
+    e,
+  }: {
+    field: ControllerRenderProps<T>;
+    e: React.ChangeEvent<HTMLInputElement>;
+  }) => {
+    const {
+      target: { files },
+    } = e;
+
+    const parsed = Array.from(files ?? []);
+
+    field.onChange(parsed);
+  };
+
   return (
     <div className="w-full">
-      <label htmlFor={el.name} className="w-full grid grid-cols-1">
-        <span className="txt__lg text-neutral-200">{el.label}</span>
+      <FieldFile
+        {...{
+          accept: "image/*",
+          control,
+          multiple: true,
+          el,
+          register,
+          errors,
+          isData,
+          onChange: handleChange,
+          Preview: <PreviewImagesList {...{ images, setValue, el }} />,
+        }}
+        ref={inputRef}
+      />
 
-        <Controller
-          name={el.name}
-          control={control}
-          render={({ field }) => (
-            <input
-              ref={(elHTML) => {
-                field.ref(elHTML);
-
-                inputRef.current = elHTML;
-              }}
-              type="file"
-              required={el.required}
-              multiple
-              className="w-0 h-0 opacity-0"
-              accept="image/*"
-              onChange={(e) => {
-                const {
-                  target: { files },
-                } = e;
-
-                const parsed = Array.from(files ?? []);
-
-                field.onChange(parsed);
-              }}
-            />
-          )}
-        />
-
-        <div className="w-full relative max-w-fit">
-          <PreviewImagesList {...{ images, setValue, el }} />
-          <ErrFormField
-            {...{
-              el,
-              errors,
-              $customCSS: {
-                css: css`
-                  min-width: 350px;
-                  ${isData ? "right:5%" : "left:5%"};
-                `,
-              },
-            }}
-          />
-          <Anchor {...{ name: el.name, register }} />
-        </div>
-      </label>
-
-      <div className="w-full max-w-1/2 mt-4">
+      <div className="w-full max-w-[600px] mt-4">
         <div className="w-full max-w-[250px]">
           <BtnShadow
             {...{
@@ -94,8 +78,8 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
               label: !isData
                 ? "Upload"
                 : isUploadFiles
-                ? `${images.length} Files`
-                : `${images.length} URLs`,
+                  ? `${images.length} Files`
+                  : `${images.length} URLs`,
               btnActType: BtnActType.info,
               isEnabled: true,
               handleClick: handleUpload,
