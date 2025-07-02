@@ -5,4 +5,5 @@ export const btnColors = {
   [BtnActType.info]: "var(--blue__600)",
   [BtnActType.warning]: "var(--yellow__600)",
   [BtnActType.error]: "var(--red__600)",
+  [BtnActType.neutral]: "var(--neutral__300)",
 };

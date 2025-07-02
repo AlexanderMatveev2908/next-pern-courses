@@ -48,7 +48,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
 
   return (
     <div
-      className="w-full grid gap-8"
+      className="min-w-full grid justify-items-center gap-8 h-fit"
       css={css`
         grid-template-columns: repeat(${colsForSwap}, 1fr);
       `}

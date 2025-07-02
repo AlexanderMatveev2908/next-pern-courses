@@ -34,6 +34,7 @@ export enum BtnActType {
   success = "success",
   warning = "warning",
   error = "error",
+  neutral = "neutral",
 }
 
 export type FieldCheckType<T extends FieldValues> = {
