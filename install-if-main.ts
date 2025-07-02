@@ -4,7 +4,7 @@ const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GIT_BRANCH;
 
 if (branch !== "main") {
   console.log(`⛔ Skipping install for branch: ${branch}`);
-  process.exit(0);
+  process.exit(1);
 }
 
 console.log(`✅ Installing for branch: ${branch}`);
@@ -14,3 +14,4 @@ execSync(
     stdio: "inherit",
   },
 );
+process.exit(0);
