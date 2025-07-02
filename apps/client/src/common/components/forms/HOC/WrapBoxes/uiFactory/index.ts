@@ -10,3 +10,5 @@ export const getColsForSwap = () =>
         : 1;
 
 export const maxRows = 3;
+
+export const calcFieldsForSwap = (colsForSwap: number) => colsForSwap * maxRows;

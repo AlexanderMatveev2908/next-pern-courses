@@ -10,10 +10,10 @@ import { Difficulties } from "@shared/first/constants/categories";
 type PropsType = {};
 
 const HardLevel: FC<PropsType> = ({}) => {
-  const nums = Array.from({ length: 50 }, (_, i) => i + 1 + "");
+  const nums = Array.from({ length: 23 }, (_, i) => i + 1 + "");
   return (
     <WrapCheck {...{ el: fieldHard }}>
-      <WrapBoxes {...{ vals: nums, typeBox: "radio" }} />
+      <WrapBoxes {...{ vals: nums, typeBox: "radio", el: fieldHard }} />
     </WrapCheck>
   );
 };

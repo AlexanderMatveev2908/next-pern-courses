@@ -36,8 +36,8 @@ export enum BtnActType {
   error = "error",
 }
 
-export type FieldCheckType = {
+export type FieldCheckType<T extends FieldValues> = {
   type: "checkbox" | "radio";
-  name: string;
+  name: Path<T>;
   label: string;
 };

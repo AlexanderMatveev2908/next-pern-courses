@@ -36,7 +36,7 @@ export const fieldMarkdown: FormFieldType<CourseFormType> = {
   required: false,
 };
 
-export const fieldHard: FieldCheckType = {
+export const fieldHard: FieldCheckType<CourseFormType> = {
   name: "grade",
   label: "Course grade *",
   type: "radio",
