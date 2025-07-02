@@ -9,7 +9,7 @@ import {
   FieldValues,
   useFormContext,
 } from "react-hook-form";
-import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
+import BtnShadow from "../../../../buttons/BtnShadow/BtnShadow";
 import PreviewImagesList from "./components/PreviewImagesList";
 import FieldFile from "../FieldFile";
 

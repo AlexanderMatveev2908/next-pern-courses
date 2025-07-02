@@ -49,6 +49,7 @@ export const schemaCoursePost = z.object({
 
   markdown: z
     .instanceof(File)
+    .nullable()
     .optional()
     .refine(
       (v) => !v || v.type === "text/markdown" || v.name.endsWith(".md"),
