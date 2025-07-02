@@ -18,7 +18,6 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const {
-    setValue,
     register,
     formState: { errors },
     watch,
