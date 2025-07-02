@@ -2,20 +2,19 @@
 "use client";
 
 import { BtnActType, FormFieldType } from "@/common/types/uiFactory";
-import { isArrOK } from "@shared/first/lib/dataStructure";
-import { useRef } from "react";
 import { Controller, FieldValues, useFormContext } from "react-hook-form";
-import ErrFormField from "../../errors/ErrFormField";
-import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
-import Anchor from "../../etc/Anchor";
+import ErrFormField from "../errors/ErrFormField";
+import { isStr } from "@shared/first/lib/dataStructure";
 import { css } from "@emotion/react";
-import PreviewImagesList from "./components/PreviewImagesList";
+import Anchor from "../etc/Anchor";
+import BtnShadow from "../../buttons/BtnShadow/BtnShadow";
+import { useRef } from "react";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
 };
 
-const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
+const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const {
@@ -26,10 +25,12 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
     control,
   } = useFormContext<T>();
 
-  const images = watch(el.name);
-  const isUploadFiles = isArrOK(images, (el) => el instanceof File);
-  const isURLs = isArrOK(images, (el) => typeof el === "string");
-  const isData = isUploadFiles || isURLs;
+  console.log(el);
+
+  const vid = watch(el.name);
+  const isURL = isStr(vid);
+  const isFile = (vid as File) instanceof File && vid.type.startsWith("video");
+  const isData = isURL || isFile;
 
   const handleUpload = () => {
     if (inputRef.current) inputRef.current.click();
@@ -45,31 +46,27 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
           control={control}
           render={({ field }) => (
             <input
+              name={el.name}
               ref={(elHTML) => {
                 field.ref(elHTML);
-
                 inputRef.current = elHTML;
               }}
-              type="file"
               required={el.required}
-              multiple
+              type="file"
+              // accept="video/*"
               className="w-0 h-0 opacity-0"
-              accept="image/*"
               onChange={(e) => {
                 const {
                   target: { files },
                 } = e;
 
-                const parsed = Array.from(files ?? []);
-
-                field.onChange(parsed);
+                field.onChange(files?.[0] ?? null);
               }}
             />
           )}
         />
 
         <div className="w-full relative max-w-fit">
-          <PreviewImagesList {...{ images, setValue, el }} />
           <ErrFormField
             {...{
               el,
@@ -91,11 +88,7 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
           <BtnShadow
             {...{
               type: "button",
-              label: !isData
-                ? "Upload"
-                : isUploadFiles
-                ? `${images.length} Files`
-                : `${images.length} URLs`,
+              label: !isData ? "Upload" : isFile ? `1 File` : `1 URL`,
               btnActType: BtnActType.info,
               isEnabled: true,
               handleClick: handleUpload,
@@ -107,4 +100,4 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
   );
 };
 
-export default FormFieldImages;
+export default FormFieldVideo;

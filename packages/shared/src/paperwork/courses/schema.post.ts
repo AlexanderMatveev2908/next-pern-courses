@@ -25,17 +25,17 @@ export const schemaCoursePost = z.object({
         v.every((img) =>
           img instanceof File
             ? img.type.startsWith("image")
-            : REG_CLOUD_URL.test(img)
+            : REG_CLOUD_URL.test(img),
         ),
-      "File must be an image"
+      "File must be an image",
     )
     .refine(
       (v) => Array.isArray(v) && !!v.length,
-      "You must upload at least one image"
+      "You must upload at least one image",
     )
     .refine(
       (v) => Array.isArray(v) && v.length <= 5,
-      "You can only upload 5 images"
+      "You can only upload 5 images",
     ),
   video: z
     .instanceof(File)
@@ -43,7 +43,7 @@ export const schemaCoursePost = z.object({
     .refine((v) => !v || v.type.startsWith("video"), "File must be a video")
     .refine(
       (v) => !v || v.size < 10 * 1024 * 1024,
-      "Video size must be less than 10MB"
+      "Video size must be less than 10MB",
     ),
 
   markdown: z
@@ -51,7 +51,7 @@ export const schemaCoursePost = z.object({
     .optional()
     .refine(
       (v) => !v || v.type === "text/markdown" || v.name.endsWith(".md"),
-      "File must be a markdown file"
+      "File must be a markdown file",
     ),
 });
 
