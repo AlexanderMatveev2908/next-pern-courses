@@ -1,11 +1,10 @@
 import { env, exit } from "process";
 
-const branch = env.VERCEL_GIT_COMMIT_REF;
+const branch = env.VERCEL_GIT_COMMIT_REF || env.GIT_BRANCH;
 
 if (branch !== "main") {
   console.log(`⛔ Skipping build for branch: ${branch}`);
-  exit(1);
+  exit(0);
 }
 
 console.log(`✅ Proceeding with build for branch: ${branch}`);
-exit(0);
