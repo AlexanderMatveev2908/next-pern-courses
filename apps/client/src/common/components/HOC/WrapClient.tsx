@@ -14,6 +14,11 @@ const WrapClient: FC<PropsType> = ({ children }) => {
 
   useEffect(() => {
     setIsHydrated(true);
+
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
   }, []);
 
   return isHydrated ? children : <SpinnerNoHooks />;

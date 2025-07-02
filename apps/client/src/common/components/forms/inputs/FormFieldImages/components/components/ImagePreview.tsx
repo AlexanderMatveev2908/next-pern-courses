@@ -2,7 +2,7 @@
 "use client";
 
 import { easeInOut } from "framer-motion";
-import ImgLoader from "@/common/components/HOC/ImgLoader";
+import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
 import { Trash2 } from "lucide-react";
 import { FC, useState } from "react";
 import { motion } from "framer-motion";

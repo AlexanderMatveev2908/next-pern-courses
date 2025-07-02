@@ -3,12 +3,13 @@
 
 import { BtnActType, FormFieldType } from "@/common/types/uiFactory";
 import { Controller, FieldValues, useFormContext } from "react-hook-form";
-import ErrFormField from "../errors/ErrFormField";
+import ErrFormField from "../../errors/ErrFormField";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { css } from "@emotion/react";
-import Anchor from "../etc/Anchor";
-import BtnShadow from "../../buttons/BtnShadow/BtnShadow";
+import Anchor from "../../etc/Anchor";
+import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
 import { useRef } from "react";
+import PreviewVideo from "./components/PreviewVideo";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -23,8 +24,6 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
     watch,
     control,
   } = useFormContext<T>();
-
-  console.log(el);
 
   const vid = watch(el.name);
   const isURL = isStr(vid);
@@ -52,7 +51,7 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
               }}
               required={el.required}
               type="file"
-              // accept="video/*"
+              accept="video/*"
               className="w-0 h-0 opacity-0"
               onChange={(e) => {
                 const {
@@ -66,6 +65,8 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
         />
 
         <div className="w-full relative max-w-fit">
+          <PreviewVideo {...{ vid: vid }} />
+
           <ErrFormField
             {...{
               el,
