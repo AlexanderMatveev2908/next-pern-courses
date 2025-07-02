@@ -23,7 +23,7 @@ const BtnShim: FC<PropsTypeBtn> = ({ type, handleClick, label, isEnabled }) => {
     >
       <div
         css={css`
-          padding: 7.5px 50px;
+          padding: 10px 50px;
           border: 2px solid var(--neutral__300);
           border-radius: 15px;
           transition: 0.4s;

@@ -11,8 +11,8 @@ import {
   FieldValues,
   UseFormRegister,
 } from "react-hook-form";
-import Anchor from "../etc/Anchor";
-import ErrFormField from "../errors/ErrFormField";
+import Anchor from "../../etc/Anchor";
+import ErrFormField from "../../errors/ErrFormField";
 import { JSX } from "react/jsx-runtime";
 import { css } from "@emotion/react";
 

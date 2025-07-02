@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { BtnActType, FormFieldType } from "@/common/types/uiFactory";
+import { FormFieldType } from "@/common/types/uiFactory";
 import {
   ControllerRenderProps,
   FieldValues,
   useFormContext,
 } from "react-hook-form";
 import { isStr } from "@shared/first/lib/dataStructure";
-import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
 import { useRef } from "react";
 import PreviewVideo from "./components/PreviewVideo";
 import FieldFile from "../FieldFile";
+import RowButtonsFile from "@/common/components/HOC/assets/RowButtonsFile";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -74,33 +74,14 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
         ref={inputRef}
       />
 
-      <div className="w-full max-w-[600px] flex items-center gap-6 sm:gap-10  mt-4">
-        <div className="w-full max-w-[250px]">
-          <BtnShadow
-            {...{
-              type: "button",
-              label: !isData ? "Upload" : isFile ? `1 File` : `1 URL`,
-              btnActType: BtnActType.info,
-              isEnabled: true,
-              handleClick: handleUpload,
-            }}
-          />
-        </div>
-
-        {isData && (
-          <div className="w-full max-w-[275px]">
-            <BtnShadow
-              {...{
-                type: "button",
-                label: isFile ? "Remove File" : "Remove URL",
-                btnActType: BtnActType.error,
-                isEnabled: true,
-                handleClick: handleRemove,
-              }}
-            />
-          </div>
-        )}
-      </div>
+      <RowButtonsFile
+        {...{
+          handleRemove,
+          handleUpload,
+          isData,
+          isFile,
+        }}
+      />
     </div>
   );
 };

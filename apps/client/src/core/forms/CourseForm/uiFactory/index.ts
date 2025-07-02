@@ -24,7 +24,14 @@ export const imagesField: FormFieldType<CourseFormType> = {
 
 export const videoField: FormFieldType<CourseFormType> = {
   name: "video",
-  label: "Course video",
+  label: "Course video (mandatory if markdown not provided)",
+  type: "file",
+  required: false,
+};
+
+export const fieldMarkdown: FormFieldType<CourseFormType> = {
+  name: "markdown",
+  label: "Markdown file (mandatory if video not provided)",
   type: "file",
   required: false,
 };

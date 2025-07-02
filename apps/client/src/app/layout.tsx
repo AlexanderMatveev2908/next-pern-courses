@@ -5,6 +5,7 @@ import Providers from "@/features/layout/shells/Providers";
 import Header from "@/features/layout/components/Header/Header";
 import Footer from "@/features/layout/components/Footer/Footer";
 import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
+import "highlight.js/styles/github-dark.css";
 
 const fir_code = Fira_Code({
   subsets: ["latin"],

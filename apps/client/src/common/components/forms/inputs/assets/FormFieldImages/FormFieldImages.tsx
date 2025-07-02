@@ -9,7 +9,7 @@ import {
   FieldValues,
   useFormContext,
 } from "react-hook-form";
-import BtnShadow from "../../../buttons/BtnShadow/BtnShadow";
+import BtnShadow from "../../../../buttons/BtnShadow/BtnShadow";
 import PreviewImagesList from "./components/PreviewImagesList";
 import FieldFile from "../FieldFile";
 
@@ -80,7 +80,7 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
                 : isUploadFiles
                   ? `${images.length} Files`
                   : `${images.length} URLs`,
-              btnActType: BtnActType.info,
+              btnActType: BtnActType.success,
               isEnabled: true,
               handleClick: handleUpload,
             }}

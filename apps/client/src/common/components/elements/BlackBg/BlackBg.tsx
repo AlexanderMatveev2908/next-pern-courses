@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import type { FC } from "react";
 
 type PropsType = {
-  isDark: boolean;
+  isDark: boolean | null;
   classIndexCSS: string;
 };
 

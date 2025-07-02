@@ -48,12 +48,9 @@ export const schemaCoursePost = z.object({
     ),
 
   markdown: z
-    .instanceof(File)
-    .optional()
-    .refine(
-      (v) => !v || v.type === "text/markdown" || v.name.endsWith(".md"),
-      "File must be a markdown file",
-    ),
+    .string()
+    .max(10000, "Markdown must be less than 10000 characters")
+    .optional(),
 });
 
 export type CourseFormType = z.infer<typeof schemaCoursePost>;

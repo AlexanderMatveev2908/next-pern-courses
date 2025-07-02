@@ -5,6 +5,7 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import type { FC } from "react";
 import {
   descriptionField,
+  fieldMarkdown,
   imagesField,
   titleField,
   videoField,
@@ -15,8 +16,9 @@ import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
-import FormFieldImages from "@/common/components/forms/inputs/FormFieldImages/FormFieldImages";
-import FormFieldVideo from "@/common/components/forms/inputs/FormFieldVideo/FormFieldVideo";
+import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
+import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
+import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
 
 type PropsType = {
   handleSave: () => void;
@@ -52,6 +54,7 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
 
       <FormFieldVideo {...{ el: videoField }} />
 
+      <FormFieldMD {...{ el: fieldMarkdown }} />
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>
