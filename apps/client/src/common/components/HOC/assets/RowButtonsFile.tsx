@@ -25,7 +25,7 @@ const RowButtonsFile: FC<PropsType> = ({
           {...{
             type: "button",
             label: !isData ? "Upload" : isFile ? `1 File` : `1 URL`,
-            btnActType: BtnActType.info,
+            btnActType: BtnActType.success,
             isEnabled: true,
             handleClick: handleUpload,
           }}

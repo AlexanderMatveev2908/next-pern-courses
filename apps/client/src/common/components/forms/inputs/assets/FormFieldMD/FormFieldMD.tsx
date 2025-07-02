@@ -12,6 +12,7 @@ import PreviewMarkdown from "./components/PreviewMarkdown/PreviewMarkdown";
 import { useRef } from "react";
 import RowButtonsFile from "@/common/components/HOC/assets/RowButtonsFile";
 import DOMPurify from "dompurify";
+import { isStr } from "@shared/first/lib/dataStructure";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -30,7 +31,7 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
 
   const markdown = watch(el.name);
 
-  const isData = (markdown as File) instanceof File;
+  const isData = isStr(markdown);
 
   const handleChange = ({
     e,
@@ -43,20 +44,21 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
       target: { files },
     } = e;
 
+    const file = files?.[0];
+    if (!file) return;
+
     const reader = new FileReader();
+
     reader.onload = (e) => {
-      const txt: string | ArrayBuffer | null | undefined = e.target?.result;
+      const result = e.target?.result;
+      if (isStr(result as string)) {
+        const sanitized = DOMPurify.sanitize(result as string);
 
-      console.log(txt);
-
-      const sanitized = DOMPurify.sanitize(txt as string);
-
-      console.log(sanitized);
+        field.onChange(sanitized);
+      }
     };
 
-    reader.readAsText(files?.[0] ?? new Blob());
-
-    field.onChange(files?.[0] ?? null);
+    reader.readAsText(file);
   };
 
   return (
@@ -70,7 +72,7 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
           errors,
           multiple: false,
           isData,
-          Preview: <PreviewMarkdown />,
+          Preview: <PreviewMarkdown {...{ data: markdown }} />,
           onChange: handleChange,
         }}
         ref={inputRef}
@@ -84,7 +86,7 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
             if (inputRef.current) inputRef.current.click();
           },
           handleRemove: () => {
-            setValue(el.name, null as T[typeof el.name], {
+            setValue(el.name, "" as T[typeof el.name], {
               shouldValidate: true,
             });
           },

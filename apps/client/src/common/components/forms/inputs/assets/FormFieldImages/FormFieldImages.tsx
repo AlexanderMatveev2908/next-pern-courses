@@ -80,7 +80,7 @@ const FormFieldImages = <T extends FieldValues>({ el }: PropsType<T>) => {
                 : isUploadFiles
                   ? `${images.length} Files`
                   : `${images.length} URLs`,
-              btnActType: BtnActType.info,
+              btnActType: BtnActType.success,
               isEnabled: true,
               handleClick: handleUpload,
             }}
