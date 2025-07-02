@@ -1,8 +1,15 @@
 import {
+  AllTools,
+  Difficulties,
+  TechStack,
+  Tools,
+} from "@/constants/categories.js";
+import {
   REG_CLOUD_URL,
   REG_DESCRIPTION,
   REG_TITLE,
 } from "@/constants/regex.js";
+import { isStr } from "@/lib/dataStructure.js";
 import { z } from "zod";
 
 export const schemaCoursePost = z.object({
@@ -50,6 +57,25 @@ export const schemaCoursePost = z.object({
   markdown: z
     .string()
     .max(10000, "Markdown must be less than 10000 characters")
+    .optional(),
+
+  grade: z.enum(Object.values(Difficulties) as [string, ...string[]]),
+
+  techStack: z.array(z.enum(Object.values(TechStack) as [string, ...string[]])),
+  tools: z.array(z.enum(AllTools as [string, ...string[]])),
+
+  tags: z
+    .array(
+      z
+        .string()
+        .max(50, "Tag must be less than 50 characters")
+        .regex(REG_TITLE, "Tag has invalid characters")
+        .refine(
+          (v) => !isStr(v) || v.trim().length >= 2,
+          "If provided tag must be at least 2 characters",
+        ),
+    )
+    .max(5, "You can only add 5 tags")
     .optional(),
 });
 

@@ -9,7 +9,7 @@ import { ExtraProps } from "react-markdown";
 
 type PropsType = HTMLAttributes<HTMLElement> & ExtraProps;
 
-const BlockCodeOnly: FC<PropsType> = ({ children, className }: PropsType) => {
+const BlockCode: FC<PropsType> = ({ children, className }: PropsType) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const codeStr = (children + "").trim();
@@ -73,4 +73,4 @@ const BlockCodeOnly: FC<PropsType> = ({ children, className }: PropsType) => {
   );
 };
 
-export default BlockCodeOnly;
+export default BlockCode;

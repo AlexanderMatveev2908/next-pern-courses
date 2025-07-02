@@ -1,8 +1,8 @@
 export enum Difficulties {
-  BEGINNER = "Beginner",
-  INTERMEDIATE = "Intermediate",
-  JUNIOR = "Junior",
-  EXPERT = "Expert",
+  beginner = "Beginner",
+  intermediate = "Intermediate",
+  junior = "Junior",
+  expert = "Expert",
 }
 
 export const TechStack = {
@@ -102,3 +102,7 @@ export const Tools = {
     prisma: "Prisma",
   },
 } as const;
+
+export const AllTools = Object.values(Tools)
+  .flatMap((v) => Object.values(v))
+  .filter(Boolean);

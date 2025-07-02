@@ -35,3 +35,9 @@ export enum BtnActType {
   warning = "warning",
   error = "error",
 }
+
+export type FieldCheckType = {
+  type: "checkbox" | "radio";
+  name: string;
+  label: string;
+};

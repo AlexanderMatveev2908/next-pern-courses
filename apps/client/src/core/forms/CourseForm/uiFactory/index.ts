@@ -1,4 +1,4 @@
-import { FormFieldType } from "@/common/types/uiFactory";
+import { FieldCheckType, FormFieldType } from "@/common/types/uiFactory";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 
 export const titleField: FormFieldType<CourseFormType> = {
@@ -34,4 +34,10 @@ export const fieldMarkdown: FormFieldType<CourseFormType> = {
   label: "Markdown file (mandatory if video not provided)",
   type: "file",
   required: false,
+};
+
+export const fieldHard: FieldCheckType = {
+  name: "grade",
+  label: "Course grade *",
+  type: "radio",
 };

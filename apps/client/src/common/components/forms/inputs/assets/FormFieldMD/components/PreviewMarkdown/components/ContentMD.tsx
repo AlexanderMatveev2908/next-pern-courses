@@ -5,7 +5,7 @@ import { type FC } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import CodeBlock from "./components/CodeBlock/CodeBlock";
+import BlockCode from "./components/BlockCodeOnly/BlockCode";
 
 type PropsType = {
   data: string;
@@ -24,7 +24,14 @@ const ContentMD: FC<PropsType> = ({ data }) => {
                 <a {...props} target="_blank" rel="noopener noreferrer" />
               ),
 
-              code: CodeBlock,
+              code: ({ className, children }) => {
+                const isInline = !(className ?? "").includes("language-");
+                return isInline ? (
+                  <code className={className}>{children}</code>
+                ) : (
+                  <BlockCode>{children}</BlockCode>
+                );
+              },
             }}
           >
             {data}

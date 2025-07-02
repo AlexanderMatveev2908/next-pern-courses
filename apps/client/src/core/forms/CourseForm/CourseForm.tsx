@@ -19,6 +19,7 @@ import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
 import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
+import HardLevel from "./components/HardLevel/HardLevel";
 
 type PropsType = {
   handleSave: () => void;
@@ -55,6 +56,8 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
+
+      <HardLevel />
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>
