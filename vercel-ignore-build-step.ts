@@ -10,17 +10,25 @@ if (branch !== "main") {
 
   const nextDir = join(process.cwd(), "apps/client/.next");
 
-  if (!existsSync(nextDir)) {
-    mkdirSync(nextDir, { recursive: true });
+  if (!existsSync(nextDir)) mkdirSync(nextDir, { recursive: true });
+
+  const manifestPath = join(nextDir, "routes-manifest.json");
+
+  if (!existsSync(manifestPath)) {
     writeFileSync(
-      join(nextDir, "routes-manifest.json"),
-      JSON.stringify({
-        version: 3,
-        pages404: true,
-        dynamicRoutes: [],
-        rewrites: [],
-      }),
+      manifestPath,
+      JSON.stringify(
+        {
+          version: 3,
+          pages404: true,
+          dynamicRoutes: [],
+          rewrites: [],
+        },
+        null,
+        2,
+      ),
     );
+    console.log("✅ Injected stub routes-manifest.json");
   }
 
   exit(0);
