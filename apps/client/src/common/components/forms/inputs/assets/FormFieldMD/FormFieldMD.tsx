@@ -45,7 +45,12 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
     } = e;
 
     const file = files?.[0];
-    if (!file) return;
+    if (
+      !file ||
+      !file.type.startsWith("text/markdown") ||
+      !file.name.endsWith(".md")
+    )
+      return;
 
     const reader = new FileReader();
 

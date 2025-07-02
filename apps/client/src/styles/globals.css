@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 .tb {
   @apply border-2 border-white;
 }
@@ -128,6 +129,14 @@
 
 .z__header {
   z-index: 1000;
+}
+
+.z__black_bg__popup {
+  z-index: 2000;
+}
+
+.z__popup {
+  z-index: 3000;
 }
 
 .el__input {
