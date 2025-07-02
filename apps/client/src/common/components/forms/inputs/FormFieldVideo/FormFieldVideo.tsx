@@ -25,6 +25,7 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
     formState: { errors },
     watch,
     control,
+    setValue,
   } = useFormContext<T>();
 
   const vid = watch(el.name);
@@ -50,6 +51,12 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
     field.onChange(files?.[0] ?? null);
   };
 
+  const handleRemove = () => {
+    setValue(el.name, null as unknown as T[typeof el.name], {
+      shouldValidate: true,
+    });
+  };
+
   return (
     <div className="w-full">
       <FieldFile
@@ -67,7 +74,7 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
         ref={inputRef}
       />
 
-      <div className="w-full max-w-[600px] mt-4">
+      <div className="w-full max-w-[600px] flex items-center gap-6 sm:gap-10  mt-4">
         <div className="w-full max-w-[250px]">
           <BtnShadow
             {...{
@@ -79,6 +86,20 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
             }}
           />
         </div>
+
+        {isData && (
+          <div className="w-full max-w-[275px]">
+            <BtnShadow
+              {...{
+                type: "button",
+                label: isFile ? "Remove File" : "Remove URL",
+                btnActType: BtnActType.error,
+                isEnabled: true,
+                handleClick: handleRemove,
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -39,6 +39,7 @@ export const schemaCoursePost = z.object({
     ),
   video: z
     .instanceof(File)
+    .nullable()
     .optional()
     .refine((v) => !v || v.type.startsWith("video"), "File must be a video")
     .refine(
