@@ -4,14 +4,15 @@
   "scripts": {
     "install-packages": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
     "install-client": "rm -rfv apps/server && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
-    "build-client": "node vercel-ignore-build-step.ts && turbo build --filter=client...",
-    "dev": "yarn workspace @shared/first dev & yarn install && turbo dev --parallel",
+    "build-client": "npx tsx vercel-ignore-build-step.ts && turbo build --filter=client...",
+    "dev": "yarn workspace @shared/first dev & turbo dev --parallel",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
     "start": "turbo start",
     "check": "turbo check"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.10",
+    "concurrently": "^9.2.0",
     "tsx": "^4.20.3",
     "turbo": "^2.5.4"
   },
