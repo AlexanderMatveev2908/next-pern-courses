@@ -11,13 +11,15 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { clearT } from "../../../../core/lib/etc";
 import { varToast } from "./uiFactory";
+import { __cg } from "@shared/first/lib/logger";
 
 const Toast: FC = ({}) => {
   const toastState = useSelector(getToastState);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const prevStatus = useRef<boolean>(false);
-  const predID = useRef<string>(toastState.id);
+  const predID = useRef<string>("");
+  const forcingRef = useRef<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -25,11 +27,12 @@ const Toast: FC = ({}) => {
     const listen = () => {
       if (!toastState.isShow || prevStatus.current) return;
 
+      __cg("stage 1 ");
+
       clearT(timerRef);
 
       predID.current = toastState.id;
       prevStatus.current = true;
-      console.log("normal");
 
       timerRef.current = setTimeout(() => {
         dispatch(toastSlice.actions.close());
@@ -49,17 +52,44 @@ const Toast: FC = ({}) => {
       if (
         !toastState.isShow ||
         !prevStatus.current ||
-        toastState.id === predID.current
+        forcingRef.current ||
+        predID.current === toastState.id
       )
         return;
 
+      __cg("stage 2");
+
+      clearT(timerRef);
+
       prevStatus.current = false;
-      predID.current = toastState.id;
-      dispatch(toastSlice.actions.force());
+      forcingRef.current = true;
+
+      dispatch(toastSlice.actions.close());
     };
 
     listen();
   }, [toastState.isShow, toastState.toast, toastState.id, dispatch]);
+
+  useEffect(() => {
+    const listen = () => {
+      if (!forcingRef.current || toastState.isShow || prevStatus.current)
+        return;
+
+      __cg("stage 3");
+
+      clearT(timerRef);
+
+      forcingRef.current = false;
+      predID.current = toastState.id;
+
+      timerRef.current = setTimeout(() => {
+        dispatch(toastSlice.actions.force());
+        clearT(timerRef);
+      }, 400);
+    };
+
+    listen();
+  }, [toastState.isShow, dispatch, toastState.id]);
 
   const clr = btnColors[toastState.toast.type];
 
