@@ -6,6 +6,7 @@ import { css } from "@emotion/react";
 import FormFieldBox from "../../../inputs/FormFieldBox";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
 import { FieldCheckType } from "@/common/types/uiFactory";
+import { easeInOut, motion } from "framer-motion";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   valsToMap: T[K][];
@@ -14,6 +15,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   data?: T[K][] | T[K];
   setValue: UseFormSetValue<T>;
   el: FieldCheckType<T>;
+  isCurrSwap: boolean;
 };
 
 const Swap = <T extends FieldValues, K extends Path<T>>({
@@ -23,6 +25,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
   data,
   setValue,
   el,
+  isCurrSwap,
 }: PropsType<T, K>) => {
   const { ids } = useGenIDs({ lengths: [valsToMap.length] });
 
@@ -47,11 +50,18 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
   };
 
   return (
-    <div
-      className="min-w-full grid justify-items-center gap-8 h-fit"
+    <motion.div
+      className="min-w-full grid justify-items-center gap-10 h-fit"
       css={css`
         grid-template-columns: repeat(${colsForSwap}, 1fr);
       `}
+      transition={{
+        duration: 0.3,
+        ease: easeInOut,
+      }}
+      animate={{
+        opacity: isCurrSwap ? 1 : 0,
+      }}
     >
       {ids[0].map((id, i) => (
         <FormFieldBox
@@ -68,7 +78,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
           }}
         />
       ))}
-    </div>
+    </motion.div>
   );
 };
 

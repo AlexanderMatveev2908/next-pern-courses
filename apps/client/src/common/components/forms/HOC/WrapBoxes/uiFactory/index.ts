@@ -1,11 +1,9 @@
-import { uiBreaks } from "@/core/constants/uiBreaks";
-
 export const getColsForSwap = () =>
-  window.innerWidth > uiBreaks.lg
+  window.innerWidth > 1300
     ? 4
-    : window.innerWidth > uiBreaks.md
+    : window.innerWidth > 1000
       ? 3
-      : window.innerWidth > uiBreaks.sm
+      : window.innerWidth > 700
         ? 2
         : 1;
 
