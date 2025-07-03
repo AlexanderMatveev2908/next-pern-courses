@@ -12,13 +12,18 @@ import { easeInOut, motion } from "framer-motion";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
+import { isObjOK } from "@shared/first/lib/dataStructure";
 
-type PropsType<T extends FieldValues> = {
+export type PropsTypeWrapBoxes<T extends FieldValues> = {
   vals: Record<string, string>;
   el: FieldCheckType<T>;
+  txtFallback?: string;
 };
 
-const WrapBoxes = <T extends FieldValues>({ vals, el }: PropsType<T>) => {
+const WrapBoxes = <T extends FieldValues>({
+  vals,
+  el,
+}: PropsTypeWrapBoxes<T>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
 
@@ -70,7 +75,15 @@ const WrapBoxes = <T extends FieldValues>({ vals, el }: PropsType<T>) => {
     };
   }, [currSwap, totSwaps]);
 
-  return (
+  useEffect(() => {
+    setCurrSwap(0);
+  }, [vals]);
+
+  return !isObjOK(vals, Boolean) ? (
+    <div className="w-full flex justify-center">
+      <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200"></span>
+    </div>
+  ) : (
     <div className="w-full relative">
       <Anchor {...{ name: el.name, register }} />
 

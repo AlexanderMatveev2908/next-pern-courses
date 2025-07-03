@@ -100,15 +100,12 @@ export const schemaCoursePost = z
       .optional(),
   })
   .superRefine((data, ctx) => {
-    if (
-      !isValidTool(data.techStack as TechValType, data.tools as ToolValType)
-    ) {
+    if (!isValidTool(data.techStack as TechValType, data.tools as ToolValType))
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Tool is invalid",
         path: ["tools"],
       });
-    }
   });
 
 export type CourseFormType = z.infer<typeof schemaCoursePost>;

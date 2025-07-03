@@ -1,16 +1,14 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { PropsTypeWrapBoxes } from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import { FieldCheckType } from "@/common/types/uiFactory";
 import { FieldValues } from "react-hook-form";
 
 type PropsType<T extends FieldValues> = {
   el: FieldCheckType<T>;
   vals: Record<string, string>;
-  children: (args: {
-    el: FieldCheckType<T>;
-    vals: Record<string, string>;
-  }) => React.ReactNode;
+  children: (args: PropsTypeWrapBoxes<T>) => React.ReactNode;
 };
 
 const WrapCheck = <T extends FieldValues>({

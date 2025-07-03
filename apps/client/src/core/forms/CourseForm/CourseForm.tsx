@@ -8,6 +8,7 @@ import {
   fieldHard,
   fieldMarkdown,
   fieldTech,
+  fieldTools,
   imagesField,
   titleField,
   videoField,
@@ -15,20 +16,19 @@ import {
 import { useFormContext } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
-import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
+import WrapSingleField from "./components/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
 import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
-import WrapCheck from "./components/WrapCheck/WrapCheck";
+import WrapCheck from "./components/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import {
   Difficulties,
   TechStack,
   Tools,
 } from "@shared/first/constants/categories";
-import { isObjOK } from "@shared/first/lib/dataStructure";
 
 type PropsType = {
   handleSave: () => void;
@@ -78,21 +78,18 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
 
       <WrapCheck
         {...{
-          el: fieldTech,
+          el: fieldTools,
           vals: availableTool,
+          txt: `You must chose first the Tech so we can show you the relative
+              tools available`,
         }}
       >
         {(args) =>
-          !isObjOK(availableTool, Boolean) ? (
-            <div className="w-full flex justify-center">
-              <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200">
-                You must chose first the Tech so we can show you the relative
-                tools available
-              </span>
-            </div>
-          ) : (
-            WrapBoxes(args)
-          )
+          WrapBoxes({
+            ...args,
+            txtFallback:
+              "You must chose first the Tech so we can show you the relative tools available",
+          })
         }
       </WrapCheck>
       <div className="w-full max-w-[200px] justify-self-center mt-8">
