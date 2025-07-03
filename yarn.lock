@@ -1644,6 +1644,7 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
+    uuid: "npm:^11.1.0"
     zod: "npm:^3.25.67"
   languageName: unknown
   linkType: soft

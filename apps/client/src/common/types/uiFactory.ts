@@ -7,6 +7,7 @@ export type FormFieldType<T extends FieldValues> = {
   required?: boolean;
   id?: string;
   place?: string;
+  field?: string;
 };
 
 // ? T => form shape defined in zod
@@ -20,6 +21,7 @@ export type FormFieldPropsType<T extends FieldValues, K extends Path<T>> = {
   showLabel?: boolean;
   isDisabled?: boolean;
   cb?: (val: T[K]) => void;
+  index?: number;
 };
 
 export type PropsTypeBtn = {

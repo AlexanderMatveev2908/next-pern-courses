@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -14,16 +15,22 @@ type PropsType<T extends FieldValues> = {
   $customCSS?: {
     css: SerializedStyles;
   };
+  index?: number;
 };
 
 const ErrFormField = <T extends FieldValues>({
   el,
   errors,
   $customCSS,
+  index,
 }: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
-  const msg = errors?.[el.name]?.message as string | undefined;
+  const msg =
+    typeof index === "number"
+      ? ((errors as any)?.[(el as any).field as string]?.[index]?.val
+          ?.message as string | undefined)
+      : (errors?.[el.name]?.message as string | undefined);
 
   useEffect(() => {
     if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {

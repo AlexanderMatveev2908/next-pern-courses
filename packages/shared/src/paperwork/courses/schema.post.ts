@@ -1,11 +1,9 @@
 import {
-  AllTools,
   Difficulties,
   DifficultyType,
   isValidTool,
   TechStack,
   TechValType,
-  Tools,
   ToolValType,
 } from "@/constants/categories.js";
 import {
@@ -14,6 +12,7 @@ import {
   REG_TITLE,
 } from "@/constants/regex.js";
 import { isIs, isStr } from "@/lib/dataStructure.js";
+import { v4 } from "uuid";
 import { z } from "zod";
 
 export const schemaCoursePost = z
@@ -72,7 +71,7 @@ export const schemaCoursePost = z
         "Grade is invalid",
       ),
 
-    techStack: z.z
+    techStack: z
       .string()
       .refine(isStr, {
         message: "Tech stack is required",
@@ -87,14 +86,21 @@ export const schemaCoursePost = z
 
     tags: z
       .array(
-        z
-          .string()
-          .max(50, "Tag must be less than 50 characters")
-          .regex(REG_TITLE, "Tag has invalid characters")
-          .refine(
-            (v) => !isStr(v) || v.trim().length >= 2,
-            "If provided tag must be at least 2 characters",
-          ),
+        z.object({
+          field: z.string(),
+          name: z.string(),
+          label: z.string(),
+          type: z.string(),
+          id: z.string(),
+          val: z
+            .string()
+            .max(50, "Tag must be less than 50 characters")
+            .regex(REG_TITLE, "Tag has invalid characters")
+            .refine(
+              (v) => !isStr(v) || v.trim().length >= 2,
+              "If provided tag must be at least 2 characters",
+            ),
+        }),
       )
       .max(5, "You can only add 5 tags")
       .optional(),

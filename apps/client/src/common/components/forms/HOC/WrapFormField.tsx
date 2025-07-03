@@ -10,6 +10,7 @@ type PropsType<T extends FieldValues> = {
   showLabel: boolean;
   errors: FieldErrors<T>;
   children: React.ReactNode;
+  index?: number;
 };
 
 const WrapFormField = <T extends FieldValues>({
@@ -17,6 +18,7 @@ const WrapFormField = <T extends FieldValues>({
   errors,
   showLabel,
   children,
+  index,
 }: PropsType<T>) => {
   return (
     <label
@@ -30,7 +32,7 @@ const WrapFormField = <T extends FieldValues>({
       <div className="w-full flex max-w-full relative">
         {children}
 
-        <ErrFormField {...{ el, errors }} />
+        <ErrFormField {...{ el, errors, index }} />
       </div>
     </label>
   );

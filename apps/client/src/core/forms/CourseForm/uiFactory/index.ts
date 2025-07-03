@@ -53,3 +53,9 @@ export const fieldTools: FieldCheckType<CourseFormType> = {
   label: "Tools *",
   type: "radio",
 };
+
+export const fieldTags: FormFieldType<CourseFormType> = {
+  name: "tags",
+  type: "text",
+  label: "Tags",
+};

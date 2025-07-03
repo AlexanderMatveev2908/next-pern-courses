@@ -14,6 +14,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   errors,
   cb,
   isDisabled,
+  index,
 }: FormFieldPropsType<T, K>) => {
   return (
     <WrapFormField
@@ -21,6 +22,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
         el,
         errors,
         showLabel,
+        index,
       }}
     >
       <Controller

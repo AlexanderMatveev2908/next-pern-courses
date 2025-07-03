@@ -23,6 +23,7 @@ export type PropsTypeWrapBoxes<T extends FieldValues> = {
 const WrapBoxes = <T extends FieldValues>({
   vals,
   el,
+  txtFallback,
 }: PropsTypeWrapBoxes<T>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
@@ -81,7 +82,9 @@ const WrapBoxes = <T extends FieldValues>({
 
   return !isObjOK(vals, Boolean) ? (
     <div className="w-full flex justify-center">
-      <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200"></span>
+      <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200">
+        {txtFallback}
+      </span>
     </div>
   ) : (
     <div className="w-full relative">

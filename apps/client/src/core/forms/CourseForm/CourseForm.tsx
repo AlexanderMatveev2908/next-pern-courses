@@ -29,6 +29,7 @@ import {
   TechStack,
   Tools,
 } from "@shared/first/constants/categories";
+import TagsForm from "./components/TagsForm";
 
 type PropsType = {
   handleSave: () => void;
@@ -46,6 +47,9 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
 
   const formData = formCtx.watch();
   const availableTool = Tools[formData.techStack as keyof typeof Tools] ?? {};
+
+  console.log(formCtx.watch());
+  console.log(errors);
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -80,8 +84,6 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
         {...{
           el: fieldTools,
           vals: availableTool,
-          txt: `You must chose first the Tech so we can show you the relative
-              tools available`,
         }}
       >
         {(args) =>
@@ -92,6 +94,9 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
           })
         }
       </WrapCheck>
+
+      <TagsForm />
+
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>
