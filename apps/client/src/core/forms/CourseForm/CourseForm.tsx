@@ -5,6 +5,7 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import type { FC } from "react";
 import {
   descriptionField,
+  fieldHard,
   fieldMarkdown,
   imagesField,
   titleField,
@@ -19,7 +20,9 @@ import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
 import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
-import HardLevel from "./components/HardLevel/HardLevel";
+import WrapCheck from "./components/WrapCheck/WrapCheck";
+import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
+import { Difficulties } from "@shared/first/constants/categories";
 
 type PropsType = {
   handleSave: () => void;
@@ -56,8 +59,15 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
-
-      <HardLevel />
+      <WrapCheck {...{ el: fieldHard }}>
+        <WrapBoxes
+          {...{
+            vals: Object.values(Difficulties),
+            typeBox: "radio",
+            el: fieldHard,
+          }}
+        />
+      </WrapCheck>
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>

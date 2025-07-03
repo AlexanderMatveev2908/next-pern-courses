@@ -5,7 +5,8 @@ type Params = {
 };
 
 export const useFocus = ({ cb }: Params) => {
-  const memoized = useCallback(() => cb(), [cb]);
+  // eslint-disable-next-line
+  const memoized = useCallback(() => cb(), []);
 
   useEffect(() => {
     const t = setTimeout(() => memoized(), 0);

@@ -58,6 +58,21 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
     lengths: [totSwaps],
   });
 
+  useEffect(() => {
+    const listen = () => {
+      const lastSwap = Math.max(0, totSwaps - 1);
+      const shouldShift = currSwap > lastSwap;
+
+      if (shouldShift) setCurrSwap(lastSwap);
+    };
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+    };
+  }, [currSwap, totSwaps]);
+
   console.log(data);
 
   return (

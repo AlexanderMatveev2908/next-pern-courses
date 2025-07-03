@@ -68,13 +68,9 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
           key={id}
           {...{
             val: valsToMap[i],
-            isChecked:
-              typeBox === "radio"
-                ? data === valsToMap[i]
-                : ((data ?? []) as T[K][]).some(
-                    (item) => item === valsToMap[i],
-                  ),
+            data,
             handleClick: handleClick.bind(null, valsToMap[i]),
+            typeBox,
           }}
         />
       ))}
