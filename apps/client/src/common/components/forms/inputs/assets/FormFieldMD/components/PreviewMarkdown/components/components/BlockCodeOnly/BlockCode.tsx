@@ -3,16 +3,18 @@
 
 import { css } from "@emotion/react";
 import { __cg } from "@shared/first/lib/logger";
-import { FC, HTMLAttributes, useState } from "react";
+import { FC, HTMLAttributes, useRef, useState } from "react";
 import { LuCopyCheck, LuCopyPlus } from "react-icons/lu";
 import { ExtraProps } from "react-markdown";
+import { getTxt } from "./uiFactory";
 
 type PropsType = HTMLAttributes<HTMLElement> & ExtraProps;
 
 const BlockCode: FC<PropsType> = ({ children, className }: PropsType) => {
   const [isCopied, setIsCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement | null>(null);
 
-  const codeStr = (children + "").trim();
+  const codeStr = getTxt(children).trim();
 
   const handleCopy = async () => {
     try {
@@ -68,7 +70,9 @@ const BlockCode: FC<PropsType> = ({ children, className }: PropsType) => {
         />
       </button>
 
-      <code className={className}>{children}</code>
+      <code ref={codeRef} className={className}>
+        {codeStr}
+      </code>
     </div>
   );
 };
