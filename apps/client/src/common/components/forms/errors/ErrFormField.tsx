@@ -11,7 +11,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   errors: FieldErrors<T>;
-  el: FormFieldType<T> | FieldCheckType<T>;
+  el?: FormFieldType<T> | FieldCheckType<T>;
   $customCSS?: {
     css: SerializedStyles;
   };
@@ -28,9 +28,9 @@ const ErrFormField = <T extends FieldValues>({
 
   const msg =
     typeof index === "number"
-      ? ((errors as any)?.[(el as any).field as string]?.[index]?.val
-          ?.message as string | undefined)
-      : (errors?.[el.name]?.message as string | undefined);
+      ? ((errors as any)?.[(el as FormFieldType<T>)?.field as string]?.[index]
+          ?.val?.message as string | undefined)
+      : (errors?.[el?.name]?.message as string | undefined);
 
   useEffect(() => {
     if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {

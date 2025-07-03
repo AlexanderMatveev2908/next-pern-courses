@@ -6,6 +6,7 @@ import { Path } from "react-hook-form";
 import { Controller, FieldValues } from "react-hook-form";
 import WrapFormField from "../HOC/WrapFormField";
 import { getSomePlaceholder } from "@/core/lib/etc";
+import { isObjOK } from "@shared/first/lib/dataStructure";
 
 const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   el,
@@ -16,7 +17,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   isDisabled,
   index,
 }: FormFieldPropsType<T, K>) => {
-  return (
+  return !isObjOK(el) ? null : (
     <WrapFormField
       {...{
         el,

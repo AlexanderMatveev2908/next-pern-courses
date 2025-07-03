@@ -6,7 +6,7 @@ import { FieldErrors, FieldValues } from "react-hook-form";
 import ErrFormField from "../errors/ErrFormField";
 
 type PropsType<T extends FieldValues> = {
-  el: FormFieldType<T>;
+  el?: FormFieldType<T>;
   showLabel: boolean;
   errors: FieldErrors<T>;
   children: React.ReactNode;
@@ -22,11 +22,11 @@ const WrapFormField = <T extends FieldValues>({
 }: PropsType<T>) => {
   return (
     <label
-      htmlFor={el.name}
+      htmlFor={el?.name ?? ""}
       className="w-full max-w-full grid grid-cols-1 gap-4"
     >
       {showLabel && (
-        <span className="txt__lg text-neutral-200">{el.label}</span>
+        <span className="txt__lg text-neutral-200">{el?.label}</span>
       )}
 
       <div className="w-full flex max-w-full relative">

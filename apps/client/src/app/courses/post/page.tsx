@@ -9,23 +9,14 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger";
 import CourseForm from "@/core/forms/CourseForm/CourseForm";
-import { v4 } from "uuid";
+import { genTagField } from "@/core/forms/CourseForm/uiFactory";
 
 const PostCourse: FC = () => {
   const formCtx = useForm<CourseFormType>({
     resolver: zodResolver(schemaCoursePost),
     mode: "onChange",
     defaultValues: {
-      tags: [
-        {
-          field: "tags",
-          id: v4(),
-          label: "Tag",
-          val: "",
-          name: "tags.0.val",
-          type: "text",
-        },
-      ],
+      tags: [genTagField(0)],
     },
   });
 

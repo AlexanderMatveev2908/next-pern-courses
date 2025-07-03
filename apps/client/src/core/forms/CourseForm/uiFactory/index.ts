@@ -1,5 +1,6 @@
 import { FieldCheckType, FormFieldType } from "@/common/types/uiFactory";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
+import { v4 } from "uuid";
 
 export const titleField: FormFieldType<CourseFormType> = {
   name: "title",
@@ -59,3 +60,12 @@ export const fieldTags: FormFieldType<CourseFormType> = {
   type: "text",
   label: "Tags",
 };
+
+export const genTagField = (currTag?: number) => ({
+  field: "tags",
+  id: v4(),
+  label: "Tag",
+  val: "",
+  name: `tags.${currTag ?? 0}.val`,
+  type: "text",
+});

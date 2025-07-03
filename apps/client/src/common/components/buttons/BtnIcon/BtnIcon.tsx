@@ -5,7 +5,7 @@ import { BtnActType, PropsTypeBtn } from "@/common/types/uiFactory";
 import type { FC } from "react";
 import { IconType } from "react-icons/lib";
 import { btnColors } from "../uiFactory";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
 
 const BtnIcon: FC<
@@ -13,8 +13,11 @@ const BtnIcon: FC<
     btnActType: BtnActType;
     Svg?: IconType;
     label?: string;
+    $svgCSS?: {
+      css: SerializedStyles;
+    };
   }
-> = ({ isEnabled, label, type, handleClick, btnActType, Svg }) => {
+> = ({ isEnabled, label, type, handleClick, btnActType, Svg, $svgCSS }) => {
   const clr = btnColors[btnActType];
 
   return (
@@ -33,7 +36,17 @@ const BtnIcon: FC<
       `}
       style={{ "--scale__up": 1.25 } as React.CSSProperties}
     >
-      {Svg && <Svg className="min-w-[35px] min-h-[35px]" />}
+      {Svg && (
+        <Svg
+          css={css`
+            ${$svgCSS?.css ??
+            `
+          min-width: 35px;
+          min-height: 35px;
+        `}
+          `}
+        />
+      )}
 
       {isStr(label) && <span className="txt__lg">{label}</span>}
     </button>
