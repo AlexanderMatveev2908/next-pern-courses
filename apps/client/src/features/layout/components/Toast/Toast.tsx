@@ -18,7 +18,7 @@ const Toast: FC = ({}) => {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const prevStatus = useRef<boolean>(false);
-  const predID = useRef<string>("");
+  const predID = useRef<string>(toastState.id);
   const forcingRef = useRef<boolean>(false);
 
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ const Toast: FC = ({}) => {
       timerRef.current = setTimeout(() => {
         dispatch(toastSlice.actions.close());
         clearT(timerRef);
+        prevStatus.current = false;
       }, 3000);
     };
 
@@ -63,6 +64,7 @@ const Toast: FC = ({}) => {
 
       prevStatus.current = false;
       forcingRef.current = true;
+      predID.current = toastState.id;
 
       dispatch(toastSlice.actions.close());
     };
@@ -129,7 +131,11 @@ const Toast: FC = ({}) => {
             </span>
 
             <button
-              onClick={() => dispatch(toastSlice.actions.close())}
+              onClick={() => {
+                dispatch(toastSlice.actions.close());
+                clearT(timerRef);
+                prevStatus.current = false;
+              }}
               className="btn__app text-red-600"
               style={
                 {

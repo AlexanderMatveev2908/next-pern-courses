@@ -37,6 +37,7 @@ export const toastSlice = createSlice({
     },
     close: (state) => {
       state.isShow = false;
+      state.id = "";
     },
 
     force: (state) => {
