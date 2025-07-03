@@ -6,10 +6,10 @@ import { FieldValues } from "react-hook-form";
 
 type PropsType<T extends FieldValues> = {
   el: FieldCheckType<T>;
-  vals: string[];
+  vals: Record<string, string>;
   children: (args: {
     el: FieldCheckType<T>;
-    vals: string[];
+    vals: Record<string, string>;
   }) => React.ReactNode;
 };
 

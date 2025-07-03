@@ -6,22 +6,19 @@ import { calcFieldsForSwap, getColsForSwap, maxRows } from "./uiFactory";
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 import Swap from "./components/Swap";
 import { FieldCheckType } from "@/common/types/uiFactory";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+import { FieldValues, useFormContext } from "react-hook-form";
 import { css } from "@emotion/react";
 import { easeInOut, motion } from "framer-motion";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
 
-type PropsType<T extends FieldValues, K extends Path<T>> = {
-  vals: T[K][];
+type PropsType<T extends FieldValues> = {
+  vals: Record<string, string>;
   el: FieldCheckType<T>;
 };
 
-const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
-  vals,
-  el,
-}: PropsType<T, K>) => {
+const WrapBoxes = <T extends FieldValues>({ vals, el }: PropsType<T>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
 
@@ -31,7 +28,9 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
     register,
     formState: { errors },
   } = useFormContext<T>();
-  const data: T[K][] | T[K] = watch(el.name);
+  const data: T[typeof el.name] = watch(el.name);
+
+  const parsedVals: [string, string][] = Object.entries(vals);
 
   useEffect(() => {
     const listen = (): void => {
@@ -48,8 +47,8 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
   }, []);
 
   const totSwaps = useMemo(
-    () => Math.ceil(vals.length / (colsForSwap * maxRows)),
-    [vals, colsForSwap],
+    () => Math.ceil(parsedVals.length / (colsForSwap * maxRows)),
+    [parsedVals, colsForSwap],
   );
 
   const { ids } = useGenIDs({
@@ -100,7 +99,7 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
               <Swap
                 key={id}
                 {...{
-                  valsToMap: vals.slice(
+                  valsToMap: parsedVals.slice(
                     i * fieldsForSwap,
                     (i + 1) * fieldsForSwap,
                   ),

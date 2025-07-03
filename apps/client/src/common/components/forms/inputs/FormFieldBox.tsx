@@ -6,7 +6,7 @@ import { css } from "@emotion/react";
 import { FieldValues, Path, PathValue } from "react-hook-form";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
-  val: PathValue<T, K>;
+  valArg: [string, string];
   data?: PathValue<T, K>[] | PathValue<T, K>;
   handleClick: () => void;
   el: FieldCheckType<T>;
@@ -14,14 +14,14 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
 
 const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
   data,
-  val,
+  valArg,
   handleClick,
   el,
 }: PropsType<T, K>) => {
   const isChecked =
     el.type === "radio"
-      ? data === val
-      : (data ?? []).some((item) => item === val);
+      ? data === valArg[0]
+      : (data ?? []).some((item) => item === valArg[0]);
 
   return (
     <button
@@ -48,7 +48,7 @@ const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
           color: var(--${isChecked ? "neutral__950" : "neutral__300"});
         `}
       >
-        {val}
+        {valArg[1]}
       </span>
     </button>
   );

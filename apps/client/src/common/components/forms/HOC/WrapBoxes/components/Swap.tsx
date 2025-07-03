@@ -9,7 +9,7 @@ import { FieldCheckType } from "@/common/types/uiFactory";
 import { easeInOut, motion } from "framer-motion";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
-  valsToMap: T[K][];
+  valsToMap: [string, string][];
   colsForSwap: number;
   data?: T[K][] | T[K];
   setValue: UseFormSetValue<T>;
@@ -65,9 +65,9 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
         <FormFieldBox
           key={id}
           {...{
-            val: valsToMap[i],
+            valArg: valsToMap[i],
             data,
-            handleClick: handleClick.bind(null, valsToMap[i]),
+            handleClick: handleClick.bind(null, valsToMap[i][0] as T[K]),
             el,
           }}
         />

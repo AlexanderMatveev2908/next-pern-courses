@@ -1,9 +1,9 @@
-export enum Difficulties {
-  beginner = "Beginner",
-  intermediate = "Intermediate",
-  junior = "Junior",
-  expert = "Expert",
-}
+export const Difficulties = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  junior: "Junior",
+  expert: "Expert",
+};
 
 export const TechStack = {
   html: "HTML",
@@ -21,7 +21,14 @@ export const TechStack = {
 } as const;
 
 export const Tools = {
-  html: {},
+  html: {
+    prettier: "Prettier",
+    emmet: "Emmet",
+    mustache: "Mustache",
+    pug: "Pug",
+    lighthouse: "Lighthouse",
+    axe: "axe-core (Accessibility)",
+  },
   css: {
     sass: "Sass",
     less: "Less",
@@ -108,10 +115,11 @@ export const Tools = {
 // ? [keyof typeof Tools] => get keys of Tools root
 // ? [keyof *] => get nested vals inside root
 // ? (typeof Tools) repeat pattern as first one
-export type ToolValType =
-  (typeof Tools)[keyof typeof Tools][keyof (typeof Tools)[keyof typeof Tools]];
+export type ToolValType = keyof (typeof Tools)[keyof typeof Tools];
 
-export type TechValType = (typeof TechStack)[keyof typeof TechStack];
+export type TechValType = keyof typeof TechStack;
+
+export type DifficultyType = keyof typeof Difficulties;
 
 export const AllTools = Object.values(Tools)
   .flatMap((v) => Object.values(v))
@@ -121,10 +129,8 @@ export const isValidTool = (
   Tech: keyof typeof TechStack,
   tool: ToolValType,
 ) => {
-  return (Object.values(Tools[Tech as keyof typeof Tools]) ?? []).includes(
-    tool,
-  );
+  return (Object.keys(Tools[Tech as keyof typeof Tools]) ?? []).includes(tool);
 };
 
 export const getToolsByTech = (Tech: keyof typeof TechStack) =>
-  Object.values(Tools[Tech as keyof typeof Tools]);
+  Object.entries(Tools[Tech as keyof typeof Tools]);

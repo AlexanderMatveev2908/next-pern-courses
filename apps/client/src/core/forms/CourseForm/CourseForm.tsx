@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import type { FC } from "react";
+import { type FC } from "react";
 import {
   descriptionField,
   fieldHard,
@@ -24,10 +24,11 @@ import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/For
 import WrapCheck from "./components/WrapCheck/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import {
-  AllTools,
   Difficulties,
   TechStack,
+  Tools,
 } from "@shared/first/constants/categories";
+import { isObjOK } from "@shared/first/lib/dataStructure";
 
 type PropsType = {
   handleSave: () => void;
@@ -42,6 +43,9 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
+
+  const formData = formCtx.watch();
+  const availableTool = Tools[formData.techStack as keyof typeof Tools] ?? {};
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -64,16 +68,32 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
-      <WrapCheck {...{ el: fieldHard, vals: Object.values(Difficulties) }}>
+      <WrapCheck {...{ el: fieldHard, vals: Difficulties }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: Object.values(TechStack) }}>
+      <WrapCheck {...{ el: fieldTech, vals: TechStack }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: Object.values(AllTools) }}>
-        {(args) => WrapBoxes(args)}
+      <WrapCheck
+        {...{
+          el: fieldTech,
+          vals: availableTool,
+        }}
+      >
+        {(args) =>
+          !isObjOK(availableTool, Boolean) ? (
+            <div className="w-full flex justify-center">
+              <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200">
+                You must chose first the Tech so we can show you the relative
+                tools available
+              </span>
+            </div>
+          ) : (
+            WrapBoxes(args)
+          )
+        }
       </WrapCheck>
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
