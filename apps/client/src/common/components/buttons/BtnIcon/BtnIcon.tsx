@@ -4,9 +4,9 @@
 import { BtnActType, PropsTypeBtn } from "@/common/types/uiFactory";
 import type { FC } from "react";
 import { IconType } from "react-icons/lib";
-import { btnColors } from "../uiFactory";
 import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
+import { btnColors } from "@/core/uiFactory/style";
 
 const BtnIcon: FC<
   Omit<PropsTypeBtn, "label"> & {

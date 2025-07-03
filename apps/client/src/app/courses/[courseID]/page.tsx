@@ -7,8 +7,6 @@ type PropsType = {
 const CoursePage: FC<PropsType> = async ({ params }) => {
   const { courseID } = await params;
 
-  console.log(courseID);
-
   return <div className="tc">{courseID}</div>;
 };
 

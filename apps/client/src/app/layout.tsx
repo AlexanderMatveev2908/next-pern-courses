@@ -6,6 +6,7 @@ import Header from "@/features/layout/components/Header/Header";
 import Footer from "@/features/layout/components/Footer/Footer";
 import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 import "highlight.js/styles/github-dark.css";
+import Toast from "@/features/layout/components/Toast/Toast";
 
 const fir_code = Fira_Code({
   subsets: ["latin"],
@@ -33,6 +34,9 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
+
+          <Toast />
+
           <Sidebar />
           <div className="pad__app pt-[20px] sm:pt-30px pb-[100px] sm:pb-[150px] w-full h-full flex flex-col">
             {children}

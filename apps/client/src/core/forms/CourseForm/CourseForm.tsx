@@ -48,8 +48,7 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
   const formData = formCtx.watch();
   const availableTool = Tools[formData.techStack as keyof typeof Tools] ?? {};
 
-  console.log(formCtx.watch());
-  console.log(errors);
+  // console.log(formCtx.watch());
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
