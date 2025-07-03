@@ -113,9 +113,10 @@ const Toast: FC = ({}) => {
       {toastState.isShow && (
         <motion.div
           key={toastState.id}
-          className="z__toast fixed top-5 right-5 border-[3px] border-neutral-600 pb-6 px-5 rounded-2xl bg-[#000] grid grid-cols-1 gap-3 overflow-hidden"
+          className="z__toast fixed top-5 right-5 pb-6 px-5 rounded-2xl bg-[#000] grid grid-cols-1 gap-3 overflow-hidden"
           css={css`
             width: 90%;
+            border: 3px solid ${clr};
 
             ${resp(400)} {
               width: 400px;

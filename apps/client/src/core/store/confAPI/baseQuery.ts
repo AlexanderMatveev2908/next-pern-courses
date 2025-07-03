@@ -32,7 +32,7 @@ export const axiosBaseQuery = async ({
             status: res.status,
           }
         : {
-            data: res.data,
+            data: res.data.data,
             status: res.status,
           };
 
@@ -52,8 +52,6 @@ export const axiosBaseQuery = async ({
       }
     }
 
-    __cg("axios err", errData, status);
-
     return {
       error: {
         config: {
@@ -64,7 +62,7 @@ export const axiosBaseQuery = async ({
           responseType,
         },
         status,
-        data: errData,
+        data: errData.data,
       },
     };
   }

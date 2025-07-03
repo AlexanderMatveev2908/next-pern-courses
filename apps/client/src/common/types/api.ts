@@ -9,6 +9,14 @@ export enum ApiEventType {
 }
 
 export type ResAPI<T> = {
-  data: T;
+  data: {
+    msg: string;
+  } & T;
   status: number;
+};
+
+export type ErrAPI<T> = {
+  data: {
+    msg: string;
+  } & T;
 };
