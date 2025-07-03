@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, type FC } from "react";
+import { useCallback, useEffect, useRef, type FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { btnColors } from "@/core/uiFactory/style";
@@ -16,45 +16,55 @@ import { __cg } from "@shared/first/lib/logger";
 const Toast: FC = ({}) => {
   const toastState = useSelector(getToastState);
 
+  // ? for these kind of things i prefer a lot much the refs because a small bug in the flow of toast could lead to total arrest of application for infinite loops due to bad management of sync of states
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const prevStatus = useRef<boolean>(false);
-  const predID = useRef<string>(toastState.id);
+  const prevID = useRef<string>(toastState.id);
   const forcingRef = useRef<boolean>(false);
 
   const dispatch = useDispatch();
 
+  // ? the clickClose determine the final arch of animation , close the toast and inside slice i clear the id ,then here i clear timeoutID as always
+  const clickClose = useCallback(() => {
+    dispatch(toastSlice.actions.close());
+    clearT(timerRef);
+    prevStatus.current = false;
+  }, [dispatch]);
+
   useEffect(() => {
     const listen = () => {
+      // ? if toast is already shown or figure as prev skip so it can be managed properly by stage 2 or 3
       if (!toastState.isShow || prevStatus.current) return;
 
       __cg("stage 1 ");
 
       clearT(timerRef);
 
-      predID.current = toastState.id;
+      // ? determine toast is currently visible and running as animation
+      prevID.current = toastState.id;
       prevStatus.current = true;
 
       timerRef.current = setTimeout(() => {
-        dispatch(toastSlice.actions.close());
-        clearT(timerRef);
-        prevStatus.current = false;
+        clickClose();
       }, 3000);
     };
 
     listen();
 
+    // ? cleanup
     return () => {
       clearT(timerRef);
     };
-  }, [toastState.isShow, dispatch, toastState.id]);
+  }, [toastState.isShow, clickClose, toastState.id]);
 
   useEffect(() => {
     const listen = () => {
+      // ? here is pretty important to build as many bridges as possible, is pretty uncomfortable to see the toast close and then open for first renders even it should not be forced
       if (
         !toastState.isShow ||
         !prevStatus.current ||
         forcingRef.current ||
-        predID.current === toastState.id
+        prevID.current === toastState.id
       )
         return;
 
@@ -64,7 +74,6 @@ const Toast: FC = ({}) => {
 
       prevStatus.current = false;
       forcingRef.current = true;
-      predID.current = toastState.id;
 
       dispatch(toastSlice.actions.close());
     };
@@ -74,6 +83,7 @@ const Toast: FC = ({}) => {
 
   useEffect(() => {
     const listen = () => {
+      // ? here beside the fact i am checking it to be in force mode is important to check prevStatus to avoid opening the toast that first need to be closed in stage 2
       if (!forcingRef.current || toastState.isShow || prevStatus.current)
         return;
 
@@ -82,7 +92,6 @@ const Toast: FC = ({}) => {
       clearT(timerRef);
 
       forcingRef.current = false;
-      predID.current = toastState.id;
 
       timerRef.current = setTimeout(() => {
         dispatch(toastSlice.actions.force());
@@ -91,6 +100,10 @@ const Toast: FC = ({}) => {
     };
 
     listen();
+
+    return () => {
+      clearT(timerRef);
+    };
   }, [toastState.isShow, dispatch, toastState.id]);
 
   const clr = btnColors[toastState.toast.type];
@@ -131,11 +144,7 @@ const Toast: FC = ({}) => {
             </span>
 
             <button
-              onClick={() => {
-                dispatch(toastSlice.actions.close());
-                clearT(timerRef);
-                prevStatus.current = false;
-              }}
+              onClick={clickClose}
               className="btn__app text-red-600"
               style={
                 {
