@@ -28,7 +28,7 @@ const PostCourse: FC = () => {
   const dispatch = useDispatch();
   const handleSave = handleSubmit(
     (data: CourseFormType) => {
-      // __cg("data", data);
+      __cg("data", data);
 
       dispatch(
         toastSlice.actions.open({
