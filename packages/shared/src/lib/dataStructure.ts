@@ -5,3 +5,6 @@ export const isArrOK = <T>(arg: T[], cb?: (val: T) => boolean): boolean =>
   Array.isArray(arg) &&
   !!arg.length &&
   arg.every(typeof cb === "function" ? cb : Boolean);
+
+export const isIs = <T extends object, K>(obj: T, val: K) =>
+  Object.values(obj).includes(val);

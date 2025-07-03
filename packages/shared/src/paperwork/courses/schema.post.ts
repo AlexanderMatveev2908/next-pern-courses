@@ -9,7 +9,7 @@ import {
   REG_DESCRIPTION,
   REG_TITLE,
 } from "@/constants/regex.js";
-import { isStr } from "@/lib/dataStructure.js";
+import { isIs, isStr } from "@/lib/dataStructure.js";
 import { z } from "zod";
 
 export const schemaCoursePost = z.object({
@@ -59,10 +59,26 @@ export const schemaCoursePost = z.object({
     .max(10000, "Markdown must be less than 10000 characters")
     .optional(),
 
-  grade: z.enum(Object.values(Difficulties) as [string, ...string[]]),
+  grade: z
+    .string()
+    .refine(() => true, "Grade is required")
+    .refine((v) => isIs(Difficulties, v), "Grade is invalid"),
 
-  techStack: z.array(z.enum(Object.values(TechStack) as [string, ...string[]])),
-  tools: z.array(z.enum(AllTools as [string, ...string[]])),
+  techStack: z.z
+    .string()
+    .refine(() => true, {
+      message: "Tech stack is required",
+    })
+    .refine((v) => isIs(TechStack, v), "Tech stack is invalid"),
+  tools: z
+    .string()
+    .refine(() => true, {
+      message: "Tool is required",
+    })
+    .refine(
+      (v) => AllTools.includes(v as (typeof AllTools)[number]),
+      "Tool is invalid",
+    ),
 
   tags: z
     .array(

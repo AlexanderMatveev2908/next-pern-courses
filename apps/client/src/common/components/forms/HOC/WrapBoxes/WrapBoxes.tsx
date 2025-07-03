@@ -15,13 +15,11 @@ import ErrFormField from "../../errors/ErrFormField";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   vals: T[K][];
-  typeBox: "checkbox" | "radio";
   el: FieldCheckType<T>;
 };
 
 const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
   vals,
-  typeBox,
   el,
 }: PropsType<T, K>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
@@ -73,8 +71,6 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
     };
   }, [currSwap, totSwaps]);
 
-  console.log(data);
-
   return (
     <div className="w-full relative">
       <Anchor {...{ name: el.name, register }} />
@@ -108,7 +104,6 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
                     i * fieldsForSwap,
                     (i + 1) * fieldsForSwap,
                   ),
-                  typeBox,
                   colsForSwap,
                   data,
                   setValue,

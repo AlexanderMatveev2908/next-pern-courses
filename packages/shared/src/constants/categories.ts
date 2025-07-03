@@ -103,6 +103,28 @@ export const Tools = {
   },
 } as const;
 
+// ? ROOT
+// ? typeof Tools
+// ? [keyof typeof Tools] => get keys of Tools root
+// ? [keyof *] => get nested vals inside root
+// ? (typeof Tools) repeat pattern as first one
+export type ToolValType =
+  (typeof Tools)[keyof typeof Tools][keyof (typeof Tools)[keyof typeof Tools]];
+
+export type TechValType = (typeof TechStack)[keyof typeof TechStack];
+
 export const AllTools = Object.values(Tools)
   .flatMap((v) => Object.values(v))
   .filter(Boolean);
+
+export const isValidTool = (
+  Tech: keyof typeof TechStack,
+  tool: ToolValType,
+) => {
+  return (Object.values(Tools[Tech as keyof typeof Tools]) ?? []).includes(
+    tool,
+  );
+};
+
+export const getToolsByTech = (Tech: keyof typeof TechStack) =>
+  Object.values(Tools[Tech as keyof typeof Tools]);

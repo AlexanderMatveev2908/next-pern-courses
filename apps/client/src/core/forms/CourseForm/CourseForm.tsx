@@ -7,6 +7,7 @@ import {
   descriptionField,
   fieldHard,
   fieldMarkdown,
+  fieldTech,
   imagesField,
   titleField,
   videoField,
@@ -22,7 +23,11 @@ import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVid
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
 import WrapCheck from "./components/WrapCheck/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
-import { Difficulties } from "@shared/first/constants/categories";
+import {
+  AllTools,
+  Difficulties,
+  TechStack,
+} from "@shared/first/constants/categories";
 
 type PropsType = {
   handleSave: () => void;
@@ -59,14 +64,16 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
-      <WrapCheck {...{ el: fieldHard }}>
-        <WrapBoxes
-          {...{
-            vals: Object.values(Difficulties),
-            typeBox: "radio",
-            el: fieldHard,
-          }}
-        />
+      <WrapCheck {...{ el: fieldHard, vals: Object.values(Difficulties) }}>
+        {(args) => WrapBoxes(args)}
+      </WrapCheck>
+
+      <WrapCheck {...{ el: fieldTech, vals: Object.values(TechStack) }}>
+        {(args) => WrapBoxes(args)}
+      </WrapCheck>
+
+      <WrapCheck {...{ el: fieldTech, vals: Object.values(AllTools) }}>
+        {(args) => WrapBoxes(args)}
       </WrapCheck>
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />

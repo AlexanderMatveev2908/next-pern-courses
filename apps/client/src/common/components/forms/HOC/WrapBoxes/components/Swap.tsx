@@ -10,7 +10,6 @@ import { easeInOut, motion } from "framer-motion";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   valsToMap: T[K][];
-  typeBox: "checkbox" | "radio";
   colsForSwap: number;
   data?: T[K][] | T[K];
   setValue: UseFormSetValue<T>;
@@ -21,7 +20,6 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
 const Swap = <T extends FieldValues, K extends Path<T>>({
   valsToMap,
   colsForSwap,
-  typeBox,
   data,
   setValue,
   el,
@@ -30,7 +28,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
   const { ids } = useGenIDs({ lengths: [valsToMap.length] });
 
   const handleClick = (val: T[K]) => {
-    if (typeBox === "radio") {
+    if (el.type === "radio") {
       setValue(el.name, val !== data ? val : ("" as T[K]), {
         shouldValidate: true,
       });
@@ -70,7 +68,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
             val: valsToMap[i],
             data,
             handleClick: handleClick.bind(null, valsToMap[i]),
-            typeBox,
+            el,
           }}
         />
       ))}

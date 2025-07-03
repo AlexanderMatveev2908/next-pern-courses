@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { FieldCheckType } from "@/common/types/uiFactory";
 import { css } from "@emotion/react";
 import { FieldValues, Path, PathValue } from "react-hook-form";
 
@@ -8,17 +9,17 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   val: PathValue<T, K>;
   data?: PathValue<T, K>[] | PathValue<T, K>;
   handleClick: () => void;
-  typeBox: "checkbox" | "radio";
+  el: FieldCheckType<T>;
 };
 
 const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
   data,
   val,
   handleClick,
-  typeBox,
+  el,
 }: PropsType<T, K>) => {
   const isChecked =
-    typeBox === "radio"
+    el.type === "radio"
       ? data === val
       : (data ?? []).some((item) => item === val);
 
@@ -26,17 +27,20 @@ const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
     <button
       onClick={handleClick}
       type="button"
-      className="btn__app w-full rounded-2xl p-3 flex justify-center items-center max-w-[350px] h-fit"
+      className="w-full rounded-2xl p-3 flex justify-center items-center max-w-[350px] h-fit"
       css={css`
-        transition: 10s ease-in-out;
+        transition:
+          transform ${isChecked ? 0.2 : 0.3}s ease-in-out,
+          background ${isChecked ? 0.2 : 0.3}s ease-in-out;
         border: 2px solid var(--${isChecked ? "white__0" : "neutral__600"});
         background: var(--${isChecked ? "white__0" : "transparent"});
+        transform: scale(${isChecked ? 0.85 : 1});
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(${isChecked ? 0.85 : 1.125});
+        }
       `}
-      style={
-        {
-          "--scale__up": 1.125,
-        } as React.CSSProperties
-      }
     >
       <span
         className="txt__md"

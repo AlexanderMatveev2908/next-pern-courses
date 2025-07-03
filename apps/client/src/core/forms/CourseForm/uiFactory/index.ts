@@ -41,3 +41,15 @@ export const fieldHard: FieldCheckType<CourseFormType> = {
   label: "Course grade *",
   type: "radio",
 };
+
+export const fieldTech: FieldCheckType<CourseFormType> = {
+  name: "techStack",
+  label: "Tech stack *",
+  type: "radio",
+};
+
+export const fieldTools: FieldCheckType<CourseFormType> = {
+  name: "tools",
+  label: "Tools *",
+  type: "radio",
+};
