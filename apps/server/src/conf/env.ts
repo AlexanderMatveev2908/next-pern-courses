@@ -10,6 +10,8 @@ const schema = {
     PORT: { type: "number" },
     HOST: { type: "string" },
     NODE_ENV: { type: "string" },
+    FRONT_URL: { type: "string" },
+    FRONT_URL_DEV: { type: "string" },
   },
 };
 

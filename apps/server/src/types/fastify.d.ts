@@ -6,6 +6,8 @@ declare module "fastify" {
       PORT: number;
       HOST: string;
       NODE_ENV: "development" | "production";
+      FRONT_URL: string;
+      FRONT_URL_DEV: string;
     };
   }
 
