@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldType } from "@/common/types/uiFactory";
+import { FieldCheckType, FormFieldType } from "@/common/types/uiFactory";
 import { FieldErrors, FieldValues } from "react-hook-form";
 import { easeInOut, motion } from "framer-motion";
 import { isStr } from "@shared/first/lib/dataStructure";
@@ -10,7 +10,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   errors: FieldErrors<T>;
-  el: FormFieldType<T>;
+  el: FormFieldType<T> | FieldCheckType<T>;
   $customCSS?: {
     css: SerializedStyles;
   };

@@ -4,7 +4,7 @@
 import { BtnActType, PropsTypeBtn } from "@/common/types/uiFactory";
 import { css } from "@emotion/react";
 import type { FC } from "react";
-import { btnColors } from "./uiFactory";
+import { btnColors } from "../uiFactory";
 
 const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
   isEnabled,

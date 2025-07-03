@@ -2,10 +2,13 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import type { FC } from "react";
+import { type FC } from "react";
 import {
   descriptionField,
+  fieldHard,
   fieldMarkdown,
+  fieldTech,
+  fieldTools,
   imagesField,
   titleField,
   videoField,
@@ -13,13 +16,19 @@ import {
 import { useFormContext } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
-import WrapSingleField from "./components/WrapSinlgeField/WrapSingleField";
+import WrapSingleField from "./components/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
 import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
-import HardLevel from "./components/HardLevel/HardLevel";
+import WrapCheck from "./components/WrapCheck";
+import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
+import {
+  Difficulties,
+  TechStack,
+  Tools,
+} from "@shared/first/constants/categories";
 
 type PropsType = {
   handleSave: () => void;
@@ -34,6 +43,9 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
+
+  const formData = formCtx.watch();
+  const availableTool = Tools[formData.techStack as keyof typeof Tools] ?? {};
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -56,8 +68,30 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
+      <WrapCheck {...{ el: fieldHard, vals: Difficulties }}>
+        {(args) => WrapBoxes(args)}
+      </WrapCheck>
 
-      <HardLevel />
+      <WrapCheck {...{ el: fieldTech, vals: TechStack }}>
+        {(args) => WrapBoxes(args)}
+      </WrapCheck>
+
+      <WrapCheck
+        {...{
+          el: fieldTools,
+          vals: availableTool,
+          txt: `You must chose first the Tech so we can show you the relative
+              tools available`,
+        }}
+      >
+        {(args) =>
+          WrapBoxes({
+            ...args,
+            txtFallback:
+              "You must chose first the Tech so we can show you the relative tools available",
+          })
+        }
+      </WrapCheck>
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
       </div>
