@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
+import { toastSlice } from "@/features/layout/components/Toast/slice";
 
 export const store = configureStore({
   reducer: {
     api: api.reducer,
     side: sideSlice.reducer,
+    toast: toastSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>

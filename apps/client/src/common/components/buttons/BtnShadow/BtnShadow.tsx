@@ -2,9 +2,9 @@
 "use client";
 
 import { BtnActType, PropsTypeBtn } from "@/common/types/uiFactory";
+import { btnColors } from "@/core/uiFactory/style";
 import { css } from "@emotion/react";
 import type { FC } from "react";
-import { btnColors } from "../uiFactory";
 
 const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
   isEnabled,

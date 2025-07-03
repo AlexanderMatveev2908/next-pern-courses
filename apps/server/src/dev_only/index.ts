@@ -8,8 +8,6 @@ export const doStuff = async () => {
       name: "john",
     },
   });
-
-  console.log(newTest);
 };
 
 export const doStuffB = async () => {
@@ -28,6 +26,4 @@ export const doStuffB = async () => {
       },
     });
   });
-
-  //   console.log(res);
 };
