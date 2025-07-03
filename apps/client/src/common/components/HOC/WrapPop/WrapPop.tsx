@@ -37,6 +37,7 @@ const WrapPop: FC<PropsType> = ({ isShow, setIsShow, Content }) => {
       >
         <div className="flex flex-col relative gap-10 min-h-0 max-h-full pb-5">
           <button
+            type="button"
             onClick={() => setIsShow(false)}
             className="btn__app absolute -top-3 -right-1 cursor-pointer"
             style={

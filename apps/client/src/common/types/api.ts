@@ -7,3 +7,8 @@ export enum ApiEventType {
   error = "error",
   info = "info",
 }
+
+export type ResAPI<T> = {
+  data: T;
+  status: number;
+};

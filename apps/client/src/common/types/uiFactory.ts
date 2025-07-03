@@ -29,6 +29,7 @@ export type PropsTypeBtn = {
   handleClick?: () => void;
   label: string;
   isEnabled: boolean;
+  isLoading?: boolean;
 };
 
 export enum BtnActType {
