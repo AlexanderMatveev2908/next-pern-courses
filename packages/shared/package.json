@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc --build && tsc-alias -p tsconfig.json",
+    "build": "tsc --build",
     "check": "tsc --noEmit",
-    "dev": "tsc --watch & tsc-alias -p tsconfig.json --watch"
+    "dev": "tsc --watch"
   },
   "devDependencies": {
     "tsc-alias": "^1.8.16",

@@ -5,13 +5,13 @@ import {
   TechStack,
   TechValType,
   ToolValType,
-} from "@/constants/categories.js";
+} from "../../constants/categories.js";
 import {
   REG_CLOUD_URL,
   REG_DESCRIPTION,
   REG_TITLE,
-} from "@/constants/regex.js";
-import { isInObjKeys, isStr } from "@/lib/dataStructure.js";
+} from "../../constants/regex.js";
+import { isInObjKeys, isStr } from "../../lib/dataStructure.js";
 import { v4 } from "uuid";
 import { z } from "zod";
 
