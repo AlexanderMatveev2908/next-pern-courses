@@ -66,7 +66,7 @@ export const axiosBaseQuery = async ({
         },
 
         data: {
-          ...errData,
+          ...(errData?.msg ? errData : { ...errData, msg: errData?.message }),
           status: response?.status ?? 500,
         },
       },

@@ -1,10 +1,8 @@
 import env from "./conf/env.js";
 import Fastify from "fastify";
 import router from "./routes/index.js";
-import decorators from "./decorators/index.js";
 import db from "./conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import corsPlugin from "./middleware/cors.js";
 
 const app = Fastify({
   logger: {
@@ -23,11 +21,9 @@ const app = Fastify({
 const start = async () => {
   try {
     await app.register(env);
-    await app.register(decorators);
     await app.register(router, {
       prefix: "/api/v1",
     });
-    await app.register(corsPlugin);
 
     await db.$connect();
 

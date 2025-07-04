@@ -9,7 +9,14 @@ export const useHandleErrAPI = () => {
   const dispatch = useDispatch();
 
   const handleErr = useCallback(
-    <T>({ err, hideErr }: { err: ErrAPI<T>; hideErr?: boolean }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <T extends Record<string, any>>({
+      err,
+      hideErr,
+    }: {
+      err: ErrAPI<T>;
+      hideErr?: boolean;
+    }) => {
       __cg("wrapper error", err);
 
       if (!isStr(err.data?.msg)) return;

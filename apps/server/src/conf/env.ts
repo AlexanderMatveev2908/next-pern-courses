@@ -12,6 +12,7 @@ const schema = {
     NODE_ENV: { type: "string" },
     FRONT_URL: { type: "string" },
     FRONT_URL_DEV: { type: "string" },
+    COOKIE_SECRET: { type: "string" },
   },
 };
 
