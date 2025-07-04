@@ -1,70 +1,3 @@
-
-/* => start 0-connect.prisma */
-datasource db {
-    provider = "postgresql"
-    url = env("DB_URI")
-}
-
-
-generator client {
-  provider = "prisma-client-js"
-}
-/* => end 0-connect.prisma */
-
-/* => start 1-test.prisma */
-model TestA {
-  id String @id @default(uuid())
-  name String
-  count Int
-
-  tests TestB[]  @relation("TestA_TestB")
-}
-
-model TestB {
-  id String @id @default(uuid())
-  name String
-  count Int?
-
-  testA_ID String
-  testA TestA @relation(fields: [testA_ID], references: [id], name: "TestA_TestB")
-}
-
-model TestC {
-  id String @id @default(uuid())
-  name String
-  count Int?
-
-}
-
-
-/* => end 1-test.prisma */
-
-/* => start 2-cloud-asset.prisma */
-enum TypeAsset {
-  VIDEO @map("video")
-  IMAGE @map("image")
-}
-
-enum EntityType {
-    COURSE
-}
-
-model CloudAsset {
-    id String @id @default(uuid())
-    url String
-    publicID String
-    type TypeAsset
-
-    entityID String
-    entityType EntityType
-    
-    createdAt DateTime @default(now())
-
-    @@index([entityID, entityType])
-}
-/* => end 2-cloud-asset.prisma */
-
-/* => start 3-course.prisma */
 enum Grade {
     BEGINNER @map("beginner")
     JUNIOR @map("junior") 
@@ -176,4 +109,3 @@ model Course {
 
     @@index([title, techStack])
 }
-/* => end 3-course.prisma */

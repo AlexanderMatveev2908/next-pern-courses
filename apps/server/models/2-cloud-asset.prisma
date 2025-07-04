@@ -1,0 +1,22 @@
+enum TypeAsset {
+  VIDEO @map("video")
+  IMAGE @map("image")
+}
+
+enum EntityType {
+    COURSE
+}
+
+model CloudAsset {
+    id String @id @default(uuid())
+    url String
+    publicID String
+    type TypeAsset
+
+    entityID String
+    entityType EntityType
+    
+    createdAt DateTime @default(now())
+
+    @@index([entityID, entityType])
+}
