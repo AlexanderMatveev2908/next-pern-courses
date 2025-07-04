@@ -1,0 +1,41 @@
+name: check 🧪 and merge
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cpy code in git env
+        uses: actions/checkout@v4
+
+      - name: setup stable and latest node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: enable corepack for fast install
+        run: |
+          corepack enable
+          corepack prepare yarn@4.9.2 --activate
+
+      - name: install dependencies
+        run: yarn install
+
+      - name: check client server and all packages with lint or tsc
+        run: yarn check
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
