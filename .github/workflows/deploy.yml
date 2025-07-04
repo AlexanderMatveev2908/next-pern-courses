@@ -23,6 +23,9 @@ jobs:
           corepack enable
           corepack prepare yarn@4.9.2 --activate
 
+      - name: generate prisma client
+        run: yarn dlx prisma generate --schema=apps/server/prisma/schema.prisma
+
       - name: install dependencies
         run: yarn install
 
