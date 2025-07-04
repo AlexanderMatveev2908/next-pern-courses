@@ -27,12 +27,12 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
       );
       const videoFile = myFormData!.files.find((f) => f.fieldname === "video");
 
-      // if (isArrOK(imageFiles))
-      //   images = await Promise.all(
-      //     imageFiles.map(
-      //       async (f) => await uploadRam(f, { folder: "course_images" }),
-      //     ),
-      //   );
+      if (isArrOK(imageFiles))
+        images = await Promise.all(
+          imageFiles.map(
+            async (f) => await uploadRam(f, { folder: "course_images" }),
+          ),
+        );
       if (isObjOK(videoFile))
         video = await uploadDisk(videoFile as AppFile, {
           folder: "course_videos",

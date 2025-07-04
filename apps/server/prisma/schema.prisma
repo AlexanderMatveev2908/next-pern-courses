@@ -41,8 +41,8 @@ model TestC {
 
 /* => start 2-cloud-asset.prisma */
 enum TypeAsset {
-  VIDEO @map("video")
-  IMAGE @map("image")
+  VIDEO 
+  IMAGE 
 }
 
 enum EntityType {
@@ -66,100 +66,100 @@ model CloudAsset {
 
 /* => start 3-course.prisma */
 enum Grade {
-    BEGINNER @map("beginner")
-    JUNIOR @map("junior") 
-    INTERMEDIATE @map("intermediate")
-    EXPERT @map("expert")
+  BEGINNER
+  JUNIOR
+  INTERMEDIATE
+  EXPERT
 }
+
 enum TechStack {
-  HTML         @map("html")
-  CSS          @map("css")
-  JAVASCRIPT   @map("javascript")
-  BASH         @map("bash")
-  POWERSHELL   @map("powershell")
-  PYTHON       @map("python")
-  JAVA         @map("java")
-  TESTING      @map("testing")
-  DEPLOYMENT   @map("deployment")
-  MONGODB      @map("mongodb")
-  POSTGRESQL   @map("postgresql")
-  DESIGN       @map("design")
+  HTML
+  CSS
+  JAVASCRIPT
+  BASH
+  POWERSHELL
+  PYTHON
+  JAVA
+  TESTING
+  DEPLOYMENT
+  MONGODB
+  POSTGRESQL
+  DESIGN
 }
 
 enum Tools {
-  PRETTIER     @map("prettier")
-  EMMET        @map("emmet")
-  MUSTACHE     @map("mustache")
-  PUG          @map("pug")
-  LIGHTHOUSE   @map("lighthouse")
-  AXE          @map("axe")
+  PRETTIER
+  EMMET
+  MUSTACHE
+  PUG
+  LIGHTHOUSE
+  AXE
 
-  SASS         @map("sass")
-  LESS         @map("less")
-  BOOTSTRAP    @map("bootstrap")
-  TAILWIND     @map("tailwind")
-  POSTCSS      @map("postcss")
+  SASS
+  LESS
+  BOOTSTRAP
+  TAILWIND
+  POSTCSS
 
-  REACT        @map("react")
-  NEXT         @map("next")
-  ANGULAR      @map("angular")
-  SVELTE       @map("svelte")
-  VUE          @map("vue")
-  NODE         @map("node")
-  EXPRESS      @map("express")
-  FASTIFY      @map("fastify")
-  NESTJS       @map("nestjs")
-  BUN          @map("bun")
+  REACT
+  NEXT
+  ANGULAR
+  SVELTE
+  VUE
+  NODE
+  EXPRESS
+  FASTIFY
+  NESTJS
+  BUN
 
-  GIT          @map("git")
-  GREP         @map("grep")
-  CURL         @map("curl")
-  AWK          @map("awk")
-  JQ           @map("jq")
+  GIT
+  GREP
+  CURL
+  AWK
+  JQ
 
-  CHOCOLATEY   @map("chocolatey")
-  WINGET       @map("winget")
+  CHOCOLATEY
+  WINGET
 
-  DJANGO       @map("django")
-  FASTAPI      @map("fastapi")
-  TORCH        @map("torch")
-  FLASK        @map("flask")
-  NUMPY        @map("numpy")
-  PANDAS       @map("pandas")
+  DJANGO
+  FASTAPI
+  TORCH
+  FLASK
+  NUMPY
+  PANDAS
 
-  SPRING       @map("spring")
-  MAVEN        @map("maven")
-  GRADLE       @map("gradle")
+  SPRING
+  MAVEN
+  GRADLE
 
-  JEST         @map("jest")
-  VITEST       @map("vitest")
-  PLAYWRIGHT   @map("playwright")
-  CYPRESS      @map("cypress")
-  TESTING_LIBRARY @map("testing_library")
+  JEST
+  VITEST
+  PLAYWRIGHT
+  CYPRESS
+  TESTING_LIBRARY
 
-  AWS          @map("aws")
-  DOCKER       @map("docker")
-  NGINX        @map("nginx")
-  VERCEL       @map("vercel")
-  NETLIFY      @map("netlify")
-  RAILWAY      @map("railway")
-  FLYIO        @map("flyio")
-  RENDER       @map("render")
+  AWS
+  DOCKER
+  NGINX
+  VERCEL
+  NETLIFY
+  RAILWAY
+  FLYIO
+  RENDER
 
-  FIGMA        @map("figma")
-  SKETCH       @map("sketch")
-  ADOBE_XD     @map("adobe_xd")
-  CANVA        @map("canva")
+  FIGMA
+  SKETCH
+  ADOBE_XD
+  CANVA
 
-  ATLAS        @map("atlas")
-  MONGOOSE     @map("mongoose")
+  ATLAS
+  MONGOOSE
 
-  PGADMIN      @map("pgadmin")
-  SEQUELIZE    @map("sequelize")
-  TYPEORM      @map("typeorm")
-  PRISMA       @map("prisma")
+  PGADMIN
+  SEQUELIZE
+  TYPEORM
+  PRISMA
 }
-
 
 
 model Course {

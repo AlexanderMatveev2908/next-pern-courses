@@ -35,7 +35,7 @@ export const useWrapMutation = () => {
           dispatch(
             toastSlice.actions.open({
               msg: data.msg,
-              type: ApiEventType.success,
+              type: ApiEventType.SUCCESS,
             }),
           );
 

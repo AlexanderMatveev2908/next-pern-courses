@@ -25,7 +25,7 @@ const RowButtonsFile: FC<PropsType> = ({
           {...{
             type: "button",
             label: !isData ? "Upload" : isFile ? `1 File` : `1 URL`,
-            btnActType: BtnActType.success,
+            btnActType: BtnActType.SUCCESS,
             isEnabled: true,
             handleClick: handleUpload,
           }}
@@ -38,7 +38,7 @@ const RowButtonsFile: FC<PropsType> = ({
             {...{
               type: "button",
               label: isFile ? "Remove File" : "Remove URL",
-              btnActType: BtnActType.error,
+              btnActType: BtnActType.ERROR,
               isEnabled: true,
               handleClick: handleRemove,
             }}

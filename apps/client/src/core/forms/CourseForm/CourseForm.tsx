@@ -42,6 +42,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     control,
     formState: { errors },
     setFocus,
+    trigger,
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
@@ -69,9 +70,9 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
 
       <FormFieldImages {...{ el: imagesField }} />
 
-      <FormFieldVideo {...{ el: videoField }} />
+      <FormFieldVideo {...{ el: videoField, cb: () => trigger("markdown") }} />
 
-      <FormFieldMD {...{ el: fieldMarkdown }} />
+      <FormFieldMD {...{ el: fieldMarkdown, cb: () => trigger("video") }} />
 
       <WrapCheck {...{ el: fieldHard, vals: Difficulties }}>
         {(args) => WrapBoxes(args)}

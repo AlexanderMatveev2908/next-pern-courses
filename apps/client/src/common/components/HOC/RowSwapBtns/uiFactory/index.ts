@@ -12,6 +12,6 @@ export const rowBtns = [
 ].map((el) => ({
   ...el,
   type: "button",
-  btnActType: BtnActType.neutral,
+  btnActType: BtnActType.NEUTRAL,
   id: v4(),
 }));

@@ -37,7 +37,7 @@ const PreviewMarkdown: FC<PropsType> = ({ data }) => {
         <BtnShadow
           {...{
             type: "button",
-            btnActType: BtnActType.info,
+            btnActType: BtnActType.INFO,
             isEnabled: true,
             label: "Preview",
             handleClick: () => setIsShow(true),

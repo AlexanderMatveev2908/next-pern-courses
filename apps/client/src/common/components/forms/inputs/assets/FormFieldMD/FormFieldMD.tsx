@@ -16,9 +16,10 @@ import { isStr } from "@shared/first/lib/dataStructure";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
+  cb?: (val: string) => void;
 };
 
-const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
+const FormFieldMD = <T extends FieldValues>({ el, cb }: PropsType<T>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const {
@@ -60,6 +61,8 @@ const FormFieldMD = <T extends FieldValues>({ el }: PropsType<T>) => {
         const sanitized = DOMPurify.sanitize(result as string);
 
         field.onChange(sanitized);
+
+        cb?.(sanitized);
       }
     };
 

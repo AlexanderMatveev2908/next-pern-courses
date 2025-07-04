@@ -1,7 +1,7 @@
-import { CloudAsset, Course } from "@prisma/client";
+import { CloudAsset, Course, EntityType, TypeAsset } from "@prisma/client";
 import db from "src/conf/db.js";
 import { CourseFormServerType } from "../paperwork/postCourse.js";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
+import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearAssets } from "../lib/etc.js";
@@ -34,9 +34,33 @@ export const postCourseService = async ({
       const course = await trx.course.create({
         data: {
           ...(fields as Course),
+          title: capt(fields.title),
           tags: normalizedTags,
         },
       });
+
+      if (isArrOK(images))
+        await trx.cloudAsset.createMany({
+          data: images.map(
+            (img) =>
+              ({
+                ...img,
+                entityType: EntityType.COURSE,
+                entityID: course.id,
+                type: TypeAsset.IMAGE,
+              }) as CloudAsset,
+          ),
+        });
+
+      if (isObjOK(video))
+        await trx.cloudAsset.create({
+          data: {
+            ...video,
+            entityType: EntityType.COURSE,
+            entityID: course.id,
+            type: TypeAsset.VIDEO,
+          } as CloudAsset,
+        });
 
       return course;
     });
