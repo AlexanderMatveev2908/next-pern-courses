@@ -31,10 +31,10 @@ export const useWrapMutation = () => {
 
         __cg("wrapper mutation", data);
 
-        if (showToast && isStr(data.msg))
+        if (showToast)
           dispatch(
             toastSlice.actions.open({
-              msg: data.msg,
+              msg: isStr(data.msg) ? data.msg : "Things went good ✅",
               type: ApiEventType.SUCCESS,
             }),
           );
