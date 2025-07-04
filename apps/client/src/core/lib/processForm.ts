@@ -27,7 +27,7 @@ export const genFormData = <T>(data: T) => {
         ) {
           if (!isObjOK(curr)) continue;
 
-          formData.append(k, curr.val);
+          formData.append(k, JSON.stringify(curr));
         }
 
         i++;
@@ -37,13 +37,13 @@ export const genFormData = <T>(data: T) => {
     }
   }
 
-  for (const [key, val] of formData.entries()) {
-    if (val instanceof File) {
-      console.log(`📁 ${key}:`, val.name, val.size);
-    } else {
-      console.log(`📄 ${key}:`, val);
-    }
-  }
+  // for (const [key, val] of formData.entries()) {
+  //   if (val instanceof File) {
+  //     console.log(`📁 ${key}:`, val.name, val.size);
+  //   } else {
+  //     console.log(`📄 ${key}:`, val);
+  //   }
+  // }
 
   return formData;
 };

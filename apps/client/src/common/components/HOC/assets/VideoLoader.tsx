@@ -14,11 +14,11 @@ const VideoLoader: FC<PropsType> = ({ src }) => {
   const [isError, setIsError] = useState(false);
 
   return (
-    <div className="relative h-full min-w-full">
+    <div className="relative max-w-full max-h-full min-w-full min-h-full">
       <AssetHandler {...{ loaded, isError }} />
       <video
         src={src}
-        className={`transition-all rounded-xl duration-500 object-cover ${
+        className={`transition-all rounded-xl duration-500 object-cover max-w-full max-h-full min-w-full min-h-full ${
           loaded && !isError ? "opacity-100" : "opacity-0"
         }`}
         autoPlay

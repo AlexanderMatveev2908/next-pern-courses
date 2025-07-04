@@ -4,7 +4,7 @@
 import VideoLoader from "@/common/components/HOC/assets/VideoLoader";
 import { css } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 
 type PropsType = {
   vid?: string | File;
@@ -13,9 +13,17 @@ type PropsType = {
 const PreviewVideo: FC<PropsType> = ({ vid }) => {
   const isData = isStr(vid as string) || (vid as File) instanceof File;
 
+  const src = useMemo(
+    () =>
+      (isStr(vid as string)
+        ? vid
+        : URL.createObjectURL((vid as File) ?? new File([], ""))) as string,
+    [vid],
+  );
+
   return (
     <div
-      className="w-full flex aspect-ratio-[16/9] max-w-[600px]"
+      className="w-full flex max-w-[600px] max-h-[300px]"
       css={css`
         margin-top: ${isData ? "1rem" : "0px"};
       `}
@@ -23,9 +31,7 @@ const PreviewVideo: FC<PropsType> = ({ vid }) => {
       {isData && (
         <VideoLoader
           {...{
-            src: (isStr(vid as string)
-              ? vid
-              : URL.createObjectURL(vid as File)) as string,
+            src,
           }}
         />
       )}
