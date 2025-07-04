@@ -29,6 +29,9 @@ jobs:
       - name: install dependencies
         run: yarn install
 
+      - name: Build shared packages
+        run: yarn build --filter @shared/first...
+
       - name: check client server and all packages with lint or tsc
         run: yarn check
 
