@@ -39,6 +39,8 @@ const PostCourse: FC = () => {
       const res = await wrapMutation({
         cbAPI: () => mutate(formData as FormData),
       });
+
+      if (!res) return;
     },
     (err) => {
       __cg("err", err);
