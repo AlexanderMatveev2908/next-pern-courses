@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 
 export const app_dir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../../../"
+  "../../../",
 );
 
 export const read_file = (p: string, type: "utf-8" | "hex") =>

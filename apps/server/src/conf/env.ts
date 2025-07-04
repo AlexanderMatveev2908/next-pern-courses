@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import envPlugin from "@fastify/env";
 import { FastifyInstance } from "fastify";
 import { getPathENV } from "../lib/system/index.js";
+import fs from "fs";
 
 const schema = {
   type: "object",
@@ -24,7 +25,7 @@ const p = getPathENV();
 const opt = {
   confKey: "env",
   schema,
-  ...(p
+  ...(fs.existsSync(p ?? "")
     ? {
         configPath: p,
       }
