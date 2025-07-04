@@ -1,5 +1,14 @@
 import "fastify";
 
+export type AppFile = {
+  fieldname: string;
+  filename: string;
+  mimetype: string;
+  buffer: Buffer | null;
+  size: number;
+  path?: string;
+};
+
 declare module "fastify" {
   interface FastifyInstance {
     env: {
@@ -8,6 +17,13 @@ declare module "fastify" {
       NODE_ENV: "development" | "production";
       FRONT_URL: string;
       FRONT_URL_DEV: string;
+      COOKIE_SECRET: string;
+    };
+  }
+  interface FastifyRequest {
+    myFormData?: {
+      fields: Record<string, any>;
+      files: AppFile[];
     };
   }
 

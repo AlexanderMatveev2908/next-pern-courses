@@ -13,6 +13,9 @@ import { genTagField } from "@/core/forms/CourseForm/uiFactory";
 import { useDispatch } from "react-redux";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 import { ApiEventType } from "@/common/types/api";
+import { genFormData } from "@/features/courses/lib/processData";
+import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
+import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 
 const PostCourse: FC = () => {
   const formCtx = useForm<CourseFormType>({
@@ -23,19 +26,21 @@ const PostCourse: FC = () => {
     },
   });
 
+  const [mutate, { isLoading }] =
+    coursesSliceAPI.endpoints.postCourse.useMutation();
+  const { wrapMutation } = useWrapMutation();
+  const dispatch = useDispatch();
   const { handleSubmit } = formCtx;
 
-  const dispatch = useDispatch();
   const handleSave = handleSubmit(
-    (data: CourseFormType) => {
-      __cg("data", data);
+    async (data: CourseFormType) => {
+      const formData = genFormData(data);
 
-      dispatch(
-        toastSlice.actions.open({
-          type: ApiEventType.success,
-          msg: "",
-        }),
-      );
+      const res = await wrapMutation({
+        cbAPI: () => mutate(formData as FormData),
+      });
+
+      if (!res) return;
     },
     (err) => {
       __cg("err", err);
@@ -53,7 +58,7 @@ const PostCourse: FC = () => {
   return (
     <div className="w-full grid grid-cols-1 gap-10">
       <FormProvider {...formCtx}>
-        <CourseForm {...{ handleSave }} />
+        <CourseForm {...{ handleSave, isLoading }} />
       </FormProvider>
     </div>
   );

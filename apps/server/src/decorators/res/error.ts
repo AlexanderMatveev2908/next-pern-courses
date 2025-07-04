@@ -2,75 +2,30 @@ import { FastifyInstance, FastifyReply } from "fastify";
 import fp from "fastify-plugin";
 
 export default fp(async (app: FastifyInstance) => {
-  app.decorateReply("res400", function <T>(this: FastifyReply, data?: T) {
-    this.code(400);
-    return this.send({
-      data: data ?? {
-        msg: "Bad request",
-      },
-    });
-  });
+  const responses = {
+    res400: { code: 400, defMsg: "Bad request" },
+    res401: { code: 401, defMsg: "Unauthorized" },
+    res403: { code: 403, defMsg: "Forbidden" },
+    res404: { code: 404, defMsg: "Not found" },
+    res409: { code: 409, defMsg: "Conflict" },
+    res422: { code: 422, defMsg: "Unprocessable entity" },
+    res429: {
+      code: 429,
+      defMsg: "Our hamster-powered server took a break — try again later! 🐹",
+    },
+    res500: {
+      code: 500,
+      defMsg: "A wild slime appeared — the server took 30% damage! ⚔️",
+    },
+  } as const;
 
-  app.decorateReply("res401", function <T>(this: FastifyReply, data?: T) {
-    this.code(401);
-    return this.send({
-      data: data ?? {
-        msg: "Unauthorized",
-      },
-    });
-  });
+  for (const [name, { code, defMsg }] of Object.entries(responses)) {
+    app.decorateReply(name, function <T>(this: FastifyReply, data?: T) {
+      this.code(code);
 
-  app.decorateReply("res403", function <T>(this: FastifyReply, data?: T) {
-    this.code(403);
-    return this.send({
-      data: data ?? {
-        msg: "Forbidden",
-      },
+      return this.send({
+        ...(data ?? { msg: defMsg }),
+      });
     });
-  });
-
-  app.decorateReply("res404", function <T>(this: FastifyReply, data?: T) {
-    this.code(404);
-    return this.send({
-      data: data ?? {
-        msg: "Not found",
-      },
-    });
-  });
-
-  app.decorateReply("res409", function <T>(this: FastifyReply, data?: T) {
-    this.code(409);
-    return this.send({
-      data: data ?? {
-        msg: "Conflict",
-      },
-    });
-  });
-
-  app.decorateReply("res422", function <T>(this: FastifyReply, data?: T) {
-    this.code(422);
-    return this.send({
-      data: data ?? {
-        msg: "Unprocessable entity",
-      },
-    });
-  });
-
-  app.decorateReply("res429", function <T>(this: FastifyReply, data?: T) {
-    this.code(429);
-    return this.send({
-      data: data ?? {
-        msg: "Our hamster-powered server took a break — try again later! 🐹",
-      },
-    });
-  });
-
-  app.decorateReply("res500", function <T>(this: FastifyReply, data?: T) {
-    this.code(500);
-    return this.send({
-      data: data ?? {
-        msg: "A wild slime appeared — the server took 30% damage! ⚔️",
-      },
-    });
-  });
+  }
 });

@@ -112,6 +112,13 @@ export const schemaCoursePost = z
         message: "Tool is invalid",
         path: ["tools"],
       });
+
+    if (!isStr(data.markdown) && !(data.video instanceof File))
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "A video or a markdown at least is required",
+        path: ["markdown"],
+      });
   });
 
 export type CourseFormType = z.infer<typeof schemaCoursePost>;

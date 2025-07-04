@@ -33,9 +33,10 @@ import TagsForm from "./components/TagsForm";
 
 type PropsType = {
   handleSave: () => void;
+  isLoading: boolean;
 };
 
-const CourseForm: FC<PropsType> = ({ handleSave }) => {
+const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
   const formCtx = useFormContext<CourseFormType>();
   const {
     control,
@@ -97,7 +98,9 @@ const CourseForm: FC<PropsType> = ({ handleSave }) => {
       <TagsForm />
 
       <div className="w-full max-w-[200px] justify-self-center mt-8">
-        <BtnShim {...{ type: "submit", label: "Save", isEnabled: true }} />
+        <BtnShim
+          {...{ type: "submit", label: "Save", isEnabled: true, isLoading }}
+        />
       </div>
     </form>
   );

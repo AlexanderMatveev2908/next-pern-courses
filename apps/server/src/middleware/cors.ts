@@ -2,7 +2,7 @@ import fp from "fastify-plugin";
 import cors from "@fastify/cors";
 import type { FastifyInstance } from "fastify";
 
-export default fp(async (app: FastifyInstance) => {
+export const corsPlugin = fp(async (app: FastifyInstance) => {
   const FRONT_URL = app.env.FRONT_URL;
   const FRONT_DEV = app.env.FRONT_URL_DEV;
 
@@ -11,8 +11,9 @@ export default fp(async (app: FastifyInstance) => {
   await app.register(cors, {
     credentials: true,
     origin: (origin, cb) => {
+      console.log(origin);
       if (!origin || whitelist.includes(origin)) cb(null, true);
-      else cb(new Error("Not allowed ⚔️"), false);
+      else cb(null, false);
     },
   });
 });

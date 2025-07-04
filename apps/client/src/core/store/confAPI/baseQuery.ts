@@ -17,7 +17,7 @@ export const axiosBaseQuery = async ({
   responseType?: any;
 }): Promise<any> => {
   try {
-    const res = await axiosInstance({
+    const { data, status } = await axiosInstance({
       url,
       method,
       data: argData,
@@ -25,34 +25,35 @@ export const axiosBaseQuery = async ({
       responseType,
     });
 
-    const result =
-      responseType === "blob"
-        ? {
-            blob: res.data,
-            status: res.status,
-          }
-        : {
-            data: res.data,
-            status: res.status,
-          };
-
-    return {
-      data: result,
-    };
+    return responseType === "blob"
+      ? {
+          data: {
+            blob: data,
+            status,
+          },
+        }
+      : {
+          data: {
+            data,
+            status,
+          },
+        };
   } catch (err: any) {
-    let errData = err?.response?.data;
-    const status: number = err?.response?.status ?? 500;
+    const { response } = err ?? {};
+
+    let errData: any = response?.data;
+
+    __cg("axios err", errData);
 
     if (errData instanceof Blob && errData.type === "application/json") {
       try {
-        const txt = await errData.text();
-        errData = JSON.parse(txt);
-      } catch (err: any) {
-        __cg("blob parse err", err);
+        const text = await errData.text();
+        errData = JSON.parse(text);
+      } catch (parseErr: any) {
+        __cg("Failed parse blob error", parseErr);
+        errData = { msg: "Invalid JSON in blob response" };
       }
     }
-
-    __cg("axios err", errData, status);
 
     return {
       error: {
@@ -63,8 +64,11 @@ export const axiosBaseQuery = async ({
           params,
           responseType,
         },
-        status,
-        data: errData,
+
+        data: {
+          ...(errData?.msg ? errData : { ...errData, msg: errData?.message }),
+          status: response?.status ?? 500,
+        },
       },
     };
   }
