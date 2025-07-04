@@ -113,7 +113,11 @@ export const schemaCoursePost = z
         path: ["tools"],
       });
 
-    if (!isStr(data.markdown) && !(data.video instanceof File))
+    if (
+      !isStr(data.markdown) &&
+      !(data.video instanceof File) &&
+      !isStr(data.video)
+    )
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "A video or a markdown at least is required",

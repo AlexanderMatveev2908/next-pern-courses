@@ -1,4 +1,8 @@
+import { isStr } from "@shared/first/lib/dataStructure.js";
 import { FastifyReply, FastifyRequest } from "fastify";
+import z from "zod";
+import { schemaPostCourseServer } from "../paperwork/postCourse.js";
+import { __cg } from "@shared/first/lib/logger.js";
 
 export const checkPostCourse = async (
   req: FastifyRequest,
@@ -11,15 +15,21 @@ export const checkPostCourse = async (
   const { fields, files } = myFormData;
 
   const normalized = {
-    fields: {
-      ...fields,
-      tags: Array.isArray(fields.tags)
-        ? fields.tags.map((tag) => JSON.parse(tag)).filter(Boolean)
-        : [],
-    },
-    images: files.filter((f) => f.mimetype.startsWith("image/")),
-    video: files.find((f) => f.mimetype.startsWith("video/")),
+    ...fields,
+    tags: Array.isArray(fields.tags)
+      ? fields.tags.map((tag) => JSON.parse(tag)).filter((el) => isStr(el.val))
+      : [],
+    imageFiles: files.filter((f) => f.mimetype.startsWith("image/")),
+    videoFile: files.find((f) => f.mimetype.startsWith("video/")),
   };
 
-  normalized.fields.tags.map((el) => console.log(el));
+  const result = schemaPostCourseServer.safeParse(normalized);
+
+  if (result.error) {
+    const fancyErr = result.error?.format();
+
+    console.log(fancyErr);
+  } else if (result.success) {
+    __cg("success form");
+  }
 };
