@@ -4,8 +4,9 @@ export type AppFile = {
   fieldname: string;
   filename: string;
   mimetype: string;
-  buffer: Buffer;
+  buffer: Buffer | null;
   size: number;
+  path?: string;
 };
 
 declare module "fastify" {

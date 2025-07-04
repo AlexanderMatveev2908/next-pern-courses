@@ -3,6 +3,10 @@ import multipart, { MultipartFile } from "@fastify/multipart";
 import { FastifyRequest } from "fastify";
 import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "src/types/fastify.js";
+import fs from "fs";
+import path from "path";
+import { app_dir } from "src/lib/system/index.js";
+import { v4 } from "uuid";
 
 export const multipartPlugin = fp(async (app) => {
   app.register(multipart, {
@@ -19,13 +23,43 @@ export const parseForm = async (req: FastifyRequest) => {
   for await (const part of req.parts()) {
     if (part.type === "file") {
       const buffer = await part.toBuffer();
-      files.push({
+
+      const originalname = part.filename || "unknown";
+      const ext = path.extname(originalname);
+      const safeName = v4() + ext;
+
+      const fileData = {
         fieldname: part.fieldname,
-        filename: part.filename,
+        filename: safeName,
         mimetype: part.mimetype,
         size: buffer.length,
         buffer,
-      });
+      };
+
+      if (fileData.mimetype.startsWith("video/")) {
+        const uploadDir = path.resolve(app_dir, "uploads", "videos");
+        const helperRead = path.resolve(app_dir, "uploads", "_");
+
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, {
+            recursive: true,
+          });
+          fs.mkdirSync(helperRead, {
+            recursive: true,
+          });
+        }
+
+        const filePath = path.join(uploadDir, fileData.filename);
+        await fs.promises.writeFile(filePath, buffer);
+
+        files.push({
+          ...fileData,
+          buffer: null,
+          path: filePath,
+        });
+      } else {
+        files.push(fileData);
+      }
     } else if (part.type === "field") {
       const key = part.fieldname;
       const val = part.value;
@@ -40,9 +74,6 @@ export const parseForm = async (req: FastifyRequest) => {
       }
     }
   }
-
-  // console.log("fields", fields);
-  console.log("files", files);
 
   return { fields, files };
 };
