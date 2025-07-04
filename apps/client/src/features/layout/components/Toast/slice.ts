@@ -16,7 +16,7 @@ export type ToastStateType = {
 
 const init: ToastStateType = {
   isShow: false,
-  toast: { msg: "", type: "success" as ApiEventType },
+  toast: { msg: "", type: "" as ApiEventType },
   id: "",
 };
 

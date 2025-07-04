@@ -64,7 +64,7 @@ const TagsForm: FC = () => {
                 <BtnIcon
                   {...{
                     Svg: Trash2,
-                    btnActType: BtnActType.error,
+                    btnActType: BtnActType.ERROR,
                     isEnabled: true,
                     type: "button",
                     $svgCSS: {
@@ -85,7 +85,7 @@ const TagsForm: FC = () => {
           <BtnIcon
             {...{
               Svg: ClipboardPlus,
-              btnActType: BtnActType.success,
+              btnActType: BtnActType.SUCCESS,
               isEnabled: true,
               type: "button",
               label: "Add Tag",

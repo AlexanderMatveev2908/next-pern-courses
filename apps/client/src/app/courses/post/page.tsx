@@ -47,7 +47,7 @@ const PostCourse: FC = () => {
 
       dispatch(
         toastSlice.actions.open({
-          type: ApiEventType.error,
+          type: ApiEventType.ERROR,
           msg: "",
         }),
       );

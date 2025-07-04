@@ -25,7 +25,7 @@ export const useHandleErrAPI = () => {
         dispatch(
           toastSlice.actions.open({
             msg: err.data.msg,
-            type: ApiEventType.error,
+            type: ApiEventType.ERROR,
           }),
         );
     },

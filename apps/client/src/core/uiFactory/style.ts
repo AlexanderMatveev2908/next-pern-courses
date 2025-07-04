@@ -1,9 +1,9 @@
 import { BtnActType } from "@/common/types/uiFactory";
 
 export const btnColors = {
-  [BtnActType.success]: "var(--green__600)",
-  [BtnActType.info]: "var(--blue__600)",
-  [BtnActType.warning]: "var(--yellow__600)",
-  [BtnActType.error]: "var(--red__600)",
-  [BtnActType.neutral]: "var(--neutral__300)",
+  [BtnActType.SUCCESS]: "var(--green__600)",
+  [BtnActType.INFO]: "var(--blue__600)",
+  [BtnActType.WARNING]: "var(--yellow__600)",
+  [BtnActType.ERROR]: "var(--red__600)",
+  [BtnActType.NEUTRAL]: "var(--neutral__300)",
 };
