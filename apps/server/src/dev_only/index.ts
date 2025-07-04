@@ -1,5 +1,5 @@
 import { TestA } from "@prisma/client";
-import db from "src/conf/db.js";
+import db from "@src/conf/db.js";
 
 export const doStuff = async () => {
   const newTest = await db.testA.create({

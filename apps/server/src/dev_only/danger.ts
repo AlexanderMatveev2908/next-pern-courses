@@ -1,6 +1,6 @@
 import { __cg } from "@shared/first/lib/logger.js";
-import { cloud } from "src/conf/cloud.js";
-import db from "src/conf/db.js";
+import { cloud } from "@src/conf/cloud.js";
+import db from "@src/conf/db.js";
 
 export const DEL_ALL = async () => {
   __cg("start deleting 🕰️");
