@@ -60,7 +60,7 @@ export const axiosBaseQuery = async ({
         config: {
           url,
           method,
-          data: argData,
+          data: argData instanceof FormData ? JSON.stringify(argData) : argData,
           params,
           responseType,
         },

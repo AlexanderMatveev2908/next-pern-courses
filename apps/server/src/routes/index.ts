@@ -5,8 +5,10 @@ import { decoratorsPlugin } from "../decorators/index.js";
 import { corsPlugin } from "../middleware/cors.js";
 import { multipartPlugin } from "src/middleware/multipart.js";
 import { cookiePlugin } from "src/middleware/cookies.js";
+import { catchErr } from "src/middleware/catchErr.js";
 
 export default async function router(app: FastifyInstance) {
+  await app.register(catchErr);
   await app.register(corsPlugin);
   await app.register(decoratorsPlugin);
   await app.register(multipartPlugin);

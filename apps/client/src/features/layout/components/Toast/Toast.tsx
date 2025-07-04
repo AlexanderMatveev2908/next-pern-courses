@@ -159,8 +159,7 @@ const Toast: FC = ({}) => {
 
           <div className="w-full flex justify-center">
             <span className="txt__md text-neutral-200">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-              harum omnis fugiat amet quisquam aliquid molestias
+              {toastState.toast.msg}
             </span>
           </div>
 

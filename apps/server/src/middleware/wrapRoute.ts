@@ -5,7 +5,9 @@ export const wrapRoute =
   async (req: FastifyRequest, res: FastifyReply): Promise<void> => {
     try {
       await cbAPI(req, res);
-    } catch (error) {
-      return res.res500();
+    } catch (err: any) {
+      return res.res500({
+        msg: err?.msg ?? err?.message,
+      });
     }
   };

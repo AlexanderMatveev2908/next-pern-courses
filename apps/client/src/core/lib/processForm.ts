@@ -27,7 +27,7 @@ export const genFormData = <T>(data: T) => {
         ) {
           if (!isObjOK(curr)) continue;
 
-          formData.append(k, curr.val);
+          formData.append(k, JSON.stringify(curr));
         }
 
         i++;
