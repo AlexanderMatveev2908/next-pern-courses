@@ -26,9 +26,14 @@ export const checkPostCourse = async (
   const result = schemaPostCourseServer.safeParse(normalized);
 
   if (result.error) {
-    const fancyErr = result.error?.format();
+    const fancyErr = result.error.format();
+    const msg =
+      fancyErr._errors[0] ??
+      Object.values(fancyErr)
+        .flatMap((errs) => (errs as any)?._errors)
+        .filter(Boolean)[0];
 
-    console.log(fancyErr);
+    return res.res422({ msg });
   } else if (result.success) {
     __cg("success form");
   }

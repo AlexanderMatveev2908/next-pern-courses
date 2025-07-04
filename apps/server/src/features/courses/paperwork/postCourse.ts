@@ -37,6 +37,7 @@ export const schemaPostCourseServer = (schemaCoursePost.innerType() as any)
           buffer: z.instanceof(Buffer),
         }),
       )
+      .max(5, "You can upload 5 images at most")
       .optional(),
 
     images: z
@@ -45,10 +46,14 @@ export const schemaPostCourseServer = (schemaCoursePost.innerType() as any)
           message: "Invalid image url",
         }),
       )
+      .max(5, "You can upload 5 images at most")
       .optional(),
-
     video: z
-      .string()
+      .string({
+        required_error: "Video is required",
+        invalid_type_error: "Video must be a string",
+      })
+      .min(5, "Video is too short")
       .refine((v) => !isStr(v) || REG_CLOUD_URL.test(v), {
         message: "Invalid video url",
       })
