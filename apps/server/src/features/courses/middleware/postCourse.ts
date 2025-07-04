@@ -1,8 +1,8 @@
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
 import { schemaPostCourseServer } from "../paperwork/postCourse.js";
 import { __cg } from "@shared/first/lib/logger.js";
+import fs from "fs";
 
 export const checkPostCourse = async (
   req: FastifyRequest,
@@ -32,6 +32,15 @@ export const checkPostCourse = async (
       Object.values(fancyErr)
         .flatMap((errs) => (errs as any)?._errors)
         .filter(Boolean)[0];
+
+    if (isStr(normalized.videoFile?.path))
+      try {
+        await fs.promises.unlink(normalized!.videoFile!.path!);
+
+        __cg("success local delete");
+      } catch (err) {
+        __cg("fail local delete");
+      }
 
     return res.res422({ msg });
   } else if (result.success) {
