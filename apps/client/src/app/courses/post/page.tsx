@@ -10,9 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger";
 import CourseForm from "@/core/forms/CourseForm/CourseForm";
 import { genTagField } from "@/core/forms/CourseForm/uiFactory";
-import { useDispatch } from "react-redux";
-import { toastSlice } from "@/features/layout/components/Toast/slice";
-import { ApiEventType } from "@/common/types/api";
 import { genFormData } from "@/core/lib/processForm";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
@@ -29,7 +26,6 @@ const PostCourse: FC = () => {
   const [mutate, { isLoading }] =
     coursesSliceAPI.endpoints.postCourse.useMutation();
   const { wrapMutation } = useWrapMutation();
-  const dispatch = useDispatch();
   const { handleSubmit } = formCtx;
 
   const handleSave = handleSubmit(
@@ -45,12 +41,6 @@ const PostCourse: FC = () => {
     (err) => {
       __cg("err", err);
 
-      dispatch(
-        toastSlice.actions.open({
-          type: ApiEventType.ERROR,
-          msg: "",
-        }),
-      );
       return err;
     },
   );

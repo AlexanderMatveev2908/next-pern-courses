@@ -1,6 +1,6 @@
 enum TypeAsset {
-  VIDEO @map("video")
-  IMAGE @map("image")
+  VIDEO 
+  IMAGE 
 }
 
 enum EntityType {

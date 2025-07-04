@@ -5,6 +5,7 @@ import { FormFieldType } from "@/common/types/uiFactory";
 import {
   ControllerRenderProps,
   FieldValues,
+  Path,
   useFormContext,
 } from "react-hook-form";
 import { isStr } from "@shared/first/lib/dataStructure";
@@ -13,11 +14,15 @@ import PreviewVideo from "./components/PreviewVideo";
 import FieldFile from "../FieldFile";
 import RowButtonsFile from "@/common/components/HOC/assets/RowButtonsFile";
 
-type PropsType<T extends FieldValues> = {
+type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FormFieldType<T>;
+  cb: (val: T[K] | File | null) => void;
 };
 
-const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
+const FormFieldVideo = <T extends FieldValues, K extends Path<T>>({
+  el,
+  cb,
+}: PropsType<T, K>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const {
@@ -49,6 +54,8 @@ const FormFieldVideo = <T extends FieldValues>({ el }: PropsType<T>) => {
     } = e;
 
     field.onChange(files?.[0] ?? null);
+
+    cb?.(files?.[0] ?? null) as T[K];
   };
 
   const handleRemove = () => {

@@ -41,8 +41,8 @@ model TestC {
 
 /* => start 2-cloud-asset.prisma */
 enum TypeAsset {
-  VIDEO @map("video")
-  IMAGE @map("image")
+  VIDEO 
+  IMAGE 
 }
 
 enum EntityType {
