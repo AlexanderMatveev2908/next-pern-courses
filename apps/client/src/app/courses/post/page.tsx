@@ -13,7 +13,7 @@ import { genTagField } from "@/core/forms/CourseForm/uiFactory";
 import { useDispatch } from "react-redux";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 import { ApiEventType } from "@/common/types/api";
-import { genFormData } from "@/features/courses/lib/processData";
+import { genFormData } from "@/core/lib/processForm";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 

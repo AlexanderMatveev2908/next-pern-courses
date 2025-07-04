@@ -12,7 +12,7 @@ import { easeInOut, motion } from "framer-motion";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
-import { isObjOK } from "@shared/first/lib/dataStructure";
+import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
 
 export type PropsTypeWrapBoxes<T extends FieldValues> = {
   vals: Record<string, string>;
@@ -36,7 +36,10 @@ const WrapBoxes = <T extends FieldValues>({
   } = useFormContext<T>();
   const data: T[typeof el.name] = watch(el.name);
 
-  const parsedVals: [string, string][] = Object.entries(vals);
+  const parsedVals: [string, string][] = useMemo(
+    () => Object.entries(vals),
+    [vals],
+  );
 
   useEffect(() => {
     const listen = (): void => {
@@ -80,7 +83,7 @@ const WrapBoxes = <T extends FieldValues>({
     setCurrSwap(0);
   }, [vals]);
 
-  return !isObjOK(vals, Boolean) ? (
+  return !isObjOK(vals, Boolean) && isStr(txtFallback) ? (
     <div className="w-full flex justify-center">
       <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200">
         {txtFallback}

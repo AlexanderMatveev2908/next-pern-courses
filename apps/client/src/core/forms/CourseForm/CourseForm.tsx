@@ -72,6 +72,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <FormFieldVideo {...{ el: videoField }} />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
+
       <WrapCheck {...{ el: fieldHard, vals: Difficulties }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
