@@ -87,7 +87,7 @@ enum TechStack {
 }
 
 enum Tools {
-      PRETTIER     @map("prettier")
+  PRETTIER     @map("prettier")
   EMMET        @map("emmet")
   MUSTACHE     @map("mustache")
   PUG          @map("pug")
@@ -165,8 +165,8 @@ enum Tools {
 model Course {
     id String @id @default(uuid())
     title String 
-    description String
-    markdown String
+    description String?
+    markdown String?
     grade String
     techStack TechStack
     tools Tools

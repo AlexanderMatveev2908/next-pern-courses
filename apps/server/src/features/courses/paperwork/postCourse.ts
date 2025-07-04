@@ -56,7 +56,8 @@ export const schemaPostCourseServer = (schemaCoursePost.innerType() as any)
       .min(5, "Video is too short")
       .refine((v) => !isStr(v) || REG_CLOUD_URL.test(v), {
         message: "Invalid video url",
-      }),
+      })
+      .optional(),
   })
   .superRefine((data: any, ctx: z.RefinementCtx) => {
     if (!isValidTool(data.techStack as TechValType, data.tools as ToolValType))
@@ -77,3 +78,5 @@ export const schemaPostCourseServer = (schemaCoursePost.innerType() as any)
         path: ["markdown"],
       });
   });
+
+export type CourseFormServerType = z.infer<typeof schemaPostCourseServer>;

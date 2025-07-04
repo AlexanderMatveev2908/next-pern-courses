@@ -4,10 +4,12 @@ export const isStr = (val?: string | null): boolean =>
 export const isArrOK = <T>(arg?: T[], cb?: (val: T) => boolean): boolean =>
   Array.isArray(arg) &&
   !!arg.length &&
-  arg.every(typeof cb === "function" ? cb : Boolean);
+  arg.every((el) => (typeof cb === "function" ? cb(el) : true));
 
-export const isIs = <T extends Record<string, string>>(obj: T, val: keyof T) =>
-  Object.keys(obj).includes(val as string);
+export const isInObjKeys = <T extends Record<string, string>>(
+  obj: T,
+  val: keyof T,
+) => Object.keys(obj).includes(val as string);
 
 export const isObjOK = <T>(
   arg: T,
