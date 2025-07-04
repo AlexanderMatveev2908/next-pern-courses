@@ -1,4 +1,3 @@
 {
-  "watch": ["src"],
-  "ignore": ["uploads", "dist"]
+  "ignore": ["uploads", "dist", "logger"]
 }
