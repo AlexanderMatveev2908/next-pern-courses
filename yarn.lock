@@ -685,6 +685,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/rate-limit@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "@fastify/rate-limit@npm:10.3.0"
+  dependencies:
+    "@lukeed/ms": "npm:^2.0.2"
+    fastify-plugin: "npm:^5.0.0"
+    toad-cache: "npm:^3.7.0"
+  checksum: 10c0/dc29c4e088362cc144a9782d86d50bc8bbd440d10017c394660ff26bd7468feb90ba412e101b3e312bfdbb7a515798ffd73801ff32a36d0fedf40032ff081dcb
+  languageName: node
+  linkType: hard
+
 "@flydotio/dockerfile@npm:^0.7.10":
   version: 0.7.10
   resolution: "@flydotio/dockerfile@npm:0.7.10"
@@ -1218,6 +1229,13 @@ __metadata:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
   checksum: 10c0/fb547ba31658c4d74eb17e7389f4908bf7c44cef47acb4c5baa57289daf68e6fe53c639f41f751b3923aca67010501264f70e7b49978ad1f040294b22c37b333
+  languageName: node
+  linkType: hard
+
+"@lukeed/ms@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@lukeed/ms@npm:2.0.2"
+  checksum: 10c0/843b922717313bcde4943f478145d8bc13115b9b91d83bbaed53739b5644122984412310aed574792f4e6b492f2cbda178175f601856d310f67e14834c3f17a0
   languageName: node
   linkType: hard
 
@@ -2942,6 +2960,16 @@ __metadata:
     strip-ansi: "npm:^6.0.1"
     wrap-ansi: "npm:^7.0.0"
   checksum: 10c0/4bda0f09c340cbb6dfdc1ed508b3ca080f12992c18d68c6be4d9cf51756033d5266e61ec57529e610dacbf4da1c634423b0c1b11037709cc6b09045cbd815df5
+  languageName: node
+  linkType: hard
+
+"cloudinary@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "cloudinary@npm:2.7.0"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    q: "npm:^1.5.1"
+  checksum: 10c0/8c6d262d057d5c56f3b0b3666fd520ff11d3cabde23fddfa54d96c50b6634592a7aca18849347d0f03b035e09ef2faf0cdfbba3c71d2697acdd0e857e9cd9ed8
   languageName: node
   linkType: hard
 
@@ -6943,6 +6971,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"q@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "q@npm:1.5.1"
+  checksum: 10c0/7855fbdba126cb7e92ef3a16b47ba998c0786ec7fface236e3eb0135b65df36429d91a86b1fff3ab0927b4ac4ee88a2c44527c7c3b8e2a37efbec9fe34803df4
+  languageName: node
+  linkType: hard
+
 "queue-lit@npm:^1.5.1":
   version: 1.5.2
   resolution: "queue-lit@npm:1.5.2"
@@ -7451,9 +7486,11 @@ __metadata:
     "@fastify/cors": "npm:^11.0.1"
     "@fastify/env": "npm:^5.0.2"
     "@fastify/multipart": "npm:^9.0.3"
+    "@fastify/rate-limit": "npm:^10.3.0"
     "@prisma/client": "npm:^6.10.1"
     "@shared/first": "npm:*"
     "@types/node": "npm:^24.0.6"
+    cloudinary: "npm:^2.7.0"
     dotenv: "npm:^17.0.0"
     fastify: "npm:^5.4.0"
     nodemon: "npm:^3.1.10"

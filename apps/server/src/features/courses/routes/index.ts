@@ -9,6 +9,12 @@ export const coursesRouter = async (app: FastifyInstance) => {
   app.route({
     method: "POST",
     url: "/",
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: 1000 * 60 * 15,
+      },
+    },
     preHandler: [parseForm, wrapRoute(logJSON), checkPostCourse],
     handler: wrapRoute(postCourse),
   });

@@ -13,6 +13,9 @@ const schema = {
     FRONT_URL: { type: "string" },
     FRONT_URL_DEV: { type: "string" },
     COOKIE_SECRET: { type: "string" },
+    CLOUDINARY_NAME: { type: "string" },
+    CLOUDINARY_API_KEY: { type: "string" },
+    CLOUDINARY_API_SECRET: { type: "string" },
   },
 };
 

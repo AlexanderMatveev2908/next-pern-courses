@@ -18,6 +18,9 @@ declare module "fastify" {
       FRONT_URL: string;
       FRONT_URL_DEV: string;
       COOKIE_SECRET: string;
+      CLOUDINARY_NAME: string;
+      CLOUDINARY_API_KEY: string;
+      CLOUDINARY_API_SECRET: string;
     };
   }
   interface FastifyRequest {

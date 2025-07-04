@@ -1,7 +1,7 @@
 export const Difficulties = {
   beginner: "Beginner",
-  intermediate: "Intermediate",
   junior: "Junior",
+  intermediate: "Intermediate",
   expert: "Expert",
 };
 

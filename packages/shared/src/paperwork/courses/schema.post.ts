@@ -11,7 +11,7 @@ import {
   REG_DESCRIPTION,
   REG_TITLE,
 } from "@/constants/regex.js";
-import { isIs, isStr } from "@/lib/dataStructure.js";
+import { isInObjKeys, isStr } from "@/lib/dataStructure.js";
 import { v4 } from "uuid";
 import { z } from "zod";
 
@@ -67,7 +67,7 @@ export const schemaCoursePost = z
       .string()
       .refine(isStr, "Grade is required")
       .refine(
-        (v) => isIs(Difficulties, v as DifficultyType),
+        (v) => isInObjKeys(Difficulties, v as DifficultyType),
         "Grade is invalid",
       ),
 
@@ -77,7 +77,7 @@ export const schemaCoursePost = z
         message: "Tech stack is required",
       })
       .refine(
-        (v) => isIs(TechStack, v as TechValType),
+        (v) => isInObjKeys(TechStack, v as TechValType),
         "Tech stack is invalid",
       ),
     tools: z.string().refine(isStr, {

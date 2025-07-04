@@ -1,6 +1,6 @@
 import fp from "fastify-plugin";
 import multipart, { MultipartFile } from "@fastify/multipart";
-import { FastifyRequest } from "fastify";
+import { FastifyPluginCallback, FastifyRequest } from "fastify";
 import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "src/types/fastify.js";
 import fs from "fs";
@@ -8,7 +8,7 @@ import path from "path";
 import { app_dir } from "src/lib/system/index.js";
 import { v4 } from "uuid";
 
-export const multipartPlugin = fp(async (app) => {
+export const multipartPlugin: FastifyPluginCallback = fp(async (app) => {
   app.register(multipart, {
     limits: {
       fileSize: 10 * 1024 * 1024,
