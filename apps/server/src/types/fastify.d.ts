@@ -21,10 +21,9 @@ declare module "fastify" {
     };
   }
   interface FastifyRequest {
-    formData?: {
-      fields: Record<string, string>;
-      file: AppFile;
-      files: Array<AppFile>;
+    myFormData?: {
+      fields: Record<string, any>;
+      files: AppFile[];
     };
   }
 

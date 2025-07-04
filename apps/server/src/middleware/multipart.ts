@@ -75,5 +75,8 @@ export const parseForm = async (req: FastifyRequest) => {
     }
   }
 
-  return { fields, files };
+  req.myFormData = {
+    fields,
+    files,
+  };
 };
