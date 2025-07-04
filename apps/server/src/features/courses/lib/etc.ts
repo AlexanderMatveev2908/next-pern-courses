@@ -1,6 +1,6 @@
 import { CloudAsset } from "@prisma/client";
 import { isArrOK, isObjOK, isStr } from "@shared/first/lib/dataStructure.js";
-import { delCloud } from "src/lib/cloud/delete.js";
+import { delCloud } from "@src/lib/cloud/delete.js";
 
 export const clearAssets = async (
   images: Partial<CloudAsset>[],

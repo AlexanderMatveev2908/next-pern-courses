@@ -1,5 +1,5 @@
 import { __cg } from "@shared/first/lib/logger.js";
-import { cloud } from "src/conf/cloud.js";
+import { cloud } from "@src/conf/cloud.js";
 
 export const delCloud = async (ids: string[], resource: "image" | "video") => {
   try {

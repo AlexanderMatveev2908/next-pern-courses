@@ -1,5 +1,5 @@
 import { CloudAsset, Course, EntityType, TypeAsset } from "@prisma/client";
-import db from "src/conf/db.js";
+import db from "@src/conf/db.js";
 import { CourseFormServerType } from "../paperwork/postCourse.js";
 import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";

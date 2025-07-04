@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import cors from "@fastify/cors";
 import type { FastifyInstance, FastifyPluginCallback } from "fastify";
+import { __cg } from "@shared/first/lib/logger.js";
 
 export const corsPlugin: FastifyPluginCallback = fp(
   async (app: FastifyInstance) => {
@@ -12,9 +13,11 @@ export const corsPlugin: FastifyPluginCallback = fp(
     await app.register(cors, {
       credentials: true,
       origin: (origin, cb) => {
-        console.log(origin);
-        if (!origin || whitelist.includes(origin)) cb(null, true);
-        else cb(null, false);
+        __cg("cors origin", origin);
+
+        if (!origin || whitelist.some((url) => origin.startsWith(url)))
+          cb(null, true);
+        else cb(new Error("Not allowed ⚔️"), false);
       },
     });
   },

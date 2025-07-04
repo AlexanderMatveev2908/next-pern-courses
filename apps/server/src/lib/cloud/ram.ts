@@ -1,6 +1,6 @@
 import { CloudAsset } from "@prisma/client";
-import { cloud } from "src/conf/cloud.js";
-import { AppFile } from "src/types/fastify.js";
+import { cloud } from "@src/conf/cloud.js";
+import { AppFile } from "@src/types/fastify.js";
 
 export const uploadRam = async (
   file: AppFile,
