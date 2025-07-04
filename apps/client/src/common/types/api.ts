@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export enum TagsAPI {
   TEST = "TEST",
 }
@@ -8,15 +9,16 @@ export enum ApiEventType {
   info = "info",
 }
 
-export type ResAPI<T> = {
+export type ResAPI<T extends Record<string, any>> = {
   data: {
     msg: string;
+    status: number;
   } & T;
-  status: number;
 };
 
-export type ErrAPI<T> = {
+export type ErrAPI<T extends Record<string, any>> = {
   data: {
     msg: string;
+    status: number;
   } & T;
 };
