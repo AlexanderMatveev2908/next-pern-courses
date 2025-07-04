@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec tsx src/server.ts",
-    "build": "tsc --build",
+    "build": "tsc --build && tsc-alias -p tsconfig.json",
     "start": "node dist/server.js",
     "check": "tsc --noEmit"
   },
@@ -20,6 +20,7 @@
     "dotenv": "^17.0.0",
     "fastify": "^5.4.0",
     "prisma": "^6.10.1",
+    "tsc-alias": "^1.8.16",
     "zod": "^3.25.73"
   },
   "devDependencies": {

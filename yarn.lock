@@ -7496,6 +7496,7 @@ __metadata:
     nodemon: "npm:^3.1.10"
     pino-pretty: "npm:^13.0.0"
     prisma: "npm:^6.10.1"
+    tsc-alias: "npm:^1.8.16"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     zod: "npm:^3.25.73"

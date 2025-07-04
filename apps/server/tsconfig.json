@@ -13,6 +13,7 @@
     "baseUrl": ".",
     // ? ALIAS READABILITY
     "paths": {
+      "src/*": ["./src/*"],
       "@shared/first/*": ["../../packages/shared/dist/*"]
     }
   },
