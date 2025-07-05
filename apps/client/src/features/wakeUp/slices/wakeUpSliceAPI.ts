@@ -42,7 +42,7 @@ export const wakeUpSliceAPI = api.injectEndpoints({
 
           if (isStr(data?.msg)) dispatch(wakeUpSlice.actions.setIsWakeUp(true));
 
-          __cg("res async query started", res);
+          // __cg("res async query started", res);
         } catch (err: any) {
           __cg("err async query started", err);
         }

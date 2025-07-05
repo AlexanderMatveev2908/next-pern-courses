@@ -2,10 +2,9 @@ import { ApiEventType, UnwrappedResAPI } from "@/common/types/api";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { __cg } from "@shared/first/lib/logger";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useHandleErrAPI } from "./useHandleErrAPI";
-import { useListenHydration } from "./useListenHydration";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Params<T extends Record<string, any> | void> = {
@@ -28,12 +27,9 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
 }: Params<T>) => {
   const dispatch = useDispatch();
   const { handleErr } = useHandleErrAPI();
-
-  const { isHydrated } = useListenHydration();
+  const hasRun = useRef(false);
 
   const handleQuery = useCallback(() => {
-    if (!isHydrated) return;
-
     if (isSuccess) {
       __cg("wrapper query", data);
 
@@ -57,10 +53,18 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     isError,
     error,
     data,
-    isHydrated,
   ]);
 
   useEffect(() => {
+    // if (hasRun.current) return;
+    hasRun.current = true;
+
     handleQuery();
   }, [handleQuery]);
+
+  const triggerRef = () => (hasRun.current = false);
+
+  return {
+    triggerRef,
+  };
 };

@@ -52,6 +52,15 @@ const Toast: FC = ({}) => {
       prevStatus.current = true;
 
       timerRef.current = setTimeout(() => {
+        if (
+          !toastState.isShow ||
+          forcingRef.current ||
+          !prevStatus.current ||
+          prevID.current !== toastState.id
+        )
+          return;
+
+        clearT(timerRef);
         clickClose();
       }, 4000);
     };
@@ -106,8 +115,16 @@ const Toast: FC = ({}) => {
       forcingRef.current = false;
 
       timerRef.current = setTimeout(() => {
-        dispatch(toastSlice.actions.force());
+        if (
+          toastState.isShow ||
+          forcingRef.current ||
+          prevStatus.current ||
+          prevID.current === toastState.id
+        )
+          return;
+
         clearT(timerRef);
+        dispatch(toastSlice.actions.force());
       }, 400);
     };
 
