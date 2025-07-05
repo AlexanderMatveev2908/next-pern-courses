@@ -1,4 +1,3 @@
-import { execSync } from "child_process";
 import { exit } from "process";
 
 const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GIT_BRANCH;
