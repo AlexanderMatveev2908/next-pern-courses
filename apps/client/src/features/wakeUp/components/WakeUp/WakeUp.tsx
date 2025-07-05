@@ -2,20 +2,22 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import { useEffect, useState, type FC } from "react";
+import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import { wakeUpSliceAPI } from "../../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isStr } from "@shared/first/lib/dataStructure";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
 import { getWakeUkState } from "../../slices/wakeUpSlice";
-import { saveStorage } from "@/core/lib/storage";
+import { getStorage, saveStorage } from "@/core/lib/storage";
 import { StorageKey } from "@/common/types/storage";
+import { clearT } from "@/core/lib/etc";
+import { __cg } from "@shared/first/lib/logger";
 
 const WakeUp: FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isShow, setIsShow] = useState<null | boolean>(null);
+  const [isShow, setIsShow] = useState<null | boolean>(true);
+  const timerID = useRef<NodeJS.Timeout | null>(null);
 
   const hook = wakeUpSliceAPI.useLazyWakeUpFlyQuery();
   const [triggerRTK, res] = hook;
@@ -31,32 +33,42 @@ const WakeUp: FC = () => {
     ...res,
     showToast: true,
   });
+  const handleClick = useCallback(async () => {
+    triggerRef();
+    triggerRTK(undefined, false);
+  }, [triggerRef, triggerRTK]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const val = getStorage(StorageKey.WAKE_UP);
+    __cg("storage wake up", val);
+
     if (wakeState.isWakeUp) saveStorage(StorageKey.WAKE_UP, Date.now() + "");
   }, [wakeState.isWakeUp]);
 
-  // const ping = useCallback(async () => {
-  //   while (true) {
-  //     await new Promise<void>((res) => {
-  //       timerID.current = setTimeout(() => {
-  //         triggerRTK({}, false);
-  //         console.log("run");
-  //         clearT(timerID);
-  //         res();
-  //       }, 1000);
-  //     });
-  //   }
-  // }, [triggerRTK]);
+  const dispatch = useDispatch();
+
+  const ping = useCallback(async () => {
+    while (true) {
+      await new Promise<void>((res) => {
+        timerID.current = setTimeout(() => {
+          handleClick();
+          console.log("run");
+          clearT(timerID);
+          res();
+        }, 2500);
+      });
+    }
+  }, [handleClick]);
 
   useEffect(() => {
-    if (!isStr(data?.msg)) triggerRTK();
-  }, [triggerRTK, data?.msg]);
+    ping();
+  }, [ping]);
 
-  const handleClick = async () => {
-    triggerRef();
-    triggerRTK();
-  };
+  // useEffect(() => {
+  //   if (!isStr(data?.msg)) triggerRTK();
+  // }, [triggerRTK, data?.msg]);
 
   return (
     <WrapPendingClient {...{ isLoading }}>
@@ -69,7 +81,7 @@ const WakeUp: FC = () => {
 
           <WrapPop
             {...{
-              isShow: true,
+              isShow,
               setIsShow,
               Content: () => <ContentWarn {...{ handleClick, isLoading }} />,
               allowClose: false,

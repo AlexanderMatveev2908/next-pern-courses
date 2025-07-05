@@ -63,7 +63,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     handleQuery();
   }, [handleQuery]);
 
-  const triggerRef = () => (hasRun.current = false);
+  const triggerRef = useCallback(() => (hasRun.current = false), []);
 
   return {
     triggerRef,
