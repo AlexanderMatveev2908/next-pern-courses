@@ -11,6 +11,7 @@ import { StorageKey } from "@/common/types/storage";
 import { __cg } from "@shared/first/lib/logger";
 import { clearT } from "@/core/lib/etc";
 import { isStr } from "@shared/first/lib/dataStructure";
+import { toastSlice } from "@/features/layout/components/Toast/slice";
 
 type Params = {
   setIsShow: React.Dispatch<SetStateAction<boolean | null>>;
@@ -49,14 +50,17 @@ export const useIsAwake = ({ setIsShow }: Params) => {
     while (!isAwakeRef.current) {
       await new Promise<void>((res) => {
         timerID.current = setTimeout(() => {
-          handleClick();
-          clearT(timerID);
-
           if (isStr(data?.msg)) {
             dispatch(wakeUpSlice.actions.setIsWakeUp(true));
             isAwakeRef.current = true;
+            dispatch(toastSlice.actions.close());
             setIsShow(false);
+          } else {
+            handleClick();
           }
+
+          clearT(timerID);
+
           res();
         }, 4000);
       });
