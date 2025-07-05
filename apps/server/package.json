@@ -19,7 +19,6 @@
     "cloudinary": "^2.7.0",
     "dotenv": "^17.0.0",
     "fastify": "^5.4.0",
-    "prisma": "^6.10.1",
     "tsc-alias": "^1.8.16",
     "zod": "^3.25.73"
   },
@@ -27,6 +26,7 @@
     "@types/node": "^24.0.6",
     "nodemon": "^3.1.10",
     "pino-pretty": "^13.0.0",
+    "prisma": "^6.11.1",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
