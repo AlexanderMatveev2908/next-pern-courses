@@ -33,11 +33,11 @@ export type PropsTypeBtn = {
 };
 
 export enum BtnActType {
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-  ERROR = "error",
-  NEUTRAL = "neutral",
+  INFO = "INFO",
+  SUCCESS = "SUCCESS",
+  WARNING = "WARNING",
+  ERROR = "ERROR",
+  NEUTRAL = "NEUTRAL",
 }
 
 export type FieldCheckType<T extends FieldValues> = {

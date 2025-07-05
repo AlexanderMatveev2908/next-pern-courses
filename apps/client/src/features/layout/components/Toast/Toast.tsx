@@ -12,6 +12,7 @@ import { resp } from "@/core/lib/style";
 import { clearT } from "../../../../core/lib/etc";
 import { varToast } from "./uiFactory";
 import { __cg } from "@shared/first/lib/logger";
+import { BtnActType } from "@/common/types/uiFactory";
 
 const Toast: FC = ({}) => {
   const toastState = useSelector(getToastState);
@@ -19,7 +20,7 @@ const Toast: FC = ({}) => {
   // ? for these kind of things i prefer a lot much the refs because a small bug in the flow of toast could lead to total arrest of application for infinite loops due to bad management of sync of states
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const prevStatus = useRef<boolean>(false);
-  const prevID = useRef<string>(toastState.id);
+  const prevID = useRef<string>("");
   const forcingRef = useRef<boolean>(false);
 
   const dispatch = useDispatch();
@@ -34,7 +35,13 @@ const Toast: FC = ({}) => {
   useEffect(() => {
     const listen = () => {
       // ? if toast is already shown or figure as prev skip so it can be managed properly by stage 2 or 3
-      if (!toastState.isShow || prevStatus.current) return;
+      if (
+        !toastState.isShow ||
+        prevStatus.current ||
+        forcingRef.current ||
+        prevID.current === toastState.id
+      )
+        return;
 
       __cg("stage 1 ");
 
@@ -46,7 +53,7 @@ const Toast: FC = ({}) => {
 
       timerRef.current = setTimeout(() => {
         clickClose();
-      }, 3000);
+      }, 4000);
     };
 
     listen();
@@ -84,7 +91,12 @@ const Toast: FC = ({}) => {
   useEffect(() => {
     const listen = () => {
       // ? here beside the fact i am checking it to be in force mode is important to check prevStatus to avoid opening the toast that first need to be closed in stage 2
-      if (!forcingRef.current || toastState.isShow || prevStatus.current)
+      if (
+        !forcingRef.current ||
+        toastState.isShow ||
+        prevStatus.current ||
+        prevID.current === toastState.id
+      )
         return;
 
       __cg("stage 3");
@@ -106,7 +118,7 @@ const Toast: FC = ({}) => {
     };
   }, [toastState.isShow, dispatch, toastState.id]);
 
-  const clr = btnColors[toastState.toast.type];
+  const clr = btnColors[toastState.toast.type ?? BtnActType.NEUTRAL];
 
   return (
     <AnimatePresence>
@@ -170,7 +182,7 @@ const Toast: FC = ({}) => {
             `}
             initial={{ width: "100%" }}
             transition={{
-              duration: toastState.isShow ? 3 : 0,
+              duration: toastState.isShow ? 4 : 0,
               ease: "linear",
             }}
             animate={{

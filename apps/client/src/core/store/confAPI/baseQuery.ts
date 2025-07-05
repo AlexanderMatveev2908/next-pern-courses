@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ErrAPI, ResAPI } from "@/common/types/api";
 import { axiosInstance } from "@/core/constants/axios";
+import { isStr } from "@shared/first/lib/dataStructure";
 import { __cg } from "@shared/first/lib/logger.js";
 
 export const axiosBaseQuery = async ({
@@ -15,7 +17,7 @@ export const axiosBaseQuery = async ({
   data?: any;
   params?: any;
   responseType?: any;
-}): Promise<any> => {
+}): Promise<ResAPI<any> | ErrAPI<any>> => {
   try {
     const { data, status } = await axiosInstance({
       url,
@@ -24,6 +26,7 @@ export const axiosBaseQuery = async ({
       params,
       responseType,
     });
+
 
     return responseType === "blob"
       ? {
@@ -34,16 +37,14 @@ export const axiosBaseQuery = async ({
         }
       : {
           data: {
-            data,
+            ...data,
             status,
           },
         };
   } catch (err: any) {
     const { response } = err ?? {};
 
-    let errData: any = response?.data;
-
-    __cg("axios err", errData);
+    let errData: any = response?.data ?? {};
 
     if (errData instanceof Blob && errData.type === "application/json") {
       try {
@@ -66,7 +67,9 @@ export const axiosBaseQuery = async ({
         },
 
         data: {
-          ...(errData?.msg ? errData : { ...errData, msg: errData?.message }),
+          ...(isStr(errData?.msg)
+            ? errData
+            : { ...errData, msg: errData?.message }),
           status: response?.status ?? 500,
         },
       },

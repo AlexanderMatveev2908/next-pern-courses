@@ -23,8 +23,7 @@ const PostCourse: FC = () => {
     },
   });
 
-  const [mutate, { isLoading }] =
-    coursesSliceAPI.endpoints.postCourse.useMutation();
+  const [mutate, { isLoading }] = coursesSliceAPI.usePostCourseMutation();
   const { wrapMutation } = useWrapMutation();
   const { handleSubmit } = formCtx;
 

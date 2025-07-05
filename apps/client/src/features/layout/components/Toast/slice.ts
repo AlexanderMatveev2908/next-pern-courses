@@ -41,6 +41,7 @@ export const toastSlice = createSlice({
     },
 
     force: (state) => {
+      // ? u already set state.toast above, is enough here just to trigger a rerender
       state.isShow = true;
       state.id = v4();
     },
