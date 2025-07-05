@@ -30,6 +30,10 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   const hasRun = useRef(false);
 
   const handleQuery = useCallback(() => {
+    if (hasRun.current) return;
+
+    if (isSuccess || isError) hasRun.current = true;
+
     if (isSuccess) {
       __cg("wrapper query", data);
 
@@ -56,9 +60,6 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   ]);
 
   useEffect(() => {
-    // if (hasRun.current) return;
-    hasRun.current = true;
-
     handleQuery();
   }, [handleQuery]);
 

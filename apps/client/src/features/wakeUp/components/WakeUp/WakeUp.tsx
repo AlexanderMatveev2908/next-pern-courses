@@ -5,7 +5,7 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useEffect, useState, type FC } from "react";
 import { wakeUpSliceAPI } from "../../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { isObjOK } from "@shared/first/lib/dataStructure";
+import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
 import { useSelector } from "react-redux";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
@@ -41,7 +41,7 @@ const WakeUp: FC = () => {
   useEffect(() => {
     if (!isHydrated) return;
 
-    if (!isObjOK(data)) trigger();
+    if (!isStr(data?.msg)) trigger();
   }, [data, trigger, isHydrated]);
 
   const handleClick = async () => {
