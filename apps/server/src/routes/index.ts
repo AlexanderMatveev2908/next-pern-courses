@@ -7,6 +7,7 @@ import { multipartPlugin } from "@src/middleware/multipart.js";
 import { cookiePlugin } from "@src/middleware/cookies.js";
 import { catchErr } from "@src/middleware/catchErr.js";
 import { ratePlugin } from "@src/middleware/rate.js";
+import { wakeUpRoute } from "@src/features/wakeUp/routes/index.js";
 
 export default async function router(app: FastifyInstance) {
   await app.register(catchErr);
@@ -18,4 +19,5 @@ export default async function router(app: FastifyInstance) {
 
   app.register(helloRouter, { prefix: "/hello" });
   app.register(coursesRouter, { prefix: "/courses" });
+  app.register(wakeUpRoute, { prefix: "/wake-up" });
 }
