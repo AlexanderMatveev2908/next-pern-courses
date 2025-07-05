@@ -27,7 +27,6 @@ export const axiosBaseQuery = async ({
       responseType,
     });
 
-
     return responseType === "blob"
       ? {
           data: {

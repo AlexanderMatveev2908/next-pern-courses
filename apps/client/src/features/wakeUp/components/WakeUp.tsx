@@ -10,15 +10,15 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 
 const WakeUp: FC = () => {
-  const res = wakeUpSliceAPI.useWakeUpFlyQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
-  const { isLoading } = res;
+  // const res = wakeUpSliceAPI.useWakeUpFlyQuery(undefined, {
+  //   refetchOnMountOrArgChange: true,
+  // });
+  // const { isLoading } = res;
 
-  useWrapQuery({
-    ...res,
-    showToast: true,
-  });
+  // useWrapQuery({
+  //   ...res,
+  //   showToast: true,
+  // });
 
   const { wrapMutation } = useWrapMutation();
   const [mutate, { isLoading: isLoadingMutate }] =
@@ -31,7 +31,7 @@ const WakeUp: FC = () => {
   };
 
   return (
-    <WrapPendingClient {...{ isLoading }}>
+    <WrapPendingClient {...{ isLoading: false }}>
       {() => (
         <div className="flex flex-col justify-center items-center gap-10">
           <span className="txt__2xl text-neutral-200">
