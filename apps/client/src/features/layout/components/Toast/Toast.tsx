@@ -118,7 +118,11 @@ const Toast: FC = ({}) => {
     };
   }, [toastState.isShow, dispatch, toastState.id]);
 
-  const clr = btnColors[toastState.toast.type ?? BtnActType.NEUTRAL];
+  const clr =
+    btnColors[
+      (toastState.toast.type as unknown as BtnActType.NEUTRAL) ??
+        BtnActType.NEUTRAL
+    ];
 
   return (
     <AnimatePresence>

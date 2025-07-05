@@ -4,24 +4,24 @@ import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 
-export const store = configureStore({
-  reducer: {
-    api: api.reducer,
-    side: sideSlice.reducer,
-    toast: toastSlice.reducer,
-  },
+// export const store = configureStore({
+//   reducer: {
+//     api: api.reducer,
+//     side: sideSlice.reducer,
+//     toast: toastSlice.reducer,
+//   },
 
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware().concat(api.middleware),
 
-  devTools: {
-    name: "next-courses-app",
-    trace: true,
-  },
-});
+//   devTools: {
+//     name: "next-courses-app",
+//     trace: true,
+//   },
+// });
 
-export type AppStateType = ReturnType<typeof store.getState>;
-export type AppDispatchType = typeof store.dispatch;
+// export type AppStateType = ReturnType<typeof store.getState>;
+// export type AppDispatchType = typeof store.dispatch;
 
 export const genStoreRTK = (preloadedState?: any) =>
   configureStore({
@@ -42,6 +42,8 @@ export const genStoreRTK = (preloadedState?: any) =>
     },
   });
 
-export type StoreTypeSSR = ReturnType<typeof genStoreRTK>;
+export type StoreTypeSSR = ReturnType<
+  ReturnType<typeof genStoreRTK>["getState"]
+>;
 
 export type DispatchTypeSSR = StoreTypeSSR["dispatch"];

@@ -1,4 +1,4 @@
-import { AppStateType } from "@/core/store/store";
+import { StoreTypeSSR } from "@/core/store/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type SideStateType = {
@@ -20,4 +20,4 @@ export const sideSlice = createSlice({
   },
 });
 
-export const getSideState = (state: AppStateType) => state.side;
+export const getSideState = (state: StoreTypeSSR) => state.side;

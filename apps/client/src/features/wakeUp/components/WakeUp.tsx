@@ -7,7 +7,6 @@ import { wakeUpSliceAPI } from "../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
-import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { isObjOK } from "@shared/first/lib/dataStructure";
 import { useSelector } from "react-redux";
 import { StoreTypeSSR } from "@/core/store/store";
@@ -34,15 +33,8 @@ const WakeUp: FC = () => {
     if (!isObjOK(data)) trigger();
   }, [data, trigger]);
 
-  const { wrapMutation } = useWrapMutation();
-  const [mutate, { isLoading: isLoadingMutate }] =
-    wakeUpSliceAPI.useSendSomethingMutation();
-
   const handleClick = async () => {
-    await wrapMutation({
-      cbAPI: mutate,
-      showToast: true,
-    });
+    trigger();
   };
 
   return (
@@ -59,7 +51,7 @@ const WakeUp: FC = () => {
                 label: "Wake up",
                 btnActType: BtnActType.NEUTRAL,
                 isEnabled: true,
-                isLoading: isLoadingMutate,
+                isLoading,
                 type: "button",
                 handleClick,
               }}
