@@ -9,7 +9,7 @@ import { isStr } from "@shared/first/lib/dataStructure";
 import { useDispatch, useSelector } from "react-redux";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
-import { getWakeUkState } from "../../slices/wakeUpSlice";
+import { getWakeUkState, wakeUpSlice } from "../../slices/wakeUpSlice";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import { StorageKey } from "@/common/types/storage";
 import { clearT } from "@/core/lib/etc";
@@ -24,6 +24,7 @@ const WakeUp: FC = () => {
   const { isLoading, data } = res;
 
   const wakeState = useSelector(getWakeUkState);
+  const isAwakeRef = useRef<boolean>(wakeState.isWakeUp);
   // const cacheData = useSelector(
   //   (state: StoreTypeSSR) =>
   //     wakeUpSliceAPI.endpoints.wakeUpFly.select(undefined)(state).data,
@@ -50,17 +51,23 @@ const WakeUp: FC = () => {
   const dispatch = useDispatch();
 
   const ping = useCallback(async () => {
-    while (true) {
+    while (!isAwakeRef.current) {
       await new Promise<void>((res) => {
         timerID.current = setTimeout(() => {
           handleClick();
-          console.log("run");
           clearT(timerID);
+
+          if (isStr(data?.msg)) {
+            __cg("stop");
+            dispatch(wakeUpSlice.actions.setIsWakeUp(true));
+            isAwakeRef.current = true;
+            setIsShow(false);
+          }
           res();
-        }, 2500);
+        }, 4000);
       });
     }
-  }, [handleClick]);
+  }, [handleClick, data, dispatch]);
 
   useEffect(() => {
     ping();
