@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useWrapQuery } from "./useWrapQuery";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import { StorageKey } from "@/common/types/storage";
-import { clearT } from "@/core/lib/etc";
+import { clearT, isWindow } from "@/core/lib/etc";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 
@@ -37,7 +37,7 @@ export const useIsAwake = ({ setIsShow }: Params) => {
   }, [triggerRef, triggerRTK]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!isWindow()) return;
 
     const val = getStorage(StorageKey.WAKE_UP);
 
@@ -47,10 +47,13 @@ export const useIsAwake = ({ setIsShow }: Params) => {
     if (minutes > 15) {
       dispatch(wakeUpSlice.actions.setIsWakeUp(false));
       isAwakeRef.current = false;
+      setIsShow(true);
     }
-  }, [wakeState.isWakeUp, dispatch]);
+  }, [wakeState.isWakeUp, dispatch, setIsShow]);
 
   const ping = useCallback(async () => {
+    if (!isWindow()) return;
+
     while (!isAwakeRef.current) {
       await new Promise<void>((res) => {
         timerID.current = setTimeout(() => {
@@ -60,8 +63,7 @@ export const useIsAwake = ({ setIsShow }: Params) => {
             dispatch(toastSlice.actions.close());
             setIsShow(false);
 
-            if (typeof window !== "undefined")
-              saveStorage(StorageKey.WAKE_UP, Date.now() + "");
+            saveStorage(StorageKey.WAKE_UP, Date.now() + "");
           } else {
             handleClick();
           }

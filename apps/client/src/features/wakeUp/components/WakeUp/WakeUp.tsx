@@ -9,7 +9,7 @@ import { useIsAwake } from "@/core/hooks/api/useIsAwake";
 import { __cg } from "@shared/first/lib/logger";
 
 const WakeUp: FC = () => {
-  const [isShow, setIsShow] = useState<null | boolean>(true);
+  const [isShow, setIsShow] = useState<null | boolean>(false);
 
   const { isLoading } = useIsAwake({ setIsShow });
 
@@ -17,10 +17,12 @@ const WakeUp: FC = () => {
     <WrapPendingClient {...{ isLoading }}>
       {() => (
         <div className="flex flex-col justify-center items-center gap-10">
-          <span
-            suppressHydrationWarning
-            className="txt__2xl text-neutral-200"
-          ></span>
+          <span suppressHydrationWarning className="txt__2xl text-neutral-200">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime
+            maiores laudantium doloribus, architecto obcaecati quia nesciunt
+            natus ab, et hic saepe? Quia aliquid fuga alias repellat non
+            laboriosam commodi quae?
+          </span>
 
           <WrapPop
             {...{
