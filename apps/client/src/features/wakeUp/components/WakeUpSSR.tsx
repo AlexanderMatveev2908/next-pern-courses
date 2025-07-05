@@ -1,8 +1,8 @@
+"use client";
+
 import type { FC } from "react";
 
-type PropsType = {};
-
-const WakeUpSSR: FC<PropsType> = ({}) => {
+const WakeUpSSR: FC = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-10">
       <span className="txt__2xl text-neutral-200">
