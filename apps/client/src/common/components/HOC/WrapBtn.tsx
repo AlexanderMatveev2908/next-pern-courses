@@ -10,7 +10,13 @@ type PropsType = {
 };
 
 const WrapBtn: FC<PropsType> = ({ children, isLoading }) => {
-  return isLoading ? <SpinnerBtn /> : children;
+  return isLoading ? (
+    <div className="w-full flex justify-center">
+      <SpinnerBtn />
+    </div>
+  ) : (
+    children
+  );
 };
 
 export default WrapBtn;

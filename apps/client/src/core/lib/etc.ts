@@ -25,3 +25,5 @@ export const clearT = (ref: RefObject<NodeJS.Timeout | null>) => {
   clearTimeout(ref.current);
   ref.current = null;
 };
+
+export const isWindow = () => typeof window !== "undefined";

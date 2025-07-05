@@ -1,35 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
+import { wakeUpSlice } from "@/features/wakeUp/slices/wakeUpSlice";
 
-export const store = configureStore({
-  reducer: {
-    api: api.reducer,
-    side: sideSlice.reducer,
-    toast: toastSlice.reducer,
-  },
+// export const store = configureStore({
+//   reducer: {
+//     api: api.reducer,
+//     side: sideSlice.reducer,
+//     toast: toastSlice.reducer,
+//   },
 
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware().concat(api.middleware),
 
-  devTools: {
-    name: "next-courses-app",
-    trace: true,
-  },
-});
+//   devTools: {
+//     name: "next-courses-app",
+//     trace: true,
+//   },
+// });
 
-export type AppStateType = ReturnType<typeof store.getState>;
-export type AppDispatchType = typeof store.dispatch;
+// export type AppStateType = ReturnType<typeof store.getState>;
+// export type AppDispatchType = typeof store.dispatch;
+
+const rootReducer = {
+  api: api.reducer,
+  side: sideSlice.reducer,
+  toast: toastSlice.reducer,
+  wakeUp: wakeUpSlice.reducer,
+};
 
 export const genStoreRTK = (preloadedState?: any) =>
   configureStore({
-    reducer: {
-      api: api.reducer,
-      side: sideSlice.reducer,
-      toast: toastSlice.reducer,
-    } as any,
+    reducer: rootReducer as unknown as Reducer<any>,
 
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
@@ -42,6 +46,8 @@ export const genStoreRTK = (preloadedState?: any) =>
     },
   });
 
-export type StoreTypeSSR = ReturnType<typeof genStoreRTK>;
+export type StoreTypeSSR = ReturnType<
+  ReturnType<typeof genStoreRTK>["getState"]
+>;
 
 export type DispatchTypeSSR = StoreTypeSSR["dispatch"];

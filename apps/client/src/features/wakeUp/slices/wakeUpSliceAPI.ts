@@ -7,7 +7,12 @@ const BASE_URL = "/wake-up";
 
 export const wakeUpSliceAPI = api.injectEndpoints({
   endpoints: (builder) => ({
-    wakeUpFly: builder.query<UnwrappedResAPI<void>, void>({
+    wakeUpFly: builder.query<
+      UnwrappedResAPI<{
+        when: number;
+      }>,
+      void
+    >({
       query: () => ({
         url: BASE_URL,
         method: "GET",
@@ -26,11 +31,15 @@ export const wakeUpSliceAPI = api.injectEndpoints({
         ];
       },
 
-      // async onQueryStarted(args, { dispatch: _, queryFulfilled }) {
+      // async onQueryStarted(args, { dispatch, queryFulfilled }) {
       //   try {
       //     const res = await queryFulfilled;
 
-      //     __cg("res async query started", res);
+      //     const { data } = res;
+
+      //     if (isStr(data?.msg)) dispatch(wakeUpSlice.actions.setIsWakeUp(true));
+
+      //     // __cg("res async query started", res);
       //   } catch (err: any) {
       //     __cg("err async query started", err);
       //   }

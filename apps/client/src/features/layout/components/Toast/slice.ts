@@ -1,5 +1,5 @@
 import { ApiEventType } from "@/common/types/api";
-import { AppStateType } from "@/core/store/store";
+import { StoreTypeSSR } from "@/core/store/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
@@ -48,4 +48,4 @@ export const toastSlice = createSlice({
   },
 });
 
-export const getToastState = (state: AppStateType) => state.toast;
+export const getToastState = (state: StoreTypeSSR) => state.toast;

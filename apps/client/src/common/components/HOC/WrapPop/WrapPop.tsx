@@ -12,9 +12,15 @@ type PropsType = {
   isShow: boolean | null;
   setIsShow: React.Dispatch<React.SetStateAction<boolean | null>>;
   Content: React.ReactNode | (() => React.ReactNode);
+  allowClose?: boolean;
 };
 
-const WrapPop: FC<PropsType> = ({ isShow, setIsShow, Content }) => {
+const WrapPop: FC<PropsType> = ({
+  isShow,
+  setIsShow,
+  Content,
+  allowClose = true,
+}) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
   useMouseOut({ cb: () => setIsShow(false), ref: popRef });
@@ -39,7 +45,8 @@ const WrapPop: FC<PropsType> = ({ isShow, setIsShow, Content }) => {
           <button
             type="button"
             onClick={() => setIsShow(false)}
-            className="btn__app absolute -top-3 -right-1 cursor-pointer"
+            className="btn__app disabled:cursor-not-allowed disabled:opacity-50 absolute -top-3 -right-1 cursor-pointer"
+            disabled={!allowClose}
             style={
               {
                 "--scale__up": "1.35",
