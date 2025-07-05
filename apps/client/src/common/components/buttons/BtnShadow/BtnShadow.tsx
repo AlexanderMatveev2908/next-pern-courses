@@ -13,11 +13,12 @@ const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
   type,
   handleClick,
   btnActType,
+  isLoading,
 }) => {
   const clr = btnColors[btnActType];
 
   return (
-    <WrapBtn {...{ isLoading: false }}>
+    <WrapBtn {...{ isLoading: !!isLoading }}>
       <button
         type={type}
         disabled={!isEnabled}

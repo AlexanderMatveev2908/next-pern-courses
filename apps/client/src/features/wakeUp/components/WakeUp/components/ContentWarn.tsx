@@ -10,7 +10,7 @@ type PropsType = {
   isLoading: boolean;
 };
 
-const ContentWarn: FC<PropsType> = ({ handleClick, isLoading }) => {
+const ContentWarn: FC<PropsType> = ({ handleClick }) => {
   return (
     <div className="w-full flex flex-col gap-20 mt-20 sm:max-w-[80%] mx-auto">
       <span className="txt__xl text-neutral-200">
@@ -23,7 +23,7 @@ const ContentWarn: FC<PropsType> = ({ handleClick, isLoading }) => {
             label: "Wake up",
             btnActType: BtnActType.NEUTRAL,
             isEnabled: true,
-            isLoading,
+            isLoading: true,
             type: "button",
             handleClick,
           }}

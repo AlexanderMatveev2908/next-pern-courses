@@ -5,22 +5,20 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useEffect, useState, type FC } from "react";
 import { wakeUpSliceAPI } from "../../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
+import { isStr } from "@shared/first/lib/dataStructure";
 import { useSelector } from "react-redux";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
 import { getWakeUkState } from "../../slices/wakeUpSlice";
 import { saveStorage } from "@/core/lib/storage";
 import { StorageKey } from "@/common/types/storage";
-import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 const WakeUp: FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isShow, setIsShow] = useState<null | boolean>(null);
 
-  const { isHydrated } = useListenHydration();
-
   const hook = wakeUpSliceAPI.useLazyWakeUpFlyQuery();
-  const [trigger, res] = hook;
+  const [triggerRTK, res] = hook;
   const { isLoading, data } = res;
 
   const wakeState = useSelector(getWakeUkState);
@@ -38,15 +36,26 @@ const WakeUp: FC = () => {
     if (wakeState.isWakeUp) saveStorage(StorageKey.WAKE_UP, Date.now() + "");
   }, [wakeState.isWakeUp]);
 
-  useEffect(() => {
-    if (!isHydrated) return;
+  // const ping = useCallback(async () => {
+  //   while (true) {
+  //     await new Promise<void>((res) => {
+  //       timerID.current = setTimeout(() => {
+  //         triggerRTK({}, false);
+  //         console.log("run");
+  //         clearT(timerID);
+  //         res();
+  //       }, 1000);
+  //     });
+  //   }
+  // }, [triggerRTK]);
 
-    if (!isStr(data?.msg)) trigger();
-  }, [data, trigger, isHydrated]);
+  useEffect(() => {
+    if (!isStr(data?.msg)) triggerRTK();
+  }, [triggerRTK, data?.msg]);
 
   const handleClick = async () => {
     triggerRef();
-    trigger();
+    triggerRTK();
   };
 
   return (
@@ -63,6 +72,7 @@ const WakeUp: FC = () => {
               isShow: true,
               setIsShow,
               Content: () => <ContentWarn {...{ handleClick, isLoading }} />,
+              allowClose: false,
             }}
           ></WrapPop>
         </div>
