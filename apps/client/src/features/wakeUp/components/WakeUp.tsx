@@ -2,25 +2,42 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import type { FC } from "react";
-import { wakeUpSliceAPI } from "../slices";
+import { useEffect, type FC } from "react";
+import { wakeUpSliceAPI } from "../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
+import { isObjOK } from "@shared/first/lib/dataStructure";
+import { useSelector } from "react-redux";
+import { StoreTypeSSR } from "@/core/store/store";
+import { __cg } from "@shared/first/lib/logger";
 
 const WakeUp: FC = () => {
-  const res = wakeUpSliceAPI.useWakeUpFlyQuery(undefined);
-  const { isLoading } = res;
+  const hook = wakeUpSliceAPI.useLazyWakeUpFlyQuery();
+  const [trigger, res] = hook;
+  const { isLoading, data } = res;
+
+  const cacheData = useSelector(
+    (state: StoreTypeSSR) =>
+      wakeUpSliceAPI.endpoints.wakeUpFly.select(undefined)(state).data,
+  );
+
+  __cg("cached", cacheData);
 
   useWrapQuery({
     ...res,
     showToast: true,
   });
 
+  useEffect(() => {
+    if (!isObjOK(data)) trigger();
+  }, [data, trigger]);
+
   const { wrapMutation } = useWrapMutation();
   const [mutate, { isLoading: isLoadingMutate }] =
     wakeUpSliceAPI.useSendSomethingMutation();
+
   const handleClick = async () => {
     await wrapMutation({
       cbAPI: mutate,
@@ -32,11 +49,8 @@ const WakeUp: FC = () => {
     <WrapPendingClient {...{ isLoading }}>
       {() => (
         <div className="flex flex-col justify-center items-center gap-10">
-          <span className="txt__2xl text-neutral-200">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-            rerum quaerat quae eligendi necessitatibus tempore sint explicabo
-            consequuntur provident eos et beatae at, veniam delectus magni
-            distinctio cumque accusamus ipsa.
+          <span suppressHydrationWarning className="txt__2xl text-neutral-200">
+            {cacheData?.when ?? data?.when}
           </span>
 
           <div className="w-[250px]">

@@ -7,7 +7,12 @@ const BASE_URL = "/wake-up";
 
 export const wakeUpSliceAPI = api.injectEndpoints({
   endpoints: (builder) => ({
-    wakeUpFly: builder.query<UnwrappedResAPI<void>, void>({
+    wakeUpFly: builder.query<
+      UnwrappedResAPI<{
+        when: number;
+      }>,
+      void
+    >({
       query: () => ({
         url: BASE_URL,
         method: "GET",

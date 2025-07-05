@@ -10,18 +10,18 @@ export enum ApiEventType {
   INFO = "INFO",
 }
 
-export type ResAPI<T extends Record<string, any> | void> = {
+export type ResAPI<T> = {
   data: {
     msg: string;
     status: number;
   } & T;
 };
 
-export type UnwrappedResAPI<T extends Record<string, any> | void> = {
-  msg: string;
-  status: number;
-} & T;
+export type UnwrappedResAPI<T extends void | Record<string, any>> =
+  T extends void
+    ? { msg: string; status: number }
+    : { msg: string; status: number } & T;
 
-export type ErrAPI<T extends Record<string, any> | void> = {
+export type ErrAPI<T> = {
   data: { msg: string; status: number };
 } & T;
