@@ -35,7 +35,8 @@ const Toast: FC = ({}) => {
   useEffect(() => {
     const listen = () => {
       // ? if toast is already shown or figure as prev skip so it can be managed properly by stage 2 or 3
-      if (!toastState.isShow || prevStatus.current) return;
+      if (!toastState.isShow || prevStatus.current || forcingRef.current)
+        return;
 
       __cg("stage 1 ");
 

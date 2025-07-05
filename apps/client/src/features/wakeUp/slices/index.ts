@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TagsAPI, UnwrappedResAPI } from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { isObjOK } from "@shared/first/lib/dataStructure";
-import { __cg } from "@shared/first/lib/logger";
+import { formatDate } from "@shared/first/lib/formatters";
 
 const BASE_URL = "/wake-up";
 
@@ -15,8 +14,6 @@ export const wakeUpSliceAPI = api.injectEndpoints({
       }),
 
       providesTags: (res) => {
-        __cg("provide tags res", res);
-
         return [
           ...(isObjOK(res)
             ? [
@@ -29,16 +26,25 @@ export const wakeUpSliceAPI = api.injectEndpoints({
         ];
       },
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      async onQueryStarted(args, { dispatch: _, queryFulfilled }) {
-        try {
-          const res = await queryFulfilled;
+      // async onQueryStarted(args, { dispatch: _, queryFulfilled }) {
+      //   try {
+      //     const res = await queryFulfilled;
 
-          __cg("res async query started", res);
-        } catch (err: any) {
-          __cg("err async query started", err);
-        }
-      },
+      //     __cg("res async query started", res);
+      //   } catch (err: any) {
+      //     __cg("err async query started", err);
+      //   }
+      // },
+    }),
+
+    sendSomething: builder.mutation<UnwrappedResAPI<void>, void>({
+      query: () => ({
+        url: BASE_URL,
+        method: "POST",
+        data: {
+          date: formatDate(Date.now()),
+        },
+      }),
     }),
   }),
 });

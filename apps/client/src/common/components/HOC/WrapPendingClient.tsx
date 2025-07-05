@@ -3,6 +3,7 @@
 
 import type { FC } from "react";
 import SpinnerNoHooks from "../spinners/SpinnerNoHooks/SpinnerNoHooks";
+import WrapClient from "./WrapClient";
 
 type PropsType = {
   isLoading: boolean;
@@ -13,7 +14,11 @@ const WrapPendingClient: FC<PropsType> = ({ isLoading, children }) => {
   return isLoading ? (
     <SpinnerNoHooks />
   ) : (
-    <div className="w-full flex flex-col items-center gap-8">{children()}</div>
+    <WrapClient>
+      <div className="w-full flex flex-col items-center gap-8">
+        {children()}
+      </div>
+    </WrapClient>
   );
 };
 
