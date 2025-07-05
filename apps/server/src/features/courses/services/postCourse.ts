@@ -4,8 +4,8 @@ import { CourseFormServerType } from "../paperwork/postCourse.js";
 import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import { clearAssets, clearLocalAssets } from "../lib/etc.js";
 import { AppFile } from "@src/types/fastify.js";
+import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
 
 export const postCourseService = async ({
   fields,
