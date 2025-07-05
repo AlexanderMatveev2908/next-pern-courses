@@ -42,4 +42,4 @@ const start = async () => {
 
 start();
 
-// new gir version
+// new git ok version
