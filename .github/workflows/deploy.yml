@@ -75,6 +75,16 @@ jobs:
             console.log(`✅ Merged PR #${pr.number} and deleted branch '${pr.head.ref}'`);
 
   deploy:
+    name: deploy
     needs: automerge
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
