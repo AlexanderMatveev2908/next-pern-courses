@@ -10,6 +10,9 @@ import { useSelector } from "react-redux";
 import { StoreTypeSSR } from "@/core/store/store";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
+import { getWakeUkState } from "../../slices/wakeUpSlice";
+import { saveStorage } from "@/core/lib/storage";
+import { StorageKey } from "@/common/types/storage";
 
 const WakeUp: FC = () => {
   const [isShow, setIsShow] = useState<null | boolean>(null);
@@ -18,6 +21,7 @@ const WakeUp: FC = () => {
   const [trigger, res] = hook;
   const { isLoading, data } = res;
 
+  const wakeState = useSelector(getWakeUkState);
   const cacheData = useSelector(
     (state: StoreTypeSSR) =>
       wakeUpSliceAPI.endpoints.wakeUpFly.select(undefined)(state).data,
@@ -29,8 +33,12 @@ const WakeUp: FC = () => {
   });
 
   useEffect(() => {
-    if (!isObjOK(data)) trigger();
-  }, [data, trigger]);
+    if (wakeState.isWakeUp) saveStorage(StorageKey.WAKE_UP, Date.now() + "");
+  }, [wakeState.isWakeUp]);
+
+  useEffect(() => {
+    if (!isObjOK(cacheData)) trigger();
+  }, [cacheData, trigger]);
 
   const handleClick = async () => {
     trigger();
