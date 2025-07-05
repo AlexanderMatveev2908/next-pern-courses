@@ -2,17 +2,18 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import { useEffect, type FC } from "react";
-import { wakeUpSliceAPI } from "../slices/wakeUpSliceAPI";
+import { useEffect, useState, type FC } from "react";
+import { wakeUpSliceAPI } from "../../slices/wakeUpSliceAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
-import { BtnActType } from "@/common/types/uiFactory";
 import { isObjOK } from "@shared/first/lib/dataStructure";
 import { useSelector } from "react-redux";
 import { StoreTypeSSR } from "@/core/store/store";
-import { __cg } from "@shared/first/lib/logger";
+import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
+import ContentWarn from "./components/ContentWarn";
 
 const WakeUp: FC = () => {
+  const [isShow, setIsShow] = useState<null | boolean>(null);
+
   const hook = wakeUpSliceAPI.useLazyWakeUpFlyQuery();
   const [trigger, res] = hook;
   const { isLoading, data } = res;
@@ -21,8 +22,6 @@ const WakeUp: FC = () => {
     (state: StoreTypeSSR) =>
       wakeUpSliceAPI.endpoints.wakeUpFly.select(undefined)(state).data,
   );
-
-  __cg("cached", cacheData);
 
   useWrapQuery({
     ...res,
@@ -45,18 +44,13 @@ const WakeUp: FC = () => {
             {cacheData?.when ?? data?.when}
           </span>
 
-          <div className="w-[250px]">
-            <BtnShadow
-              {...{
-                label: "Wake up",
-                btnActType: BtnActType.NEUTRAL,
-                isEnabled: true,
-                isLoading,
-                type: "button",
-                handleClick,
-              }}
-            />
-          </div>
+          <WrapPop
+            {...{
+              isShow: true,
+              setIsShow,
+              Content: () => <ContentWarn {...{ handleClick, isLoading }} />,
+            }}
+          ></WrapPop>
         </div>
       )}
     </WrapPendingClient>

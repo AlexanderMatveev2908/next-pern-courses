@@ -1,5 +1,9 @@
 import { StoreTypeSSR } from "@/core/store/store";
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 export type DummyItem = {
   id: string;
@@ -25,6 +29,10 @@ export const wakeUpSlice = createSlice({
 
     updateDummyItem: dummyAdapter.updateOne,
     removeDummyItem: dummyAdapter.removeOne,
+
+    setIsWakeUp: (state, action: PayloadAction<boolean>) => {
+      state.isWakeUp = action.payload;
+    },
   },
 });
 
