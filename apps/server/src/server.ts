@@ -41,5 +41,3 @@ const start = async () => {
 };
 
 start();
-
-// created issue and solved it
