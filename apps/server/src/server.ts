@@ -42,5 +42,4 @@ const start = async () => {
 
 start();
 
-// new changes to app
-// 2
+// created issue and solved it
