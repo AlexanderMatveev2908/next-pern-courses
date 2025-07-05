@@ -5,6 +5,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+!.yarnrc.yml
 
 # node_modules (needed even if not using PnP)
 node_modules

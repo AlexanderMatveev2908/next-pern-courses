@@ -4,7 +4,7 @@
   "scripts": {
     "install-packages": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
     "install-client": "rm -rf apps/server && echo 'deleted useless server folder ✅' && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
-    "build-client": "corepack enable && corepack prepare yarn@4.9.1 --activate && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --filter=client...",
+    "build-client": "npx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --filter=client...",
     "dev": "yarn workspace @shared/first dev & turbo dev --parallel",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
     "start": "turbo start",
