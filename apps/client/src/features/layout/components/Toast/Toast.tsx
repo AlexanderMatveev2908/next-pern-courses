@@ -91,7 +91,12 @@ const Toast: FC = ({}) => {
   useEffect(() => {
     const listen = () => {
       // ? here beside the fact i am checking it to be in force mode is important to check prevStatus to avoid opening the toast that first need to be closed in stage 2
-      if (!forcingRef.current || toastState.isShow || prevStatus.current)
+      if (
+        !forcingRef.current ||
+        toastState.isShow ||
+        prevStatus.current ||
+        prevID.current === toastState.id
+      )
         return;
 
       __cg("stage 3");
