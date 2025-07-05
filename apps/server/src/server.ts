@@ -40,7 +40,6 @@ const start = async () => {
   }
 };
 
-start();
+start(
 
-// new changes to app
-// 2
+// created issue
