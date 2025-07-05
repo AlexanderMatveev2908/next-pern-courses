@@ -60,7 +60,6 @@ const Toast: FC = ({}) => {
         )
           return;
 
-        clearT(timerRef);
         clickClose();
       }, 4000);
     };

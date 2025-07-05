@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useWrapQuery } from "./useWrapQuery";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import { StorageKey } from "@/common/types/storage";
-import { __cg } from "@shared/first/lib/logger";
 import { clearT } from "@/core/lib/etc";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
@@ -41,10 +40,15 @@ export const useIsAwake = ({ setIsShow }: Params) => {
     if (typeof window === "undefined") return;
 
     const val = getStorage(StorageKey.WAKE_UP);
-    __cg("storage wake up", val);
 
-    if (wakeState.isWakeUp) saveStorage(StorageKey.WAKE_UP, Date.now() + "");
-  }, [wakeState.isWakeUp]);
+    const delta = Date.now() - +(val ?? 0);
+    const minutes = delta / 1000 / 60;
+
+    if (minutes > 15) {
+      dispatch(wakeUpSlice.actions.setIsWakeUp(false));
+      isAwakeRef.current = false;
+    }
+  }, [wakeState.isWakeUp, dispatch]);
 
   const ping = useCallback(async () => {
     while (!isAwakeRef.current) {
@@ -55,6 +59,9 @@ export const useIsAwake = ({ setIsShow }: Params) => {
             isAwakeRef.current = true;
             dispatch(toastSlice.actions.close());
             setIsShow(false);
+
+            if (typeof window !== "undefined")
+              saveStorage(StorageKey.WAKE_UP, Date.now() + "");
           } else {
             handleClick();
           }
@@ -69,6 +76,10 @@ export const useIsAwake = ({ setIsShow }: Params) => {
 
   useEffect(() => {
     ping();
+
+    return () => {
+      clearT(timerID);
+    };
   }, [ping]);
 
   return {
