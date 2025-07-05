@@ -8,7 +8,7 @@ type PropsType = {
 };
 
 const Providers: FC<PropsType> = ({ children }) => {
-  return <Provider {...{ store }}>{children}</Provider>;
+  return <Provider store={store}>{children}</Provider>;
 };
 
 export default Providers;

@@ -27,14 +27,14 @@ export const useWrapMutation = () => {
       hideErr?: boolean;
     }) => {
       try {
-        const { data } = await cbAPI().unwrap();
+        const data = await cbAPI().unwrap();
 
         __cg("wrapper mutation", data);
 
         if (showToast)
           dispatch(
             toastSlice.actions.open({
-              msg: isStr(data.msg) ? data.msg : "Things went good ✅",
+              msg: isStr(data?.msg) ? data.msg : "Things went good ✅",
               type: ApiEventType.SUCCESS,
             }),
           );

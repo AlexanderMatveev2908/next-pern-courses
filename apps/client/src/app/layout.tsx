@@ -8,7 +8,7 @@ import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 import "highlight.js/styles/github-dark.css";
 import Toast from "@/features/layout/components/Toast/Toast";
 
-const fir_code = Fira_Code({
+const fira_code = Fira_Code({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fir_code.className} antialiased bg-neutral-950 min-h-screen min-w-screen`}
+        className={`${fira_code.className} antialiased bg-neutral-950 min-h-screen min-w-screen`}
       >
         <Providers>
           <Header />
