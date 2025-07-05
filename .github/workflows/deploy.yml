@@ -52,7 +52,19 @@ jobs:
             if (!pr) {
               core.setFailed("❌ No pull request context available.");
               return;
-            }
+              }
+
+              const reviews = await github.rest.pulls.listReviews({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               pull_number: pr.number,
+             });
+
+             const approved = reviews.data.some(r => r.state === "APPROVED");
+             if (!approved) {
+               core.setFailed("❌ PR is not approved yet.");
+               return;
+             }
 
             const mergeResult = await github.rest.pulls.merge({
               owner: context.repo.owner,
