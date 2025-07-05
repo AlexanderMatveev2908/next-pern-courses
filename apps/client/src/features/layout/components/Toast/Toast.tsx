@@ -12,6 +12,7 @@ import { resp } from "@/core/lib/style";
 import { clearT } from "../../../../core/lib/etc";
 import { varToast } from "./uiFactory";
 import { __cg } from "@shared/first/lib/logger";
+import { BtnActType } from "@/common/types/uiFactory";
 
 const Toast: FC = ({}) => {
   const toastState = useSelector(getToastState);
@@ -106,7 +107,7 @@ const Toast: FC = ({}) => {
     };
   }, [toastState.isShow, dispatch, toastState.id]);
 
-  const clr = btnColors[toastState.toast.type];
+  const clr = btnColors[toastState.toast.type ?? BtnActType.NEUTRAL];
 
   return (
     <AnimatePresence>

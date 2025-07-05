@@ -5,9 +5,9 @@ export enum TagsAPI {
 }
 
 export enum ApiEventType {
-  SUCCESS = "success",
-  ERROR = "error",
-  INFO = "info",
+  SUCCESS = "SUCCESS",
+  ERROR = "ERROR",
+  INFO = "INFO",
 }
 
 export type ResAPI<T extends Record<string, any> | void> = {
