@@ -2,7 +2,6 @@
 "use client";
 
 import type { FC } from "react";
-import WrapClient from "./WrapClient";
 import SpinnerNoHooks from "../spinners/SpinnerNoHooks/SpinnerNoHooks";
 
 type PropsType = {
@@ -11,16 +10,10 @@ type PropsType = {
 };
 
 const WrapPendingClient: FC<PropsType> = ({ isLoading, children }) => {
-  return (
-    <WrapClient>
-      {isLoading ? (
-        <SpinnerNoHooks />
-      ) : (
-        <div className="w-full flex flex-col items-center gap-8">
-          {children()}
-        </div>
-      )}
-    </WrapClient>
+  return isLoading ? (
+    <SpinnerNoHooks />
+  ) : (
+    <div className="w-full flex flex-col items-center gap-8">{children()}</div>
   );
 };
 
