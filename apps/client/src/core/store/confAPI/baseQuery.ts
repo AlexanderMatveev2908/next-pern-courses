@@ -27,7 +27,7 @@ export const axiosBaseQuery = async ({
       responseType,
     });
 
-    __cg("axios res", data);
+    // __cg("axios res", data);
 
     return responseType === "blob"
       ? {
@@ -45,7 +45,8 @@ export const axiosBaseQuery = async ({
   } catch (err: any) {
     const { response } = err ?? {};
 
-    __cg("axios err", err);
+    // __cg("axios err", err);
+
     let errData: any = response?.data ?? {};
 
     if (errData instanceof Blob && errData.type === "application/json") {

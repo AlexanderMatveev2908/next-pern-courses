@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import "../styles/globals.css";
@@ -10,7 +9,7 @@ import "highlight.js/styles/github-dark.css";
 import Toast from "@/features/layout/components/Toast/Toast";
 import { genStoreRTK } from "@/core/store/store";
 import { wakeUpSliceAPI } from "@/features/wakeUp/slices";
-import { __cg } from "@shared/first/lib/logger";
+import { wrapCallSSR } from "@/core/lib/api";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -33,20 +32,15 @@ export default async function RootLayout({
 }>) {
   const store = genStoreRTK();
 
-  const handleCB = async () => {
-    try {
-      await store.dispatch(
+  await Promise.all([
+    wrapCallSSR(() =>
+      store.dispatch(
         wakeUpSliceAPI.endpoints.wakeUpFly.initiate(undefined, {
           forceRefetch: true,
         }),
-      );
-    } catch (err: any) {
-      __cg("root layout err", err);
-      throw err;
-    }
-  };
-
-  await Promise.all([handleCB()]);
+      ),
+    ),
+  ]);
 
   const preloadedState = store.getState();
 
