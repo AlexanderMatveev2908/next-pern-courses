@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
-import { env, exit } from "process";
+import { exit } from "process";
 
-const branch = env.VERCEL_GIT_COMMIT_REF || env.GIT_BRANCH;
+const branch = process.env.VERCEL_GIT_COMMIT_REF || process.env.GIT_BRANCH;
 
 console.log(`Detected branch: ${branch}`);
 
@@ -11,4 +11,4 @@ if (branch !== "main") {
 }
 
 console.log(`✅ Proceeding with build for branch: ${branch}`);
-execSync("turbo build --filter=client...", { stdio: "inherit" });
+process.exit(1);
