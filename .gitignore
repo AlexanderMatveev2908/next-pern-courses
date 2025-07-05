@@ -22,10 +22,7 @@ turbo
 .turbo
 dist
 
-# === Vercel ===
-.vercel
-.vercel/output
-vercel.json
+
 
 # === Logs ===
 logs

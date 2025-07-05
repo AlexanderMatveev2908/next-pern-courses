@@ -1,0 +1,17 @@
+{
+  "ignoreCommand": "node vercel-ignore-build-step.js",
+  "build": {
+    "env": {
+      "ONLY_DEPLOY_MAIN": "true"
+    }
+  },
+  "github": {
+    "enabled": true,
+    "silent": false,
+    "deployments": {
+      "enabled": true,
+      "productionBranch": "main",
+      "previewDeploymentSuffix": false
+    }
+  }
+}
