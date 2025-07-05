@@ -35,17 +35,6 @@ jobs:
       - name: check client server and all packages with lint or tsc
         run: yarn check
 
-  deploy:
-    needs: check
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
   automerge:
     needs: check
     if: github.event.name == 'pull_request'
@@ -54,30 +43,34 @@ jobs:
       - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const pr = context.payload.pull_request;
-          if (!pr) {
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) {
               core.setFailed("❌ No pull request context available.");
               return;
             }
 
-          const mergeResult = await github.rest.pulls.merge({
+            const mergeResult = await github.rest.pulls.merge({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: pr.number,
               merge_method: "merge"
-          });
+            });
 
-          if (!mergeResult.data.merged) {
+            if (!mergeResult.data.merged) {
               core.setFailed("❌ Merge failed.");
               return;
             }
 
-          await github.rest.git.deleteRef({
+            await github.rest.git.deleteRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `heads/${pr.head.ref}`
-          });
+            });
 
+            console.log(`✅ Merged PR #${pr.number} and deleted branch '${pr.head.ref}'`);
 
-          console.log(`✅ Merged PR #${pr.number} and deleted branch '${pr.head.ref}'`);
+  deploy:
+    needs: automerge
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
