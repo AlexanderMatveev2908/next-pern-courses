@@ -20,7 +20,7 @@ const Toast: FC = ({}) => {
   // ? for these kind of things i prefer a lot much the refs because a small bug in the flow of toast could lead to total arrest of application for infinite loops due to bad management of sync of states
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const prevStatus = useRef<boolean>(false);
-  const prevID = useRef<string>(toastState.id);
+  const prevID = useRef<string>("");
   const forcingRef = useRef<boolean>(false);
 
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const Toast: FC = ({}) => {
 
       timerRef.current = setTimeout(() => {
         clickClose();
-      }, 3000);
+      }, 4000);
     };
 
     listen();
@@ -177,7 +177,7 @@ const Toast: FC = ({}) => {
             `}
             initial={{ width: "100%" }}
             transition={{
-              duration: toastState.isShow ? 3 : 0,
+              duration: toastState.isShow ? 4 : 0,
               ease: "linear",
             }}
             animate={{
