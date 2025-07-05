@@ -7,6 +7,9 @@ import Footer from "@/features/layout/components/Footer/Footer";
 import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 import "highlight.js/styles/github-dark.css";
 import Toast from "@/features/layout/components/Toast/Toast";
+import { genStoreRTK } from "@/core/store/store";
+import { wakeUpSliceAPI } from "@/features/wakeUp/slices";
+import { wrapCallSSR } from "@/core/lib/api";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -27,12 +30,26 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const store = genStoreRTK();
+
+  await Promise.all([
+    wrapCallSSR(() =>
+      store.dispatch(
+        wakeUpSliceAPI.endpoints.wakeUpFly.initiate(undefined, {
+          forceRefetch: true,
+        }),
+      ),
+    ),
+  ]);
+
+  const preloadedState = store.getState();
+
   return (
     <html lang="en">
       <body
         className={`${fira_code.className} antialiased bg-neutral-950 min-h-screen min-w-screen`}
       >
-        <Providers>
+        <Providers {...{ preloadedState }}>
           <Header />
 
           <Toast />

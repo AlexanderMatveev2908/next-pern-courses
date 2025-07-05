@@ -19,12 +19,12 @@ export const useHandleErrAPI = () => {
     }) => {
       __cg("wrapper error", err);
 
+      const { data } = err;
+
       if (!hideErr)
         dispatch(
           toastSlice.actions.open({
-            msg: isStr(err.data?.msg)
-              ? err.data.msg
-              : "Ops something went wrong ❌",
+            msg: isStr(data?.msg) ? data.msg : "Ops something went wrong ❌",
             type: ApiEventType.ERROR,
           }),
         );

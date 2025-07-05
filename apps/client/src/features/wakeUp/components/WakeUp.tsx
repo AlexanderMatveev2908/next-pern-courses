@@ -10,9 +10,7 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 
 const WakeUp: FC = () => {
-  const res = wakeUpSliceAPI.useWakeUpFlyQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  const res = wakeUpSliceAPI.useWakeUpFlyQuery(undefined);
   const { isLoading } = res;
 
   useWrapQuery({

@@ -34,12 +34,12 @@ export const genStoreRTK = (preloadedState?: any) =>
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
 
+    preloadedState,
+
     devTools: {
       name: "next-courses-app",
       trace: true,
     },
-
-    preloadedState,
   });
 
 export type StoreTypeSSR = ReturnType<typeof genStoreRTK>;
