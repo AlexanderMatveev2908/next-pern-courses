@@ -5,7 +5,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import db from "@src/conf/db.js";
 import { uploadDisk } from "@src/lib/cloud/disk.js";
 import { uploadRam } from "@src/lib/cloud/ram.js";
-import { clearAssets } from "../lib/etc.js";
+import { clearAssets, clearLocalAssets } from "../lib/etc.js";
 import { CourseFormServerType } from "../paperwork/postCourse.js";
 import { postCourseService } from "../services/postCourse.js";
 import { AppFile } from "@src/types/fastify.js";
@@ -16,6 +16,10 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
   }: {
     myFormData?: { fields: Partial<CourseFormServerType>; files: AppFile[] };
   } = req;
+
+  const videoFile = (myFormData?.files ?? []).find(
+    (f) => f.fieldname === "video",
+  );
 
   let images: Partial<CloudAsset>[] = [];
   let video: Partial<CloudAsset> | null = null;
@@ -42,6 +46,7 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
   } catch (err: any) {
     __cg("upload error", err);
 
+    await clearLocalAssets(videoFile);
     await clearAssets(images, video);
 
     return res.res500({
@@ -53,7 +58,10 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
     fields: myFormData!.fields,
     images,
     video,
+    videoFile,
   });
+
+  await clearLocalAssets(videoFile);
 
   return res.res200({
     msg: "new course created",

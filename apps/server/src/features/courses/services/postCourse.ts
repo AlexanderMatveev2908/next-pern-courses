@@ -4,12 +4,14 @@ import { CourseFormServerType } from "../paperwork/postCourse.js";
 import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import { clearAssets } from "../lib/etc.js";
+import { clearAssets, clearLocalAssets } from "../lib/etc.js";
+import { AppFile } from "@src/types/fastify.js";
 
 export const postCourseService = async ({
   fields,
   images,
   video,
+  videoFile,
 }: {
   fields: Omit<
     CourseFormServerType,
@@ -17,6 +19,7 @@ export const postCourseService = async ({
   >;
   images: Partial<CloudAsset>[];
   video: Partial<CloudAsset> | null;
+  videoFile?: AppFile;
 }): Promise<Course> => {
   try {
     const course = await db.$transaction(async (trx) => {
@@ -69,6 +72,7 @@ export const postCourseService = async ({
   } catch (err) {
     __cg("err transaction", err);
 
+    await clearLocalAssets(videoFile);
     await clearAssets(images, video);
 
     throw err;
