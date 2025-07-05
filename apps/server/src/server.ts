@@ -6,7 +6,7 @@ import { __cg  from "@shared/first/lib/logger.js";
 import { DEL_ALL } from "./dev_only/danger.js";
 
 const app = Fastify({
-  logger: {
+  logger: 
     level: "warn",
     // transport: {
     //   target: "pino-pretty",
