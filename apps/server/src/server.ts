@@ -40,6 +40,4 @@ const start = async () => {
   }
 };
 
-start();
-
-// changesd 2
+start);
