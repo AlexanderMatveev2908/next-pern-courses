@@ -51,9 +51,9 @@ const SearchRowBtns = <
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-4">
-      <div className="w-full grid grid-cols-1">
-        <div className="min-w-[300px] justify-self-center">
+    <div className="w-full grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+      <div className="w-full grid grid-cols-1 lg:order-[1]">
+        <div className="w-full max-w-[250px] justify-self-end">
           <DropMenu
             {...{
               el: {
@@ -82,7 +82,7 @@ const SearchRowBtns = <
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-2 justify-items-center gap-6">
+      <div className="w-full grid grid-cols-2 lg:order-[0] justify-items-center gap-10">
         <WrapSearchBarBtn
           {...{
             btnActType: BtnActType.INFO,

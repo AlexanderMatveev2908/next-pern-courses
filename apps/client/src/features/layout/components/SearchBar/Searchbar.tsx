@@ -20,11 +20,7 @@ const Searchbar = <T, K, U extends FieldValues>({
 }: PropsType<T, K, U>) => {
   // const ctx = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
-  const {
-    setFocus,
-    formState: { errors },
-    watch,
-  } = formCtx;
+  const { setFocus, watch } = formCtx;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -33,7 +29,7 @@ const Searchbar = <T, K, U extends FieldValues>({
   __cg("form", watch());
 
   return (
-    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6">
+    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1000px]">
       <SearchRow {...{ txtInputs }} />
 
       <SearchRowBtns {...{ txtInputs }} />
