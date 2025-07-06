@@ -12,7 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
-    "@shared/first": "workspace:^1.0.0",
+    "@shared/first": "*",
     "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.10.0",
     "dompurify": "^3.2.6",
