@@ -1,8 +1,18 @@
-import { FormFieldType } from "@/common/types/uiFactory";
-import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema.get.js";
+import { FormFieldArrayType } from "@/common/types/uiFactory";
 
-export const mainFieldSearch: FormFieldType<SchemaGetListCoursesType> = {
-  name: "title",
-  label: "Title",
+export const txtInputsCourses: FormFieldArrayType[] = [
+  {
+    name: "title",
+    label: "Title",
+  },
+  {
+    name: "test",
+    label: "Test",
+  },
+].map((el) => ({
+  ...el,
   type: "text",
-};
+  field: "txtInputs",
+  val: "",
+  id: "",
+}));

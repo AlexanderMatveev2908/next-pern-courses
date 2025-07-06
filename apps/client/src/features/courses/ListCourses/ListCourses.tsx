@@ -11,9 +11,10 @@ import {
   schemaGetListCourse,
   SchemaGetListCoursesType,
 } from "@shared/first/paperwork/courses/schema.get.js";
-import { mainFieldSearch } from "./uifactory/searchBar";
+import { mainFieldSearch, txtInputsCourses } from "./uifactory/searchBar";
 import { __cg } from "@shared/first/lib/logger.js";
 import { useFocus } from "@/core/hooks/ui/useFocus";
+import { v4 } from "uuid";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -37,18 +38,21 @@ const ListCourses: FC = () => {
   const formCtx = useForm<SchemaGetListCoursesType>({
     resolver: zodResolver(schemaGetListCourse),
     mode: "onChange",
+    defaultValues: {
+      txtInputs: [{ ...txtInputsCourses[0], id: v4() }],
+    },
   });
   const { setFocus } = formCtx;
 
   __cg("form vals", formCtx.watch());
 
-  useFocus({
-    cb: () => setFocus("title"),
-  });
+  // useFocus({
+  //   cb: () => setFocus(),
+  // });
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <FormProvider {...formCtx}>
-        <Searchbar {...{ hook, mainSearchField: mainFieldSearch }} />
+        <Searchbar {...{ hook, txtInputs: txtInputsCourses }} />
       </FormProvider>
     </div>
   );

@@ -53,16 +53,17 @@ const TagsForm: FC = () => {
           {(fields ?? []).map((el, i) => (
             <div key={el.id} className="w-full flex  items-center gap-5">
               <FormFieldTxt
-                {...({
+                {...{
                   control,
                   el: {
                     ...el,
                     name: `tags.${i}.val`,
+                    type: el.type as "text" | "number",
                   },
                   showLabel: false,
                   errors,
                   index: i,
-                } as any)}
+                }}
               />
 
               <div className="w-[90px]">

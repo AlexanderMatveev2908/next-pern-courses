@@ -2,32 +2,46 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { FormFieldType } from "@/common/types/uiFactory";
-import type { FC } from "react";
-import { FieldValues, useFormContext } from "react-hook-form";
+import { FormFieldArrayType } from "@/common/types/uiFactory";
+import { isArrOK } from "@shared/first/lib/dataStructure.js";
+import { FC } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-type PropsType<T extends FieldValues> = {
-  mainSearchField: FormFieldType<T>;
+type PropsType = {
+  txtInputs: FormFieldArrayType[];
 };
 
-const SearchRow = <T extends FieldValues>({
-  mainSearchField,
-}: PropsType<T>) => {
+const SearchRow: FC<PropsType> = ({ txtInputs }) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<T>();
+  } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "txtInputs",
+  });
 
   return (
-    <div className="w-full flex">
-      <FormFieldTxt
-        {...{
-          showLabel: false,
-          errors,
-          control,
-          el: mainSearchField,
-        }}
-      />
+    <div className="w-full grid grid-cols-1 gap-4">
+      {!isArrOK(fields)
+        ? null
+        : fields.map((field, i) => (
+            <div key={field.id} className="w-full flex gap-5 items-center">
+              <FormFieldTxt
+                {...({
+                  control,
+                  el: {
+                    ...field,
+                    name: `txtInputs.${i}.val`,
+                  },
+                  showLabel: false,
+                  errors,
+                  index: i,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                } as any)}
+              />
+            </div>
+          ))}
     </div>
   );
 };

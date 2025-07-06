@@ -3,7 +3,17 @@ import type { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
 export type FormFieldType<T extends FieldValues> = {
   name: Path<T>;
   label: string;
-  type?: "text" | "file";
+  type?: "text" | "number";
+  required?: boolean;
+  id?: string;
+  place?: string;
+  field?: string;
+};
+
+export type FormFieldArrayType = {
+  name: string;
+  label: string;
+  type?: "text" | "number";
   required?: boolean;
   id?: string;
   place?: string;
