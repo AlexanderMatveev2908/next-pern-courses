@@ -7,9 +7,9 @@ export const getListCoursesCtrl = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  __cg("server count", readSQL("get_courses"));
   const courses = await db.$queryRawUnsafe(readSQL("get_courses"));
 
+  __cg("courses", courses);
   return res.res200({
     courses,
   });
