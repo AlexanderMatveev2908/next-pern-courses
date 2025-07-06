@@ -5,9 +5,7 @@ import type { FC } from "react";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { __cg } from "@shared/first/lib/logger.js";
 
-type PropsType = {};
-
-const Searchbar: FC<PropsType> = ({}) => {
+const Searchbar: FC = () => {
   const ctx = useSearchCtxConsumer();
   __cg("ctx react", ctx);
 
