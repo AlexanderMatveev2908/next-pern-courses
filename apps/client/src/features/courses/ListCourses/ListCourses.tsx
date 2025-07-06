@@ -12,7 +12,6 @@ import {
   SchemaGetListCoursesType,
 } from "@shared/first/paperwork/courses/schema.get.js";
 import { txtInputsCourses } from "./uifactory/searchBar";
-import { __cg } from "@shared/first/lib/logger.js";
 import { v4 } from "uuid";
 
 const ListCourses: FC = () => {
@@ -41,8 +40,6 @@ const ListCourses: FC = () => {
       txtInputs: [{ ...txtInputsCourses[0], id: v4() }],
     },
   });
-
-  __cg("form vals", formCtx.watch());
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">

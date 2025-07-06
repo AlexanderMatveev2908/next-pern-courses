@@ -10,7 +10,7 @@ const optItems = {
     mavLen: 50,
   },
   test: {
-    reg: /\d\.\d{2,}/,
+    reg: /test/,
     mavLen: 10,
   },
 };

@@ -8,6 +8,7 @@ import SearchRow from "./components/SearchRow";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SearchRowBtns from "./components/SearchRowBtns";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType<T, K, U extends FieldValues> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -19,11 +20,18 @@ const Searchbar = <T, K, U extends FieldValues>({
 }: PropsType<T, K, U>) => {
   // const ctx = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
-  const { setFocus } = formCtx;
+  const {
+    setFocus,
+    formState: { errors },
+    watch,
+  } = formCtx;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
   });
+
+  __cg("form", watch());
+
   return (
     <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6">
       <SearchRow {...{ txtInputs }} />

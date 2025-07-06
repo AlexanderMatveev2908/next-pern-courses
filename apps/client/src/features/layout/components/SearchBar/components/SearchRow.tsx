@@ -17,14 +17,17 @@ const SearchRow: FC<PropsType> = ({}) => {
   const {
     control,
     formState: { errors },
+    watch,
   } = useFormContext<FieldValues & { txtInputs: FormFieldArrayType[] }>();
-  const { fields, remove } = useFieldArray<
+  const { remove } = useFieldArray<
     { txtInputs: FormFieldArrayType[] },
     "txtInputs"
   >({
     control,
     name: "txtInputs",
   });
+
+  const fields = watch("txtInputs");
 
   return (
     <div className="w-full grid grid-cols-1 gap-4">

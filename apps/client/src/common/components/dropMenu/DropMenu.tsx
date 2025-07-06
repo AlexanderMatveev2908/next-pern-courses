@@ -58,7 +58,7 @@ const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
         >
           <span className="txt__lg">{el.label}</span>
 
-          <FaChevronDown className="w-[35px] h-[35px]" />
+          <FaChevronDown className="w-[32.5px] h-[32.5px]" />
         </div>
 
         <ul
@@ -67,7 +67,7 @@ const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
             z-index: 100;
             transition: 0.3s;
             max-height: ${isOpen ? `200px` : "0"};
-            padding: ${isOpen ? "5px 10px 20px 7.5px" : 0};
+            padding: ${isOpen ? "5px 0px 5px 0px" : 0};
             pointer-events: ${isOpen ? "all" : "none"};
             background-color: var(--neutral__950);
           `}
