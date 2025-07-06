@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
+import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { __cg } from "@shared/first/lib/logger.js";
 
-const Searchbar: FC = () => {
+type PropsType<T, K> = {
+  hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
+};
+
+const Searchbar = <T, K>({ hook }: PropsType<T, K>) => {
   const ctx = useSearchCtxConsumer();
   __cg("ctx react", ctx);
 

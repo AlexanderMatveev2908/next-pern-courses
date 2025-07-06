@@ -64,7 +64,9 @@ export const axiosBaseQuery = async ({
         config: {
           url,
           method,
-          data: argData instanceof FormData ? JSON.stringify(argData) : argData,
+          data: !(argData instanceof Object)
+            ? JSON.stringify(argData)
+            : argData,
           params,
           responseType,
         },
@@ -79,3 +81,5 @@ export const axiosBaseQuery = async ({
     };
   }
 };
+
+export type BaseQueryType = typeof axiosBaseQuery;
