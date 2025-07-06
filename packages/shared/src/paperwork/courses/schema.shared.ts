@@ -3,8 +3,8 @@ import {
   DifficultyType,
   TechStack,
   TechValType,
-} from "../../constants/categories.js";
-import { isInObjKeys, isStr } from "../../lib/dataStructure.js";
+} from "@shared/first/constants/categories.js";
+import { isInObjKeys, isStr } from "@shared/first/lib/dataStructure.js";
 import z from "zod";
 
 export const gradeSchema = () =>

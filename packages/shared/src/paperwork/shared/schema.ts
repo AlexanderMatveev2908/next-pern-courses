@@ -1,5 +1,5 @@
 import z from "zod";
-import { isStr } from "../../lib/dataStructure.js";
+import { isStr } from "@shared/first/lib/dataStructure.js";
 
 export const schemaOrder = () =>
   z.string().refine((v) => !isStr(v) || ["ASC", "DESC"].some((t) => v === t), {

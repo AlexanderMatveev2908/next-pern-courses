@@ -2,12 +2,12 @@ import {
   isValidTool,
   TechValType,
   ToolValType,
-} from "../../constants/categories.js";
+} from "@shared/first/constants/categories.js";
 import {
   REG_CLOUD_URL,
   REG_DESCRIPTION,
   REG_TITLE,
-} from "../../constants/regex.js";
+} from "@shared/first/constants/regex.js";
 import { isStr } from "../../lib/dataStructure.js";
 import { z } from "zod";
 import { gradeSchema, schemaTechStack, schemaTool } from "./schema.shared.js";
