@@ -20,8 +20,7 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*",
-    "packages/*/*"
+    "packages/*"
   ],
   "license": "UNLICENSED",
   "dependencies": {
