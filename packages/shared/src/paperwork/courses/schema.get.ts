@@ -2,17 +2,19 @@ import z from "zod";
 import { schemaCoursePost } from "./schema.post.js";
 import { gradeSchema, schemaTechStack, schemaTool } from "./schema.shared.js";
 import { schemaOrder } from "../shared/schema.js";
+import { REG_TITLE } from "../../constants/regex.js";
 
-export const schemaGetListCourse = schemaCoursePost._def.schema
-  .pick({
-    title: true,
-  })
-  .extend({
-    grade: z.array(gradeSchema()),
-    techStack: z.array(schemaTechStack()),
-    tools: z.array(schemaTool()),
+export const schemaGetListCourse = z.object({
+  title: z
+    .string()
+    .max(50, "Course title must be less than 50 characters")
+    .regex(REG_TITLE, "Course title has invalid characters")
+    .optional(),
+  grade: z.array(gradeSchema()).optional(),
+  techStack: z.array(schemaTechStack()).optional(),
+  tools: z.array(schemaTool()).optional(),
 
-    createdAtSort: schemaOrder(),
-  });
+  createdAtSort: schemaOrder().optional(),
+});
 
 export type SchemaGetListCoursesType = z.infer<typeof schemaGetListCourse>;

@@ -12,6 +12,7 @@ import {
   SchemaGetListCoursesType,
 } from "@shared/first/paperwork/courses/schema.get.js";
 import { mainFieldSearch } from "./uifactory/searchBar";
+import { __cg } from "@shared/first/lib/logger.js";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -36,6 +37,8 @@ const ListCourses: FC = () => {
     resolver: zodResolver(schemaGetListCourse),
     mode: "onChange",
   });
+
+  __cg("form vals", formCtx.watch());
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">

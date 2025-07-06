@@ -16,12 +16,13 @@ type PropsType<T, K, U extends FieldValues> = {
 
 const Searchbar = <T, K, U extends FieldValues>({
   hook,
+  mainSearchField,
 }: PropsType<T, K, U>) => {
   const ctx = useSearchCtxConsumer();
 
   return (
     <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl">
-      <SearchRow />
+      <SearchRow {...{ mainSearchField }} />
     </form>
   );
 };
