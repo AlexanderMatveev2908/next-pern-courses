@@ -3,7 +3,7 @@ import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
-import { wakeUpSlice } from "@/features/wakeUp/slices/wakeUpSlice";
+import { wakeUpSlice } from "@/features/wakeUp/slices/slice";
 
 // export const store = configureStore({
 //   reducer: {

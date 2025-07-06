@@ -8,7 +8,7 @@ import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 import "highlight.js/styles/github-dark.css";
 import Toast from "@/features/layout/components/Toast/Toast";
 import { genStoreRTK } from "@/core/store/store";
-import { wakeUpSliceAPI } from "@/features/wakeUp/slices/wakeUpSliceAPI";
+import { wakeUpSliceAPI } from "@/features/wakeUp/slices/sliceAPI";
 import { wrapCallSSR } from "@/core/lib/api";
 
 const fira_code = Fira_Code({

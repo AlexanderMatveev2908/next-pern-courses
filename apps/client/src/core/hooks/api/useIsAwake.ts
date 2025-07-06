@@ -1,8 +1,5 @@
-import {
-  getWakeUkState,
-  wakeUpSlice,
-} from "@/features/wakeUp/slices/wakeUpSlice";
-import { wakeUpSliceAPI } from "@/features/wakeUp/slices/wakeUpSliceAPI";
+import { getWakeUkState, wakeUpSlice } from "@/features/wakeUp/slices/slice";
+import { wakeUpSliceAPI } from "@/features/wakeUp/slices/sliceAPI";
 import { SetStateAction, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useWrapQuery } from "./useWrapQuery";

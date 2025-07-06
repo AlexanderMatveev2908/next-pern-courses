@@ -1,14 +1,12 @@
+import ListCourses from "@/features/courses/ListCourses/ListCourses";
 import type { FC } from "react";
 
-const ListCourses: FC = () => {
+const Page: FC = () => {
   return (
-    <div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt vitae
-      possimus, placeat voluptate debitis, deserunt ab recusandae quos nobis
-      iste illum autem consequuntur ducimus voluptas cupiditate sequi tempore
-      perspiciatis eveniet.
+    <div className="w-full flex flex-col items-center gap-8">
+      <ListCourses />
     </div>
   );
 };
 
-export default ListCourses;
+export default Page;

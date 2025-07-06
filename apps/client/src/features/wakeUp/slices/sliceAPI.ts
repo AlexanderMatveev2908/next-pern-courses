@@ -2,7 +2,7 @@ import { TagsAPI, UnwrappedResAPI } from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure";
 import { formatDate } from "@shared/first/lib/formatters";
-import { DummyItem, wakeUpSlice } from "./wakeUpSlice";
+import { DummyItem, wakeUpSlice } from "./slice";
 import { __cg } from "@shared/first/lib/logger";
 
 const BASE_URL = "/wake-up";
