@@ -12,7 +12,6 @@ type PropsType<T, K> = {
 
 const Searchbar = <T, K>({ hook }: PropsType<T, K>) => {
   const ctx = useSearchCtxConsumer();
-  __cg("ctx react", ctx);
 
   return (
     <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl"></form>
