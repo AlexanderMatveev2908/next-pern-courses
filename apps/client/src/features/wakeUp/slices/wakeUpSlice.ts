@@ -1,4 +1,4 @@
-import { StoreTypeSSR } from "@/core/store/store";
+import { AppStateTypeSSR } from "@/core/store/store";
 import {
   createEntityAdapter,
   createSlice,
@@ -24,7 +24,8 @@ export const wakeUpSlice = createSlice({
     setDummyItem: dummyAdapter.setOne,
     addDummyItem: dummyAdapter.addOne,
 
-    setDummyItems: dummyAdapter.setMany,
+    addAllDummyItems: dummyAdapter.setMany,
+    setAllDummyItems: dummyAdapter.setAll,
     clearDummyItems: dummyAdapter.removeAll,
 
     updateDummyItem: dummyAdapter.updateOne,
@@ -36,7 +37,7 @@ export const wakeUpSlice = createSlice({
   },
 });
 
-export const getWakeUkState = (state: StoreTypeSSR) => state.wakeUp;
+export const getWakeUkState = (state: AppStateTypeSSR) => state.wakeUp;
 
 export const { selectById: getDummyItemByID, selectAll: getAllDummyItems } =
   dummyAdapter.getSelectors(getWakeUkState);

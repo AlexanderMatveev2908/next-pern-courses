@@ -11,10 +11,25 @@ import { getAllDummyItems, wakeUpSlice } from "../../slices/wakeUpSlice";
 import { useDispatch, useSelector } from "react-redux";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
+import { wakeUpSliceAPI } from "../../slices/wakeUpSliceAPI";
+import { TagsAPI } from "@/common/types/api";
+import { AppStateTypeSSR } from "@/core/store/store";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 
 const WakeUp: FC = () => {
   const [isShow, setIsShow] = useState<null | boolean>(false);
 
+  const preloadedData = useSelector(
+    (state: AppStateTypeSSR) =>
+      wakeUpSliceAPI.endpoints.getListDummyItems.select(undefined)(state)?.data,
+  );
+  const res = wakeUpSliceAPI.useGetListDummyItemsQuery(undefined, {
+    skip: !!preloadedData,
+  });
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
   const { isLoading } = useIsAwake({ setIsShow });
 
   const dispatch = useDispatch();
@@ -22,6 +37,11 @@ const WakeUp: FC = () => {
 
   const handleClick = (id: string) => {
     dispatch(wakeUpSlice.actions.removeDummyItem(id));
+    dispatch(
+      wakeUpSliceAPI.util.invalidateTags([
+        { type: TagsAPI.DUMMY_TAG_LIST, id: "LIST" },
+      ]),
+    );
   };
 
   return (
@@ -66,7 +86,7 @@ const WakeUp: FC = () => {
 export default WakeUp;
 
 // const cacheData = useSelector(
-//   (state: StoreTypeSSR) =>
+//   (state: AppStateTypeSSR) =>
 //     wakeUpSliceAPI.endpoints.wakeUpFly.select(undefined)(state).data,
 // );
 // useEffect(() => {
