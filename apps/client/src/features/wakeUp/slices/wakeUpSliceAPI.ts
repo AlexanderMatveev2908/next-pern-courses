@@ -67,19 +67,23 @@ export const wakeUpSliceAPI = api.injectEndpoints({
         method: "GET",
       }),
 
-      providesTags: (res) => [
-        ...(!isArrOK(res?.items)
-          ? []
-          : res!.items.map((el) => ({
-              type: TagsAPI.DUMMY_TAG_LIST,
-              id: el.id,
-            }))),
+      providesTags: (res) => {
+        // __cg("res provide tags", res);
 
-        {
-          type: TagsAPI.DUMMY_TAG_LIST,
-          id: "LIST",
-        },
-      ],
+        return [
+          ...(!isArrOK(res?.items)
+            ? []
+            : res!.items.map((el) => ({
+                type: TagsAPI.DUMMY_TAG_LIST,
+                id: el.id,
+              }))),
+
+          {
+            type: TagsAPI.DUMMY_TAG_LIST,
+            id: "LIST",
+          },
+        ];
+      },
 
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
@@ -87,7 +91,7 @@ export const wakeUpSliceAPI = api.injectEndpoints({
 
           __cg("res async query started", res);
 
-          dispatch(wakeUpSlice.actions.setDummyItems(res.data.items));
+          dispatch(wakeUpSlice.actions.setAllDummyItems(res.data.items));
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           __cg("err async query started", err);

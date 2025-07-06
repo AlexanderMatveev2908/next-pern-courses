@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "check": "next lint && tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^2.8.2",
+    "@shared/first": "workspace:*",
     "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.10.0",
     "dompurify": "^3.2.6",
@@ -33,7 +34,6 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@eslint/eslintrc": "^3",
-    "@shared/first": "*",
     "@tailwindcss/postcss": "^4",
     "@types/dompurify": "^3.2.0",
     "@types/node": "^24.0.7",

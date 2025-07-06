@@ -46,8 +46,8 @@ export const genStoreRTK = (preloadedState?: any) =>
     },
   });
 
-export type StoreTypeSSR = ReturnType<
+export type AppStateTypeSSR = ReturnType<
   ReturnType<typeof genStoreRTK>["getState"]
 >;
 
-export type DispatchTypeSSR = StoreTypeSSR["dispatch"];
+export type DispatchTypeSSR = AppStateTypeSSR["dispatch"];

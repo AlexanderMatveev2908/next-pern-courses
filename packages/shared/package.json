@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc --build",
     "check": "tsc --noEmit",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "start": "tsc --build"
   },
   "devDependencies": {
     "tsc-alias": "^1.8.16",

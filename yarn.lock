@@ -1691,7 +1691,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shared/first@npm:*, @shared/first@workspace:packages/shared":
+"@shared/first@workspace:*, @shared/first@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@shared/first@workspace:packages/shared"
   dependencies:
@@ -2921,7 +2921,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3"
     "@hookform/resolvers": "npm:^5.1.1"
     "@reduxjs/toolkit": "npm:^2.8.2"
-    "@shared/first": "npm:*"
+    "@shared/first": "workspace:*"
     "@tailwindcss/postcss": "npm:^4"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@types/dompurify": "npm:^3.2.0"
@@ -7012,11 +7012,11 @@ __metadata:
   linkType: hard
 
 "react-hook-form@npm:^7.59.0":
-  version: 7.59.0
-  resolution: "react-hook-form@npm:7.59.0"
+  version: 7.60.0
+  resolution: "react-hook-form@npm:7.60.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/6be30ce65121f4be0f491c2929142e2d9a390a8802f58fb7a41ab978ab8daa6fcd2c442258dbd1b053e6864a83c8f4b1d83de9c95f0efdf5c2120d3c21bd838e
+  checksum: 10c0/eb8518d42a074d9e115d4b414bac18ae72708b2d047a9453dcc7588b00df300b32cebf6ecb7f2c8aa534808b3dc54bde4124af95c1e432b6691f9aba07c93b11
   languageName: node
   linkType: hard
 
@@ -7489,7 +7489,7 @@ __metadata:
     "@fastify/multipart": "npm:^9.0.3"
     "@fastify/rate-limit": "npm:^10.3.0"
     "@prisma/client": "npm:^6.10.1"
-    "@shared/first": "npm:*"
+    "@shared/first": "workspace:*"
     "@types/node": "npm:^24.0.6"
     cloudinary: "npm:^2.7.0"
     dotenv: "npm:^17.0.0"
