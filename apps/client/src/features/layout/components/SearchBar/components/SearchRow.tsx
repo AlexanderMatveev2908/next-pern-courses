@@ -2,9 +2,6 @@
 "use client";
 
 import { FaTrashCan } from "react-icons/fa6";
-import BtnIcon, {
-  BtnIconPropsType,
-} from "@/common/components/buttons/BtnIcon/BtnIcon";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
@@ -47,19 +44,13 @@ const SearchRow: FC<PropsType> = ({}) => {
                   index: i,
                 }}
               />
-
-              <WrapSearchBarBtn>
-                {(arg: Partial<BtnIconPropsType>) => (
-                  <BtnIcon
-                    {...({
-                      ...arg,
-                      btnActType: BtnActType.ERROR,
-                      Svg: FaTrashCan,
-                      handleClick: () => remove(i),
-                    } as BtnIconPropsType)}
-                  />
-                )}
-              </WrapSearchBarBtn>
+              <WrapSearchBarBtn
+                {...{
+                  btnActType: BtnActType.ERROR,
+                  Svg: FaTrashCan,
+                  handleClick: () => remove(i),
+                }}
+              />
             </div>
           ))}
     </div>

@@ -11,7 +11,7 @@ import { btnColors } from "@/core/uiFactory/style";
 export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
   btnActType: BtnActType;
   Svg?: IconType;
-  label?: string;
+  label?: string | null;
   $svgCSS?: {
     css: SerializedStyles;
   };

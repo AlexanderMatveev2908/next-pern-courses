@@ -9,3 +9,6 @@ export const getLimitPage = () =>
       : window.innerWidth > uiBreaks.sm
         ? 2
         : 1;
+
+export const handleShowLabel = (w: number) =>
+  !isWindow() ? false : window.innerWidth > w;
