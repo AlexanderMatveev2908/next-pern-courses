@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldType } from "@/common/types/uiFactory";
+import { FormFieldArrayType, FormFieldType } from "@/common/types/uiFactory";
 import { FieldErrors, FieldValues } from "react-hook-form";
 import ErrFormField from "../errors/ErrFormField";
 
 type PropsType<T extends FieldValues> = {
-  el?: FormFieldType<T>;
+  el?: FormFieldType<T> | FormFieldArrayType;
   showLabel: boolean;
   errors: FieldErrors<T>;
   children: React.ReactNode;

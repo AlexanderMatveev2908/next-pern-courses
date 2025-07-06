@@ -16,7 +16,10 @@ const SearchRow: FC<PropsType> = ({ txtInputs }) => {
     control,
     formState: { errors },
   } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<
+    FormFieldArrayType[],
+    "txtInputs"
+  >({
     control,
     name: "txtInputs",
   });
@@ -28,7 +31,7 @@ const SearchRow: FC<PropsType> = ({ txtInputs }) => {
         : fields.map((field, i) => (
             <div key={field.id} className="w-full flex gap-5 items-center">
               <FormFieldTxt
-                {...({
+                {...{
                   control,
                   el: {
                     ...field,
@@ -37,8 +40,7 @@ const SearchRow: FC<PropsType> = ({ txtInputs }) => {
                   showLabel: false,
                   errors,
                   index: i,
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                } as any)}
+                }}
               />
             </div>
           ))}
