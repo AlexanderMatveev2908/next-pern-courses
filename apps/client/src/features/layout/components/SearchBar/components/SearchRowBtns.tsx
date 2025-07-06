@@ -3,34 +3,50 @@
 
 import { IoFilterSharp } from "react-icons/io5";
 import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
-import { useMemo, useState, type FC } from "react";
+import { useMemo, useState } from "react";
 import { FaSort } from "react-icons/fa";
 import WrapSearchBarBtn from "./WrapSearchBarBtn";
 import { css } from "@emotion/react";
 import { useListenCondLabel } from "../hooks/useListenCondLabel";
 import DropMenu from "@/common/components/dropMenu/DropMenu";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import {
+  ArrayPath,
+  FieldValues,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 import { v4 } from "uuid";
 
-type PropsType = {
-  txtInputs: FormFieldArrayType[];
+type PropsType<
+  T extends FieldValues & {
+    txtInputs: FormFieldArrayType[];
+  },
+  K extends ArrayPath<T>,
+> = {
+  txtInputs: T[K];
 };
-
-const SearchRowBtns: FC<PropsType> = ({ txtInputs }) => {
+const SearchRowBtns = <
+  T extends FieldValues & { txtInputs: FormFieldArrayType[] },
+  K extends ArrayPath<T>,
+>({
+  txtInputs,
+}: PropsType<T, K>) => {
   const { showLabel } = useListenCondLabel({ width: 650 });
   const [isOpen, setIsOpen] = useState(false);
 
-  const { control, watch } = useFormContext<{
-    txtInputs: FormFieldArrayType[];
-  }>();
-  const { append } = useFieldArray<{ txtInputs: FormFieldArrayType[] }>({
+  const { control, watch } = useFormContext<T>();
+  const { append } = useFieldArray<T, ArrayPath<T>>({
     control,
-    name: "txtInputs",
+    name: "txtInputs" as K,
   });
-  const fields = watch("txtInputs");
+  const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
 
-  const fieldsToAdd = useMemo(
-    () => txtInputs.filter((el) => !fields.some((f) => f.label === el.label)),
+  const fieldsToAdd: FormFieldArrayType[] = useMemo(
+    () =>
+      txtInputs.filter(
+        (el: FormFieldArrayType) =>
+          !(fields ?? []).some((f: FormFieldArrayType) => f.label === el.label),
+      ),
     [fields, txtInputs],
   );
 
@@ -47,13 +63,13 @@ const SearchRowBtns: FC<PropsType> = ({ txtInputs }) => {
               setIsOpen,
             }}
           >
-            {fieldsToAdd.map((el) => (
+            {fieldsToAdd.map((el: FormFieldArrayType) => (
               <li
                 onClick={() => {
                   append({
                     ...el,
                     id: v4(),
-                  });
+                  } as T[K]);
                   setIsOpen(false);
                 }}
                 key={el.id}

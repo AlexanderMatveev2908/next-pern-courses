@@ -5,29 +5,40 @@ import { FaTrashCan } from "react-icons/fa6";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { FC } from "react";
-import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
+import {
+  ArrayPath,
+  FieldValues,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 import WrapSearchBarBtn from "./WrapSearchBarBtn";
 
-type PropsType = {
-  txtInputs: FormFieldArrayType[];
+type PropsType<
+  T extends FieldValues & {
+    txtInputs: FormFieldArrayType[];
+  },
+  K extends ArrayPath<T>,
+> = {
+  txtInputs: T[K];
 };
 
-const SearchRow: FC<PropsType> = ({}) => {
+const SearchRow = <
+  T extends FieldValues & {
+    txtInputs: FormFieldArrayType[];
+  },
+  K extends ArrayPath<T>,
+>({}: PropsType<T, K>) => {
   const {
     control,
     formState: { errors },
     watch,
-  } = useFormContext<FieldValues & { txtInputs: FormFieldArrayType[] }>();
-  const { remove } = useFieldArray<
-    { txtInputs: FormFieldArrayType[] },
-    "txtInputs"
-  >({
+  } = useFormContext<T>();
+  const { remove } = useFieldArray<T, ArrayPath<T>>({
     control,
-    name: "txtInputs",
+    name: "txtInputs" as K,
   });
 
-  const fields = watch("txtInputs");
+  const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-4">
