@@ -27,7 +27,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
       }}
     >
       <Controller
-        name={el.name}
+        name={el.name as K}
         control={control}
         render={({ field }) => (
           <input

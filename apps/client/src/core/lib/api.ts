@@ -1,3 +1,5 @@
+import { TagsAPI } from "@/common/types/api";
+import { TagDescription } from "@reduxjs/toolkit/query";
 import { __cg } from "@shared/first/lib/logger.js";
 
 export const wrapCallSSR = async <T>(cb: () => Promise<T>) => {
@@ -14,3 +16,8 @@ export const wrapCallSSR = async <T>(cb: () => Promise<T>) => {
     throw err;
   }
 };
+
+export const wrapCondAssignTags =
+  <T extends TagDescription<TagsAPI>>(cond: boolean) =>
+  (successArg: T[]) =>
+    cond ? successArg : [];

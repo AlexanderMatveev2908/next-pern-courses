@@ -23,7 +23,10 @@ const WrapPop: FC<PropsType> = ({
 }) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
-  useMouseOut({ cb: () => setIsShow(false), ref: popRef });
+  useMouseOut({
+    cb: () => (allowClose ? setIsShow(false) : null),
+    ref: popRef,
+  });
 
   return (
     <>

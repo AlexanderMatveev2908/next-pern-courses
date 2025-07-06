@@ -4,7 +4,7 @@ import {
   ToolValType,
 } from "@shared/first/constants/categories.js";
 import { REG_CLOUD_URL, REG_ID } from "@shared/first/constants/regex.js";
-import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
+import { isStr } from "@shared/first/lib/dataStructure.js";
 import { schemaCoursePost } from "@shared/first/paperwork/courses/schema.post.js";
 import z from "zod";
 
@@ -20,7 +20,7 @@ const schemaFile = (size: number) =>
       .refine((v) => v < 1024 * 1024 * size, "File size is too big"),
   });
 
-export const schemaPostCourseServer = (schemaCoursePost.innerType() as any)
+export const schemaPostCourseServer = schemaCoursePost._def.schema
   .omit({ video: true, images: true })
   .extend({
     videoFile: schemaFile(10)

@@ -6,6 +6,7 @@ import { capt } from "@shared/first/lib/formatters.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "@src/types/fastify.js";
 import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
+import { ServerSideFormCourse } from "../controllers/post.js";
 
 export const postCourseService = async ({
   fields,
@@ -13,10 +14,7 @@ export const postCourseService = async ({
   video,
   videoFile,
 }: {
-  fields: Omit<
-    CourseFormServerType,
-    "images" | "video" | "imageFiles" | "videoFile"
-  >;
+  fields: ServerSideFormCourse;
   images: Partial<CloudAsset>[];
   video: Partial<CloudAsset> | null;
   videoFile?: AppFile;
@@ -27,12 +25,10 @@ export const postCourseService = async ({
         fields.tags,
         (val) => typeof val === "string",
       )
-        ? fields.tags.map((tag: string) => JSON.parse(tag))
+        ? fields!.tags!.map((tag: string) => JSON.parse(tag))
         : [];
 
-      const normalizedTags: string[] = fallBackTags.map(
-        (tag: CourseFormServerType["tags"][number]) => capt(tag.val),
-      );
+      const normalizedTags: string[] = fallBackTags.map((tag) => capt(tag.val));
 
       const course = await trx.course.create({
         data: {

@@ -8,8 +8,8 @@ export const app_dir = path.resolve(
   "../../../",
 );
 
-export const read_file = (p: string, type: "utf-8" | "hex") =>
-  fs.readFileSync(path.join(app_dir, p), type);
+export const read_file_app = (p: string, type: "utf-8" | "hex") =>
+  fs.readFileSync(path.join(app_dir, p), { encoding: type });
 
 export const readCA = () => {
   const hex = process.env.DB_CA;
@@ -31,3 +31,6 @@ export const getPathENV = () => {
     return;
   }
 };
+
+export const readSQL = (p: string) =>
+  read_file_app(path.join("sql", `${p}.sql`), "utf-8");

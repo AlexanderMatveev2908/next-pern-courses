@@ -1,19 +1,16 @@
 import {
-  Difficulties,
-  DifficultyType,
   isValidTool,
-  TechStack,
   TechValType,
   ToolValType,
-} from "../../constants/categories.js";
+} from "@shared/first/constants/categories.js";
 import {
   REG_CLOUD_URL,
   REG_DESCRIPTION,
   REG_TITLE,
-} from "../../constants/regex.js";
-import { isInObjKeys, isStr } from "../../lib/dataStructure.js";
-import { v4 } from "uuid";
+} from "@shared/first/constants/regex.js";
+import { isStr } from "../../lib/dataStructure.js";
 import { z } from "zod";
+import { gradeSchema, schemaTechStack, schemaTool } from "./schema.shared.js";
 
 export const schemaCoursePost = z
   .object({
@@ -63,26 +60,9 @@ export const schemaCoursePost = z
       .max(10000, "Markdown must be less than 10000 characters")
       .optional(),
 
-    grade: z
-      .string()
-      .refine(isStr, "Grade is required")
-      .refine(
-        (v) => isInObjKeys(Difficulties, v as DifficultyType),
-        "Grade is invalid",
-      ),
-
-    techStack: z
-      .string()
-      .refine(isStr, {
-        message: "Tech stack is required",
-      })
-      .refine(
-        (v) => isInObjKeys(TechStack, v as TechValType),
-        "Tech stack is invalid",
-      ),
-    tools: z.string().refine(isStr, {
-      message: "Tool is required",
-    }),
+    grade: gradeSchema(),
+    techStack: schemaTechStack(),
+    tools: schemaTool(),
 
     tags: z
       .array(

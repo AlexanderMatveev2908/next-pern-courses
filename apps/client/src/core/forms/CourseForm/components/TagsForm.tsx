@@ -13,7 +13,6 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { fieldTags, genTagField } from "../uiFactory";
 import ErrFormField from "@/common/components/forms/errors/ErrFormField";
 import Anchor from "@/common/components/forms/etc/Anchor";
-import { __cg } from "@shared/first/lib/logger.js";
 
 const TagsForm: FC = () => {
   const {
@@ -27,8 +26,6 @@ const TagsForm: FC = () => {
     control,
     name: "tags",
   });
-
-  __cg("errors", errors);
 
   return (
     <div className="w-full max-w-full grid grid-cols-1 gap-4">
@@ -53,16 +50,17 @@ const TagsForm: FC = () => {
           {(fields ?? []).map((el, i) => (
             <div key={el.id} className="w-full flex  items-center gap-5">
               <FormFieldTxt
-                {...({
+                {...{
                   control,
                   el: {
                     ...el,
                     name: `tags.${i}.val`,
+                    type: el.type as "text" | "number",
                   },
                   showLabel: false,
                   errors,
                   index: i,
-                } as any)}
+                }}
               />
 
               <div className="w-[90px]">
