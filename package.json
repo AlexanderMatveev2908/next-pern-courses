@@ -2,7 +2,7 @@
   "name": "next-pern-courses",
   "packageManager": "yarn@4.9.2",
   "scripts": {
-    "install-packages": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
+    "setup-workspace": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
     "install-client": "rm -rf apps/server && echo 'deleted useless server folder ✅' && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
     "build-client": "turbo build --filter=client...",
     "dev": "yarn workspace @shared/first dev & turbo dev --parallel",
