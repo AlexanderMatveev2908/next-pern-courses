@@ -15,7 +15,7 @@
     "@fastify/multipart": "^9.0.3",
     "@fastify/rate-limit": "^10.3.0",
     "@prisma/client": "^6.10.1",
-    "@shared/first": "*",
+    "@shared/first": "workspace:^1.0.0",
     "cloudinary": "^2.7.0",
     "dotenv": "^17.0.0",
     "fastify": "^5.4.0",
