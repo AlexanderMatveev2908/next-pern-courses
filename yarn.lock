@@ -1691,7 +1691,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shared/first@workspace:^1.0.0, @shared/first@workspace:packages/shared":
+"@shared/first@npm:*, @shared/first@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@shared/first@workspace:packages/shared"
   dependencies:
@@ -1929,15 +1929,6 @@ __metadata:
   dependencies:
     "@types/ms": "npm:*"
   checksum: 10c0/5dcd465edbb5a7f226e9a5efd1f399c6172407ef5840686b73e3608ce135eeca54ae8037dcd9f16bdb2768ac74925b820a8b9ecc588a58ca09eca6acabe33e2f
-  languageName: node
-  linkType: hard
-
-"@types/dompurify@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@types/dompurify@npm:3.2.0"
-  dependencies:
-    dompurify: "npm:*"
-  checksum: 10c0/e83fec586ffbb1b43f7c8479f2a99c223814d240db912d53fb126aaeea52a4091deceeb75632b5d76004d88ef0fbf444984887b121dece6fa69f4172ed4b2b07
   languageName: node
   linkType: hard
 
@@ -2921,10 +2912,9 @@ __metadata:
     "@eslint/eslintrc": "npm:^3"
     "@hookform/resolvers": "npm:^5.1.1"
     "@reduxjs/toolkit": "npm:^2.8.2"
-    "@shared/first": "workspace:^1.0.0"
+    "@shared/first": "npm:*"
     "@tailwindcss/postcss": "npm:^4"
     "@tailwindcss/typography": "npm:^0.5.16"
-    "@types/dompurify": "npm:^3.2.0"
     "@types/node": "npm:^24.0.7"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
@@ -3288,7 +3278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:*, dompurify@npm:^3.2.6":
+"dompurify@npm:^3.2.6":
   version: 3.2.6
   resolution: "dompurify@npm:3.2.6"
   dependencies:
@@ -7489,7 +7479,7 @@ __metadata:
     "@fastify/multipart": "npm:^9.0.3"
     "@fastify/rate-limit": "npm:^10.3.0"
     "@prisma/client": "npm:^6.10.1"
-    "@shared/first": "workspace:^1.0.0"
+    "@shared/first": "npm:*"
     "@types/node": "npm:^24.0.6"
     cloudinary: "npm:^2.7.0"
     dotenv: "npm:^17.0.0"

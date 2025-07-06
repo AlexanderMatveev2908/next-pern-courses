@@ -16,6 +16,7 @@ type PropsType<T extends FieldValues> = {
     css: SerializedStyles;
   };
   index?: number;
+  root?: boolean;
 };
 
 const ErrFormField = <T extends FieldValues>({
@@ -23,14 +24,19 @@ const ErrFormField = <T extends FieldValues>({
   errors,
   $customCSS,
   index,
+  root,
 }: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
+  const defMsg = errors?.[el?.name]?.message as string | undefined;
   const msg =
     typeof index === "number"
       ? ((errors as any)?.[(el as FormFieldType<T>)?.field as string]?.[index]
           ?.val?.message as string | undefined)
-      : (errors?.[el?.name]?.message as string | undefined);
+      : root
+        ? (((errors?.[el?.name]?.root as any)?.message as string | undefined) ??
+          defMsg)
+        : defMsg;
 
   useEffect(() => {
     if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {

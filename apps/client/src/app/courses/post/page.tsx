@@ -25,7 +25,7 @@ const PostCourse: FC = () => {
 
   const [mutate, { isLoading }] = coursesSliceAPI.usePostCourseMutation();
   const { wrapMutation } = useWrapMutation();
-  const { handleSubmit } = formCtx;
+  const { handleSubmit, setFocus } = formCtx;
 
   const handleSave = handleSubmit(
     async (data: CourseFormType) => {
@@ -39,6 +39,15 @@ const PostCourse: FC = () => {
     },
     (err) => {
       __cg("err", err);
+      const keys = Object.keys(err);
+
+      for (const k of keys) {
+        if (["markdown", "video", "grade", "techStack", "tools"].includes(k)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setFocus((k + "_a") as any);
+          break;
+        }
+      }
 
       return err;
     },

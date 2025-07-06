@@ -13,18 +13,22 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { fieldTags, genTagField } from "../uiFactory";
 import ErrFormField from "@/common/components/forms/errors/ErrFormField";
 import Anchor from "@/common/components/forms/etc/Anchor";
+import { __cg } from "@shared/first/lib/logger.js";
 
 const TagsForm: FC = () => {
   const {
     control,
     formState: { errors },
     register,
+    trigger,
   } = useFormContext<CourseFormType>();
 
   const { append, fields, remove } = useFieldArray<CourseFormType, "tags">({
     control,
     name: "tags",
   });
+
+  __cg("errors", errors);
 
   return (
     <div className="w-full max-w-full grid grid-cols-1 gap-4">
@@ -35,6 +39,7 @@ const TagsForm: FC = () => {
           {...({
             el: fieldTags,
             errors,
+            root: true,
           } as any)}
         />
         <Anchor
@@ -73,7 +78,10 @@ const TagsForm: FC = () => {
                         min-height: 30px;
                       `,
                     },
-                    handleClick: () => remove(i),
+                    handleClick: () => {
+                      trigger("tags");
+                      remove(i);
+                    },
                   }}
                 />
               </div>
@@ -89,7 +97,10 @@ const TagsForm: FC = () => {
               isEnabled: true,
               type: "button",
               label: "Add Tag",
-              handleClick: () => append(genTagField()),
+              handleClick: () => {
+                append(genTagField());
+                trigger("tags");
+              },
               $svgCSS: {
                 css: css`
                   min-width: 30px;
