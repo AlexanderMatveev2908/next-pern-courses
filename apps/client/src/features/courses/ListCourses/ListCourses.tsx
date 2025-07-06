@@ -42,13 +42,9 @@ const ListCourses: FC = () => {
       txtInputs: [{ ...txtInputsCourses[0], id: v4() }],
     },
   });
-  const { setFocus } = formCtx;
 
   __cg("form vals", formCtx.watch());
 
-  // useFocus({
-  //   cb: () => setFocus(),
-  // });
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <FormProvider {...formCtx}>

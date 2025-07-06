@@ -8,16 +8,23 @@ import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { btnColors } from "@/core/uiFactory/style";
 
-const BtnIcon: FC<
-  Omit<PropsTypeBtn, "label"> & {
-    btnActType: BtnActType;
-    Svg?: IconType;
-    label?: string;
-    $svgCSS?: {
-      css: SerializedStyles;
-    };
-  }
-> = ({ isEnabled, label, type, handleClick, btnActType, Svg, $svgCSS }) => {
+export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
+  btnActType: BtnActType;
+  Svg?: IconType;
+  label?: string;
+  $svgCSS?: {
+    css: SerializedStyles;
+  };
+};
+const BtnIcon: FC<BtnIconPropsType> = ({
+  isEnabled,
+  label,
+  type,
+  handleClick,
+  btnActType,
+  Svg,
+  $svgCSS,
+}) => {
   const clr = btnColors[btnActType];
 
   return (

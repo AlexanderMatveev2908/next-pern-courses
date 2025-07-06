@@ -15,9 +15,9 @@ export type FormFieldArrayType = {
   label: string;
   type?: "text" | "number";
   required?: boolean;
-  id?: string;
+  id: string;
   place?: string;
-  field?: string;
+  field: string;
 };
 
 // ? T => form shape defined in zod

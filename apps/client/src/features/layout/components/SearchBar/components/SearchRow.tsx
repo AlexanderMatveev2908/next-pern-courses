@@ -1,23 +1,28 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { FaTrashCan } from "react-icons/fa6";
+import BtnIcon, {
+  BtnIconPropsType,
+} from "@/common/components/buttons/BtnIcon/BtnIcon";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { FormFieldArrayType } from "@/common/types/uiFactory";
+import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import { FC } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
+import WrapSearchBarBtn from "./WrapSearchBarBtn";
 
 type PropsType = {
   txtInputs: FormFieldArrayType[];
 };
 
-const SearchRow: FC<PropsType> = ({ txtInputs }) => {
+const SearchRow: FC<PropsType> = ({}) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext();
-  const { fields, append, remove } = useFieldArray<
-    FormFieldArrayType[],
+  } = useFormContext<FieldValues & { txtInputs: FormFieldArrayType[] }>();
+  const { fields, remove } = useFieldArray<
+    { txtInputs: FormFieldArrayType[] },
     "txtInputs"
   >({
     control,
@@ -29,7 +34,7 @@ const SearchRow: FC<PropsType> = ({ txtInputs }) => {
       {!isArrOK(fields)
         ? null
         : fields.map((field, i) => (
-            <div key={field.id} className="w-full flex gap-5 items-center">
+            <div key={field.id} className="w-full flex gap-8 items-center">
               <FormFieldTxt
                 {...{
                   control,
@@ -42,6 +47,19 @@ const SearchRow: FC<PropsType> = ({ txtInputs }) => {
                   index: i,
                 }}
               />
+
+              <WrapSearchBarBtn>
+                {(arg: Partial<BtnIconPropsType>) => (
+                  <BtnIcon
+                    {...({
+                      ...arg,
+                      btnActType: BtnActType.ERROR,
+                      Svg: FaTrashCan,
+                      handleClick: () => remove(i),
+                    } as BtnIconPropsType)}
+                  />
+                )}
+              </WrapSearchBarBtn>
             </div>
           ))}
     </div>
