@@ -11,9 +11,8 @@ import {
   schemaGetListCourse,
   SchemaGetListCoursesType,
 } from "@shared/first/paperwork/courses/schema.get.js";
-import { mainFieldSearch, txtInputsCourses } from "./uifactory/searchBar";
+import { txtInputsCourses } from "./uifactory/searchBar";
 import { __cg } from "@shared/first/lib/logger.js";
-import { useFocus } from "@/core/hooks/ui/useFocus";
 import { v4 } from "uuid";
 
 const ListCourses: FC = () => {

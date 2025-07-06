@@ -3,8 +3,7 @@
 "use client";
 
 import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
-import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { __cg } from "@shared/first/lib/logger.js";
+// import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import SearchRow from "./components/SearchRow";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
@@ -16,10 +15,9 @@ type PropsType<T, K, U extends FieldValues> = {
 };
 
 const Searchbar = <T, K, U extends FieldValues>({
-  hook,
   txtInputs,
 }: PropsType<T, K, U>) => {
-  const ctx = useSearchCtxConsumer();
+  // const ctx = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
   const { setFocus } = formCtx;
 

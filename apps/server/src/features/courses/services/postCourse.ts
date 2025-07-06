@@ -14,9 +14,9 @@ export const postCourseService = async ({
   videoFile,
 }: {
   fields: Omit<
-    CourseFormServerType,
-    "images" | "video" | "imageFiles" | "videoFile"
-  >;
+    Partial<CourseFormServerType>,
+    "images" | "video" | "imageFiles" | "videoFile" | "tags"
+  > & { tags?: string[] };
   images: Partial<CloudAsset>[];
   video: Partial<CloudAsset> | null;
   videoFile?: AppFile;
@@ -27,12 +27,10 @@ export const postCourseService = async ({
         fields.tags,
         (val) => typeof val === "string",
       )
-        ? fields.tags.map((tag: string) => JSON.parse(tag))
+        ? fields!.tags!.map((tag: string) => JSON.parse(tag))
         : [];
 
-      const normalizedTags: string[] = fallBackTags.map(
-        (tag: CourseFormServerType["tags"][number]) => capt(tag.val),
-      );
+      const normalizedTags: string[] = fallBackTags.map((tag) => capt(tag.val));
 
       const course = await trx.course.create({
         data: {

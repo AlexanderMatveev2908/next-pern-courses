@@ -14,7 +14,10 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
   const {
     myFormData,
   }: {
-    myFormData?: { fields: Partial<CourseFormServerType>; files: AppFile[] };
+    myFormData?: {
+      fields: Omit<Partial<CourseFormServerType>, "tags"> & { tags?: string[] };
+      files: AppFile[];
+    };
   } = req;
 
   const videoFile = (myFormData?.files ?? []).find(

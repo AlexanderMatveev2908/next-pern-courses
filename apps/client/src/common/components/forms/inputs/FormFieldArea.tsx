@@ -17,7 +17,7 @@ const FormFieldArea = <T extends FieldValues, K extends Path<T>>({
   return (
     <WrapFormField {...{ el, errors, showLabel }}>
       <Controller
-        name={el.name}
+        name={el.name as K}
         control={control}
         render={({ field }) => (
           <textarea

@@ -14,7 +14,7 @@ type PropsType = {
   txtInputs: FormFieldArrayType[];
 };
 
-const SearchRowBtns: FC<PropsType> = ({ txtInputs }) => {
+const SearchRowBtns: FC<PropsType> = ({}) => {
   return (
     <div className="w-full grid grid-cols-1">
       <div className="w-full grid grid-cols-2 justify-items-center gap-6">
