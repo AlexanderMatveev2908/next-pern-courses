@@ -1,11 +1,17 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import SearchCtxProvider from "@/features/layout/components/SearchBar/contexts/SearchCtxProvider";
 import Searchbar from "@/features/layout/components/SearchBar/Searchbar";
 import { useEffect, type FC } from "react";
 import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  schemaGetListCourse,
+  SchemaGetListCoursesType,
+} from "@shared/first/paperwork/courses/schema.get.js";
+import { mainFieldSearch } from "./uifactory/searchBar";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -26,12 +32,17 @@ const ListCourses: FC = () => {
     // eslint-disable-next-line
   }, [triggerRTK]);
 
+  const formCtx = useForm<SchemaGetListCoursesType>({
+    resolver: zodResolver(schemaGetListCourse),
+    mode: "onChange",
+  });
+
   return (
-    <SearchCtxProvider>
-      <div className="w-full grid grid-cols-1 gap-8">
-        <Searchbar {...{ hook }} />
-      </div>
-    </SearchCtxProvider>
+    <div className="w-full grid grid-cols-1 gap-8">
+      <FormProvider {...formCtx}>
+        <Searchbar {...{ hook, mainSearchField: mainFieldSearch }} />
+      </FormProvider>
+    </div>
   );
 };
 
