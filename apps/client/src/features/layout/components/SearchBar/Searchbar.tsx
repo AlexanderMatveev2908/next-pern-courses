@@ -25,7 +25,7 @@ const Searchbar = <T, K, U extends FieldValues>({
     cb: () => setFocus(`txtInputs.0.val` as any),
   });
   return (
-    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-4">
+    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6">
       <SearchRow {...{ txtInputs }} />
 
       <SearchRowBtns {...{ txtInputs }} />

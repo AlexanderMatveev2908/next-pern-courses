@@ -10,12 +10,17 @@ import { postCourseService } from "../services/postCourse.js";
 import { AppFile } from "@src/types/fastify.js";
 import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
 
+export type ServerSideFormCourse = Omit<
+  Partial<CourseFormServerType>,
+  "images" | "video" | "imageFiles" | "videoFile" | "tags"
+> & { tags?: string[] };
+
 export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
   const {
     myFormData,
   }: {
     myFormData?: {
-      fields: Omit<Partial<CourseFormServerType>, "tags"> & { tags?: string[] };
+      fields: ServerSideFormCourse;
       files: AppFile[];
     };
   } = req;
