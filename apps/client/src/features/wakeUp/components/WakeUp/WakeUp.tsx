@@ -7,8 +7,8 @@ import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import ContentWarn from "./components/ContentWarn";
 import { useIsAwake } from "@/core/hooks/api/useIsAwake";
 import { __cg } from "@shared/first/lib/logger";
-import { getAllDummyItems } from "../../slices/wakeUpSlice";
-import { useSelector } from "react-redux";
+import { getAllDummyItems, wakeUpSlice } from "../../slices/wakeUpSlice";
+import { useDispatch, useSelector } from "react-redux";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
 
@@ -17,9 +17,12 @@ const WakeUp: FC = () => {
 
   const { isLoading } = useIsAwake({ setIsShow });
 
+  const dispatch = useDispatch();
   const items = useSelector(getAllDummyItems);
 
-  __cg("items", items);
+  const handleClick = (id: string) => {
+    dispatch(wakeUpSlice.actions.removeDummyItem(id));
+  };
 
   return (
     <WrapPendingClient {...{ isLoading }}>
@@ -35,6 +38,7 @@ const WakeUp: FC = () => {
                     type: "button",
                     label: el.val + "",
                     isLoading: false,
+                    handleClick: handleClick.bind(null, el.id),
                   }}
                 />
               </div>
