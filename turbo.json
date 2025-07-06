@@ -9,6 +9,24 @@
       "outputs": []
     },
 
+    "start": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^start"],
+      "outputs": []
+    },
+    "@shared/first#start": {
+      "outputs": ["dist/**"]
+    },
+    "client#start": {
+      "dependsOn": ["@shared/first#start"],
+      "outputs": [".next/**"]
+    },
+    "server#start": {
+      "dependsOn": ["@shared/first#start"],
+      "outputs": ["dist/**"]
+    },
+
     "check": {
       "cache": false,
       "outputs": []

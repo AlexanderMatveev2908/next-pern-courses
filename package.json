@@ -7,7 +7,7 @@
     "build-client": "turbo build --filter=client...",
     "dev": "turbo dev --parallel",
     "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
-    "start": "turbo start",
+    "start": "turbo run start",
     "check": "turbo check"
   },
   "devDependencies": {
