@@ -2,6 +2,7 @@
 export enum TagsAPI {
   TEST = "TEST",
   WAKE_UP = "WAKE_UP",
+  DUMMY_TAG_LIST = "DUMMY_TAG_LIST",
 }
 
 export enum ApiEventType {

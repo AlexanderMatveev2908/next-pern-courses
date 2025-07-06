@@ -15,12 +15,16 @@
   }
 
   &:hover {
-    text-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+    text-shadow:
+      0 0 2.5px var(--white__0),
+      0 0 5px var(--white__0);
 
     &::after {
       width: 100%;
       left: 0;
-      box-shadow: 0 0 5px var(--white__0), 0 0 10px var(--white__0);
+      box-shadow:
+        0 0 5px var(--white__0),
+        0 0 10px var(--white__0);
     }
   }
 }
@@ -32,6 +36,10 @@
   &:hover {
     transform: scale(var(--scale__up));
   }
+}
+
+.btn__app:disabled {
+  @apply cursor-not-allowed opacity-50;
 }
 
 .btn__app:enabled:active {

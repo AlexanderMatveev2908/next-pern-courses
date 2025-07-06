@@ -25,7 +25,7 @@ const BtnIcon: FC<
       type={type}
       disabled={!isEnabled}
       onClick={handleClick}
-      className="btn__app flex w-full gap-5 py-[7.5px] px-[25px] justify-center items-center rounded-2xl  disabled:cursor-not-allowed disabled:opacity-50"
+      className="btn__app flex w-full gap-5 py-[7.5px] px-[25px] justify-center items-center rounded-2xl"
       css={css`
         border: 2px solid ${clr};
         color: ${clr};

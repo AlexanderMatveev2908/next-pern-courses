@@ -45,7 +45,7 @@ const WrapPop: FC<PropsType> = ({
           <button
             type="button"
             onClick={() => setIsShow(false)}
-            className="btn__app disabled:cursor-not-allowed disabled:opacity-50 absolute -top-3 -right-1 cursor-pointer"
+            className="btn__app absolute -top-3 -right-1 cursor-pointer"
             disabled={!allowClose}
             style={
               {

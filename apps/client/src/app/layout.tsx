@@ -40,6 +40,13 @@ export default async function RootLayout({
         }),
       ),
     ),
+    wrapCallSSR(() =>
+      store.dispatch(
+        wakeUpSliceAPI.endpoints.getListDummyItems.initiate(undefined, {
+          forceRefetch: true,
+        }),
+      ),
+    ),
   ]);
 
   const preloadedState = store.getState();

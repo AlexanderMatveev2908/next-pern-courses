@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { wakeUpCtrl } from "../controllers/get.js";
+import { getDummyList, wakeUpCtrl } from "../controllers/get.js";
 import { forceWakeUp } from "../controllers/post.js";
 
 export const wakeUpRoute: FastifyPluginAsync = async (app: FastifyInstance) => {
@@ -13,5 +13,11 @@ export const wakeUpRoute: FastifyPluginAsync = async (app: FastifyInstance) => {
     method: "POST",
     url: "/",
     handler: forceWakeUp,
+  });
+
+  app.route({
+    method: "GET",
+    url: "/list",
+    handler: getDummyList,
   });
 };

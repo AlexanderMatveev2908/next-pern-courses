@@ -27,7 +27,7 @@ const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
         style={{ "--scale__up": 1.1 } as React.CSSProperties}
         css={css`
           border: 2px solid ${clr};
-          &:hover {
+          &:enabled:hover {
             box-shadow:
               0 0 5px ${clr},
               0 0 10px ${clr},

@@ -80,6 +80,10 @@
   transform: scale(var(--scale__up));
 }
 
+.btn__app:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
 .btn__app:enabled:active {
   transition: 0.15s;
   transform: scale(0.8);
