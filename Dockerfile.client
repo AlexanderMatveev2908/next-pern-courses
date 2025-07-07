@@ -17,7 +17,7 @@ ENV NEXT_PUBLIC_BACK_URL=$NEXT_PUBLIC_BACK_URL
 
 RUN yarn install
 
-RUN yarn workspace client build
+RUN yarn turbo build --filter=client...
 
 ENV NODE_PATH=/app/node_modules
 
