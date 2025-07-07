@@ -118,10 +118,6 @@ export type TechValType = keyof typeof TechStack;
 
 export type DifficultyType = keyof typeof Difficulties;
 
-export const AllTools = Object.values(Tools)
-  .flatMap((v) => Object.values(v))
-  .filter(Boolean);
-
 export const isValidTool = (
   Tech: keyof typeof TechStack,
   tool: ToolValType,

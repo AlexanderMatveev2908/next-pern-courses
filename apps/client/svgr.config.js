@@ -5,6 +5,7 @@ module.exports = {
   svgProps: {
     "aria-hidden": "true",
     fill: "currentColor",
+    stroke: "currentColor",
   },
   expandProps: "end",
   replaceAttrValues: {
@@ -15,6 +16,13 @@ module.exports = {
     "#ffffff": "currentColor",
     white: "currentColor",
     inherit: "currentColor",
+
+    "stroke:#000": "stroke:currentColor",
+    "stroke:#000000": "stroke:currentColor",
+    "stroke:black": "stroke:currentColor",
+    "stroke:#fff": "stroke:currentColor",
+    "stroke:#ffffff": "stroke:currentColor",
+    "stroke:white": "stroke:currentColor",
   },
   dimensions: false,
   exportType: "default",

@@ -6,6 +6,7 @@ const SvgGrade = (props: SVGProps<SVGSVGElement>) => (
     viewBox="0 0 24 24"
     aria-hidden="true"
     fill="currentColor"
+    stroke="currentColor"
     {...props}
   >
     <path

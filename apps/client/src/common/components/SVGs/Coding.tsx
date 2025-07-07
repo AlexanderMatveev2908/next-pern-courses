@@ -6,6 +6,7 @@ const SvgCoding = (props: SVGProps<SVGSVGElement>) => (
     fill="currentColor"
     viewBox="0 0 960 960"
     aria-hidden="true"
+    stroke="currentColor"
     {...props}
   >
     <path

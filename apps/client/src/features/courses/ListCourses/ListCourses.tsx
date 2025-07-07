@@ -13,6 +13,7 @@ import {
 } from "@shared/first/paperwork/courses/schema.get.js";
 import {
   filtersCourses,
+  innerJoinFilters,
   sortersCourses,
   txtInputsCourses,
 } from "./uifactory/searchBar";
@@ -54,6 +55,7 @@ const ListCourses: FC = () => {
             txtInputs: txtInputsCourses,
             filters: filtersCourses,
             sorters: sortersCourses,
+            innerJoinConf: innerJoinFilters,
           }}
         />
       </FormProvider>

@@ -6,6 +6,7 @@ const SvgTools = (props: SVGProps<SVGSVGElement>) => (
     fill="currentColor"
     viewBox="0 0 24 24"
     aria-hidden="true"
+    stroke="currentColor"
     {...props}
   >
     <path

@@ -16,26 +16,39 @@ import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import FilterFooter from "./components/FilterFooter/FilterFooter";
 import { SearchFilterType, SearchSortType } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
+import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
+import { useEffect } from "react";
 
 type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
   txtInputs: U["txtInputs"];
   filters: SearchFilterType<U, P>[];
   sorters: SearchSortType<U, P>[];
+  innerJoinConf: {
+    keyDependsOn: keyof U;
+    filter: SearchFilterType<U, P>;
+  }[];
 };
 
 const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
   txtInputs,
   filters,
   sorters,
+  innerJoinConf,
 }: PropsType<T, K, U, P>) => {
-  // const ctx = useSearchCtxConsumer();
+  const { setSearcher } = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
   const { setFocus, watch } = formCtx;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
   });
+  useEffect(() => {
+    setSearcher({
+      el: "currFilter",
+      val: filters[0].name,
+    });
+  }, [filters, setSearcher]);
 
   __cg("form", watch());
 
@@ -60,7 +73,7 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
         <ThirdRawBtns />
       </div>
 
-      <FilterFooter {...{ filters }} />
+      <FilterFooter {...{ filters, innerJoinConf }} />
 
       <SortPop {...{ sorters }} />
     </form>

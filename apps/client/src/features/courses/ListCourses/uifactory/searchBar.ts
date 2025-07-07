@@ -1,13 +1,18 @@
-import { Coding, Grade } from "@/common/components/SVGs";
+import SvgTools from "@/common/components/SVGs/Tools";
 import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { genArrFromConst } from "@/core/lib/etc";
 import {
   SearchFilterType,
   SearchSortType,
 } from "@/features/layout/components/SearchBar/types/uiFactory";
-import { Difficulties, TechStack } from "@shared/first/constants/categories.js";
+import {
+  Difficulties,
+  TechStack,
+  Tools,
+} from "@shared/first/constants/categories.js";
 import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema.get.js";
-import { IoCalendarNumberSharp } from "react-icons/io5";
+import { Rocket } from "lucide-react";
+import { IoCalendarNumberSharp, IoStatsChart } from "react-icons/io5";
 import { v4 } from "uuid";
 
 export const txtInputsCourses: FormFieldArrayType[] = [
@@ -38,7 +43,7 @@ export const txtInputsCourses: FormFieldArrayType[] = [
 const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
   name: "grade",
   label: "Grade",
-  Svg: Grade,
+  Svg: IoStatsChart,
   id: v4(),
   options: genArrFromConst(Difficulties),
 };
@@ -46,12 +51,12 @@ const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
 const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
   name: "techStack",
   label: "Tech stack",
-  Svg: Coding,
+  Svg: Rocket,
   id: v4(),
   options: genArrFromConst(TechStack),
 };
 
-export const filtersCourses = [filterTech, filterGrade];
+export const filtersCourses = [filterGrade, filterTech];
 
 const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
   {
@@ -62,3 +67,27 @@ const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
   };
 
 export const sortersCourses = [sortCreatedAt];
+
+const innerJoinToolsFilter: SearchFilterType<
+  SchemaGetListCoursesType,
+  "tools"
+> = {
+  name: "tools",
+  label: "Tools",
+  Svg: SvgTools,
+  id: v4(),
+  options: Object.values(Tools).flatMap((v) =>
+    Object.entries(v).map((pair) => ({
+      id: v4(),
+      label: pair[1],
+      val: pair[0],
+    })),
+  ),
+};
+
+export const innerJoinFilters = [
+  {
+    keyDependsOn: "techStack" as keyof SchemaGetListCoursesType,
+    filter: innerJoinToolsFilter,
+  },
+];
