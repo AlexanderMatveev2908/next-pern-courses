@@ -5,7 +5,6 @@
 
 app = 'next-pern-courses-client'
 primary_region = 'otp'
-org = "personal"
 
 [build]
   dockerfile = 'Dockerfile.client'
