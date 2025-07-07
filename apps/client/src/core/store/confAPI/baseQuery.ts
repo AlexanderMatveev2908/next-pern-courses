@@ -63,6 +63,7 @@ export const axiosBaseQuery = async ({
       error: {
         config: {
           url,
+          fullURL: axiosInstance.defaults.baseURL + url,
           method,
           data: !(argData instanceof Object)
             ? JSON.stringify(argData)
