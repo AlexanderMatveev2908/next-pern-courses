@@ -93,13 +93,41 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
   const handleChange = (f: OptionFilterCheckType<T, K>) => {
     const existing: T[K] | undefined = getValues(f.name) ?? ([] as T[K]);
 
-    setValue(
-      f.name,
-      (!Array.isArray(existing)
+    const whereIsParent = innerJoinConf.find(
+      (conf) => conf.keyDependsOn === f.name,
+    );
+    // ? it is parent somewhere and his choice will have side effects
+
+    // const hasSideEffects = innerJoinConf.some(
+    //   (conf) => conf.filter.name === f.name,
+    // );
+
+    const updated = (
+      !Array.isArray(existing)
         ? [f.val]
         : existing!.includes(f.val)
           ? existing!.filter((v: T[K][number]) => v !== f.val)
-          : [...existing, f.val]) as PathValue<T, T[K]>,
+          : [...existing, f.val]
+    ) as PathValue<T, T[K]>;
+    setValue(f.name, updated, {
+      shouldValidate: true,
+    });
+
+    if (!whereIsParent) return null;
+
+    const existingChildrenVals = (getValues(whereIsParent.filter.name) ??
+      []) as T[K];
+    const valsChildrenFiltered = Object.entries(
+      whereIsParent.parentFilterToSync,
+    )
+      .filter((pair) => updated.includes(pair[0]))
+      .flatMap((pair) =>
+        Object.keys(pair[1]).filter((v) => existingChildrenVals.includes(v)),
+      );
+
+    setValue(
+      whereIsParent.filter.name,
+      valsChildrenFiltered as PathValue<T, T[K]>,
       {
         shouldValidate: true,
       },
