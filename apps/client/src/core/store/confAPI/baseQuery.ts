@@ -2,6 +2,7 @@
 
 import { ErrAPI, ResAPI } from "@/common/types/api";
 import { axiosInstance } from "@/core/constants/axios";
+import { serializeData } from "@/core/lib/etc";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { __cg } from "@shared/first/lib/logger.js";
 
@@ -65,9 +66,7 @@ export const axiosBaseQuery = async ({
           url,
           fullURL: axiosInstance.defaults.baseURL + url,
           method,
-          data: !(argData instanceof Object)
-            ? JSON.stringify(argData)
-            : argData,
+          data: serializeData(argData),
           params,
           responseType,
         },

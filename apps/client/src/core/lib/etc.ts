@@ -47,3 +47,17 @@ export const genArrFromConst = <
     val: pair[0] as keyof T,
     name: name as U,
   }));
+
+export const serializeData = <T>(arg: T): T => {
+  if (arg instanceof FormData || arg instanceof URLSearchParams) {
+    const obj: T = {} as {
+      [K in keyof T]: T[K];
+    };
+
+    for (const [k, v] of arg.entries()) obj[k as keyof T] = v as T[keyof T];
+
+    return obj;
+  }
+
+  return arg;
+};
