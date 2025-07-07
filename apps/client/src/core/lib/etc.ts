@@ -1,7 +1,7 @@
 import { FormFieldArrayType, FormFieldType } from "@/common/types/uiFactory";
 import { capt } from "@shared/first/lib/formatters";
 import { RefObject } from "react";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
 export const addID = <T>(arg: T[]): (T & { id: string })[] =>
@@ -33,11 +33,17 @@ export const genIpsum = (num: number = 1) =>
     num,
   );
 
-export const genArrFromConst = <T extends Record<string, string>>(
+export const genArrFromConst = <
+  T extends Record<string, string>,
+  K extends FieldValues,
+  U extends Path<K>,
+>(
   obj: T,
-): { id: string; label: T[keyof T]; val: keyof T }[] =>
+  name: U,
+): { id: string; label: T[keyof T]; val: keyof T; name: U }[] =>
   Object.entries(obj).map((pair) => ({
     id: v4(),
     label: pair[1] as T[keyof T],
     val: pair[0] as keyof T,
+    name: name as U,
   }));

@@ -1,29 +1,23 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldCheckType } from "@/common/types/uiFactory";
+import { OptionFilterCheckType } from "@/features/layout/components/SearchBar/types/uiFactory";
 import { css } from "@emotion/react";
 import { FieldValues, Path, PathValue } from "react-hook-form";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
-  // ? first argument is your inner value, second atg is arg to show user in fancy with proper grammar etc
-  valArg: [string, string];
   // ? radio form field has just a string real checkbox array of strings
-  data?: PathValue<T, K>[] | PathValue<T, K>;
+  data?: PathValue<T, K>[];
   handleClick: () => void;
-  el: FieldCheckType<T>;
+  el: OptionFilterCheckType<T, K>;
 };
 
-const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
+const FormFieldBoxV2 = <T extends FieldValues, K extends Path<T>>({
   data,
-  valArg,
   handleClick,
   el,
 }: PropsType<T, K>) => {
-  const isChecked =
-    el.type === "radio"
-      ? data === valArg[0]
-      : (data ?? []).some((item) => item === valArg[0]);
+  const isChecked = (data ?? [])?.some((item) => item === el.val);
 
   return (
     <button
@@ -50,10 +44,10 @@ const FormFieldBox = <T extends FieldValues, K extends Path<T>>({
           color: var(--${isChecked ? "neutral__950" : "neutral__300"});
         `}
       >
-        {valArg[1]}
+        {el.label}
       </span>
     </button>
   );
 };
 
-export default FormFieldBox;
+export default FormFieldBoxV2;

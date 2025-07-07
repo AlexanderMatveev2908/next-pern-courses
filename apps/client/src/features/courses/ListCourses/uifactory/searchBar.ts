@@ -2,6 +2,7 @@ import SvgTools from "@/common/components/SVGs/Tools";
 import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { genArrFromConst } from "@/core/lib/etc";
 import {
+  InnerJoinFilterConfType,
   SearchFilterType,
   SearchSortType,
 } from "@/features/layout/components/SearchBar/types/uiFactory";
@@ -45,7 +46,7 @@ const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
   label: "Grade",
   Svg: IoStatsChart,
   id: v4(),
-  options: genArrFromConst(Difficulties),
+  options: genArrFromConst(Difficulties, "grade"),
 };
 
 const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
@@ -53,7 +54,7 @@ const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
   label: "Tech stack",
   Svg: Rocket,
   id: v4(),
-  options: genArrFromConst(TechStack),
+  options: genArrFromConst(TechStack, "techStack"),
 };
 
 export const filtersCourses = [filterGrade, filterTech];
@@ -78,6 +79,7 @@ const innerJoinToolsFilter: SearchFilterType<
   id: v4(),
   options: Object.values(Tools).flatMap((v) =>
     Object.entries(v).map((pair) => ({
+      name: "tools",
       id: v4(),
       label: pair[1],
       val: pair[0],
@@ -85,9 +87,13 @@ const innerJoinToolsFilter: SearchFilterType<
   ),
 };
 
-export const innerJoinFilters = [
-  {
-    keyDependsOn: "techStack" as keyof SchemaGetListCoursesType,
-    filter: innerJoinToolsFilter,
-  },
-];
+const innerJoinFilterTools: InnerJoinFilterConfType<
+  SchemaGetListCoursesType,
+  "tools"
+> = {
+  keyDependsOn: "techStack",
+  filter: innerJoinToolsFilter,
+  parentFilterToSync: Tools,
+};
+
+export const innerJoinFilters = [innerJoinFilterTools];

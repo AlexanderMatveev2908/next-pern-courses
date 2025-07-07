@@ -9,7 +9,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
 };
 
 const SortPop = <T extends FieldValues, K extends Path<T>>({
-  sorters,
+  
 }: PropsType<T, K>) => {
   return <div></div>;
 };

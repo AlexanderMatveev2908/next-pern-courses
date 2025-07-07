@@ -5,7 +5,6 @@
 import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
-import { __cg } from "@shared/first/lib/logger.js";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
 import PrimaryRow from "./components/PrimaryRow";
 import ThirdRawBtns from "./components/ThirdRawBtns";
@@ -14,7 +13,11 @@ import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import FilterFooter from "./components/FilterFooter/FilterFooter";
-import { SearchFilterType, SearchSortType } from "./types/uiFactory";
+import {
+  InnerJoinFilterConfType,
+  SearchFilterType,
+  SearchSortType,
+} from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useEffect } from "react";
@@ -24,10 +27,7 @@ type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   txtInputs: U["txtInputs"];
   filters: SearchFilterType<U, P>[];
   sorters: SearchSortType<U, P>[];
-  innerJoinConf: {
-    keyDependsOn: keyof U;
-    filter: SearchFilterType<U, P>;
-  }[];
+  innerJoinConf: InnerJoinFilterConfType<U, P>[];
 };
 
 const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
@@ -38,7 +38,7 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
 }: PropsType<T, K, U, P>) => {
   const { setSearcher } = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
-  const { setFocus, watch } = formCtx;
+  const { setFocus } = formCtx;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -50,7 +50,7 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
     });
   }, [filters, setSearcher]);
 
-  __cg("form", watch());
+  // __cg("form", watch());
 
   const { isHydrated } = useListenHydration();
 
