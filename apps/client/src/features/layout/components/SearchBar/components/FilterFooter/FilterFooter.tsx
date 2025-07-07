@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
-import { css } from "@emotion/react";
 import CloseBtn from "@/common/components/buttons/CloseBtn";
 import {
   InnerJoinFilterConfType,
@@ -14,6 +13,7 @@ import {
 import { FieldValues, Path } from "react-hook-form";
 import ColumnLabels from "./components/ColumnLabels";
 import ColumnVals from "./components/ColumnVals";
+import { css } from "@emotion/react";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
@@ -25,6 +25,22 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
   innerJoinConf,
 }: PropsType<T, K>) => {
   const barRef = useRef<HTMLDivElement | null>(null);
+  const labelRef = useRef<HTMLDivElement | null>(null);
+  const [elementHeight, setElementHeight] = useState(0);
+
+  useEffect(() => {
+    if (!labelRef.current) return;
+
+    const cb = () => setElementHeight(labelRef.current?.scrollHeight ?? 0);
+
+    const obs = new ResizeObserver(cb);
+    window.addEventListener("resize", cb);
+
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("resize", cb);
+    };
+  }, []);
 
   const {
     bars: { filterBar },
@@ -56,7 +72,10 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           pointer-events: ${filterBar ? "all" : "none"};
         `}
       >
-        <div className="w-full grid grid-cols-2 border-b-2 border-neutral-800 pb-3 pt-4 px-4">
+        <div
+          ref={labelRef}
+          className="w-full grid grid-cols-2 border-b-2 border-neutral-800 pb-3 pt-4 px-4"
+        >
           <span className="txt__xl justify-self-start text-neutral-200">
             Filter
           </span>
@@ -70,7 +89,13 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-[80px_3px_1fr] h-full">
+        <div
+          className="w-full grid grid-cols-[80px_3px_1fr]"
+          css={css`
+            max-height: calc(100% - ${elementHeight + 50}px);
+            height: 100%;
+          `}
+        >
           <ColumnLabels
             {...{
               filters,
