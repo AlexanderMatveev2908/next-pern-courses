@@ -3,13 +3,13 @@
 
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 import { css } from "@emotion/react";
-import FormFieldBox from "../../../inputs/FormFieldBox";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
-import { FieldCheckType } from "@/common/types/uiFactory";
+import { FieldCheckType, FieldCheckValType } from "@/common/types/uiFactory";
 import { easeInOut, motion } from "framer-motion";
+import FormFieldBoxV2 from "../../../inputs/FormFieldBoxV2";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
-  valsToMap: [string, string][];
+  valsToMap: FieldCheckValType<T, K>[];
   colsForSwap: number;
   data?: T[K][] | T[K];
   setValue: UseFormSetValue<T>;
@@ -62,13 +62,12 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
       }}
     >
       {ids[0].map((id, i) => (
-        <FormFieldBox
+        <FormFieldBoxV2
           key={id}
           {...{
-            valArg: valsToMap[i],
             data,
-            handleClick: handleClick.bind(null, valsToMap[i][0] as T[K]),
-            el,
+            handleClick: handleClick.bind(null, valsToMap[i].val as T[K]),
+            el: valsToMap[i],
           }}
         />
       ))}

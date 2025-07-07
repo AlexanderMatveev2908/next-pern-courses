@@ -83,6 +83,7 @@ const innerJoinToolsFilter: SearchFilterType<
       id: v4(),
       label: pair[1],
       val: pair[0],
+      type: "checkbox",
     })),
   ),
 };

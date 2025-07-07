@@ -5,14 +5,15 @@ import { useEffect, useMemo, useState } from "react";
 import { calcFieldsForSwap, getColsForSwap, maxRows } from "./uiFactory";
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 import Swap from "./components/Swap";
-import { FieldCheckType } from "@/common/types/uiFactory";
-import { FieldValues, useFormContext } from "react-hook-form";
+import { FieldCheckType, FieldCheckValType } from "@/common/types/uiFactory";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { css } from "@emotion/react";
 import { easeInOut, motion } from "framer-motion";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
 import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
+import { v4 } from "uuid";
 
 export type PropsTypeWrapBoxes<T extends FieldValues> = {
   vals: Record<string, string>;
@@ -20,7 +21,7 @@ export type PropsTypeWrapBoxes<T extends FieldValues> = {
   txtFallback?: string;
 };
 
-const WrapBoxes = <T extends FieldValues>({
+const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
   vals,
   el,
   txtFallback,
@@ -36,9 +37,16 @@ const WrapBoxes = <T extends FieldValues>({
   } = useFormContext<T>();
   const data: T[typeof el.name] = watch(el.name);
 
-  const parsedVals: [string, string][] = useMemo(
-    () => Object.entries(vals),
-    [vals],
+  const parsedVals: FieldCheckValType<T, K>[] = useMemo(
+    () =>
+      Object.entries(vals).map((pair) => ({
+        id: v4(),
+        name: el.name as K,
+        label: pair[1],
+        val: pair[0],
+        type:el.type
+      })),
+    [vals, el],
   );
 
   useEffect(() => {

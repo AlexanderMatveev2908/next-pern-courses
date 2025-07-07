@@ -44,7 +44,7 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
     if (!isAboutInnerJoin)
       return cloneDeep(
         (hypotheticalParentToShow as SearchFilterType<T, K>).options,
-      );
+      ) as OptionFilterCheckType<T, K>[];
 
     // ? must exist common key to keep on the logic of dynamic sub filters
     const valsDependsOn = getValues(
@@ -68,6 +68,7 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
             name: (hypotheticalParentToShow as InnerJoinFilterConfType<T, K>)
               .filter.name as K,
             id: v4(),
+            type: "checkbox" as const,
           })),
         );
 

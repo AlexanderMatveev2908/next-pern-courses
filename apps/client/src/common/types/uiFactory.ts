@@ -56,3 +56,11 @@ export type FieldCheckType<T extends FieldValues> = {
   name: Path<T>;
   label: string;
 };
+
+export type FieldCheckValType<T extends FieldValues, K extends Path<T>> = {
+  name: K;
+  val: string;
+  label: string;
+  id: string;
+  type:"radio"|"checkbox"
+};
