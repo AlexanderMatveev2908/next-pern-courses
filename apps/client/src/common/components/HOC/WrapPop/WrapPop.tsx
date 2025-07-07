@@ -6,7 +6,7 @@ import BlackBg from "../../elements/BlackBg/BlackBg";
 import { varPop } from "./uiFactory";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import CloseBtn from "../../buttons/CloseBtn";
 
 type PropsType = {
   isShow: boolean | null;
@@ -45,19 +45,12 @@ const WrapPop: FC<PropsType> = ({
         }
       >
         <div className="flex flex-col relative gap-10 min-h-0 max-h-full pb-5">
-          <button
-            type="button"
-            onClick={() => setIsShow(false)}
-            className="btn__app absolute -top-3 -right-1 cursor-pointer"
-            disabled={!allowClose}
-            style={
-              {
-                "--scale__up": "1.35",
-              } as React.CSSProperties
-            }
-          >
-            <X className="text-red-600 h-[50px] w-[50px]" />
-          </button>
+          <CloseBtn
+            {...{
+              handleClick: () => setIsShow(false),
+              isEnabled: allowClose,
+            }}
+          />
         </div>
 
         {typeof Content === "function" ? Content() : Content}

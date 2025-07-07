@@ -8,6 +8,7 @@ import WrapSearchBarBtn from "./HOC/WrapSearchBarBtn";
 import { css } from "@emotion/react";
 import { ArrayPath, FieldValues } from "react-hook-form";
 import WrapBtnRow from "./HOC/WrapBtnRow";
+import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
 
 type PropsType<
   T extends FieldValues & {
@@ -42,6 +43,8 @@ const SecondaryRowBtns = <
   //     ),
   //   [fields, txtInputs],
   // );
+
+  const { setBar } = useSearchCtxConsumer();
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
@@ -86,6 +89,11 @@ const SecondaryRowBtns = <
               `,
             },
             labelConf: [650, "filter"],
+            handleClick: () =>
+              setBar({
+                el: "filterBar",
+                val: true,
+              }),
           }}
         />
         <WrapSearchBarBtn

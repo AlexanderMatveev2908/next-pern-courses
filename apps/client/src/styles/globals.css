@@ -149,16 +149,24 @@
   z-index: 1000;
 }
 
-.z__black_bg__popup {
+.z__black_bg__search_component {
   z-index: 2000;
 }
 
-.z__popup {
+.z__search_component {
   z-index: 3000;
 }
 
-.z__toast {
+.z__black_bg__popup {
+  z-index: 4000;
+}
+
+.z__popup {
   z-index: 5000;
+}
+
+.z__toast {
+  z-index: 6000;
 }
 
 .el__input {

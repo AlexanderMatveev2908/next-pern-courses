@@ -17,7 +17,7 @@ type PropsType = {
 
   btnActType: BtnActType;
   Svg?: IconType;
-  labelConf: [number, string];
+  labelConf: [number?, string?];
 
   handleClick?: () => void;
 };
@@ -43,7 +43,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
           isEnabled: true,
           isLoading: false,
           type: "button",
-          label: showLabel ? labelConf[1] : null,
+          label: showLabel ? labelConf?.[1] : null,
           btnActType,
           Svg,
           handleClick,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { handleShowLabel } from "../lib/style";
 
 type Params = {
-  width: number;
+  width?: number;
 };
 
 export const useListenCondLabel = ({ width }: Params) => {
@@ -10,6 +10,7 @@ export const useListenCondLabel = ({ width }: Params) => {
 
   useEffect(() => {
     const listen = () => {
+      if (typeof width !== "number") return;
       setShowLabel(handleShowLabel(width));
     };
 

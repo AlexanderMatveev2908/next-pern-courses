@@ -13,6 +13,7 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
+import FilterFooter from "./components/FilterFooter";
 
 type PropsType<T, K, U extends FieldValues> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -52,6 +53,8 @@ const Searchbar = <T, K, U extends FieldValues>({
 
         <ThirdRawBtns />
       </div>
+
+      <FilterFooter />
     </form>
   );
 };

@@ -10,5 +10,5 @@ export const getLimitPage = () =>
         ? 2
         : 1;
 
-export const handleShowLabel = (w: number) =>
-  !isWindow() ? false : window.innerWidth > w;
+export const handleShowLabel = (w?: number) =>
+  !isWindow() ? false : typeof w !== "number" ? false : window.innerWidth > w;
