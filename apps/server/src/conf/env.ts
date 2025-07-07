@@ -8,8 +8,8 @@ const schema = {
   type: "object",
   required: ["PORT", "HOST", "NODE_ENV"],
   properties: {
-    PORT: { type: "number" },
-    HOST: { type: "string" },
+    PORT: { type: "number", default: 3000 },
+    HOST: { type: "string", default: "0.0.0.0" },
     NODE_ENV: { type: "string" },
     FRONT_URL: { type: "string" },
     FRONT_URL_DEV: { type: "string" },

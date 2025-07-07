@@ -99,8 +99,6 @@ jobs:
             --build-arg NEXT_PUBLIC_BACK_URL=${{ secrets.NEXT_PUBLIC_BACK_URL }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_CLIENT }}
-          NEXT_PUBLIC_ENV: ${{secrets.NEXT_PUBLIC_ENV}}
-          NEXT_PUBLIC_BACK_URL: ${{secrets.NEXT_PUBLIC_BACK_URL}}
 
   deploy_on_pr_merge:
     name: deploy both client and server on Fly.io
@@ -127,5 +125,3 @@ jobs:
             --build-arg NEXT_PUBLIC_BACK_URL=${{ secrets.NEXT_PUBLIC_BACK_URL }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_CLIENT }}
-          NEXT_PUBLIC_ENV: ${{secrets.NEXT_PUBLIC_ENV}}
-          NEXT_PUBLIC_BACK_URL: ${{secrets.NEXT_PUBLIC_BACK_URL}}
