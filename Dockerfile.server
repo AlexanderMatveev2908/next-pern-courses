@@ -10,7 +10,7 @@ COPY apps/server ./apps/server
 
 RUN yarn install
 
-RUN yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && RUN yarn turbo build --filter=server...
+RUN yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && yarn turbo build --filter=server...
 
 
 ENV NODE_PATH=/app/node_modules
