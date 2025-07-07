@@ -8,7 +8,7 @@ import { SerializedStyles } from "@emotion/react";
 import { css } from "@emotion/react";
 import { BtnActType } from "@/common/types/uiFactory";
 import { IconType } from "react-icons/lib";
-import { useListenCondLabel } from "../../hooks/useListenCondLabel";
+import { resp } from "@/core/lib/style";
 
 type PropsType = {
   $customCSS?: {
@@ -29,12 +29,15 @@ const WrapSearchBarBtn: FC<PropsType> = ({
   handleClick,
   labelConf,
 }) => {
-  const { showLabel } = useListenCondLabel({ width: labelConf[0] });
   return (
     <div
       css={css`
-        width: ${showLabel ? 200 : 80}px;
         ${$customCSS?.css}
+        width: 80px;
+
+        ${resp(labelConf?.[0])} {
+          width: 200px;
+        }
       `}
     >
       <BtnIcon
@@ -43,7 +46,19 @@ const WrapSearchBarBtn: FC<PropsType> = ({
           isEnabled: true,
           isLoading: false,
           type: "button",
-          label: showLabel ? labelConf?.[1] : null,
+          label: typeof labelConf?.[0] !== "number" ? null : labelConf?.[1],
+          $labelCSS:
+            typeof labelConf?.[0] !== "number"
+              ? null
+              : {
+                  css: css`
+                    display: none;
+
+                    ${resp(labelConf[0])} {
+                      display: block;
+                    }
+                  `,
+                },
           btnActType,
           Svg,
           handleClick,

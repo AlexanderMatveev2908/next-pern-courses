@@ -90,9 +90,9 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
         </div>
 
         <div
-          className="w-full grid grid-cols-[80px_3px_1fr]"
+          className="w-full grid grid-cols-[80px_3px_1fr] md:grid-cols-[250px_3px_1fr]"
           css={css`
-            max-height: calc(100% - ${elementHeight + 50}px);
+            max-height: calc(100% - ${elementHeight}px);
             height: 100%;
           `}
         >

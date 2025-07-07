@@ -39,7 +39,7 @@ const ColumnLabels = <T extends FieldValues, K extends Path<T>>({
           type="button"
           css={genStyleFilterLabel(currFilter, f.name)}
           key={ids[0][i]}
-          className="btn__app w-full flex items-center gap-5 p-2 justify-center rounded-xl"
+          className="btn__app w-full flex items-center gap-3 p-2 justify-center rounded-xl"
           style={
             {
               "--scale__up": 1.2,
@@ -47,7 +47,8 @@ const ColumnLabels = <T extends FieldValues, K extends Path<T>>({
           }
         >
           <f.Svg className="min-w-[40px] min-h-[40px]" />
-          {/* <span></span> */}
+
+          <span className="txt__lg hidden md:block">{f.label}</span>
         </button>
       ))}
 
@@ -56,7 +57,7 @@ const ColumnLabels = <T extends FieldValues, K extends Path<T>>({
           onClick={handleCurrFilter.bind(null, conf.filter.name)}
           type="button"
           key={ids[1][i]}
-          className="btn__app w-full flex items-center gap-5 justify-center rounded-xl p-2"
+          className="btn__app w-full flex items-center gap-3 justify-center rounded-xl p-2"
           css={genStyleFilterLabel(currFilter, conf.filter.name)}
           style={
             {
@@ -65,7 +66,7 @@ const ColumnLabels = <T extends FieldValues, K extends Path<T>>({
           }
         >
           <conf.filter.Svg className="w-[40px] h-[40px]" />
-          {/* <span></span> */}
+          <span className="txt__lg hidden md:block">{conf.filter.label} </span>
         </button>
       ))}
     </div>

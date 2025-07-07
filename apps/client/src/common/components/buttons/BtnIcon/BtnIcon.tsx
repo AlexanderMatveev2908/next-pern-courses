@@ -16,6 +16,9 @@ export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
   $svgCSS?: {
     css: SerializedStyles;
   };
+  $labelCSS?: {
+    css: SerializedStyles;
+  } | null;
 };
 const BtnIcon: FC<BtnIconPropsType> = ({
   isEnabled,
@@ -25,6 +28,7 @@ const BtnIcon: FC<BtnIconPropsType> = ({
   btnActType,
   Svg,
   $svgCSS,
+  $labelCSS,
 }) => {
   const clr = btnColors[btnActType];
 
@@ -56,7 +60,11 @@ const BtnIcon: FC<BtnIconPropsType> = ({
         />
       )}
 
-      {isStr(label) && <span className="txt__lg">{capt(label!)}</span>}
+      {isStr(label) && (
+        <span className="txt__lg" css={$labelCSS?.css}>
+          {capt(label!)}
+        </span>
+      )}
     </button>
   );
 };
