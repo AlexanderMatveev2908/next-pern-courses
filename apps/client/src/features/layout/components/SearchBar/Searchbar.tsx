@@ -11,6 +11,8 @@ import PrimaryRow from "./components/PrimaryRow";
 import ThirdRawBtns from "./components/ThirdRawBtns";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
+import SkeletonSearch from "./components/SkeletonSearch";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 type PropsType<T, K, U extends FieldValues> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -30,7 +32,11 @@ const Searchbar = <T, K, U extends FieldValues>({
 
   __cg("form", watch());
 
-  return (
+  const { isHydrated } = useListenHydration();
+
+  return !isHydrated ? (
+    <SkeletonSearch />
+  ) : (
     <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]">
       <PrimaryRow {...{ txtInputs }} />
 
