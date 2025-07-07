@@ -5,6 +5,7 @@
 
 app = 'next-pern-courses-server'
 primary_region = 'otp'
+org = "personal"
 
 [build]
   dockerfile = 'Dockerfile.server'
