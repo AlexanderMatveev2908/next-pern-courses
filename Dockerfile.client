@@ -1,0 +1,26 @@
+FROM node:20 AS builder
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare yarn@4.9.2 --activate
+
+COPY package.json yarn.lock .yarnrc.yml turbo.json ./
+COPY packages/ ./packages/
+COPY apps/client ./apps/client
+
+ARG NEXT_PUBLIC_ENV
+ENV NEXT_PUBLIC_ENV=$NEXT_PUBLIC_ENV
+ARG NEXT_PUBLIC_BACK_URL_DEV
+ENV NEXT_PUBLIC_BACK_URL_DEV=$NEXT_PUBLIC_BACK_URL_DEV
+ARG NEXT_PUBLIC_BACK_URL
+ENV NEXT_PUBLIC_BACK_URL=$NEXT_PUBLIC_BACK_URL
+
+RUN yarn install
+
+RUN yarn workspace client build
+
+ENV NODE_PATH=/app/node_modules
+
+EXPOSE 3001
+
+CMD ["yarn", "workspace", "client", "start"]

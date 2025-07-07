@@ -10,6 +10,8 @@ export const corsPlugin: FastifyPluginCallback = fp(
 
     const whitelist = [FRONT_URL, FRONT_DEV].filter(Boolean);
 
+    __cg("cors whitelist", whitelist);
+
     await app.register(cors, {
       credentials: true,
       origin: (origin, cb) => {

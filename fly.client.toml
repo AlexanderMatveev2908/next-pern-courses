@@ -1,17 +1,16 @@
-# fly.toml app configuration file generated for next-pern-courses on 2025-06-29T10:42:22+03:00
+# fly.toml app configuration file generated for next-pern-courses-client on 2025-07-07T09:29:56+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'next-pern-courses'
+app = 'next-pern-courses-client'
 primary_region = 'otp'
 
 [build]
- dockerfile = "Dockerfile.server"
-
+  dockerfile = 'Dockerfile.client'
 
 [http_service]
-  internal_port = 3000
+  internal_port = 3001
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true

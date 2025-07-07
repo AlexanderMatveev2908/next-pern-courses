@@ -1,0 +1,13 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client\
+      ARGS:
+      NEXT_PUBLIC_ENV: ${NEXT_PUBLIC_ENV}
+      NEXT_PUBLIC_BACK_URL_DEV: ${NEXT_PUBLIC_BACK_URL_DEV}
+      NEXT_PUBLIC_BACK_URL: ${NEXT_PUBLIC_BACK_URL}
+      env_file:
+        - ./env
+      ports:
+        - "3001:3001"
