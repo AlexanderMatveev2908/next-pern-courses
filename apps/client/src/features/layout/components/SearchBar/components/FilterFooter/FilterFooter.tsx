@@ -14,6 +14,7 @@ import { FieldValues, Path } from "react-hook-form";
 import ColumnLabels from "./components/ColumnLabels";
 import ColumnVals from "./components/ColumnVals";
 import { css } from "@emotion/react";
+import WrapImpBtns from "../HOC/WrapImpBtns";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
@@ -90,9 +91,9 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
         </div>
 
         <div
-          className="w-full grid grid-cols-[80px_3px_1fr] md:grid-cols-[250px_3px_1fr]"
+          className="w-full grid grid-cols-[80px_3px_1fr] md:grid-cols-[250px_3px_1fr] relative"
           css={css`
-            max-height: calc(100% - ${elementHeight}px);
+            max-height: calc(100% - ${elementHeight + 80}px);
             height: 100%;
           `}
         >
@@ -110,6 +111,10 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
               innerJoinConf,
             }}
           />
+        </div>
+
+        <div className="w-full absolute bottom-0 left-0 h-[80px] flex justify-center items-center bg-neutral-950 border-t-[3px] border-neutral-800 z-60">
+          <WrapImpBtns />
         </div>
       </div>
     </>
