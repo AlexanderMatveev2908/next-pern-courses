@@ -75,27 +75,43 @@ jobs:
             console.log(`✅ PR #${pr.number} merged & branch deleted.`);
 
   deploy_on_push:
-    name: deploy on push 🚀
+    name: deploy on push both client and server on Fly.io
     needs: [check]
     if: github.event_name == 'push' && needs.check.result == 'success'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only
+
+      - name: deploy server
+        run: flyctl deploy --remote-only --config fly.server.toml
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: deploy client
+        run: flyctl deploy --remote-only --config fly.client.toml
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
   deploy_on_pr_merge:
-    name: deploy on PR merge 🚀
+    name: deploy both client and server on Fly.io
     needs: [check, automerge]
     if: github.event_name == 'pull_request' && needs.automerge.result == 'success'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only
+
+      - name: deploy server
+        run: flyctl deploy --remote-only --config fly.server.toml
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: deploy client
+        run: flyctl deploy --remote-only --config fly.client.toml
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
