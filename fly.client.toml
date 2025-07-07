@@ -8,6 +8,11 @@ primary_region = 'otp'
 
 [build]
   dockerfile = 'Dockerfile.client'
+  
+[build.args]
+  NEXT_PUBLIC_ENV = "production"
+  NEXT_PUBLIC_BACK_URL = "https://next-pern-courses-server.fly.dev/api/v1"
+
 
 [http_service]
   internal_port = 3001
