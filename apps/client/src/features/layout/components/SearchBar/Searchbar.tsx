@@ -3,7 +3,7 @@
 "use client";
 
 import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
-import { FieldValues, useFormContext } from "react-hook-form";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import { __cg } from "@shared/first/lib/logger.js";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
@@ -13,16 +13,22 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
-import FilterFooter from "./components/FilterFooter";
+import FilterFooter from "./components/FilterFooter/FilterFooter";
+import { SearchFilterType, SearchSortType } from "./types/uiFactory";
+import SortPop from "./components/SortPop/SortPop";
 
-type PropsType<T, K, U extends FieldValues> = {
+type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
   txtInputs: U["txtInputs"];
+  filters: SearchFilterType<U, P>[];
+  sorters: SearchSortType<U, P>[];
 };
 
-const Searchbar = <T, K, U extends FieldValues>({
+const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
   txtInputs,
-}: PropsType<T, K, U>) => {
+  filters,
+  sorters,
+}: PropsType<T, K, U, P>) => {
   // const ctx = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
   const { setFocus, watch } = formCtx;
@@ -54,7 +60,9 @@ const Searchbar = <T, K, U extends FieldValues>({
         <ThirdRawBtns />
       </div>
 
-      <FilterFooter />
+      <FilterFooter {...{ filters }} />
+
+      <SortPop {...{ sorters }} />
     </form>
   );
 };

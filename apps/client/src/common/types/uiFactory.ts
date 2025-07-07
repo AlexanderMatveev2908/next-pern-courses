@@ -13,11 +13,12 @@ export type FormFieldType<T extends FieldValues> = {
 export type FormFieldArrayType = {
   name: string;
   label: string;
-  type?: "text" | "number";
+  type: "text" | "number";
   required?: boolean;
   id: string;
   place?: string;
   field: string;
+  val: string;
 };
 
 // ? T => form shape defined in zod

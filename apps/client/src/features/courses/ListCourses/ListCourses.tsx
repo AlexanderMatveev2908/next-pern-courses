@@ -11,7 +11,11 @@ import {
   schemaGetListCourse,
   SchemaGetListCoursesType,
 } from "@shared/first/paperwork/courses/schema.get.js";
-import { txtInputsCourses } from "./uifactory/searchBar";
+import {
+  filtersCourses,
+  sortersCourses,
+  txtInputsCourses,
+} from "./uifactory/searchBar";
 import { v4 } from "uuid";
 
 const ListCourses: FC = () => {
@@ -44,7 +48,14 @@ const ListCourses: FC = () => {
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <FormProvider {...formCtx}>
-        <Searchbar {...{ hook, txtInputs: txtInputsCourses }} />
+        <Searchbar
+          {...{
+            hook,
+            txtInputs: txtInputsCourses,
+            filters: filtersCourses,
+            sorters: sortersCourses,
+          }}
+        />
       </FormProvider>
     </div>
   );

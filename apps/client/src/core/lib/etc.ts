@@ -32,3 +32,12 @@ export const genIpsum = (num: number = 1) =>
   `Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque ea amet consectetur soluta, veritatis iste, at repudiandae praesentium esse nihil eaque maiores facilis ad! Alias eveniet maiores illum obcaecati perferendis!`.repeat(
     num,
   );
+
+export const genArrFromConst = <T extends Record<string, string>>(
+  obj: T,
+): { id: string; label: T[keyof T]; val: keyof T }[] =>
+  Object.entries(obj).map((pair) => ({
+    id: v4(),
+    label: pair[1] as T[keyof T],
+    val: pair[0] as keyof T,
+  }));
