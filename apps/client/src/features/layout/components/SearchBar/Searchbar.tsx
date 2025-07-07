@@ -21,6 +21,7 @@ import {
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useEffect } from "react";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -50,7 +51,7 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
     });
   }, [filters, setSearcher]);
 
-  // __cg("form", watch());
+  __cg("form", formCtx.watch());
 
   const { isHydrated } = useListenHydration();
 
