@@ -1,17 +1,10 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FaTrashCan } from "react-icons/fa6";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
+import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import {
-  ArrayPath,
-  FieldValues,
-  useFieldArray,
-  useFormContext,
-} from "react-hook-form";
-import WrapSearchBarBtn from "./WrapSearchBarBtn";
+import { ArrayPath, FieldValues, useFormContext } from "react-hook-form";
 
 type PropsType<
   T extends FieldValues & {
@@ -22,7 +15,7 @@ type PropsType<
   txtInputs: T[K];
 };
 
-const SearchRow = <
+const PrimaryRow = <
   T extends FieldValues & {
     txtInputs: FormFieldArrayType[];
   },
@@ -33,10 +26,10 @@ const SearchRow = <
     formState: { errors },
     watch,
   } = useFormContext<T>();
-  const { remove } = useFieldArray<T, ArrayPath<T>>({
-    control,
-    name: "txtInputs" as K,
-  });
+  // const { remove } = useFieldArray<T, ArrayPath<T>>({
+  //   control,
+  //   name: "txtInputs" as K,
+  // });
 
   const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
 
@@ -58,17 +51,17 @@ const SearchRow = <
                   index: i,
                 }}
               />
-              <WrapSearchBarBtn
+              {/* <WrapSearchBarBtn
                 {...{
                   btnActType: BtnActType.ERROR,
                   Svg: FaTrashCan,
                   handleClick: () => remove(i),
                 }}
-              />
+              /> */}
             </div>
           ))}
     </div>
   );
 };
 
-export default SearchRow;
+export default PrimaryRow;

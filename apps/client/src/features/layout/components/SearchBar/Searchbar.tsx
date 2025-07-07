@@ -3,12 +3,14 @@
 "use client";
 
 import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
-// import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import SearchRow from "./components/SearchRow";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
-import SearchRowBtns from "./components/SearchRowBtns";
 import { __cg } from "@shared/first/lib/logger.js";
+import SecondaryRowBtns from "./components/SecondaryRowBtns";
+import PrimaryRow from "./components/PrimaryRow";
+import ThirdRawBtns from "./components/ThirdRawBtns";
+import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
 
 type PropsType<T, K, U extends FieldValues> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -29,10 +31,21 @@ const Searchbar = <T, K, U extends FieldValues>({
   __cg("form", watch());
 
   return (
-    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1000px]">
-      <SearchRow {...{ txtInputs }} />
+    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]">
+      <PrimaryRow {...{ txtInputs }} />
 
-      <SearchRowBtns {...{ txtInputs }} />
+      <div
+        className="w-full grid grid-cols-1 gap-6"
+        css={css`
+          ${resp(1150)} {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        `}
+      >
+        <SecondaryRowBtns {...{ txtInputs }} />
+
+        <ThirdRawBtns />
+      </div>
     </form>
   );
 };

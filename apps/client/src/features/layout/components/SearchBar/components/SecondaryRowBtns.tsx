@@ -3,19 +3,11 @@
 
 import { IoFilterSharp } from "react-icons/io5";
 import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
-import { useMemo, useState } from "react";
 import { FaSort } from "react-icons/fa";
-import WrapSearchBarBtn from "./WrapSearchBarBtn";
+import WrapSearchBarBtn from "./HOC/WrapSearchBarBtn";
 import { css } from "@emotion/react";
-import { useListenCondLabel } from "../hooks/useListenCondLabel";
-import DropMenu from "@/common/components/dropMenu/DropMenu";
-import {
-  ArrayPath,
-  FieldValues,
-  useFieldArray,
-  useFormContext,
-} from "react-hook-form";
-import { v4 } from "uuid";
+import { ArrayPath, FieldValues } from "react-hook-form";
+import WrapBtnRow from "./HOC/WrapBtnRow";
 
 type PropsType<
   T extends FieldValues & {
@@ -25,34 +17,35 @@ type PropsType<
 > = {
   txtInputs: T[K];
 };
-const SearchRowBtns = <
+const SecondaryRowBtns = <
   T extends FieldValues & { txtInputs: FormFieldArrayType[] },
   K extends ArrayPath<T>,
->({
-  txtInputs,
-}: PropsType<T, K>) => {
-  const { showLabel } = useListenCondLabel({ width: 650 });
-  const [isOpen, setIsOpen] = useState(false);
+>(
+  {
+    // txtInputs,
+  }: PropsType<T, K>,
+) => {
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const { control, watch } = useFormContext<T>();
-  const { append } = useFieldArray<T, ArrayPath<T>>({
-    control,
-    name: "txtInputs" as K,
-  });
-  const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
+  // const { control, watch } = useFormContext<T>();
+  // const { append } = useFieldArray<T, ArrayPath<T>>({
+  //   control,
+  //   name: "txtInputs" as K,
+  // });
+  // const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
 
-  const fieldsToAdd: FormFieldArrayType[] = useMemo(
-    () =>
-      txtInputs.filter(
-        (el: FormFieldArrayType) =>
-          !(fields ?? []).some((f: FormFieldArrayType) => f.label === el.label),
-      ),
-    [fields, txtInputs],
-  );
+  // const fieldsToAdd: FormFieldArrayType[] = useMemo(
+  //   () =>
+  //     txtInputs.filter(
+  //       (el: FormFieldArrayType) =>
+  //         !(fields ?? []).some((f: FormFieldArrayType) => f.label === el.label),
+  //     ),
+  //   [fields, txtInputs],
+  // );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
-      <div className="w-full grid grid-cols-1 lg:order-[1]">
+    <div className="w-full grid grid-cols-1 gap-6">
+      {/* <div className="w-full grid grid-cols-1 lg:order-[1]">
         <div className="w-full max-w-[250px] justify-self-end">
           <DropMenu
             {...{
@@ -80,9 +73,9 @@ const SearchRowBtns = <
             ))}
           </DropMenu>
         </div>
-      </div>
+      </div> */}
 
-      <div className="w-full grid grid-cols-2 lg:order-[0] justify-items-center gap-10">
+      <WrapBtnRow>
         <WrapSearchBarBtn
           {...{
             btnActType: BtnActType.INFO,
@@ -92,7 +85,7 @@ const SearchRowBtns = <
                 justify-self: center;
               `,
             },
-            label: showLabel ? "Filter" : null,
+            labelConf: [650, "filter"],
           }}
         />
         <WrapSearchBarBtn
@@ -104,12 +97,12 @@ const SearchRowBtns = <
                 justify-self: center;
               `,
             },
-            label: showLabel ? "Sort" : null,
+            labelConf: [650, "sort"],
           }}
         />
-      </div>
+      </WrapBtnRow>
     </div>
   );
 };
 
-export default SearchRowBtns;
+export default SecondaryRowBtns;
