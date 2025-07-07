@@ -40,12 +40,19 @@ export const genArrFromConst = <
 >(
   obj: T,
   name: U,
-): { id: string; label: T[keyof T]; val: keyof T; name: U }[] =>
+): {
+  id: string;
+  label: T[keyof T];
+  val: keyof T;
+  name: U;
+  type: "checkbox";
+}[] =>
   Object.entries(obj).map((pair) => ({
     id: v4(),
     label: pair[1] as T[keyof T],
     val: pair[0] as keyof T,
     name: name as U,
+    type: "checkbox",
   }));
 
 export const serializeData = <T>(arg: T): T => {

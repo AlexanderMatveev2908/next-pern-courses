@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { FieldCheckValType } from "@/common/types/uiFactory";
 import { OptionFilterCheckType } from "@/features/layout/components/SearchBar/types/uiFactory";
 import { css } from "@emotion/react";
 import { FieldValues, Path, PathValue } from "react-hook-form";
@@ -9,7 +10,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   // ? radio form field has just a string real checkbox array of strings
   data?: PathValue<T, K>[];
   handleClick: () => void;
-  el: OptionFilterCheckType<T, K>;
+  el: OptionFilterCheckType<T, K> | FieldCheckValType<T, K>;
 };
 
 const FormFieldBoxV2 = <T extends FieldValues, K extends Path<T>>({
@@ -17,7 +18,10 @@ const FormFieldBoxV2 = <T extends FieldValues, K extends Path<T>>({
   handleClick,
   el,
 }: PropsType<T, K>) => {
-  const isChecked = (data ?? [])?.some((item) => item === el.val);
+  const isChecked =
+    el?.type === "checkbox"
+      ? (data ?? [])?.some((item) => item === el.val)
+      : (data as PathValue<T, K>) === (el.val as string);
 
   return (
     <button

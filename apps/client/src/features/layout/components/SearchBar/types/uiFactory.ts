@@ -6,6 +6,7 @@ export type OptionFilterCheckType<T extends FieldValues, K extends Path<T>> = {
   id: string;
   label: string;
   val: string;
+  type: "checkbox" | "radio";
 };
 
 export type SearchFilterType<T extends FieldValues, K extends Path<T>> = {
