@@ -88,12 +88,12 @@ jobs:
       - name: deploy server
         run: flyctl deploy --remote-only --config fly.server.toml
         env:
-          FLY_DEPLOY_SERVER: ${{ secrets.FLY_DEPLOY_SERVER }}
+          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_SERVER }}
 
       - name: deploy client
         run: flyctl deploy --remote-only --config fly.client.toml
         env:
-          FLY_DEPLOY_CLIENT: ${{ secrets.FLY_DEPLOY_CLIENT }}
+          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_CLIENT }}
 
   deploy_on_pr_merge:
     name: deploy both client and server on Fly.io
@@ -109,9 +109,9 @@ jobs:
       - name: deploy server
         run: flyctl deploy --remote-only --config fly.server.toml
         env:
-          FLY_DEPLOY_SERVER: ${{ secrets.FLY_DEPLOY_SERVER }}
+          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_SERVER }}
 
       - name: deploy client
         run: flyctl deploy --remote-only --config fly.client.toml
         env:
-          FLY_DEPLOY_CLIENT: ${{ secrets.FLY_DEPLOY_CLIENT }}
+          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_CLIENT }}
