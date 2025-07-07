@@ -3,12 +3,12 @@
 
 import BtnIcon from "@/common/components/buttons/BtnIcon/BtnIcon";
 import type { FC } from "react";
-import { svgSearchBarCSS } from "../uifactory/style";
+import { svgSearchBarCSS } from "../../uifactory/style";
 import { SerializedStyles } from "@emotion/react";
 import { css } from "@emotion/react";
 import { BtnActType } from "@/common/types/uiFactory";
 import { IconType } from "react-icons/lib";
-import { isStr } from "@shared/first/lib/dataStructure.js";
+import { useListenCondLabel } from "../../hooks/useListenCondLabel";
 
 type PropsType = {
   $customCSS?: {
@@ -17,7 +17,7 @@ type PropsType = {
 
   btnActType: BtnActType;
   Svg?: IconType;
-  label?: string | null;
+  labelConf: [number, string];
 
   handleClick?: () => void;
 };
@@ -27,12 +27,13 @@ const WrapSearchBarBtn: FC<PropsType> = ({
   btnActType,
   Svg,
   handleClick,
-  label,
+  labelConf,
 }) => {
+  const { showLabel } = useListenCondLabel({ width: labelConf[0] });
   return (
     <div
       css={css`
-        width: ${isStr(label) ? 200 : 80}px;
+        width: ${showLabel ? 200 : 80}px;
         ${$customCSS?.css}
       `}
     >
@@ -42,7 +43,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
           isEnabled: true,
           isLoading: false,
           type: "button",
-          label,
+          label: showLabel ? labelConf[1] : null,
           btnActType,
           Svg,
           handleClick,

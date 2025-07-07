@@ -7,6 +7,7 @@ import { IconType } from "react-icons/lib";
 import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { btnColors } from "@/core/uiFactory/style";
+import { capt } from "@shared/first/lib/formatters.js";
 
 export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
   btnActType: BtnActType;
@@ -55,7 +56,7 @@ const BtnIcon: FC<BtnIconPropsType> = ({
         />
       )}
 
-      {isStr(label) && <span className="txt__lg">{label}</span>}
+      {isStr(label) && <span className="txt__lg">{capt(label!)}</span>}
     </button>
   );
 };
