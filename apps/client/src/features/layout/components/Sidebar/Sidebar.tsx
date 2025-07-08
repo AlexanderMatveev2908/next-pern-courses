@@ -37,6 +37,9 @@ const Sidebar: FC = ({}) => {
           opacity: sideState.isOpen ? 1 : 0.5,
           transform: `translateX(${sideState.isOpen ? "-100%" : "0%"})`,
         }}
+        css={css`
+          pointer-events: ${sideState.isOpen ? "all" : "none"};
+        `}
       >
         <div className="w-full h-full flex flex-col gap-3 sm:gap-6  overflow-y-auto">
           <div className="w-full max-w-full flex justify-center sticky top-0 py-2 h-fit border-b-2 border-neutral-800 px-5">

@@ -9,7 +9,7 @@ export enum SearchCtxActions {
 
 export type ParamsBar = {
   el: "filterBar" | "sortBar";
-  val: boolean;
+  val: boolean | null;
 };
 
 export type ParamsSearch = {

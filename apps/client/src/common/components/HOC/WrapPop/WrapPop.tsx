@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import React, { useRef, type FC } from "react";
+import React, { useCallback, useRef, type FC } from "react";
 import BlackBg from "../../elements/BlackBg/BlackBg";
 import { varPop } from "./uiFactory";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -23,8 +23,12 @@ const WrapPop: FC<PropsType> = ({
 }) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
+  const cb = useCallback(() => {
+    if (allowClose) setIsShow(false);
+  }, [setIsShow, allowClose]);
+
   useMouseOut({
-    cb: () => (allowClose ? setIsShow(false) : null),
+    cb,
     ref: popRef,
   });
 

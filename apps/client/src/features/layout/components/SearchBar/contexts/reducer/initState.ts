@@ -2,8 +2,8 @@ import { getLimitPage } from "../../lib/style";
 
 export type SearchCtxStateType = {
   bars: {
-    filterBar: boolean;
-    sortBar: boolean;
+    filterBar: boolean | null;
+    sortBar: boolean | null;
   };
   pagination: {
     page: number;
@@ -26,8 +26,8 @@ export type SearchCtxStateType = {
 
 export const searchCtxInitState: SearchCtxStateType = {
   bars: {
-    filterBar: false,
-    sortBar: false,
+    filterBar: null,
+    sortBar: null,
   },
   pagination: {
     page: 0,
