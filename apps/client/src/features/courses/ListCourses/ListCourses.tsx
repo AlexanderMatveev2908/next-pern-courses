@@ -77,7 +77,7 @@ const ListCourses: FC = () => {
         />
       </FormProvider>
 
-      <WrapPendingClient {...{ isLoading: res.isLoading }}>
+      <WrapPendingClient {...{ isLoading: res.isLoading || res.isFetching }}>
         {() => (
           <div className="">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
