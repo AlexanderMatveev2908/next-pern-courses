@@ -1,5 +1,4 @@
 import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
-import { __cg } from "@shared/first/lib/logger.js";
 
 export const genFormData = <T>(data: T) => {
   const formData = new FormData();
@@ -77,9 +76,9 @@ export const genURLSearchParams = <T>(obj: T): string => {
     }
   }
 
-  for (const [k, v] of urlParams.entries()) {
-    __cg("📄", k, v);
-  }
+  // for (const [k, v] of urlParams.entries()) {
+  //   __cg("📄", k, v);
+  // }
 
   return urlParams + "";
 };
