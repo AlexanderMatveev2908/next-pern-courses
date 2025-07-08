@@ -7741,6 +7741,7 @@ __metadata:
     nodemon: "npm:^3.1.10"
     pino-pretty: "npm:^13.0.0"
     prisma: "npm:^6.11.1"
+    sql-template-tag: "npm:^5.2.1"
     tsc-alias: "npm:^1.8.16"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
@@ -8047,6 +8048,13 @@ __metadata:
   version: 1.1.3
   resolution: "sprintf-js@npm:1.1.3"
   checksum: 10c0/09270dc4f30d479e666aee820eacd9e464215cdff53848b443964202bf4051490538e5dd1b42e1a65cf7296916ca17640aebf63dae9812749c7542ee5f288dec
+  languageName: node
+  linkType: hard
+
+"sql-template-tag@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "sql-template-tag@npm:5.2.1"
+  checksum: 10c0/a82466eda78abd4996505a5013db0d6049f51c6c061557af48bb28fa44a2bdc6c220606607d3bc85d780ddc110c2cad3f8c2cd5416b858100a247b0606c6709e
   languageName: node
   linkType: hard
 

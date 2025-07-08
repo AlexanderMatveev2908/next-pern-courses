@@ -1,3 +1,4 @@
+import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export const wrapRoute =
@@ -6,6 +7,8 @@ export const wrapRoute =
     try {
       await cbAPI(req, res);
     } catch (err: any) {
+      __cg("err wrap route", err?.msg ?? err?.message);
+
       return res.res500({
         msg: err?.msg ?? err?.message,
       });

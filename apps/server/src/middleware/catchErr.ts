@@ -14,7 +14,7 @@ export const catchErr: FastifyPluginCallback = fp((app) => {
       _: FastifyRequest,
       res: FastifyReply,
     ) => {
-      __cg("unhandled error", err.msg ?? err.message);
+      __cg("unhandled error", err?.msg ?? err?.message);
 
       return res.res500({
         msg:

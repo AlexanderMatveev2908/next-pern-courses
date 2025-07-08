@@ -50,12 +50,12 @@ export const useDebounce = <
     if (!isValid || isSameData || !canMakeAPI) {
       preValsRef.current = merged;
 
-      __cg(
-        "conf valid data",
-        ["is valid", isValid],
-        ["is same data", isSameData],
-        ["can make api", canMakeAPI],
-      );
+      // __cg(
+      //   "conf valid data",
+      //   ["is valid", isValid],
+      //   ["is same data", isSameData],
+      //   ["can make api", canMakeAPI],
+      // );
 
       if (!canMakeAPI)
         setCheckPreSubmit({
