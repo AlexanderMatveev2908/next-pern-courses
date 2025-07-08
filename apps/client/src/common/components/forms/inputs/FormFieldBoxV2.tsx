@@ -41,7 +41,7 @@ const FormFieldBoxV2 = <T extends FieldValues, K extends Path<T>>({
         color: var(--${isChecked ? "neutral__950" : "neutral__300"});
 
         &:hover {
-          transform: scale(${isChecked ? 0.85 : 1.125});
+          transform: scale(${isChecked ? 0.85 : 1.15});
         }
       `}
     >

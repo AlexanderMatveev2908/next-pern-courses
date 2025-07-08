@@ -2,10 +2,10 @@
 "use client";
 
 import Searchbar from "@/features/layout/components/SearchBar/Searchbar";
-import { useCallback, type FC } from "react";
+import { type FC } from "react";
 import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   schemaGetListCourse,
@@ -19,11 +19,8 @@ import {
 } from "./uifactory/searchBar";
 import { v4 } from "uuid";
 import { __cg } from "@shared/first/lib/logger.js";
-import { genURLSearchParams } from "@/core/lib/processForm";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
-import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
-import cloneDeep from "lodash.clonedeep";
 import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
 
 const ListCourses: FC = () => {
@@ -54,8 +51,6 @@ const ListCourses: FC = () => {
 
   const handleSave = handleSubmit(
     (data) => {
-
-
       searchAPI(data, {});
     },
     (errs) => {
