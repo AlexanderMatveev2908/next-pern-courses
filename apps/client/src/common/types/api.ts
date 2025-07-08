@@ -3,7 +3,6 @@ import {
   TypedLazyQueryTrigger,
   TypedUseLazyQueryStateResult,
 } from "@reduxjs/toolkit/query/react";
-import { FieldValues } from "react-hook-form";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export enum TagsAPI {
@@ -56,8 +55,4 @@ export type ResultTypeRTK<T, K> = TypedUseLazyQueryStateResult<
 export type ReqSearchAPI = {
   vals: string;
   _?: number;
-};
-
-export type ReqPaginatedAPI<T extends FieldValues> = {
-  vals: T & { limit: number; page: number };
 };

@@ -3,7 +3,7 @@
 "use client";
 
 import {
-  ReqPaginatedAPI,
+  ReqSearchAPI,
   ResultTypeRTK,
   TriggerTypeRTK,
 } from "@/common/types/api";
@@ -29,28 +29,28 @@ import { useDebounce } from "./hooks/useDebounce";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 
 type PropsType<
-  T,
-  K extends ReqPaginatedAPI<U>,
-  U extends FieldValues,
-  P extends Path<U>,
-  R extends ZodObject<any>,
+  ResT,
+  ArgT extends ReqSearchAPI,
+  FormT extends FieldValues,
+  PathT extends Path<FormT>,
+  ZodT extends ZodObject<any>,
 > = {
-  hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
-  txtInputs: U["txtInputs"];
-  filters: SearchFilterType<U, P>[];
-  sorters: SearchSortType<U, P>[];
-  innerJoinConf: InnerJoinFilterConfType<U, P>[];
+  hook: [TriggerTypeRTK<ResT, ArgT>, ResultTypeRTK<ResT, ArgT>, any];
+  txtInputs: FormT["txtInputs"];
+  filters: SearchFilterType<FormT, PathT>[];
+  sorters: SearchSortType<FormT, PathT>[];
+  innerJoinConf: InnerJoinFilterConfType<FormT, PathT>[];
   handleSave: () => void;
-  zodObj: R;
+  zodObj: ZodT;
   triggerRef: () => void;
 };
 
 const Searchbar = <
-  T,
-  K extends ReqPaginatedAPI<U>,
-  U extends FieldValues,
-  P extends Path<U>,
-  R extends ZodObject<any>,
+  ResT,
+  ArgT extends ReqSearchAPI,
+  FormT extends FieldValues,
+  PathT extends Path<FormT>,
+  ZodT extends ZodObject<any>,
 >({
   txtInputs,
   filters,
@@ -60,10 +60,10 @@ const Searchbar = <
   zodObj,
   hook,
   triggerRef,
-}: PropsType<T, K, U, P, R>) => {
+}: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
   const { setSearcher } = useSearchCtxConsumer();
 
-  const formCtx = useFormContext<U>();
+  const formCtx = useFormContext<FormT>();
   const { setFocus, watch } = formCtx;
   const formDataRHF = watch();
 

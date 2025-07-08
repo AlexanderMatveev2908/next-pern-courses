@@ -8,13 +8,14 @@ import { FieldValues } from "react-hook-form";
 import { ZodObject } from "zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearT } from "@/core/lib/etc";
-import { ReqPaginatedAPI, TriggerTypeRTK } from "@/common/types/api";
+import { ReqSearchAPI, TriggerTypeRTK } from "@/common/types/api";
+import { genURLSearchParams } from "@/core/lib/processForm";
 
 type Params<
   T extends FieldValues,
   K extends ZodObject<any>,
   U,
-  R extends ReqPaginatedAPI<T>,
+  R extends ReqSearchAPI,
 > = {
   formDataRHF: T;
   zodObj: K;
@@ -26,7 +27,7 @@ export const useDebounce = <
   T extends FieldValues,
   K extends ZodObject<any>,
   U,
-  R extends ReqPaginatedAPI<T>,
+  R extends ReqSearchAPI,
 >({
   zodObj,
   formDataRHF,
@@ -80,7 +81,7 @@ export const useDebounce = <
 
       triggerRef();
       triggerRTK({
-        vals: merged,
+        vals: genURLSearchParams(merged),
       } as R);
       preValsRef.current = merged;
       clearT(timerID);
