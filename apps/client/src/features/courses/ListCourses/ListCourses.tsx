@@ -23,6 +23,7 @@ import { genURLSearchParams } from "@/core/lib/processForm";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
+import cloneDeep from "lodash.clonedeep";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -49,14 +50,18 @@ const ListCourses: FC = () => {
       data: T,
       { page, limit }: { page?: number; limit?: number },
     ) => {
-      const str = genURLSearchParams(data);
+      const merged = cloneDeep({
+        ...data,
+        ...gabFormValsPagination({ page, limit }),
+      });
+
+      const str = genURLSearchParams(merged);
 
       triggerRef();
       updateNoDebounce({
-        vals: data,
-        ...gabFormValsPagination({ page, limit }),
+        vals: merged,
       });
-      triggerRTK({ vals: str }, false);
+      triggerRTK({ vals: str, _: Date.now() }, false);
     },
     [triggerRef, triggerRTK, updateNoDebounce],
   );

@@ -1,5 +1,5 @@
 import { __cg } from "@shared/first/lib/logger.js";
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest, preHandlerHookHandler } from "fastify";
 
 const bool = {
   true: true,
@@ -27,7 +27,10 @@ const handleHypotheticalJSON = (str: string) => {
   }
 };
 
-export const parseQuery = async (req: FastifyRequest, _: FastifyReply) => {
+export const parseQuery: preHandlerHookHandler = async (
+  req: FastifyRequest,
+  _: FastifyReply,
+) => {
   const { query } = req;
   if (!query) return;
 
@@ -52,5 +55,5 @@ export const parseQuery = async (req: FastifyRequest, _: FastifyReply) => {
     }
   }
 
-  req.query = parsedQuery as any;
+  req.myQuery = parsedQuery as any;
 };

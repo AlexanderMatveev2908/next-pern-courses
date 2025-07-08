@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { schemaPostCourseServer } from "../paperwork/postCourse.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import fs from "fs";
+import { grabErrMsgZOD } from "@shared/first/lib/etc.js";
 
 export const checkPostCourse = async (
   req: FastifyRequest,
@@ -26,12 +27,7 @@ export const checkPostCourse = async (
   const result = schemaPostCourseServer.safeParse(normalized);
 
   if (result.error) {
-    const fancyErr = result.error.format();
-    const msg =
-      fancyErr._errors[0] ??
-      Object.values(fancyErr)
-        .flatMap((errs) => (errs as any)?._errors)
-        .filter(Boolean)[0];
+    const { fancyErrsList, msg } = grabErrMsgZOD(result);
 
     if (isStr(normalized.videoFile?.path))
       try {
@@ -42,7 +38,7 @@ export const checkPostCourse = async (
         __cg("fail local delete");
       }
 
-    return res.res422({ msg });
+    return res.res422({ msg, fancyErrsList });
   } else if (result.success) {
     __cg("success form");
   }

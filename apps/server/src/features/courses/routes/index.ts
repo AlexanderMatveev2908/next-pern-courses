@@ -6,6 +6,7 @@ import { parseForm } from "@src/middleware/multipart.js";
 import { checkPostCourse } from "../middleware/postCourse.js";
 import { getListCoursesCtrl } from "../controllers/get.js";
 import { parseQuery } from "@src/middleware/parseQuery.js";
+import { checkSearchCoursesList } from "../middleware/getCoursesList.js";
 
 export const coursesRouter = async (app: FastifyInstance) => {
   app.route({
@@ -24,7 +25,7 @@ export const coursesRouter = async (app: FastifyInstance) => {
   app.route({
     method: "GET",
     url: "/",
-    preHandler: [parseQuery, wrapRoute(logJSON)],
+    preHandler: [parseQuery, wrapRoute(logJSON), checkSearchCoursesList],
     handler: wrapRoute(getListCoursesCtrl),
   });
 };

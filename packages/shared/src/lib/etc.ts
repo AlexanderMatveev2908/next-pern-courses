@@ -2,6 +2,9 @@
 //   console.log("i am new in this town");
 // };
 
+import { SafeParseError, SafeParseReturnType, ZodTypeAny } from "zod";
+import { ZodObject } from "zod/v4";
+
 // export const newStuff2 = () => {
 //   console.log("i am new in this town 2");
 // };
@@ -58,4 +61,20 @@ export const isSameObj = <T>(obj1: T, obj2: T): boolean => {
   return keys1.every((key) =>
     isSameObj((obj1 as T)[key as keyof T], (obj2 as T)[key as keyof T]),
   );
+};
+
+export const grabErrMsgZOD = <T extends ZodTypeAny>(
+  result: SafeParseReturnType<unknown, T>,
+) => {
+  const fancyErrsList = result!.error!.format();
+  const msg =
+    fancyErrsList._errors[0] ??
+    Object.values(fancyErrsList)
+      .flatMap((errs) => (errs as any)?._errors)
+      .filter(Boolean)[0];
+
+  return {
+    msg,
+    fancyErrsList,
+  };
 };

@@ -1,4 +1,9 @@
-import { PaginatedResAPI, ResAPI, TagsAPI } from "@/common/types/api";
+import {
+  PaginatedResAPI,
+  ReqSearchAPI,
+  ResAPI,
+  TagsAPI,
+} from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { CourseType } from "../types/courses";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
@@ -17,7 +22,7 @@ export const coursesSliceAPI = api.injectEndpoints({
 
     getCourses: builder.query<
       PaginatedResAPI<{ courses: CourseType[] }>,
-      { vals: string }
+      ReqSearchAPI
     >({
       query: ({ vals }) => ({
         url: `${BASE_URL}?${vals}`,
