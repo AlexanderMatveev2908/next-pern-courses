@@ -5,8 +5,7 @@
     "setup-workspace": "yarn workspace @shared/first build && yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma",
     "install-client": "rm -rf apps/server && echo 'deleted useless server folder ✅' && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install",
     "build-client": "turbo build --filter=client...",
-    "dev": "turbo dev --parallel",
-    "build": "yarn dlx prisma generate --schema=./apps/server/prisma/schema.prisma && turbo build --parallel",
+    "dev": "concurrently -k --kill-others-on-fail -n \"📦 SHARED\",\"⚔️  SERVER\",\"🛠️  CLIENT\" -c magenta,green,blue   \"yarn workspace @shared/first dev\"   \"sleep 1 && yarn workspace server dev\"   \"sleep 2.5 && yarn workspace client dev\"",
     "start": "turbo run start",
     "check": "turbo check"
   },

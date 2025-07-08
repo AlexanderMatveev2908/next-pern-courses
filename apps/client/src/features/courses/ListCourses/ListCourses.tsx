@@ -22,13 +22,15 @@ import { __cg } from "@shared/first/lib/logger.js";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
 import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
+import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
   const [triggerRTK, res] = hook;
+  const { data: { courses } = {} } = res ?? {};
 
   const { updateNoDebounce } = useSearchCtxConsumer();
-
   const { triggerRef } = useWrapQuery({
     ...res,
     showToast: true,
@@ -61,7 +63,7 @@ const ListCourses: FC = () => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-20">
+    <div className="w-full grid grid-cols-1 gap-10 relative">
       <FormProvider {...formCtx}>
         <Searchbar
           {...{
@@ -79,11 +81,26 @@ const ListCourses: FC = () => {
 
       <WrapPendingClient {...{ isLoading: res.isLoading || res.isFetching }}>
         {() => (
-          <div className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-            harum, alias minus fuga molestiae non ea voluptas atque ducimus sint
-            veniam iure aliquid ipsa exercitationem pariatur deserunt tenetur
-            eos consectetur.
+          <div
+            className="w-full grid gap-10"
+            css={css`
+              grid-template-columns: 1fr;
+
+              ${resp(600)} {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              }
+            `}
+          >
+            {(courses ?? []).map((item, i) => (
+              <div
+                key={i}
+                className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
+              >
+                <span className="txt__md  break-all">
+                  {JSON.stringify(item, null, 2)}
+                </span>
+              </div>
+            ))}
           </div>
         )}
       </WrapPendingClient>

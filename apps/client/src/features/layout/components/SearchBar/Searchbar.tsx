@@ -36,6 +36,7 @@ import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
 import { useListenDummyPending } from "./hooks/useListenDummyPending";
+import PageCounter from "./components/PageCounter/PageCounter";
 
 type PropsType<
   ResT,
@@ -78,9 +79,11 @@ const Searchbar = <
   const mainInput = formDataRHF?.txtInputs?.[0];
 
   const [triggerRTK, res] = hook;
-  const { data: { nHits } = { nHits: 0 } } = (res ?? {}) as unknown as ResT & {
+  const { data: { nHits, totPages } = { nHits: 0, totPages: 0 } } = (res ??
+    {}) as unknown as ResT & {
     data: {
       nHits: number;
+      totPages: number;
     };
   };
 
@@ -165,6 +168,13 @@ const Searchbar = <
             </form>
 
             <ShowCount {...{ nHits, mainInput, isLoading: res.isFetching }} />
+
+            <PageCounter
+              {...{
+                nHits,
+                totPages,
+              }}
+            />
           </>
         )
       }
