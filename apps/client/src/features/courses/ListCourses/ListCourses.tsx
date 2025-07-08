@@ -19,6 +19,7 @@ import {
 } from "./uifactory/searchBar";
 import { v4 } from "uuid";
 import { __cg } from "@shared/first/lib/logger.js";
+import { genURLSearchParams } from "@/core/lib/processForm";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -50,7 +51,7 @@ const ListCourses: FC = () => {
 
   const handleSave = handleSubmit(
     (data) => {
-      __cg("submit", data);
+      genURLSearchParams(data);
     },
     (errs) => {
       __cg("errs submit", errs);

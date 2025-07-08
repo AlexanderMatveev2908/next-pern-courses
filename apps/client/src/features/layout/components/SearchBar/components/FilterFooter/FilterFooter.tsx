@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -50,9 +50,14 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
     setBar,
   } = useSearchCtxConsumer();
 
+  const cb = useCallback(
+    () => setBar({ el: "filterBar", val: false }),
+    [setBar],
+  );
+
   useMouseOut({
     ref: barRef,
-    cb: () => setBar({ el: "filterBar", val: false }),
+    cb,
   });
 
   return (
