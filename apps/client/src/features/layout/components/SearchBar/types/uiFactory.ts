@@ -1,20 +1,13 @@
+import { FieldCheckValType } from "@/common/types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import { IconType } from "react-icons/lib";
-
-export type OptionFilterCheckType<T extends FieldValues, K extends Path<T>> = {
-  name: K;
-  id: string;
-  label: string;
-  val: string;
-  type: "checkbox" | "radio";
-};
 
 export type SearchFilterType<T extends FieldValues, K extends Path<T>> = {
   name: K;
   label: string;
   Svg: IconType;
   id: string;
-  options: OptionFilterCheckType<T, K>[];
+  options: FieldCheckValType<T, K>[];
 };
 
 export type OptionSortType = "ASC" | "DESC";

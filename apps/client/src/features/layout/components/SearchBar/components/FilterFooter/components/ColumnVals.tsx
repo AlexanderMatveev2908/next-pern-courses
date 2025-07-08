@@ -4,7 +4,6 @@
 import { useMemo } from "react";
 import {
   InnerJoinFilterConfType,
-  OptionFilterCheckType,
   SearchFilterType,
 } from "../../../types/uiFactory";
 import { FieldValues, Path, PathValue, useFormContext } from "react-hook-form";
@@ -15,6 +14,7 @@ import FormFieldBoxV2 from "@/common/components/forms/inputs/FormFieldBoxV2";
 import { v4 } from "uuid";
 import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
+import { FieldCheckValType } from "@/common/types/uiFactory";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
@@ -30,7 +30,7 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
     searchers: { currFilter },
   } = useSearchCtxConsumer();
 
-  const filtered: OptionFilterCheckType<T, K>[] = useMemo(() => {
+  const filtered: FieldCheckValType<T, K>[] = useMemo(() => {
     const isAboutInnerJoin = innerJoinConf.some(
       (conf) => conf.filter.name === currFilter,
     );
@@ -44,7 +44,7 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
     if (!isAboutInnerJoin)
       return cloneDeep(
         (hypotheticalParentToShow as SearchFilterType<T, K>).options,
-      ) as OptionFilterCheckType<T, K>[];
+      ) as FieldCheckValType<T, K>[];
 
     // ? must exist common key to keep on the logic of dynamic sub filters
     const valsDependsOn = getValues(
@@ -90,7 +90,7 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
     }
   }, [innerJoinConf, filters, currFilter, getValues]);
 
-  const handleChange = (f: OptionFilterCheckType<T, K>) => {
+  const handleChange = (f: FieldCheckValType<T, K>) => {
     const existing: T[K] | undefined = getValues(f.name) ?? ([] as T[K]);
 
     const whereIsParent = innerJoinConf.find(

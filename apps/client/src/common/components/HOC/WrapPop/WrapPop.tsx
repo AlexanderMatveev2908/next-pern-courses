@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import React, { useRef, type FC } from "react";
+import React, { useCallback, useRef, type FC } from "react";
 import BlackBg from "../../elements/BlackBg/BlackBg";
 import { varPop } from "./uiFactory";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -10,7 +10,10 @@ import CloseBtn from "../../buttons/CloseBtn";
 
 type PropsType = {
   isShow: boolean | null;
-  setIsShow: React.Dispatch<React.SetStateAction<boolean | null>>;
+  setIsShow:
+    | ((val: boolean | null) => void)
+    | React.Dispatch<React.SetStateAction<boolean | null>>;
+
   Content: React.ReactNode | (() => React.ReactNode);
   allowClose?: boolean;
 };
@@ -23,8 +26,12 @@ const WrapPop: FC<PropsType> = ({
 }) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
+  const cb = useCallback(() => {
+    if (allowClose) setIsShow(false);
+  }, [setIsShow, allowClose]);
+
   useMouseOut({
-    cb: () => (allowClose ? setIsShow(false) : null),
+    cb,
     ref: popRef,
   });
 
@@ -53,7 +60,9 @@ const WrapPop: FC<PropsType> = ({
           />
         </div>
 
-        {typeof Content === "function" ? Content() : Content}
+        <div className="h-full w-full pt-8">
+          {typeof Content === "function" ? Content() : Content}
+        </div>
       </motion.div>
     </>
   );

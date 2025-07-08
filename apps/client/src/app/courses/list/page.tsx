@@ -2,6 +2,8 @@ import ListCourses from "@/features/courses/ListCourses/ListCourses";
 import SearchCtxProvider from "@/features/layout/components/SearchBar/contexts/SearchCtxProvider";
 import type { FC } from "react";
 
+export const dynamic = "force-dynamic";
+
 const Page: FC = () => {
   return (
     <div className="w-full flex flex-col items-center gap-8">

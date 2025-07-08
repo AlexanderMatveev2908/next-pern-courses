@@ -106,6 +106,11 @@ const SecondaryRowBtns = <
               `,
             },
             labelConf: [650, "sort"],
+            handleClick: () =>
+              setBar({
+                el: "sortBar",
+                val: true,
+              }),
           }}
         />
       </WrapBtnRow>
