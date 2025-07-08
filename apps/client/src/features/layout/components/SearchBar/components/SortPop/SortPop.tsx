@@ -12,10 +12,9 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   sorters: SearchSortType<T, K>[];
 };
 
-const SortPop = <T extends FieldValues, K extends Path<T>>({}: PropsType<
-  T,
-  K
->) => {
+const SortPop = <T extends FieldValues, K extends Path<T>>({
+  sorters,
+}: PropsType<T, K>) => {
   const {
     bars: { sortBar },
     setBar,
@@ -30,9 +29,9 @@ const SortPop = <T extends FieldValues, K extends Path<T>>({}: PropsType<
       {...{
         isShow: sortBar,
         setIsShow: setIsShow,
-        Content: () => <ContentSortPop />,
+        Content: () => <ContentSortPop {...{ sorters }} />,
       }}
-    ></WrapPop>
+    />
   );
 };
 

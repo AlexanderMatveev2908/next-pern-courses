@@ -10,7 +10,10 @@ import CloseBtn from "../../buttons/CloseBtn";
 
 type PropsType = {
   isShow: boolean | null;
-  setIsShow: React.Dispatch<React.SetStateAction<boolean | null>>;
+  setIsShow:
+    | ((val: boolean | null) => void)
+    | React.Dispatch<React.SetStateAction<boolean | null>>;
+
   Content: React.ReactNode | (() => React.ReactNode);
   allowClose?: boolean;
 };
@@ -57,7 +60,9 @@ const WrapPop: FC<PropsType> = ({
           />
         </div>
 
-        {typeof Content === "function" ? Content() : Content}
+        <div className="h-full w-full pt-8">
+          {typeof Content === "function" ? Content() : Content}
+        </div>
       </motion.div>
     </>
   );
