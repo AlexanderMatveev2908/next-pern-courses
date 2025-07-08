@@ -78,3 +78,8 @@ export const grabErrMsgZOD = <T extends ZodTypeAny>(
     fancyErrsList,
   };
 };
+
+export const genIpsum = (num: number = 1) =>
+  `Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque ea amet consectetur soluta, veritatis iste, at repudiandae praesentium esse nihil eaque maiores facilis ad! Alias eveniet maiores illum obcaecati perferendis!`.repeat(
+    num,
+  );
