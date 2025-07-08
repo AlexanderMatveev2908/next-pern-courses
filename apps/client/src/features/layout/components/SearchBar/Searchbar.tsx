@@ -32,10 +32,8 @@ import WrapImpBtns from "./components/HOC/WrapImpBtns";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import { grabValsPagination } from "./lib/style";
-import cloneDeep from "lodash.clonedeep";
 import { v4 } from "uuid";
-import { genURLSearchParams } from "@/core/lib/processForm";
+import { useFactoryAPI } from "./hooks/useFactoryAPI";
 
 type PropsType<
   ResT,
@@ -70,7 +68,7 @@ const Searchbar = <
   hook,
   triggerRef,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
-  const { setSearcher, resetData } = useSearchCtxConsumer();
+  const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
 
   const formCtx = useFormContext<FormT>();
   const { setFocus, watch, reset: resetRHF } = formCtx;
@@ -96,6 +94,12 @@ const Searchbar = <
     triggerRef,
   });
 
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
+
   const triggerResetAPI = useCallback(() => {
     const formDevVals = {
       txtInputs: [
@@ -105,20 +109,10 @@ const Searchbar = <
         },
       ],
     };
-    const defVals = cloneDeep({
-      ...formDevVals,
-      ...grabValsPagination({}),
-    });
-    triggerRef();
+
     resetRHF(formDevVals as unknown as DefaultValues<FormT>);
-    resetData({
-      vals: defVals,
-    });
-    triggerRTK({
-      vals: genURLSearchParams(defVals),
-      _: Date.now(),
-    } as ArgT);
-  }, [resetData, resetRHF, txtInputs, triggerRef, triggerRTK]);
+    searchAPI(formDevVals, {});
+  }, [resetRHF, txtInputs, searchAPI]);
 
   return (
     <WrapPendingClient {...{ isLoading: false }}>

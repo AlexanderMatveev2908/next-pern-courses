@@ -24,6 +24,7 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 import cloneDeep from "lodash.clonedeep";
+import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -45,29 +46,16 @@ const ListCourses: FC = () => {
   });
   const { handleSubmit } = formCtx;
 
-  const searchAPI = useCallback(
-    <T extends FieldValues>(
-      data: T,
-      { page, limit }: { page?: number; limit?: number },
-    ) => {
-      const merged = cloneDeep({
-        ...data,
-        ...gabFormValsPagination({ page, limit }),
-      });
-
-      const str = genURLSearchParams(merged);
-
-      triggerRef();
-      updateNoDebounce({
-        vals: merged,
-      });
-      triggerRTK({ vals: str, _: Date.now() }, false);
-    },
-    [triggerRef, triggerRTK, updateNoDebounce],
-  );
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
 
   const handleSave = handleSubmit(
     (data) => {
+
+
       searchAPI(data, {});
     },
     (errs) => {

@@ -1,0 +1,43 @@
+import cloneDeep from "lodash.clonedeep";
+import { useCallback } from "react";
+import { FieldValues } from "react-hook-form";
+import { gabFormValsPagination } from "../lib/style";
+import { genURLSearchParams } from "@/core/lib/processForm";
+import { ReqSearchAPI, TriggerTypeRTK } from "@/common/types/api";
+
+type Params<T, K extends ReqSearchAPI, U> = {
+  triggerRef: () => void;
+  triggerRTK: TriggerTypeRTK<T, K>;
+  updateNoDebounce: (arg: U) => void;
+};
+
+export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
+  triggerRTK,
+  triggerRef,
+  updateNoDebounce,
+}: Params<T, K, U>) => {
+  const searchAPI = useCallback(
+    <T extends FieldValues>(
+      data: T,
+      { page, limit }: { page?: number; limit?: number },
+    ) => {
+      const merged = cloneDeep({
+        ...data,
+        ...gabFormValsPagination({ page, limit }),
+      });
+
+      const str = genURLSearchParams(merged);
+
+      triggerRef();
+      updateNoDebounce({
+        vals: merged,
+      } as U);
+      triggerRTK({ vals: str, _: Date.now() } as K, false);
+    },
+    [triggerRef, triggerRTK, updateNoDebounce],
+  );
+
+  return {
+    searchAPI,
+  };
+};
