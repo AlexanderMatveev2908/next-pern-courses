@@ -25,8 +25,6 @@ const app = Fastify({
 
 // genMock();
 
-__cg("start");
-
 const start = async () => {
   try {
     await app.register(env);

@@ -7,10 +7,25 @@ export const getListCoursesCtrl = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  const courses = await db.$queryRawUnsafe(readSQL("get_courses"));
+  const { myQuery } = req;
 
-  // __cg("courses", courses);
+  const { limit, page } = myQuery as Record<string, any>;
+  const offset = page * limit;
+  const nHits = await db.course.count({
+    where: {},
+  });
+
+  const pages = Math.ceil(nHits / limit);
+
+  const courses = await db.$queryRawUnsafe(
+    readSQL("get_courses"),
+    offset,
+    limit,
+  );
+
   return res.res200({
     courses,
+    pages,
+    nHits,
   });
 };

@@ -26,3 +26,8 @@ SELECT c."title", c."grade", c."techStack", c."tools",
   ) AS "video"
 
 FROM "Course" AS c
+
+-- OFFSET $1
+-- LIMIT $2
+OFFSET 0
+LIMIT 1
