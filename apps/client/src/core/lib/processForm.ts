@@ -62,17 +62,15 @@ export const genURLSearchParams = <T>(obj: T): string => {
     } else if (typeof v === "object" && !Array.isArray(v)) {
       urlParams.append(k, JSON.stringify(v));
     } else if (Array.isArray(v)) {
-      if (!v.length) continue;
-
       let i = 0;
 
       while (i < v.length) {
         const curr = v[i];
 
         if (typeof curr === "string") {
-          urlParams.append(k, curr);
+          urlParams.append(`${k}[]`, curr);
         } else if (typeof curr === "object" && isStr(curr.val)) {
-          urlParams.append(k, JSON.stringify(curr));
+          urlParams.append(`${k}[]`, JSON.stringify(curr));
         }
         i++;
       }

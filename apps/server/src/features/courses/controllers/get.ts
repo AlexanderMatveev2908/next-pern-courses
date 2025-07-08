@@ -9,7 +9,7 @@ export const getListCoursesCtrl = async (
 ) => {
   const courses = await db.$queryRawUnsafe(readSQL("get_courses"));
 
-  __cg("courses", courses);
+  // __cg("courses", courses);
   return res.res200({
     courses,
   });

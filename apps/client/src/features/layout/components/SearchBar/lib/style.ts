@@ -24,8 +24,17 @@ export const grabValsPagination = ({
   block,
 });
 
-export const gabFormValsPagination = () => {
-  const { page, limit } = grabValsPagination({});
+export const gabFormValsPagination = ({
+  page: argPage = 0,
+  limit: argLimit = getLimitPage(),
+}: {
+  page?: number;
+  limit?: number;
+}) => {
+  const { page, limit } = grabValsPagination({
+    page: argPage,
+    limit: argLimit,
+  });
 
   return {
     page,

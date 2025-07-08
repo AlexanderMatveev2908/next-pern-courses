@@ -2,10 +2,10 @@
 "use client";
 
 import Searchbar from "@/features/layout/components/SearchBar/Searchbar";
-import { useEffect, type FC } from "react";
+import { useCallback, type FC } from "react";
 import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   schemaGetListCourse,
@@ -20,25 +20,20 @@ import {
 import { v4 } from "uuid";
 import { __cg } from "@shared/first/lib/logger.js";
 import { genURLSearchParams } from "@/core/lib/processForm";
+import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
+import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
   const [triggerRTK, res] = hook;
 
-  useWrapQuery({
+  const { updateNoDebounce } = useSearchCtxConsumer();
+
+  const { triggerRef } = useWrapQuery({
     ...res,
     showToast: true,
   });
-
-  const vals = new URLSearchParams();
-  vals.append("msg", "test form");
-
-  useEffect(() => {
-    triggerRTK({
-      vals: vals + "",
-    });
-    // eslint-disable-next-line
-  }, [triggerRTK]);
 
   const formCtx = useForm<SchemaGetListCoursesType>({
     resolver: zodResolver(schemaGetListCourse),
@@ -49,9 +44,26 @@ const ListCourses: FC = () => {
   });
   const { handleSubmit } = formCtx;
 
+  const searchAPI = useCallback(
+    <T extends FieldValues>(
+      data: T,
+      { page, limit }: { page?: number; limit?: number },
+    ) => {
+      const str = genURLSearchParams(data);
+
+      triggerRef();
+      updateNoDebounce({
+        vals: data,
+        ...gabFormValsPagination({ page, limit }),
+      });
+      triggerRTK({ vals: str }, false);
+    },
+    [triggerRef, triggerRTK, updateNoDebounce],
+  );
+
   const handleSave = handleSubmit(
     (data) => {
-      genURLSearchParams(data);
+      searchAPI(data, {});
     },
     (errs) => {
       __cg("errs submit", errs);
@@ -61,7 +73,7 @@ const ListCourses: FC = () => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-8">
+    <div className="w-full grid grid-cols-1 gap-20">
       <FormProvider {...formCtx}>
         <Searchbar
           {...{
@@ -72,9 +84,21 @@ const ListCourses: FC = () => {
             innerJoinConf: innerJoinFilters,
             handleSave,
             zodObj: schemaGetListCourse,
+            triggerRef,
           }}
         />
       </FormProvider>
+
+      <WrapPendingClient {...{ isLoading: res.isLoading }}>
+        {() => (
+          <div className="">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
+            harum, alias minus fuga molestiae non ea voluptas atque ducimus sint
+            veniam iure aliquid ipsa exercitationem pariatur deserunt tenetur
+            eos consectetur.
+          </div>
+        )}
+      </WrapPendingClient>
     </div>
   );
 };
