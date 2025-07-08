@@ -15,8 +15,8 @@ import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema
 import { Rocket } from "lucide-react";
 import { IoCalendarNumberSharp, IoStatsChart } from "react-icons/io5";
 import { v4 } from "uuid";
-import { GrScorecard } from "react-icons/gr";
-import { FaRegHourglassHalf } from "react-icons/fa6";
+// import { GrScorecard } from "react-icons/gr";
+// import { FaRegHourglassHalf } from "react-icons/fa6";
 
 export const txtInputsCourses: FormFieldArrayType[] = [
   {
@@ -69,20 +69,20 @@ const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
     id: v4(),
   };
 
-const sortPoints = {
-  name: "pointsSort",
-  label: "Points",
-  Svg: GrScorecard,
-  id: v4(),
-};
+// const sortPoints = {
+//   name: "pointsSort",
+//   label: "Points",
+//   Svg: GrScorecard,
+//   id: v4(),
+// };
 
-const timeEstimatedSort = {
-  name: "timeEstimatedSort",
-  label: "Time estimated",
-  Svg: FaRegHourglassHalf,
-};
+// const timeEstimatedSort = {
+//   name: "timeEstimatedSort",
+//   label: "Time estimated",
+//   Svg: FaRegHourglassHalf,
+// };
 
-export const sortersCourses = [sortCreatedAt, sortPoints, timeEstimatedSort];
+export const sortersCourses = [sortCreatedAt];
 
 const innerJoinToolsFilter: SearchFilterType<
   SchemaGetListCoursesType,
