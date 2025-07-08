@@ -9,6 +9,8 @@ import { css } from "@emotion/react";
 import { Eraser } from "lucide-react";
 import { DefaultValues, FieldValues, useFormContext } from "react-hook-form";
 import { v4 } from "uuid";
+import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
+import { grabValsPagination } from "../../lib/style";
 
 type PropsType<T extends FieldValues> = {
   txtInputs: T["txtInputs"];
@@ -16,16 +18,25 @@ type PropsType<T extends FieldValues> = {
 
 const WrapImpBtns = <T extends FieldValues>({ txtInputs }: PropsType<T>) => {
   const { reset } = useFormContext<T>();
+  const { resetData } = useSearchCtxConsumer();
 
   const handleReset = () => {
-    reset({
+    const defFormData = {
       txtInputs: [
         {
           ...txtInputs[0],
           id: v4(),
         },
       ],
-    } as unknown as DefaultValues<T>);
+    } as unknown as DefaultValues<T>;
+
+    resetData({
+      vals: {
+        ...defFormData,
+        ...grabValsPagination({}),
+      },
+    });
+    reset(defFormData);
   };
 
   return (

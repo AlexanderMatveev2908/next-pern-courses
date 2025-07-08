@@ -89,7 +89,7 @@ export const wakeUpSliceAPI = api.injectEndpoints({
         try {
           const res = await queryFulfilled;
 
-          __cg("res async query started", res);
+          // __cg("res async query started", res);
 
           dispatch(wakeUpSlice.actions.setAllDummyItems(res.data.items));
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

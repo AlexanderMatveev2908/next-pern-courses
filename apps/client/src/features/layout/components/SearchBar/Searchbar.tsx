@@ -21,26 +21,42 @@ import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useEffect } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
+import { ZodObject } from "zod";
+import { useDebounce } from "./hooks/useDebounce";
 
-type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
+type PropsType<
+  T,
+  K,
+  U extends FieldValues,
+  P extends Path<U>,
+  R extends ZodObject<any>,
+> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
   txtInputs: U["txtInputs"];
   filters: SearchFilterType<U, P>[];
   sorters: SearchSortType<U, P>[];
   innerJoinConf: InnerJoinFilterConfType<U, P>[];
   handleSave: () => void;
+  zodObj: R;
 };
 
-const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
+const Searchbar = <
+  T,
+  K,
+  U extends FieldValues,
+  P extends Path<U>,
+  R extends ZodObject<any>,
+>({
   txtInputs,
   filters,
   sorters,
   innerJoinConf,
   handleSave,
-}: PropsType<T, K, U, P>) => {
+  zodObj,
+}: PropsType<T, K, U, P, R>) => {
   const { setSearcher } = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
-  const { setFocus } = formCtx;
+  const { setFocus, watch } = formCtx;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -52,7 +68,12 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
     });
   }, [filters, setSearcher]);
 
-  // __cg("form", formCtx.watch());
+  const formDataRHF = watch();
+
+  useDebounce({
+    formDataRHF,
+    zodObj,
+  });
 
   const { isHydrated } = useListenHydration();
 

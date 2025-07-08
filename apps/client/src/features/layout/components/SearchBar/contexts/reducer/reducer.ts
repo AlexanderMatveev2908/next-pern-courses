@@ -1,6 +1,6 @@
 import { __cg } from "@shared/first/lib/logger.js";
 import { SearchCtxActions, SearchCtxActionsType } from "./actions";
-import { SearchCtxStateType } from "./initState";
+import { searchCtxInitState, SearchCtxStateType } from "./initState";
 
 export const reducerSearchReact = (
   state: SearchCtxStateType,
@@ -71,6 +71,14 @@ export const reducerSearchReact = (
         innerJoinCat: action.payload,
       };
     }
+
+    case SearchCtxActions.RESET_DATA:
+      return {
+        ...state,
+        pagination: {
+          ...searchCtxInitState.pagination,
+        },
+      };
 
     default:
       __cg("unknown action", action);

@@ -5,6 +5,7 @@ export enum SearchCtxActions {
   SET_PAGINATION = "SET_PAGINATION",
   SET_INNER_JOIN_CAT = "SET_INNER_JOIN_CAT",
   SET_SEARCHER = "SET_SEARCHER",
+  RESET_DATA = "RESET_DATA",
 }
 
 export type ParamsBar = {
@@ -56,4 +57,7 @@ export type SearchCtxActionsType =
   | {
       type: SearchCtxActions.SET_INNER_JOIN_CAT;
       payload: string[];
+    }
+  | {
+      type: SearchCtxActions.RESET_DATA;
     };

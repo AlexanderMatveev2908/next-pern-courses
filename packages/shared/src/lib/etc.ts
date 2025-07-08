@@ -33,3 +33,29 @@ export const cpyObj = <T>(obj: T): T => {
 
   return cpy;
 };
+
+const isObj = (val: unknown): val is object =>
+  typeof val === "object" && val !== null;
+
+export const isSameObj = <T>(obj1: T, obj2: T): boolean => {
+  if (obj1 === obj2) return true;
+
+  if (isObj(obj1) !== isObj(obj2)) return false;
+
+  if (Array.isArray(obj1) !== Array.isArray(obj2)) return false;
+  if (Array.isArray(obj1)) {
+    if (obj1.length !== (obj2 as T[]).length) return false;
+    // here check each item for item, like item1_a to item2_a, then item1_b to item2_b and so on
+    return obj1.every((el, i) => isSameObj(el, (obj2 as T[])[i]));
+  }
+
+  const keys1 = Object.keys(obj1 as {});
+  const keys2 = Object.keys(obj2 as {});
+  if (keys1.length !== keys2.length) return false;
+
+  // same as for array but no index, instead just key for key for each object until the smallest type of val( i mean primitive for small )
+  if (!keys1.every((key) => keys2.includes(key))) return false;
+  return keys1.every((key) =>
+    isSameObj((obj1 as T)[key as keyof T], (obj2 as T)[key as keyof T]),
+  );
+};

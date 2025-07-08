@@ -70,6 +70,7 @@ const ListCourses: FC = () => {
             sorters: sortersCourses,
             innerJoinConf: innerJoinFilters,
             handleSave,
+            zodObj: schemaGetListCourse,
           }}
         />
       </FormProvider>
