@@ -74,8 +74,8 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
   const updateNoDebounce = useCallback(
     ({ vals }: ParamsUpdateNoDebounce<FieldValues>) => {
       setCheckPreSubmit({ el: "canMakeAPI", val: false });
-
       preValsRef.current = cloneDeep(vals);
+      __cg("update no debounce");
     },
     [setCheckPreSubmit],
   );
@@ -83,7 +83,6 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
   const resetData = useCallback(
     ({ vals }: ParamsUpdateNoDebounce<FieldValues>) => {
       updateNoDebounce({ vals });
-
       __cg("force update");
     },
     [updateNoDebounce],

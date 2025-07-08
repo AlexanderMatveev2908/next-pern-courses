@@ -7,7 +7,12 @@ import {
   ResultTypeRTK,
   TriggerTypeRTK,
 } from "@/common/types/api";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+import {
+  DefaultValues,
+  FieldValues,
+  Path,
+  useFormContext,
+} from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
 import PrimaryRow from "./components/PrimaryRow";
@@ -22,11 +27,15 @@ import {
 } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { grabValsPagination } from "./lib/style";
+import cloneDeep from "lodash.clonedeep";
+import { v4 } from "uuid";
+import { genURLSearchParams } from "@/core/lib/processForm";
 
 type PropsType<
   ResT,
@@ -61,10 +70,10 @@ const Searchbar = <
   hook,
   triggerRef,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
-  const { setSearcher } = useSearchCtxConsumer();
+  const { setSearcher, resetData } = useSearchCtxConsumer();
 
   const formCtx = useFormContext<FormT>();
-  const { setFocus, watch } = formCtx;
+  const { setFocus, watch, reset: resetRHF } = formCtx;
   const formDataRHF = watch();
 
   const [triggerRTK] = hook;
@@ -86,6 +95,30 @@ const Searchbar = <
     triggerRTK,
     triggerRef,
   });
+
+  const triggerResetAPI = useCallback(() => {
+    const formDevVals = {
+      txtInputs: [
+        {
+          ...txtInputs[0],
+          id: v4(),
+        },
+      ],
+    };
+    const defVals = cloneDeep({
+      ...formDevVals,
+      ...grabValsPagination({}),
+    });
+    triggerRef();
+    resetRHF(formDevVals as unknown as DefaultValues<FormT>);
+    resetData({
+      vals: defVals,
+    });
+    triggerRTK({
+      vals: genURLSearchParams(defVals),
+      _: Date.now(),
+    } as ArgT);
+  }, [resetData, resetRHF, txtInputs, triggerRef, triggerRTK]);
 
   return (
     <WrapPendingClient {...{ isLoading: false }}>
@@ -110,11 +143,13 @@ const Searchbar = <
               <SecondaryRowBtns {...{ txtInputs }} />
 
               <div className="w-full grid grid-cols-1 gap-6">
-                <WrapImpBtns {...{ txtInputs }} />
+                <WrapImpBtns {...{ txtInputs, triggerResetAPI }} />
               </div>
             </div>
 
-            <FilterFooter {...{ filters, innerJoinConf, txtInputs }} />
+            <FilterFooter
+              {...{ filters, innerJoinConf, txtInputs, triggerResetAPI }}
+            />
 
             <SortPop {...{ sorters }} />
           </form>

@@ -7,37 +7,22 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { FaSearch } from "react-icons/fa";
 import { css } from "@emotion/react";
 import { Eraser } from "lucide-react";
-import { DefaultValues, FieldValues, useFormContext } from "react-hook-form";
-import { v4 } from "uuid";
-import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
-import { grabValsPagination } from "../../lib/style";
+import { FieldValues } from "react-hook-form";
+import { useCallback } from "react";
 
 type PropsType<T extends FieldValues> = {
   txtInputs: T["txtInputs"];
+  triggerResetAPI: () => void;
 };
 
-const WrapImpBtns = <T extends FieldValues>({ txtInputs }: PropsType<T>) => {
-  const { reset } = useFormContext<T>();
-  const { resetData } = useSearchCtxConsumer();
-
-  const handleReset = () => {
-    const defFormData = {
-      txtInputs: [
-        {
-          ...txtInputs[0],
-          id: v4(),
-        },
-      ],
-    } as unknown as DefaultValues<T>;
-
-    resetData({
-      vals: {
-        ...defFormData,
-        ...grabValsPagination({}),
-      },
-    });
-    reset(defFormData);
-  };
+const WrapImpBtns = <T extends FieldValues>({
+  triggerResetAPI,
+}: PropsType<T>) => {
+  const handleReset = useCallback(() => {
+    {
+      triggerResetAPI();
+    }
+  }, [triggerResetAPI]);
 
   return (
     <WrapBtnRow>

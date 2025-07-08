@@ -20,12 +20,14 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
   innerJoinConf: InnerJoinFilterConfType<T, K>[];
   txtInputs: T["txtInputs"];
+  triggerResetAPI: () => void;
 };
 
 const FilterFooter = <T extends FieldValues, K extends Path<T>>({
   filters,
   innerJoinConf,
   txtInputs,
+  triggerResetAPI,
 }: PropsType<T, K>) => {
   const barRef = useRef<HTMLDivElement | null>(null);
   const labelRef = useRef<HTMLDivElement | null>(null);
@@ -121,7 +123,7 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
         </div>
 
         <div className="w-full absolute bottom-0 left-0 h-[80px] flex justify-center items-center bg-neutral-950 border-t-[3px] border-neutral-800 z-60">
-          <WrapImpBtns {...{ txtInputs }} />
+          <WrapImpBtns {...{ txtInputs, triggerResetAPI }} />
         </div>
       </div>
     </>
