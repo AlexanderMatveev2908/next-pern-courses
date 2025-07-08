@@ -80,6 +80,14 @@ export const reducerSearchReact = (
         },
       };
 
+    case SearchCtxActions.CLEAR_PENDING:
+      return {
+        ...state,
+        isSearchPending: {
+          ...searchCtxInitState.isSearchPending,
+        },
+      };
+
     default:
       __cg("unknown action", action);
       throw new Error("unknown action");

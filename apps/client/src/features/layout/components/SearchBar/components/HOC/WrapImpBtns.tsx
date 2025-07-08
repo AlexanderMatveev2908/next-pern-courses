@@ -9,6 +9,7 @@ import { css } from "@emotion/react";
 import { Eraser } from "lucide-react";
 import { FieldValues } from "react-hook-form";
 import { useCallback } from "react";
+import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
 
 type PropsType<T extends FieldValues> = {
   txtInputs: T["txtInputs"];
@@ -24,6 +25,10 @@ const WrapImpBtns = <T extends FieldValues>({
     }
   }, [triggerResetAPI]);
 
+  const {
+    isSearchPending: { clear, submit },
+  } = useSearchCtxConsumer();
+
   return (
     <WrapBtnRow>
       <WrapSearchBarBtn
@@ -37,6 +42,7 @@ const WrapImpBtns = <T extends FieldValues>({
           },
           labelConf: [650, "search"],
           type: "submit",
+          isLoading: submit,
         }}
       />
       <WrapSearchBarBtn
@@ -50,6 +56,7 @@ const WrapImpBtns = <T extends FieldValues>({
           },
           labelConf: [650, "reset"],
           handleClick: handleReset,
+          isLoading: clear,
         }}
       />
     </WrapBtnRow>

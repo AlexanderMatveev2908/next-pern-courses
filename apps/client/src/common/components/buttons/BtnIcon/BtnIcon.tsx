@@ -8,6 +8,7 @@ import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { btnColors } from "@/core/uiFactory/style";
 import { capt } from "@shared/first/lib/formatters.js";
+import MiniSpinner from "../../spinners/MiniSpinner";
 
 export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
   btnActType: BtnActType;
@@ -19,6 +20,7 @@ export type BtnIconPropsType = Omit<PropsTypeBtn, "label"> & {
   $labelCSS?: {
     css: SerializedStyles;
   } | null;
+  isLoading?: boolean;
 };
 const BtnIcon: FC<BtnIconPropsType> = ({
   isEnabled,
@@ -29,13 +31,14 @@ const BtnIcon: FC<BtnIconPropsType> = ({
   Svg,
   $svgCSS,
   $labelCSS,
+  isLoading,
 }) => {
   const clr = btnColors[btnActType];
 
   return (
     <button
       type={type}
-      disabled={!isEnabled}
+      disabled={!isEnabled || isLoading}
       onClick={handleClick}
       className="btn__app flex w-full gap-5 py-[7.5px] px-[25px] justify-center items-center rounded-2xl"
       css={css`
@@ -48,16 +51,24 @@ const BtnIcon: FC<BtnIconPropsType> = ({
       `}
       style={{ "--scale__up": 1.25 } as React.CSSProperties}
     >
-      {Svg && (
-        <Svg
-          css={css`
-            ${$svgCSS?.css ??
-            `
+      {isLoading ? (
+        <MiniSpinner
+          {...{
+            btnAct: btnActType,
+          }}
+        />
+      ) : (
+        Svg && (
+          <Svg
+            css={css`
+              ${$svgCSS?.css ??
+              `
           min-width: 35px;
           min-height: 35px;
         `}
-          `}
-        />
+            `}
+          />
+        )
       )}
 
       {isStr(label) && (

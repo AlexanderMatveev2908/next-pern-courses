@@ -88,6 +88,11 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     [updateNoDebounce],
   );
 
+  const clearPending = useCallback(
+    () => dispatchReact({ type: SearchCtxActions.CLEAR_PENDING }),
+    [dispatchReact],
+  );
+
   return {
     ...stateReact,
     preValsRef,
@@ -99,6 +104,7 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     setInnerJoinCat,
     updateNoDebounce,
     resetData,
+    clearPending,
   };
 };
 

@@ -4,6 +4,7 @@ import { FieldValues } from "react-hook-form";
 import { gabFormValsPagination } from "../lib/style";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { ReqSearchAPI, TriggerTypeRTK } from "@/common/types/api";
+import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
 
 type Params<T, K extends ReqSearchAPI, U> = {
   triggerRef: () => void;
@@ -16,10 +17,16 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
   triggerRef,
   updateNoDebounce,
 }: Params<T, K, U>) => {
+  const { setPending } = useSearchCtxConsumer();
+
   const searchAPI = useCallback(
     <T extends FieldValues>(
       data: T,
-      { page, limit }: { page?: number; limit?: number },
+      {
+        page,
+        limit,
+        syncPending,
+      }: { page?: number; limit?: number; syncPending?: "submit" | "clear" },
     ) => {
       const merged = cloneDeep({
         ...data,
@@ -33,8 +40,14 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
         vals: merged,
       } as U);
       triggerRTK({ vals: str, _: Date.now() } as K, false);
+
+      if (syncPending)
+        setPending({
+          el: syncPending,
+          val: true,
+        });
     },
-    [triggerRef, triggerRTK, updateNoDebounce],
+    [triggerRef, triggerRTK, updateNoDebounce, setPending],
   );
 
   return {

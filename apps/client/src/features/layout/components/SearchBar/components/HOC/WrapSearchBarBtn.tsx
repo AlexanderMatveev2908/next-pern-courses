@@ -17,6 +17,7 @@ type PropsType = {
   btnActType: BtnActType;
   Svg?: IconType;
   labelConf: [number?, string?];
+  isLoading?: boolean;
 
   type?: "button" | "submit";
   handleClick?: () => void;
@@ -28,6 +29,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
   Svg,
   handleClick,
   labelConf,
+  isLoading,
   type = "button",
 }) => {
   return (
@@ -45,7 +47,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
         {...{
           $svgCSS: svgSearchBarCSS,
           isEnabled: true,
-          isLoading: false,
+          isLoading,
           type,
           label: typeof labelConf?.[0] !== "number" ? null : labelConf?.[1],
           $labelCSS:

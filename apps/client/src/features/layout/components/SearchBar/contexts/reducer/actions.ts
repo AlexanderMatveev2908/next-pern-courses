@@ -6,6 +6,7 @@ export enum SearchCtxActions {
   SET_INNER_JOIN_CAT = "SET_INNER_JOIN_CAT",
   SET_SEARCHER = "SET_SEARCHER",
   RESET_DATA = "RESET_DATA",
+  CLEAR_PENDING = "CLEAR_PENDING",
 }
 
 export type ParamsBar = {
@@ -60,4 +61,7 @@ export type SearchCtxActionsType =
     }
   | {
       type: SearchCtxActions.RESET_DATA;
+    }
+  | {
+      type: SearchCtxActions.CLEAR_PENDING;
     };

@@ -35,6 +35,7 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
+import { useListenDummyPending } from "./hooks/useListenDummyPending";
 
 type PropsType<
   ResT,
@@ -101,6 +102,10 @@ const Searchbar = <
     triggerRef,
   });
 
+  useListenDummyPending({
+    isLoading: res.isLoading || res.isFetching,
+  });
+
   const { searchAPI } = useFactoryAPI({
     triggerRef,
     triggerRTK,
@@ -118,9 +123,12 @@ const Searchbar = <
     };
 
     resetRHF(formDevVals as unknown as DefaultValues<FormT>);
-    searchAPI(formDevVals, {});
+    searchAPI(formDevVals, {
+      syncPending: "clear",
+    });
   }, [resetRHF, txtInputs, searchAPI]);
 
+  useEffect(() => {}, []);
   return (
     <WrapPendingClient {...{ isLoading: false }}>
       {({ isHydrated } = { isHydrated: false }) =>
