@@ -19,28 +19,54 @@ import {
 } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
+import { isSameObj } from "@shared/first/lib/etc.js";
+import { __cg } from "@shared/first/lib/logger.js";
+import { ZodObject } from "zod";
+import cloneDeep from "lodash.clonedeep";
+import { clearT } from "@/core/lib/etc";
 
-type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
+type PropsType<
+  T,
+  K,
+  U extends FieldValues,
+  P extends Path<U>,
+  R extends ZodObject<any>,
+> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
   txtInputs: U["txtInputs"];
   filters: SearchFilterType<U, P>[];
   sorters: SearchSortType<U, P>[];
   innerJoinConf: InnerJoinFilterConfType<U, P>[];
   handleSave: () => void;
+  zodObj: R;
 };
 
-const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
+const Searchbar = <
+  T,
+  K,
+  U extends FieldValues,
+  P extends Path<U>,
+  R extends ZodObject<any>,
+>({
   txtInputs,
   filters,
   sorters,
   innerJoinConf,
   handleSave,
-}: PropsType<T, K, U, P>) => {
-  const { setSearcher } = useSearchCtxConsumer();
+  zodObj,
+}: PropsType<T, K, U, P, R>) => {
+  const {
+    setSearcher,
+    preValsRef,
+    setCheckPreSubmit,
+    checkPreSubmit: { canMakeAPI },
+    pagination: { page, limit },
+  } = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
-  const { setFocus } = formCtx;
+  const { setFocus, watch } = formCtx;
+  const timerID = useRef<NodeJS.Timeout | null>(null);
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -52,7 +78,62 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
     });
   }, [filters, setSearcher]);
 
-  // __cg("form", formCtx.watch());
+  const formDataRHF = watch();
+
+  useEffect(() => {
+    const merged = cloneDeep({
+      ...formDataRHF,
+      page,
+      limit,
+    });
+
+    const isSameData = isSameObj(merged, preValsRef.current);
+    const resultZod = zodObj.safeParse(merged);
+    const isValid = resultZod.success;
+
+    // __cg("comparison data", merged, preValsRef.current);
+
+    if (!isValid || isSameData || !canMakeAPI) {
+      preValsRef.current = merged;
+
+      __cg(
+        "conf valid data",
+        ["is valid", isValid],
+        ["is same data", isSameData],
+        ["can make api", canMakeAPI],
+      );
+
+      if (!canMakeAPI)
+        setCheckPreSubmit({
+          el: "canMakeAPI",
+          val: true,
+        });
+
+      clearT(timerID);
+      return;
+    }
+
+    clearT(timerID);
+
+    timerID.current = setTimeout(() => {
+      __cg("debounce update");
+
+      preValsRef.current = merged;
+      clearT(timerID);
+    }, 500);
+
+    return () => {
+      clearT(timerID);
+    };
+  }, [
+    formDataRHF,
+    page,
+    limit,
+    preValsRef,
+    zodObj,
+    canMakeAPI,
+    setCheckPreSubmit,
+  ]);
 
   const { isHydrated } = useListenHydration();
 

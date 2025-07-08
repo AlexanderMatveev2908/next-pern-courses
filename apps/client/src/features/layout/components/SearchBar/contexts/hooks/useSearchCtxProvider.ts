@@ -10,10 +10,20 @@ import {
   SearchCtxActionsType,
 } from "../reducer/actions";
 import { SearchCtxStateType } from "../reducer/initState";
+import { FieldValues } from "react-hook-form";
+import cloneDeep from "lodash.clonedeep";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type Params = {
   stateReact: SearchCtxStateType;
   dispatchReact: React.Dispatch<SearchCtxActionsType>;
+};
+
+type ParamsUpdateNoDebounce<T extends FieldValues> = {
+  vals: T[keyof T] & {
+    page: number;
+    limit: number;
+  };
 };
 
 export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
@@ -61,6 +71,24 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     [dispatchReact],
   );
 
+  const updateNoDebounce = useCallback(
+    ({ vals }: ParamsUpdateNoDebounce<FieldValues>) => {
+      setCheckPreSubmit({ el: "canMakeAPI", val: false });
+
+      preValsRef.current = cloneDeep(vals);
+    },
+    [setCheckPreSubmit],
+  );
+
+  const resetData = useCallback(
+    ({ vals }: ParamsUpdateNoDebounce<FieldValues>) => {
+      updateNoDebounce({ vals });
+
+      __cg("force update");
+    },
+    [updateNoDebounce],
+  );
+
   return {
     ...stateReact,
     preValsRef,
@@ -70,6 +98,8 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     setPagination,
     setCheckPreSubmit,
     setInnerJoinCat,
+    updateNoDebounce,
+    resetData,
   };
 };
 

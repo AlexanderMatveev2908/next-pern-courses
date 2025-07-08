@@ -8,6 +8,7 @@ export type SearchCtxStateType = {
   pagination: {
     page: number;
     limit: number;
+    block: number;
   };
   searchers: {
     currFilter: string;
@@ -32,6 +33,7 @@ export const searchCtxInitState: SearchCtxStateType = {
   pagination: {
     page: 0,
     limit: getLimitPage(),
+    block: 0,
   },
   searchers: {
     currFilter: "",
