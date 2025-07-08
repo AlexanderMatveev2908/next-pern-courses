@@ -2,7 +2,11 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { ResultTypeRTK, TriggerTypeRTK } from "@/common/types/api";
+import {
+  ReqPaginatedAPI,
+  ResultTypeRTK,
+  TriggerTypeRTK,
+} from "@/common/types/api";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
@@ -26,7 +30,7 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 
 type PropsType<
   T,
-  K,
+  K extends ReqPaginatedAPI<U>,
   U extends FieldValues,
   P extends Path<U>,
   R extends ZodObject<any>,
@@ -43,7 +47,7 @@ type PropsType<
 
 const Searchbar = <
   T,
-  K,
+  K extends ReqPaginatedAPI<U>,
   U extends FieldValues,
   P extends Path<U>,
   R extends ZodObject<any>,

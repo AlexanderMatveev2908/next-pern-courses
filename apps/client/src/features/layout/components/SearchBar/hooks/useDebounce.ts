@@ -8,9 +8,14 @@ import { FieldValues } from "react-hook-form";
 import { ZodObject } from "zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearT } from "@/core/lib/etc";
-import { TriggerTypeRTK } from "@/common/types/api";
+import { ReqPaginatedAPI, TriggerTypeRTK } from "@/common/types/api";
 
-type Params<T extends FieldValues, K extends ZodObject<any>, U, R> = {
+type Params<
+  T extends FieldValues,
+  K extends ZodObject<any>,
+  U,
+  R extends ReqPaginatedAPI<T>,
+> = {
   formDataRHF: T;
   zodObj: K;
   triggerRTK: TriggerTypeRTK<U, R>;
@@ -21,11 +26,12 @@ export const useDebounce = <
   T extends FieldValues,
   K extends ZodObject<any>,
   U,
-  R,
+  R extends ReqPaginatedAPI<T>,
 >({
   zodObj,
   formDataRHF,
-  // triggerRef,
+  triggerRef,
+  triggerRTK,
 }: Params<T, K, U, R>) => {
   const timerID = useRef<NodeJS.Timeout | null>(null);
 
@@ -72,6 +78,10 @@ export const useDebounce = <
     timerID.current = setTimeout(() => {
       __cg("debounce update");
 
+      triggerRef();
+      triggerRTK({
+        vals: merged,
+      } as R);
       preValsRef.current = merged;
       clearT(timerID);
     }, 500);
@@ -79,7 +89,15 @@ export const useDebounce = <
     return () => {
       clearT(timerID);
     };
-  }, [formDataRHF, preValsRef, zodObj, canMakeAPI, setCheckPreSubmit]);
+  }, [
+    formDataRHF,
+    triggerRef,
+    preValsRef,
+    zodObj,
+    canMakeAPI,
+    setCheckPreSubmit,
+    triggerRTK,
+  ]);
 
   return {};
 };

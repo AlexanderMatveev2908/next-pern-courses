@@ -10,10 +10,12 @@ export const getListCoursesCtrl = async (
   const { myQuery } = req;
 
   const { limit, page } = myQuery as Record<string, any>;
-
   const offset = page * limit;
+  const nHits = await db.course.count({
+    where: {},
+  });
 
-  __cg("myQuery", limit, page);
+  const pages = Math.ceil(nHits / limit);
 
   const courses = await db.$queryRawUnsafe(
     readSQL("get_courses"),
@@ -21,8 +23,9 @@ export const getListCoursesCtrl = async (
     limit,
   );
 
-  // __cg("courses", courses);
   return res.res200({
     courses,
+    pages,
+    nHits,
   });
 };
