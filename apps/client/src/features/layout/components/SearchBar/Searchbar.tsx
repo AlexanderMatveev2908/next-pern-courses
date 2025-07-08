@@ -63,7 +63,7 @@ const Searchbar = <
   const { setFocus, watch } = formCtx;
   const formDataRHF = watch();
 
-  const [triggerRTK, res] = hook;
+  const [triggerRTK] = hook;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
