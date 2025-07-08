@@ -24,5 +24,14 @@ export const grabValsPagination = ({
   block,
 });
 
+export const gabFormValsPagination = () => {
+  const { page, limit } = grabValsPagination({});
+
+  return {
+    page,
+    limit,
+  };
+};
+
 export const handleShowLabel = (w?: number) =>
   !isWindow() ? false : typeof w !== "number" ? false : window.innerWidth > w;
