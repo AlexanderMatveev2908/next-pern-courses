@@ -13,7 +13,13 @@ export const __cg = (title: string, ...args: any[]) => {
   const trace = new Error();
   const traces = trace.stack?.split("\n");
 
-  const firstTrace = traces?.[1];
+  let firstTrace: string | undefined;
+  for (const t of traces ?? []) {
+    if (t.includes("src")) {
+      firstTrace = t;
+      break;
+    }
+  }
 
   const path = firstTrace?.split("src")?.[1];
 

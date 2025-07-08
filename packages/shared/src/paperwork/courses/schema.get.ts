@@ -28,6 +28,8 @@ export const schemaGetListCourse = z.object({
   tools: z.array(schemaTool()).optional(),
 
   createdAtSort: schemaOrder().optional(),
+
+  _: z.number().optional(),
 });
 
 export type SchemaGetListCoursesType = z.infer<typeof schemaGetListCourse>;

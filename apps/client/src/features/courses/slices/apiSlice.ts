@@ -1,8 +1,12 @@
-import { PaginatedResAPI, ResAPI, TagsAPI } from "@/common/types/api";
+import {
+  PaginatedResAPI,
+  ReqSearchAPI,
+  ResAPI,
+  TagsAPI,
+} from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { CourseType } from "../types/courses";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { wrapCondAssignTags } from "@/core/lib/api";
 
 const BASE_URL = "/courses";
 
@@ -18,23 +22,31 @@ export const coursesSliceAPI = api.injectEndpoints({
 
     getCourses: builder.query<
       PaginatedResAPI<{ courses: CourseType[] }>,
-      { vals: string }
+      ReqSearchAPI
     >({
       query: ({ vals }) => ({
         url: `${BASE_URL}?${vals}`,
         method: "GET",
       }),
-      providesTags: (res) =>
-        wrapCondAssignTags(isArrOK(res?.courses))([
-          ...res!.courses.map((el) => ({
-            type: TagsAPI.COURSES_LIST,
-            id: el.id,
-          })),
-          {
-            type: TagsAPI.COURSES_LIST,
-            id: "LIST",
-          },
-        ]),
+      providesTags: (res) => [
+        ...(!isArrOK(res?.courses)
+          ? [
+              {
+                type: TagsAPI.COURSES_LIST,
+                id: "LIST",
+              },
+            ]
+          : [
+              ...res!.courses.map((c) => ({
+                type: TagsAPI.COURSES_LIST,
+                id: c.id,
+              })),
+              {
+                type: TagsAPI.COURSES_LIST,
+                id: "LIST",
+              },
+            ]),
+      ],
     }),
   }),
 });

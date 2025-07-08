@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev -p 3001",
+    "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & NODE_OPTIONS='--no-deprecation' next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "NODE_OPTIONS='--no-deprecation' next start -p 3001",
     "lint": "next lint",
-    "check": "next lint && tsc --noEmit"
+    "check": "next lint && tsc --noEmit",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -42,6 +43,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "patch-package": "^8.0.0",
     "sass": "^1.89.2",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",

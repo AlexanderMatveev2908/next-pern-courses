@@ -1,4 +1,5 @@
 import { formatDate } from "@shared/first/lib/formatters.js";
+import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { v4 } from "uuid";
 
@@ -10,6 +11,8 @@ export const wakeUpCtrl = async (req: FastifyRequest, res: FastifyReply) => {
 };
 
 export const getDummyList = async (req: FastifyRequest, res: FastifyReply) => {
+  __cg("getDummyList");
+
   return res.res200({
     items: Array.from({ length: 15 }, (_, i) => ({
       id: v4(),

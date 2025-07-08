@@ -28,6 +28,10 @@ declare module "fastify" {
       fields: Record<string, any>;
       files: AppFile[];
     };
+
+    myQuery?: {
+      [key: string]: any;
+    };
   }
 
   interface FastifyReply {

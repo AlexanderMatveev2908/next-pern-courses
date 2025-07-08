@@ -51,3 +51,8 @@ export type ResultTypeRTK<T, K> = TypedUseLazyQueryStateResult<
   K,
   BaseQueryType
 >;
+
+export type ReqSearchAPI = {
+  vals: string;
+  _?: number;
+};

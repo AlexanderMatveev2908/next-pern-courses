@@ -8,16 +8,25 @@ import { FieldValues } from "react-hook-form";
 import { ZodObject } from "zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearT } from "@/core/lib/etc";
+import { TriggerTypeRTK } from "@/common/types/api";
 
-type Params<T extends FieldValues, K extends ZodObject<any>> = {
+type Params<T extends FieldValues, K extends ZodObject<any>, U, R> = {
   formDataRHF: T;
   zodObj: K;
+  triggerRTK: TriggerTypeRTK<U, R>;
+  triggerRef: () => void;
 };
 
-export const useDebounce = <T extends FieldValues, K extends ZodObject<any>>({
+export const useDebounce = <
+  T extends FieldValues,
+  K extends ZodObject<any>,
+  U,
+  R,
+>({
   zodObj,
   formDataRHF,
-}: Params<T, K>) => {
+  // triggerRef,
+}: Params<T, K, U, R>) => {
   const timerID = useRef<NodeJS.Timeout | null>(null);
 
   const {
@@ -29,7 +38,7 @@ export const useDebounce = <T extends FieldValues, K extends ZodObject<any>>({
   useEffect(() => {
     const merged = cloneDeep({
       ...formDataRHF,
-      ...gabFormValsPagination(),
+      ...gabFormValsPagination({}),
     });
 
     const isSameData = isSameObj(merged, preValsRef.current);
