@@ -7,7 +7,6 @@ import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
 import PrimaryRow from "./components/PrimaryRow";
-import ThirdRawBtns from "./components/ThirdRawBtns";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
@@ -21,7 +20,7 @@ import {
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useEffect } from "react";
-import { __cg } from "@shared/first/lib/logger.js";
+import WrapImpBtns from "./components/HOC/WrapImpBtns";
 
 type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   hook: [TriggerTypeRTK<T, K>, ResultTypeRTK<T, K>, any];
@@ -29,6 +28,7 @@ type PropsType<T, K, U extends FieldValues, P extends Path<U>> = {
   filters: SearchFilterType<U, P>[];
   sorters: SearchSortType<U, P>[];
   innerJoinConf: InnerJoinFilterConfType<U, P>[];
+  handleSave: () => void;
 };
 
 const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
@@ -36,6 +36,7 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
   filters,
   sorters,
   innerJoinConf,
+  handleSave,
 }: PropsType<T, K, U, P>) => {
   const { setSearcher } = useSearchCtxConsumer();
   const formCtx = useFormContext<U>();
@@ -51,14 +52,17 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
     });
   }, [filters, setSearcher]);
 
-  __cg("form", formCtx.watch());
+  // __cg("form", formCtx.watch());
 
   const { isHydrated } = useListenHydration();
 
   return !isHydrated ? (
     <SkeletonSearch />
   ) : (
-    <form className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]">
+    <form
+      onSubmit={handleSave}
+      className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]"
+    >
       <PrimaryRow {...{ txtInputs }} />
 
       <div
@@ -71,10 +75,12 @@ const Searchbar = <T, K, U extends FieldValues, P extends Path<U>>({
       >
         <SecondaryRowBtns {...{ txtInputs }} />
 
-        <ThirdRawBtns />
+        <div className="w-full grid grid-cols-1 gap-6">
+          <WrapImpBtns {...{ txtInputs }} />
+        </div>
       </div>
 
-      <FilterFooter {...{ filters, innerJoinConf }} />
+      <FilterFooter {...{ filters, innerJoinConf, txtInputs }} />
 
       <SortPop {...{ sorters }} />
     </form>

@@ -18,6 +18,7 @@ import {
   txtInputsCourses,
 } from "./uifactory/searchBar";
 import { v4 } from "uuid";
+import { __cg } from "@shared/first/lib/logger.js";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -45,6 +46,18 @@ const ListCourses: FC = () => {
       txtInputs: [{ ...txtInputsCourses[0], id: v4() }],
     },
   });
+  const { handleSubmit } = formCtx;
+
+  const handleSave = handleSubmit(
+    (data) => {
+      __cg("submit", data);
+    },
+    (errs) => {
+      __cg("errs submit", errs);
+
+      return errs;
+    },
+  );
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">
@@ -56,6 +69,7 @@ const ListCourses: FC = () => {
             filters: filtersCourses,
             sorters: sortersCourses,
             innerJoinConf: innerJoinFilters,
+            handleSave,
           }}
         />
       </FormProvider>
