@@ -19,6 +19,9 @@ import {
 } from "@/common/types/api";
 import { ZodObject } from "zod";
 import PageCounter from "@/features/layout/components/SearchBar/components/PageCounter/PageCounter";
+import { getLimitPage } from "@/features/layout/components/SearchBar/lib/style";
+import SpinnerBtn from "../spinners/SpinnerBtn";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 type PropsType<
   ResT extends PaginatedResAPI<any>,
@@ -63,8 +66,12 @@ const WrapSearchQuery = <
     ArgT
   >;
 
+  const isPending = isLoading || isFetching;
+
+  const { isHydrated } = useListenHydration();
+
   return (
-    <div className="w-full grid grid-cols-1 gap-10 mb-[-100px]">
+    <div className="w-full grid grid-cols-1 gap-10 mb-[-75px]">
       <FormProvider {...formCtx}>
         <Searchbar
           {...{
@@ -82,21 +89,29 @@ const WrapSearchQuery = <
 
       <WrapPendingClient
         {...{
-          isLoading: isLoading || isFetching,
+          isLoading: isPending,
         }}
       >
         {() => children()}
       </WrapPendingClient>
 
-      <PageCounter
-        {...{
-          nHits: 23,
-          totPages: 3,
-          triggerRTK,
-          triggerRef,
-          valsRHF,
-        }}
-      />
+      {isPending ? (
+        <div className="w-full flex justify-center pt-[100px]">
+          <SpinnerBtn />
+        </div>
+      ) : (
+        isHydrated && (
+          <PageCounter
+            {...{
+              nHits: 34,
+              totPages: Math.ceil(34 / getLimitPage()),
+              triggerRTK,
+              triggerRef,
+              valsRHF,
+            }}
+          />
+        )
+      )}
     </div>
   );
 };

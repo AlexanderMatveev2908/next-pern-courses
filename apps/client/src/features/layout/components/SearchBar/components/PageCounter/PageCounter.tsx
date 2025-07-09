@@ -2,7 +2,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useState, type FC } from "react";
+import { useCallback, useEffect, useState } from "react";
 import WrapSearchBarBtn from "../HOC/WrapSearchBarBtn";
 import { BtnActType } from "@/common/types/uiFactory";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
@@ -42,11 +42,11 @@ const PageCounter = <
   triggerRef,
   valsRHF,
 }: PropsType<T, K, U>) => {
-  const [maxBlocks, setMaxBlocks] = useState(grabNumBlockBtns());
+  const [numBtnsPerBlock, setNumBtnsPerBlock] = useState(grabNumBlockBtns());
 
   const {
     updateNoDebounce,
-    pagination: { limit },
+    pagination: { limit, page, block },
   } = useSearchCtxConsumer();
 
   const { searchAPI } = useFactoryAPI({
@@ -54,6 +54,15 @@ const PageCounter = <
     triggerRef,
     updateNoDebounce,
   });
+  const searchApiForChildrenHOF = useCallback(
+    (page: number) => {
+      searchAPI(valsRHF, {
+        page,
+        limit: getLimitPage(),
+      });
+    },
+    [searchAPI, valsRHF],
+  );
 
   useEffect(() => {
     const listen = () => {
@@ -81,7 +90,7 @@ const PageCounter = <
 
   useEffect(() => {
     const listen = () => {
-      setMaxBlocks((prev) => {
+      setNumBtnsPerBlock((prev) => {
         const newVal = grabNumBlockBtns();
         return newVal === prev ? prev : newVal;
       });
@@ -94,9 +103,18 @@ const PageCounter = <
     };
   }, []);
 
-  // __cg("pagination", ["blocks", maxBlocks]);
+  // __cg("pagination", ["blocks", numBtnsPerBlock]);
 
   const { setPagination } = useSearchCtxConsumer();
+  const handleBlock = (operator: "+" | "-") => {
+    setPagination({
+      el: "block",
+      val: block + (operator === "+" ? 1 : -1),
+    });
+  };
+
+  const maxBlocksPossible = Math.ceil(totPages / numBtnsPerBlock);
+  console.log(totPages);
 
   return !totPages ? null : (
     <div className="w-full grid grid-cols-[80px_1fr_80px] ic gap-10 pt-[100px]">
@@ -104,6 +122,8 @@ const PageCounter = <
         {...{
           btnActType: BtnActType.NEUTRAL,
           Svg: ArrowBigLeftDash,
+          isEnabled: !!block,
+          handleClick: handleBlock.bind(null, "-"),
           labelConf: [],
           $SvgCustomCSS: {
             css: css`
@@ -118,6 +138,11 @@ const PageCounter = <
         {...{
           nHits,
           totPages,
+          numBtnsPerBlock,
+          limit,
+          block,
+          page,
+          searchApiForChildrenHOF,
         }}
       />
 
@@ -126,12 +151,14 @@ const PageCounter = <
           btnActType: BtnActType.NEUTRAL,
           Svg: ArrowBigRightDash,
           labelConf: [],
+          handleClick: handleBlock.bind(null, "+"),
           $SvgCustomCSS: {
             css: css`
               min-width: 35px;
               min-height: 35px;
             `,
           },
+          isEnabled: block < maxBlocksPossible - 1,
         }}
       />
     </div>

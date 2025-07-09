@@ -49,13 +49,13 @@ export const grabNumBlockBtns = () =>
   !isWindow()
     ? 1
     : window.innerWidth > uiBreaks.xl
-      ? 10
+      ? 8
       : window.innerWidth > uiBreaks.lg
-        ? 8
+        ? 6
         : window.innerWidth > uiBreaks.md
-          ? 6
+          ? 4
           : window.innerWidth > uiBreaks.sm
-            ? 4
+            ? 3
             : window.innerWidth > 400
               ? 2
               : 1;
