@@ -3,30 +3,36 @@
 "use client";
 
 import { FormFieldType } from "@/common/types/uiFactory";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { FieldValues } from "react-hook-form";
 import { LuPartyPopper } from "react-icons/lu";
 
 type PropsType<T extends FieldValues> = {
-  nHits: number;
+  nHits?: number;
   mainInput?: FormFieldType<T> & { val: any };
   isLoading: boolean;
+  nHitsCached?: number;
 };
 
 const ShowCount = <T extends FieldValues>({
   nHits,
   mainInput,
   isLoading,
+  nHitsCached,
 }: PropsType<T>) => {
+  const { isHydrated } = useListenHydration();
+  const arg = isHydrated && typeof nHits === "number" ? nHits : nHitsCached;
+
   return (
     <div className="w-full grid grid-cols-1 mt-10">
       <div className="w-full flex items-center gap-6">
-        {!!nHits && (
+        {!!arg && (
           <LuPartyPopper className="w-[40px] h-[40px] text-neutral-200" />
         )}
 
         <span className="txt__lg text-neutral-200">
-          {nHits}&nbsp;{nHits === 1 ? "result" : "results"}
+          {arg}&nbsp;{arg === 1 ? "result" : "results"}
         </span>
 
         <span className="txt__md text-neutral-400">

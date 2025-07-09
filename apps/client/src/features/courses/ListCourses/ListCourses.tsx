@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
+import { isArrOK } from "@shared/first/lib/dataStructure.js";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -36,7 +37,7 @@ const ListCourses: FC = () => {
   const cachedData = useSelector(
     (state: AppStateTypeSSR) =>
       coursesSliceAPI.endpoints.getCourses.select({
-        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 4 })),
+        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 2 })),
       })(state).data,
   );
 
@@ -96,29 +97,33 @@ const ListCourses: FC = () => {
         nHitsCached,
       }}
     >
-      {() => (
-        <div
-          className="w-full grid gap-10"
-          css={css`
-            grid-template-columns: 1fr;
+      {({ isHydrated }) => {
+        const arg =
+          isHydrated && isArrOK(courses) ? courses : (cachedCourses ?? []);
+        return (
+          <div
+            className="w-full grid gap-10"
+            css={css`
+              grid-template-columns: 1fr;
 
-            ${resp(600)} {
-              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
-          `}
-        >
-          {(cachedCourses ?? courses)?.map((item, i) => (
-            <div
-              key={i}
-              className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
-            >
-              <span className="txt__md  break-all">
-                {JSON.stringify(item, null, 2)}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+              ${resp(600)} {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              }
+            `}
+          >
+            {arg!.map((item, i) => (
+              <div
+                key={i}
+                className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
+              >
+                <span className="txt__md  break-all">
+                  {JSON.stringify(item, null, 2)}
+                </span>
+              </div>
+            ))}
+          </div>
+        );
+      }}
     </WrapSearchQuery>
   );
 };

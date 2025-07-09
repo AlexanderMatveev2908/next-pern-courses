@@ -20,7 +20,6 @@ import {
 import { ZodObject } from "zod";
 import PageCounter from "@/features/layout/components/SearchBar/components/PageCounter/PageCounter";
 import SpinnerBtn from "../spinners/SpinnerBtn";
-import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 type PropsType<
   ResT extends PaginatedResAPI<any>,
@@ -29,7 +28,7 @@ type PropsType<
   PathT extends Path<FormT>,
   ZodT extends ZodObject<any>,
 > = PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT> & {
-  children: () => React.ReactNode;
+  children: (arg: { isHydrated: boolean }) => React.ReactNode;
   formCtx: UseFormReturn<FormT>;
   nHitsCached?: number;
   pagesCached?: number;
@@ -53,7 +52,7 @@ const WrapSearchQuery = <
   zodObj,
   formCtx,
   nHitsCached,
-  pagesCached,
+  // pagesCached,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
   const [triggerRTK, res] = hook;
 
@@ -61,7 +60,7 @@ const WrapSearchQuery = <
   const valsRHF = watch();
 
   const {
-    data: { nHits, pages } = { nHits: 0, pages: 0 },
+    data: { nHits, pages } = {},
     isFetching,
     isLoading,
   } = (res ?? {}) as ResultTypeRTK<
@@ -71,8 +70,19 @@ const WrapSearchQuery = <
 
   const isPending = isLoading || isFetching;
 
-  const { isHydrated } = useListenHydration();
+  // const grabProperInt = ({
+  //   isHydrated,
+  //   val,
+  //   fallback,
+  // }: {
+  //   isHydrated: boolean;
+  //   val?: number;
+  //   fallback?: number;
+  // }) => {
+  //   __cg("arg cb", ["val", val], ["fallback", fallback]);
 
+  //   return isHydrated && typeof val === "number" ? val : fallback;
+  // };
   return (
     <div className="w-full grid grid-cols-1 gap-10 mb-[-75px]">
       <FormProvider {...formCtx}>
@@ -86,6 +96,7 @@ const WrapSearchQuery = <
             handleSave,
             zodObj,
             triggerRef,
+            nHitsCached,
           }}
         />
       </FormProvider>
@@ -95,26 +106,39 @@ const WrapSearchQuery = <
           isLoading: isPending,
         }}
       >
-        {() => children()}
+        {({ isHydrated } = { isHydrated: false }) =>
+          children({
+            isHydrated,
+          })
+        }
       </WrapPendingClient>
 
-      {isPending ? (
-        <div className="w-full flex justify-center pt-[100px]">
-          <SpinnerBtn />
-        </div>
-      ) : (
-        isHydrated && (
-          <PageCounter
-            {...{
-              nHits: nHitsCached ?? nHits,
-              totPages: pagesCached ?? pages,
-              triggerRTK,
-              triggerRef,
-              valsRHF,
-            }}
-          />
-        )
-      )}
+      <WrapPendingClient
+        {...{
+          isLoading: isPending,
+          CustomSpinner: (
+            <>
+              <div className="w-full flex justify-center pt-[100px]">
+                <SpinnerBtn />
+              </div>
+            </>
+          ),
+        }}
+      >
+        {({ isHydrated } = { isHydrated: false }) =>
+          !isHydrated ? null : (
+            <PageCounter
+              {...{
+                nHits,
+                totPages: pages,
+                triggerRTK,
+                triggerRef,
+                valsRHF,
+              }}
+            />
+          )
+        }
+      </WrapPendingClient>
     </div>
   );
 };

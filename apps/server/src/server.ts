@@ -25,6 +25,20 @@ const app = Fastify({
 
 // genMock();
 
+process.on("SIGTERM", () => {
+  app.close(() => {
+    console.log("Server closed on SIGTERM");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  app.close(() => {
+    console.log("Server closed on SIGINT");
+    process.exit(0);
+  });
+});
+
 const start = async () => {
   try {
     await app.register(env);
@@ -37,9 +51,11 @@ const start = async () => {
     await app.listen({ port: app.env.PORT, host: app.env.HOST });
 
     __cg(`=> server running on ${app.env.PORT}`);
-  } catch (err) {
+  } catch (err: any) {
+    __cg("catch main err ☢️", err.message);
+
     await db.$disconnect();
-    app.log.error(err);
+    // app.log.error(err);
     process.exit(1);
   }
 };

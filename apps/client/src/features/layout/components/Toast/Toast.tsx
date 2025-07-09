@@ -11,7 +11,6 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { clearT } from "../../../../core/lib/etc";
 import { varToast } from "./uiFactory";
-import { __cg } from "@shared/first/lib/logger";
 import { BtnActType } from "@/common/types/uiFactory";
 
 const Toast: FC = ({}) => {
@@ -43,7 +42,7 @@ const Toast: FC = ({}) => {
       )
         return;
 
-      __cg("stage 1 ");
+      // __cg("stage 1 ");
 
       clearT(timerRef);
 
@@ -83,7 +82,7 @@ const Toast: FC = ({}) => {
       )
         return;
 
-      __cg("stage 2");
+      // __cg("stage 2");
 
       clearT(timerRef);
 
@@ -107,7 +106,7 @@ const Toast: FC = ({}) => {
       )
         return;
 
-      __cg("stage 3");
+      // __cg("stage 3");
 
       clearT(timerRef);
 

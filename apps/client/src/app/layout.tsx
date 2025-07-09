@@ -56,7 +56,7 @@ export default async function RootLayout({
         coursesSliceAPI.endpoints.getCourses.initiate(
           {
             vals: genURLSearchParams(
-              gabFormValsPagination({ page: 0, limit: 4 }),
+              gabFormValsPagination({ page: 0, limit: 2 }),
             ),
           },
           {
