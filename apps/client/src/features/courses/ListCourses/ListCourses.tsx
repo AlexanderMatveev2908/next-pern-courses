@@ -40,7 +40,6 @@ const ListCourses: FC = () => {
       })(state).data,
   );
 
-  __cg("cachedData", cachedData);
   const { courses: cachedCourses } = cachedData ?? {};
 
   const { updateNoDebounce } = useSearchCtxConsumer();

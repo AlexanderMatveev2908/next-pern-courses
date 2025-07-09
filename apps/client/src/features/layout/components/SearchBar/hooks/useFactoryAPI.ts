@@ -17,7 +17,7 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
   triggerRef,
   updateNoDebounce,
 }: Params<T, K, U>) => {
-  const { setPending } = useSearchCtxConsumer();
+  const { setPending, setPagination } = useSearchCtxConsumer();
 
   const searchAPI = useCallback(
     <T extends FieldValues>(
@@ -41,13 +41,24 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
       } as U);
       triggerRTK({ vals: str, _: Date.now() } as K, false);
 
+      if (typeof page === "number")
+        setPagination({
+          el: "page",
+          val: page,
+        });
+      if (typeof limit === "number")
+        setPagination({
+          el: "limit",
+          val: limit,
+        });
+
       if (syncPending)
         setPending({
           el: syncPending,
           val: true,
         });
     },
-    [triggerRef, triggerRTK, updateNoDebounce, setPending],
+    [triggerRef, triggerRTK, updateNoDebounce, setPending, setPagination],
   );
 
   return {

@@ -44,3 +44,18 @@ export const gabFormValsPagination = ({
 
 export const handleShowLabel = (w?: number) =>
   !isWindow() ? false : typeof w !== "number" ? false : window.innerWidth > w;
+
+export const grabNumBlockBtns = () =>
+  !isWindow()
+    ? 1
+    : window.innerWidth > uiBreaks.xl
+      ? 10
+      : window.innerWidth > uiBreaks.lg
+        ? 8
+        : window.innerWidth > uiBreaks.md
+          ? 6
+          : window.innerWidth > uiBreaks.sm
+            ? 4
+            : window.innerWidth > 400
+              ? 2
+              : 1;

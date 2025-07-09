@@ -7,8 +7,8 @@ import { v4 } from "uuid";
 
 export const svgSearchBarCSS = {
   css: css`
-    width: 30px;
-    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
   `,
 };
 

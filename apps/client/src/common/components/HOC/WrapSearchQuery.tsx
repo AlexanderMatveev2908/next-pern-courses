@@ -49,8 +49,10 @@ const WrapSearchQuery = <
   zodObj,
   formCtx,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, res] = hook;
+  const [triggerRTK, res] = hook;
+
+  const { watch } = formCtx;
+  const valsRHF = watch();
 
   const {
     data: { nHits, totPages } = { nHits: 0, totPages: 0 },
@@ -62,7 +64,7 @@ const WrapSearchQuery = <
   >;
 
   return (
-    <div className="w-full grid grid-cols-1 gap-10 pb-[100px]">
+    <div className="w-full grid grid-cols-1 gap-10 mb-[-100px]">
       <FormProvider {...formCtx}>
         <Searchbar
           {...{
@@ -90,6 +92,9 @@ const WrapSearchQuery = <
         {...{
           nHits: 23,
           totPages: 3,
+          triggerRTK,
+          triggerRef,
+          valsRHF,
         }}
       />
     </div>

@@ -14,6 +14,9 @@ type PropsType = {
   $customCSS?: {
     css: SerializedStyles;
   };
+  $SvgCustomCSS: {
+    css: SerializedStyles;
+  };
   btnActType: BtnActType;
   Svg?: IconType;
   labelConf: [number?, string?];
@@ -31,6 +34,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
   labelConf,
   isLoading,
   type = "button",
+  $SvgCustomCSS,
 }) => {
   return (
     <div
@@ -45,7 +49,7 @@ const WrapSearchBarBtn: FC<PropsType> = ({
     >
       <BtnIcon
         {...{
-          $svgCSS: svgSearchBarCSS,
+          $svgCSS: $SvgCustomCSS ?? svgSearchBarCSS,
           isEnabled: true,
           isLoading,
           type,
