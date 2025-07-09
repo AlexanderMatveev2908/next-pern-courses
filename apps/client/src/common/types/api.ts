@@ -34,7 +34,7 @@ export type ErrAPI<T> = {
   data: { msg: string; status: number };
 } & T;
 
-export type PaginatedResAPI<T extends void | Record<string, any>> =
+export type PaginatedResAPI<T extends Record<string, any>> =
   UnwrappedResAPI<T> & {
     pages: number;
     nHits: number;

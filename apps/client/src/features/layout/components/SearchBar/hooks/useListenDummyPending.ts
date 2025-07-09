@@ -21,7 +21,7 @@ export const useListenDummyPending = ({ isLoading }: Params) => {
       timerID.current = setTimeout(() => {
         clearPending();
         clearT(timerID);
-      }, 1000);
+      }, 500);
 
     return () => {
       clearT(timerID);

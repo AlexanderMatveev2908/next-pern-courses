@@ -3,6 +3,7 @@
 "use client";
 
 import {
+  PaginatedResAPI,
   ReqSearchAPI,
   ResultTypeRTK,
   TriggerTypeRTK,
@@ -36,10 +37,9 @@ import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
 import { useListenDummyPending } from "./hooks/useListenDummyPending";
-import PageCounter from "./components/PageCounter/PageCounter";
 
-type PropsType<
-  ResT,
+export type PropsTypeSearchBar<
+  ResT extends PaginatedResAPI<any>,
   ArgT extends ReqSearchAPI,
   FormT extends FieldValues,
   PathT extends Path<FormT>,
@@ -56,7 +56,7 @@ type PropsType<
 };
 
 const Searchbar = <
-  ResT,
+  ResT extends PaginatedResAPI<any>,
   ArgT extends ReqSearchAPI,
   FormT extends FieldValues,
   PathT extends Path<FormT>,
@@ -70,7 +70,7 @@ const Searchbar = <
   zodObj,
   hook,
   triggerRef,
-}: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
+}: PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT>) => {
   const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
 
   const formCtx = useFormContext<FormT>();
@@ -79,13 +79,9 @@ const Searchbar = <
   const mainInput = formDataRHF?.txtInputs?.[0];
 
   const [triggerRTK, res] = hook;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: { nHits, totPages } = { nHits: 0, totPages: 0 } } = (res ??
-    {}) as unknown as ResT & {
-    data: {
-      nHits: number;
-      totPages: number;
-    };
-  };
+    {}) as ResultTypeRTK<ResT & { nHits: number; totPages: number }, ArgT>;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -168,13 +164,6 @@ const Searchbar = <
             </form>
 
             <ShowCount {...{ nHits, mainInput, isLoading: res.isFetching }} />
-
-            <PageCounter
-              {...{
-                nHits,
-                totPages,
-              }}
-            />
           </>
         )
       }

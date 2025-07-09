@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import Searchbar from "@/features/layout/components/SearchBar/Searchbar";
 import { type FC } from "react";
 import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   schemaGetListCourse,
@@ -19,11 +18,11 @@ import {
 } from "./uifactory/searchBar";
 import { v4 } from "uuid";
 import { __cg } from "@shared/first/lib/logger.js";
-import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
 import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
+import WrapSearchQuery from "@/common/components/HOC/WrapSearchQuery";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -63,48 +62,43 @@ const ListCourses: FC = () => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-10 relative">
-      <FormProvider {...formCtx}>
-        <Searchbar
-          {...{
-            hook,
-            txtInputs: txtInputsCourses,
-            filters: filtersCourses,
-            sorters: sortersCourses,
-            innerJoinConf: innerJoinFilters,
-            handleSave,
-            zodObj: schemaGetListCourse,
-            triggerRef,
-          }}
-        />
-      </FormProvider>
+    <WrapSearchQuery
+      {...{
+        filters: filtersCourses,
+        handleSave,
+        hook,
+        sorters: sortersCourses,
+        innerJoinConf: innerJoinFilters,
+        txtInputs: txtInputsCourses,
+        triggerRef,
+        zodObj: schemaGetListCourse,
+        formCtx,
+      }}
+    >
+      {() => (
+        <div
+          className="w-full grid gap-10"
+          css={css`
+            grid-template-columns: 1fr;
 
-      <WrapPendingClient {...{ isLoading: res.isLoading || res.isFetching }}>
-        {() => (
-          <div
-            className="w-full grid gap-10"
-            css={css`
-              grid-template-columns: 1fr;
-
-              ${resp(600)} {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-              }
-            `}
-          >
-            {(courses ?? []).map((item, i) => (
-              <div
-                key={i}
-                className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
-              >
-                <span className="txt__md  break-all">
-                  {JSON.stringify(item, null, 2)}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </WrapPendingClient>
-    </div>
+            ${resp(600)} {
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+          `}
+        >
+          {(courses ?? []).map((item, i) => (
+            <div
+              key={i}
+              className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
+            >
+              <span className="txt__md  break-all">
+                {JSON.stringify(item, null, 2)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </WrapSearchQuery>
   );
 };
 
