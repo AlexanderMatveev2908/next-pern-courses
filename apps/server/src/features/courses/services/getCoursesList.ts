@@ -41,14 +41,12 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
 
-  const orGroup = orCondSQL.reduce(
-    (acc, curr) => sql`${acc} OR ${curr}`,
-    sql`TRUE`,
-  );
-  const andGroup = andCondSQL.reduce(
-    (acc, curr) => sql`${acc} AND ${curr}`,
-    sql`TRUE`,
-  );
+  const orGroup = orCondSQL.length
+    ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
+    : sql`TRUE`;
+  const andGroup = andCondSQL.length
+    ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
+    : sql`TRUE`;
 
   const order: Sql[] = [];
 
