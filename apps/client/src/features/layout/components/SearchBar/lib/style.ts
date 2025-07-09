@@ -6,7 +6,7 @@ export const getLimitPage = () =>
     ? 1
     : window.innerWidth > uiBreaks.lg
       ? 4
-      : window.innerWidth > uiBreaks.sm
+      : window.innerWidth > uiBreaks.md
         ? 2
         : 1;
 
