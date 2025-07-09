@@ -1,53 +1,52 @@
-import { Grade, TechStack, Tools } from "@prisma/client";
+import { Grade } from "@prisma/client";
 import { DEL_ALL } from "../danger.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import { getValidSubCat, pickRandomObjKey, repeatKey } from "./utils.js";
+import { pickRandomObjKey, repeatKey } from "./utils.js";
 import { addAssetsToCourse, readMarkdown } from "./assetsHandlers.js";
 import { existingMock } from "./data.js";
 import db from "@src/conf/db.js";
-import { GradePkg, ToolsPkg } from "@shared/first/constants/categories.js";
+import { GradePkg } from "@shared/first/constants/categories.js";
 import { genIpsum } from "@shared/first/lib/etc.js";
 
-export const genMock = async () => {
-  const start = performance.now();
-  let seconds = 0;
+// export const genMock = async () => {
+//   const start = performance.now();
+//   let seconds = 0;
 
-  const interval = setInterval(() => {
-    seconds++;
-    __cg(`doing stuff 🛠️ => ${seconds}`);
-  }, 1000);
+//   const interval = setInterval(() => {
+//     seconds++;
+//     __cg(`doing stuff 🛠️ => ${seconds}`);
+//   }, 1000);
 
-  await DEL_ALL();
+//   await DEL_ALL();
 
-  try {
-    const md = await readMarkdown("assets/markdown/eg.md");
+//   try {
+//     const md = await readMarkdown("assets/markdown/eg.md");
 
-    for (const k in existingMock) {
-      const v: string = existingMock[k];
+//     for (const k in existingMock) {
+//       const v: string = existingMock[k];
 
-      const newCourse = await db.course.create({
-        data: {
-          title: `Awesome course about ${v}`,
-          description: genIpsum(10),
-          grade: pickRandomObjKey(GradePkg) as Grade,
-          techStack: v as TechStack,
-          tools: getValidSubCat(ToolsPkg, v as keyof typeof ToolsPkg) as Tools,
-          markdown: md,
-        },
-      });
+//       const newCourse = await db.course.create({
+//         data: {
+//           title: `Awesome course about ${v}`,
+//           description: genIpsum(10),
+//           grade: pickRandomObjKey(GradePkg) as Grade,
+//           // tech: ,
+//           markdown: md,
+//         },
+//       });
 
-      await addAssetsToCourse(newCourse.id, v);
-    }
-  } catch (err) {
-    await DEL_ALL();
+//       await addAssetsToCourse(newCourse.id, v);
+//     }
+//   } catch (err) {
+//     await DEL_ALL();
 
-    clearInterval(interval);
+//     clearInterval(interval);
 
-    __cg("ops i forgot something", err);
-  }
+//     __cg("ops i forgot something", err);
+//   }
 
-  clearInterval(interval);
+//   clearInterval(interval);
 
-  const end = performance.now();
-  __cg(`done doing stuff 👻 => ${end - start}`);
-};
+//   const end = performance.now();
+//   __cg(`done doing stuff 👻 => ${end - start}`);
+// };

@@ -1,131 +1,64 @@
 export const GradePkg = {
   BEGINNER: "Beginner",
-  JUNIOR: "Junior",
   INTERMEDIATE: "Intermediate",
-  EXPERT: "Expert",
+  ADVANCED: "Advanced",
 } as const;
 
-export const TechStackPkg = {
-  HTML: "HTML",
-  CSS: "CSS",
-  JAVASCRIPT: "JavaScript",
-  BASH: "Bash (Linux/macOS)",
-  POWERSHELL: "PowerShell (Windows)",
-  PYTHON: "Python",
-  JAVA: "Java",
-  TESTING: "Testing",
-  DEPLOYMENT: "Deployment",
-  MONGODB: "MongoDB",
-  POSTGRESQL: "PostgreSQL",
-  DESIGN: "Design",
+export const StackPkg = {
+  FRONTEND: "Frontend",
+  BACKEND: "Backend",
+  FULLSTACK: "Fullstack",
+  DEVOPS: "DevOps",
+  TOOLS: "Tools",
 } as const;
 
-export const ToolsPkg = {
-  HTML: {
-    PRETTIER: "Prettier",
-    EMMET: "Emmet",
-    MUSTACHE: "Mustache",
-    PUG: "Pug",
-    LIGHTHOUSE: "Lighthouse",
-    AXE: "axe-core (Accessibility)",
-  },
-  CSS: {
-    SASS: "Sass",
-    LESS: "Less",
-    BOOTSTRAP: "Bootstrap",
-    TAILWIND: "Tailwind CSS",
-    POSTCSS: "PostCSS",
-  },
-  JAVASCRIPT: {
-    REACT: "React",
-    NEXT: "Next.js",
-    ANGULAR: "Angular",
-    SVELTE: "Svelte",
-    VUE: "Vue.js",
-    NODE: "Node.js",
-    EXPRESS: "Express",
-    FASTIFY: "Fastify",
-    NESTJS: "NestJS",
-    BUN: "Bun",
-  },
-  BASH: {
-    GIT: "Git",
-    GREP: "Grep",
-    CURL: "cURL",
-    AWK: "Awk",
-    JQ: "jq",
-  },
-  POWERSHELL: {
-    CHOCOLATEY: "Chocolatey",
-    WINGET: "Winget",
-  },
-  PYTHON: {
-    DJANGO: "Django",
-    FASTAPI: "FastAPI",
-    TORCH: "PyTorch",
-    FLASK: "Flask",
-    NUMPY: "NumPy",
-    PANDAS: "Pandas",
-  },
-  JAVA: {
-    SPRING: "Spring",
-    MAVEN: "Maven",
-    GRADLE: "Gradle",
-  },
-  TESTING: {
-    JEST: "Jest",
-    VITEST: "Vitest",
-    PLAYWRIGHT: "Playwright",
-    CYPRESS: "Cypress",
-    TESTING_LIBRARY: "Testing Library",
-  },
-  DEPLOYMENT: {
-    AWS: "AWS",
-    DOCKER: "Docker",
-    NGINX: "Nginx",
-    VERCEL: "Vercel",
-    NETLIFY: "Netlify",
-    RAILWAY: "Railway",
-    FLYIO: "Fly.io",
-    RENDER: "Render",
-  },
-  DESIGN: {
-    FIGMA: "Figma",
-    SKETCH: "Sketch",
-    ADOBE_XD: "Adobe XD",
-    CANVA: "Canva",
-  },
-  MONGODB: {
-    ATLAS: "MongoDB Atlas",
-    MONGOOSE: "Mongoose",
-  },
-  POSTGRESQL: {
-    PGADMIN: "pgAdmin",
-    SEQUELIZE: "Sequelize",
-    TYPEORM: "TypeORM",
-    PRISMA: "Prisma",
-  },
+export const TechPkg = {
+  HTML: { label: "HTML", rootLanguage: true },
+  CSS: { label: "CSS", rootLanguage: true },
+  JAVASCRIPT: { label: "JavaScript", rootLanguage: true },
+  REACT: { label: "React", rootLanguage: false },
+  NEXT: { label: "Next.js", rootLanguage: false },
+  ANGULAR: { label: "Angular", rootLanguage: false },
+  SVELTE: { label: "Svelte", rootLanguage: false },
+  VUE: { label: "Vue.js", rootLanguage: false },
+  NODE: { label: "Node.js", rootLanguage: false },
+  VANILLA: { label: "Vanilla", rootLanguage: true },
+  EXPRESS: { label: "Express", rootLanguage: false },
+  FASTIFY: { label: "Fastify", rootLanguage: false },
+  NESTJS: { label: "NestJS", rootLanguage: false },
+  BASH: { label: "Bash (Linux/macOS)", rootLanguage: true },
+  PYTHON: { label: "Python", rootLanguage: true },
+  JAVA: { label: "Java", rootLanguage: true },
+  MONGODB: { label: "MongoDB", rootLanguage: false },
+  POSTGRESQL: { label: "PostgreSQL", rootLanguage: false },
+  JEST: { label: "Jest", rootLanguage: false },
+  VITEST: { label: "Vitest", rootLanguage: false },
+  PLAYWRIGHT: { label: "Playwright", rootLanguage: false },
+  AWS: { label: "AWS", rootLanguage: false },
+  DOCKER: { label: "Docker", rootLanguage: false },
+  NGINX: { label: "Nginx", rootLanguage: false },
+  VERCEL: { label: "Vercel", rootLanguage: false },
+  NETLIFY: { label: "Netlify", rootLanguage: false },
+  RAILWAY: { label: "Railway", rootLanguage: false },
+  FLYIO: { label: "Fly.io", rootLanguage: false },
+  RENDER: { label: "Render", rootLanguage: false },
+  ATLAS: { label: "MongoDB Atlas", rootLanguage: false },
+  MONGOOSE: { label: "Mongoose", rootLanguage: false },
+  PGADMIN: { label: "pgAdmin", rootLanguage: false },
+  SEQUELIZE: { label: "Sequelize", rootLanguage: false },
+  TYPEORM: { label: "TypeORM", rootLanguage: false },
+  PRISMA: { label: "Prisma", rootLanguage: false },
+  SASS: { label: "Sass", rootLanguage: false },
+  LESS: { label: "Less", rootLanguage: false },
+  BOOTSTRAP: { label: "Bootstrap", rootLanguage: false },
+  TAILWIND: { label: "Tailwind CSS", rootLanguage: false },
+  POSTCSS: { label: "PostCSS", rootLanguage: false },
+  FIGMA: { label: "Figma", rootLanguage: false },
 } as const;
 
-// ? ROOT
-// ? typeof ToolsPkg
-// ? [keyof typeof ToolsPkg] => get keys of ToolsPkg root
-// ? [keyof *] => get nested vals inside root
-// ? (typeof ToolsPkg) repeat pattern as first one
-export type ToolValType = keyof (typeof ToolsPkg)[keyof typeof ToolsPkg];
+export const TechNormPkg: Record<keyof typeof TechPkg, string> =
+  Object.fromEntries(Object.entries(TechPkg).map(([k, v]) => [[k], v.label]));
 
-export type TechValType = keyof typeof TechStackPkg;
-
-export type DifficultyType = keyof typeof GradePkg;
-
-export const isValidTool = (
-  Tech: keyof typeof TechStackPkg,
-  tool: ToolValType,
-) => {
-  return (Object.keys(ToolsPkg[Tech as keyof typeof ToolsPkg]) ?? []).includes(
-    tool,
-  );
-};
-
-export const getToolsByTech = (Tech: keyof typeof TechStackPkg) =>
-  Object.entries(ToolsPkg[Tech as keyof typeof ToolsPkg]);
+export type TechValType = keyof typeof TechPkg;
+export type GradeType = keyof typeof GradePkg;
+export type StackType = keyof typeof StackPkg;

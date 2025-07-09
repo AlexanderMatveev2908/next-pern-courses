@@ -21,11 +21,7 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
 import FilterFooter from "./components/FilterFooter/FilterFooter";
-import {
-  InnerJoinFilterConfType,
-  SearchFilterType,
-  SearchSortType,
-} from "./types/uiFactory";
+import { SearchFilterType, SearchSortType } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useCallback, useEffect } from "react";
@@ -49,7 +45,6 @@ export type PropsTypeSearchBar<
   txtInputs: FormT["txtInputs"];
   filters: SearchFilterType<FormT, PathT>[];
   sorters: SearchSortType<FormT, PathT>[];
-  innerJoinConf: InnerJoinFilterConfType<FormT, PathT>[];
   handleSave: () => void;
   zodObj: ZodT;
   triggerRef: () => void;
@@ -66,7 +61,6 @@ const Searchbar = <
   txtInputs,
   filters,
   sorters,
-  innerJoinConf,
   handleSave,
   zodObj,
   hook,
@@ -160,9 +154,7 @@ const Searchbar = <
                 </div>
               </div>
 
-              <FilterFooter
-                {...{ filters, innerJoinConf, txtInputs, triggerResetAPI }}
-              />
+              <FilterFooter {...{ filters, txtInputs, triggerResetAPI }} />
 
               <SortPop {...{ sorters }} />
             </form>

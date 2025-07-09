@@ -1,6 +1,5 @@
 import z from "zod";
-import { schemaCoursePost } from "./schema.post.js";
-import { gradeSchema, schemaTechStack, schemaTool } from "./schema.shared.js";
+import { gradeSchema, schemaStack, schemaTech } from "./schema.shared.js";
 import { REG_TITLE } from "@shared/first/constants/regex.js";
 import { schemaItemSearchBar, schemaOrder } from "../shared/schema.js";
 
@@ -24,8 +23,8 @@ export const schemaGetListCourse = z.object({
     )
     .optional(),
   grade: z.array(gradeSchema()).optional(),
-  techStack: z.array(schemaTechStack()).optional(),
-  tools: z.array(schemaTool()).optional(),
+  stack: z.array(schemaStack()).optional(),
+  tech: z.array(schemaTech()).optional(),
 
   createdAtSort: schemaOrder().optional(),
 

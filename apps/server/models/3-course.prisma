@@ -1,8 +1,7 @@
 enum Grade {
-  BEGINNER
-  JUNIOR
-  INTERMEDIATE
-  EXPERT
+ BEGINNER
+ INTERMEDIATE
+ ADVANCED
 }
 
 enum TechStack {
@@ -100,12 +99,10 @@ model Course {
     title String 
     description String?
     markdown String?
-    grade String
-    techStack TechStack
-    tools Tools
-    tags String[]
+    grade Grade
+    tech TechStack
 
     createdAt DateTime @default(now())
 
-    @@index([title, techStack])
+    @@index([title, tech])
 }

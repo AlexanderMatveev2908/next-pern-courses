@@ -9,7 +9,7 @@ export const isArrOK = <T>(
   !!arg.length &&
   arg.every((el) => (typeof cb === "function" ? cb(el) : true));
 
-export const isInObjKeys = <T extends Record<string, string>>(
+export const isInObjKeys = <T extends Record<string, any>>(
   obj: T,
   val: keyof T,
 ) => Object.keys(obj).includes(val as string);

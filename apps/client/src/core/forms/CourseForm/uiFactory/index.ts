@@ -1,6 +1,5 @@
 import { FieldCheckType, FormFieldType } from "@/common/types/uiFactory";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
-import { v4 } from "uuid";
 
 export const titleField: FormFieldType<CourseFormType> = {
   name: "title",
@@ -25,14 +24,14 @@ export const imagesField: FormFieldType<CourseFormType> = {
 
 export const videoField: FormFieldType<CourseFormType> = {
   name: "video",
-  label: "Course video (mandatory if markdown not provided)",
+  label: "Course video",
   type: "file",
   required: false,
 };
 
 export const fieldMarkdown: FormFieldType<CourseFormType> = {
   name: "markdown",
-  label: "Markdown file (mandatory if video not provided)",
+  label: "Markdown file *",
   type: "file",
   required: false,
 };
@@ -44,28 +43,7 @@ export const fieldHard: FieldCheckType<CourseFormType> = {
 };
 
 export const fieldTech: FieldCheckType<CourseFormType> = {
-  name: "techStack",
+  name: "tech",
   label: "Tech stack *",
   type: "radio",
 };
-
-export const fieldTools: FieldCheckType<CourseFormType> = {
-  name: "tools",
-  label: "Tools *",
-  type: "radio",
-};
-
-export const fieldTags: FormFieldType<CourseFormType> = {
-  name: "tags",
-  type: "text",
-  label: "Tags",
-};
-
-export const genTagField = (currTag?: number) => ({
-  field: "tags",
-  id: v4(),
-  label: "Tag",
-  val: "",
-  name: `tags.${currTag ?? 0}.val`,
-  type: "text",
-});

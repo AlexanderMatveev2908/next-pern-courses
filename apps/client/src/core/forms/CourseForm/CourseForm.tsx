@@ -8,7 +8,6 @@ import {
   fieldHard,
   fieldMarkdown,
   fieldTech,
-  fieldTools,
   imagesField,
   titleField,
   videoField,
@@ -24,12 +23,7 @@ import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVid
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
 import WrapCheck from "./components/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
-import {
-  GradePkg,
-  TechStackPkg,
-  ToolsPkg,
-} from "@shared/first/constants/categories";
-import TagsForm from "./components/TagsForm";
+import { GradePkg, TechNormPkg } from "@shared/first/constants/categories";
 
 type PropsType = {
   handleSave: () => void;
@@ -42,14 +36,9 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     control,
     formState: { errors },
     setFocus,
-    trigger,
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
-
-  const formData = formCtx.watch();
-  const availableTool =
-    ToolsPkg[formData.techStack as keyof typeof ToolsPkg] ?? {};
 
   // console.log(formCtx.watch());
 
@@ -71,34 +60,17 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
 
       <FormFieldImages {...{ el: imagesField }} />
 
-      <FormFieldVideo {...{ el: videoField, cb: () => trigger("markdown") }} />
+      <FormFieldVideo {...{ el: videoField }} />
 
-      <FormFieldMD {...{ el: fieldMarkdown, cb: () => trigger("video") }} />
+      <FormFieldMD {...{ el: fieldMarkdown }} />
 
       <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: TechStackPkg }}>
+      <WrapCheck {...{ el: fieldTech, vals: TechNormPkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
-
-      <WrapCheck
-        {...{
-          el: fieldTools,
-          vals: availableTool,
-        }}
-      >
-        {(args) =>
-          WrapBoxes({
-            ...args,
-            txtFallback:
-              "You must chose first the Tech so we can show you the relative tools available",
-          })
-        }
-      </WrapCheck>
-
-      <TagsForm />
 
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim

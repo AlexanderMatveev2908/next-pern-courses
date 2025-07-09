@@ -4,7 +4,6 @@ import router from "./routes/index.js";
 import db from "./conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { DEL_ALL } from "./dev_only/danger.js";
-import { genMock } from "./dev_only/mock/genMock.js";
 import { readMarkdown } from "./dev_only/mock/assetsHandlers.js";
 
 const app = Fastify({

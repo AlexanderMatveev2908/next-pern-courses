@@ -1,16 +1,10 @@
-import SvgTools from "@/common/components/SVGs/Tools";
 import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { genArrFromConst } from "@/core/lib/etc";
 import {
-  InnerJoinFilterConfType,
   SearchFilterType,
   SearchSortType,
 } from "@/features/layout/components/SearchBar/types/uiFactory";
-import {
-  GradePkg,
-  TechStackPkg,
-  ToolsPkg,
-} from "@shared/first/constants/categories.js";
+import { GradePkg, TechNormPkg } from "@shared/first/constants/categories.js";
 import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema.get.js";
 import { Rocket } from "lucide-react";
 import { IoCalendarNumberSharp, IoStatsChart } from "react-icons/io5";
@@ -51,12 +45,12 @@ const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
   options: genArrFromConst(GradePkg, "grade"),
 };
 
-const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
-  name: "techStack",
+const filterTech: SearchFilterType<SchemaGetListCoursesType, "tech"> = {
+  name: "tech",
   label: "Tech stack",
   Svg: Rocket,
   id: v4(),
-  options: genArrFromConst(TechStackPkg, "techStack"),
+  options: genArrFromConst(TechNormPkg, "tech"),
 };
 
 export const filtersCourses = [filterGrade, filterTech];
@@ -83,33 +77,3 @@ const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
 // };
 
 export const sortersCourses = [sortCreatedAt];
-
-const innerJoinToolsFilter: SearchFilterType<
-  SchemaGetListCoursesType,
-  "tools"
-> = {
-  name: "tools",
-  label: "Tools",
-  Svg: SvgTools,
-  id: v4(),
-  options: Object.values(ToolsPkg).flatMap((v) =>
-    Object.entries(v).map((pair) => ({
-      name: "tools",
-      id: v4(),
-      label: pair[1],
-      val: pair[0],
-      type: "checkbox",
-    })),
-  ),
-};
-
-const innerJoinFilterTools: InnerJoinFilterConfType<
-  SchemaGetListCoursesType,
-  "tools"
-> = {
-  keyDependsOn: "techStack",
-  filter: innerJoinToolsFilter,
-  parentFilterToSync: ToolsPkg,
-};
-
-export const innerJoinFilters = [innerJoinFilterTools];
