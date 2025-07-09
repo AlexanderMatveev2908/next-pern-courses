@@ -1,6 +1,6 @@
 import { FieldSearchClientType } from "@src/types/fastify.js";
 import { FastifyRequest } from "fastify";
-import { calcPagination, parseTxtSql } from "../lib/etc.js";
+import { calcPagination, parseArrSQL, parseTxtSql } from "../lib/etc.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -14,7 +14,6 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     txtInputs: FieldSearchClientType[];
   } & Record<string, any>;
 
-  __cg("myQuery", myQuery);
   const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
   const parsed = parseTxtSql(titleVal);
 
@@ -26,21 +25,18 @@ export const handleRawSQL = async (req: FastifyRequest) => {
       WHERE t ILIKE ${`%${word}%`}
     )`,
       )
-    : [sql`c."title" IS NOT NULL`];
+    : [sql`TRUE`];
 
   const andCondSQL: Sql[] = [];
 
   if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
-  if (isArrOK(techStack)) {
-    const arrLiteral = `ARRAY[${techStack.map((val: string) => `'${val}'`).join(", ")}]::"TechStack"[]`;
+  if (isArrOK(techStack))
+    andCondSQL.push(
+      sql([`c."techStack" = ANY(${parseArrSQL(techStack, "TechStack")})`]),
+    );
+  if (isArrOK(tools))
+    andCondSQL.push(sql([`c."tools" = ANY(${parseArrSQL(tools, "Tools")})`]));
 
-    andCondSQL.push(sql([`c."techStack" = ANY(${arrLiteral})`]));
-  }
-  if (isArrOK(tools)) {
-    const arrLiteral = `ARRAY[${tools.map((val: string) => `'${val}'`).join(", ")}]::"Tools"[]`;
-
-    andCondSQL.push(sql([`c."tools" = ANY(${arrLiteral})`]));
-  }
   // if (isArrOK(tools)) andCondSQL.push(sql`c."tools" = ANY(${tools})`);
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
