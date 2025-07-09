@@ -53,6 +53,7 @@ export type PropsTypeSearchBar<
   handleSave: () => void;
   zodObj: ZodT;
   triggerRef: () => void;
+  nHitsCached?: number;
 };
 
 const Searchbar = <
@@ -70,6 +71,7 @@ const Searchbar = <
   zodObj,
   hook,
   triggerRef,
+  nHitsCached,
 }: PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT>) => {
   const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
 
@@ -80,8 +82,11 @@ const Searchbar = <
 
   const [triggerRTK, res] = hook;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: { nHits, totPages } = { nHits: 0, totPages: 0 } } = (res ??
-    {}) as ResultTypeRTK<ResT & { nHits: number; totPages: number }, ArgT>;
+  const { data: { nHits, totPages } = {} } = (res ?? {}) as ResultTypeRTK<
+    ResT & { nHits: number; totPages: number },
+    ArgT
+  >;
+  const isPending = res.isLoading || res.isFetching;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -102,7 +107,7 @@ const Searchbar = <
   });
 
   useListenDummyPending({
-    isLoading: res.isLoading || res.isFetching,
+    isLoading: isPending,
   });
 
   const { searchAPI } = useFactoryAPI({
@@ -162,7 +167,14 @@ const Searchbar = <
               <SortPop {...{ sorters }} />
             </form>
 
-            <ShowCount {...{ nHits, mainInput, isLoading: res.isFetching }} />
+            <ShowCount
+              {...{
+                nHits,
+                mainInput,
+                nHitsCached,
+                isLoading: isPending,
+              }}
+            />
           </>
         )
       }

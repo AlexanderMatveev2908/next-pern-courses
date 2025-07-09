@@ -10,17 +10,19 @@ type PropsType = {
   isLoading: boolean;
   children: (arg?: { isHydrated: boolean }) => React.ReactNode;
   waitHydration?: boolean;
+  CustomSpinner?: React.ReactNode;
 };
 
 const WrapPendingClient: FC<PropsType> = ({
   isLoading,
   children,
   waitHydration,
+  CustomSpinner,
 }) => {
   const { isHydrated } = useListenHydration();
 
   return isLoading ? (
-    <SpinnerNoHooks />
+    CustomSpinner || <SpinnerNoHooks />
   ) : waitHydration ? (
     <WrapClient>
       <div className="w-full flex flex-col items-center gap-8">

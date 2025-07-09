@@ -37,7 +37,7 @@ const RowBtnCounter: FC<PropsType> = ({
     <div
       className="w-full flex items-center gap-5"
       css={css`
-        justify-content: ${numBtnsPerBlock === 1 ? "center" : "space-between"};
+        justify-content: ${numBtnsPerBlock === 1 ? "center" : "space-around"};
       `}
     >
       {currBlockNumeratedUserPages.map((el) => (

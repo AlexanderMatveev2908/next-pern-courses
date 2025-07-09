@@ -27,7 +27,6 @@ import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
-import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 
 const ListCourses: FC = () => {
@@ -94,8 +93,8 @@ const ListCourses: FC = () => {
         triggerRef,
         zodObj: schemaGetListCourse,
         formCtx,
-        // pagesCached,
-        // nHitsCached,
+        pagesCached,
+        nHitsCached,
       }}
     >
       {({ isHydrated }) => {
