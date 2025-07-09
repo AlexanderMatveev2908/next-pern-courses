@@ -14,7 +14,7 @@ type PropsType = {
   $customCSS?: {
     css: SerializedStyles;
   };
-  $SvgCustomCSS: {
+  $SvgCustomCSS?: {
     css: SerializedStyles;
   };
   btnActType: BtnActType;
