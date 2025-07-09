@@ -36,6 +36,11 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
     andCondSQL.push(sql([`c."techStack" = ANY(${arrLiteral})`]));
   }
+  if (isArrOK(tools)) {
+    const arrLiteral = `ARRAY[${tools.map((val: string) => `'${val}'`).join(", ")}]::"Tools"[]`;
+
+    andCondSQL.push(sql([`c."tools" = ANY(${arrLiteral})`]));
+  }
   // if (isArrOK(tools)) andCondSQL.push(sql`c."tools" = ANY(${tools})`);
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
