@@ -18,7 +18,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     ? parsed!.map((word) => sql`c."title" ILIKE ${`%${word}%`}`)
     : [sql`c."title" IS NOT NULL`];
 
-  const whereSQL = condSQL.reduce((acc, el) => sql`${acc} OR ${el}`);
+  const whereSQL = condSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`);
 
   const countSQL = sql`
     SELECT COUNT(c."id") FROM "Course" AS c
