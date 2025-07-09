@@ -4,19 +4,21 @@ import { calcPagination, parseTxtSql } from "../lib/etc.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import sql from "sql-template-tag";
+import sql, { Sql } from "sql-template-tag";
 
 export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
   const { offset, limit } = calcPagination(req);
 
-  const { txtInputs, techStack, tools } = myQuery as {
+  const { txtInputs, grade, techStack, tools } = myQuery as {
     txtInputs: FieldSearchClientType[];
-  };
+  } & Record<string, any>;
+
+  __cg("myQuery", myQuery);
   const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
   const parsed = parseTxtSql(titleVal);
 
-  const condSQL = isArrOK(parsed)
+  const orCondSQL = isArrOK(parsed)
     ? parsed!.map(
         (word) => sql`c."title" ILIKE ${`%${word}%`} OR 
     EXISTS(
@@ -26,7 +28,28 @@ export const handleRawSQL = async (req: FastifyRequest) => {
       )
     : [sql`c."title" IS NOT NULL`];
 
-  const whereSQL = condSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`);
+  const andCondSQL: Sql[] = [];
+
+  if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
+  if (isArrOK(techStack)) {
+    const arrLiteral = `ARRAY[${techStack.map((val: string) => `'${val}'`).join(", ")}]::"TechStack"[]`;
+
+    andCondSQL.push(sql([`c."techStack" = ANY(${arrLiteral})`]));
+  }
+  // if (isArrOK(tools)) andCondSQL.push(sql`c."tools" = ANY(${tools})`);
+  // andCondSQL.push(sql`
+  //     c."tags" @> ARRAY['Async await', 'Variables']`);
+
+  const orGroup = orCondSQL.reduce(
+    (acc, curr) => sql`${acc} OR ${curr}`,
+    sql`TRUE`,
+  );
+  const andGroup = andCondSQL.reduce(
+    (acc, curr) => sql`${acc} AND ${curr}`,
+    sql`TRUE`,
+  );
+
+  const whereSQL = sql`(${orGroup}) AND (${andGroup})`;
 
   const countSQL = sql`
     SELECT COUNT(c."id") FROM "Course" AS c
