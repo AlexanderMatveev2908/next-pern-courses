@@ -29,7 +29,7 @@ type PropsType<
   PathT extends Path<FormT>,
   ZodT extends ZodObject<any>,
 > = PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT> & {
-  children: () => React.ReactNode;
+  children: (arg: { isHydrated: boolean }) => React.ReactNode;
   formCtx: UseFormReturn<FormT>;
   nHitsCached?: number;
   pagesCached?: number;
@@ -95,7 +95,11 @@ const WrapSearchQuery = <
           isLoading: isPending,
         }}
       >
-        {() => children()}
+        {({ isHydrated } = { isHydrated: false }) =>
+          children({
+            isHydrated,
+          })
+        }
       </WrapPendingClient>
 
       {isPending ? (
