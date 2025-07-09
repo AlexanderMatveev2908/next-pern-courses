@@ -13,6 +13,7 @@ type PropsType<T extends FieldValues> = {
   mainInput?: FormFieldType<T> & { val: any };
   isLoading: boolean;
   nHitsCached?: number;
+  isUninitialized?: boolean;
 };
 
 const ShowCount = <T extends FieldValues>({
@@ -20,9 +21,10 @@ const ShowCount = <T extends FieldValues>({
   mainInput,
   isLoading,
   nHitsCached,
+  isUninitialized,
 }: PropsType<T>) => {
   const { isHydrated } = useListenHydration();
-  const arg = isHydrated && typeof nHits === "number" ? nHits : nHitsCached;
+  const arg = !isHydrated || isUninitialized ? nHitsCached : nHits;
 
   return (
     <div className="w-full grid grid-cols-1 mt-10">

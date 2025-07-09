@@ -27,12 +27,11 @@ import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
   const [triggerRTK, res] = hook;
-  const { data: { courses } = {} } = res ?? {};
+  const { isUninitialized, data: { courses } = {} } = res ?? {};
 
   const cachedData = useSelector(
     (state: AppStateTypeSSR) =>
@@ -99,7 +98,8 @@ const ListCourses: FC = () => {
     >
       {({ isHydrated }) => {
         const arg =
-          isHydrated && isArrOK(courses) ? courses : (cachedCourses ?? []);
+          (!isHydrated || isUninitialized ? cachedCourses : courses) ?? [];
+
         return (
           <div
             className="w-full grid gap-10"
