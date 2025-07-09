@@ -10,12 +10,20 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
   const { offset, limit } = calcPagination(req);
 
-  const { txtInputs } = myQuery as { txtInputs: FieldSearchClientType[] };
+  const { txtInputs, techStack, tools } = myQuery as {
+    txtInputs: FieldSearchClientType[];
+  };
   const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
   const parsed = parseTxtSql(titleVal);
 
   const condSQL = isArrOK(parsed)
-    ? parsed!.map((word) => sql`c."title" ILIKE ${`%${word}%`}`)
+    ? parsed!.map(
+        (word) => sql`c."title" ILIKE ${`%${word}%`} OR 
+    EXISTS(
+      SELECT 1 FROM unnest(c."tags") AS t 
+      WHERE t ILIKE ${`%${word}%`}
+    )`,
+      )
     : [sql`c."title" IS NOT NULL`];
 
   const whereSQL = condSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`);
