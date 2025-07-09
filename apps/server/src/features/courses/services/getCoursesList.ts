@@ -25,7 +25,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     WHERE ${whereSQL}
   `;
 
-  const rawCount = await db.$queryRawUnsafe<{ count: number }[]>(
+  const rawCount = await db.$queryRawUnsafe<{ count: bigint }[]>(
     countSQL.text,
     ...countSQL.values,
   );
