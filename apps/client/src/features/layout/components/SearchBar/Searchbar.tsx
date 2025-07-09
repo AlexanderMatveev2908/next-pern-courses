@@ -173,6 +173,7 @@ const Searchbar = <
                 mainInput,
                 nHitsCached,
                 isLoading: isPending,
+                isUninitialized: res.isUninitialized,
               }}
             />
           </>

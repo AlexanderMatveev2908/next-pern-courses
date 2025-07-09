@@ -26,3 +26,6 @@ export const parseTxtSql = (str?: string): string[] | null => {
 
   return parsed;
 };
+
+export const parseArrSQL = (arg: string[], name: string) =>
+  `ARRAY[${arg.map((val: string) => `'${val}'`).join(", ")}]::"${name}"[]`;

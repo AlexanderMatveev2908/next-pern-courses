@@ -48,10 +48,12 @@ export const useDebounce = <
       ...gabFormValsPagination({}),
     });
 
-    const isSameData = isSameObj(merged, preValsRef.current);
+    let isSameData = true;
     const resultZod = zodObj.safeParse(merged);
     const isValid = resultZod.success;
 
+    if (isValid && canMakeAPI)
+      isSameData = isSameObj(preValsRef.current, merged);
     // __cg("comparison data", merged, preValsRef.current);
 
     if (!isValid || isSameData || !canMakeAPI) {
