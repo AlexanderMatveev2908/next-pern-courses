@@ -2,7 +2,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import WrapSearchBarBtn from "../HOC/WrapSearchBarBtn";
 import { BtnActType } from "@/common/types/uiFactory";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
@@ -47,6 +47,7 @@ const PageCounter = <
   const {
     updateNoDebounce,
     pagination: { limit, page, block },
+    setPagination,
   } = useSearchCtxConsumer();
 
   const { searchAPI } = useFactoryAPI({
@@ -62,6 +63,11 @@ const PageCounter = <
       });
     },
     [searchAPI, valsRHF],
+  );
+
+  const maxBlocksPossible = useMemo(
+    () => Math.ceil(totPages / numBtnsPerBlock),
+    [totPages, numBtnsPerBlock],
   );
 
   useEffect(() => {
@@ -103,18 +109,47 @@ const PageCounter = <
     };
   }, []);
 
+  useEffect(() => {
+    const listen = () => {
+      const lastBlockIdx = maxBlocksPossible - 1;
+      const lastPageIdx = numBtnsPerBlock - 1;
+
+      if (block > lastBlockIdx)
+        setPagination({
+          el: "block",
+          val: lastBlockIdx,
+        });
+
+      if (page > lastPageIdx)
+        searchAPI(valsRHF, {
+          page: lastPageIdx,
+        });
+    };
+
+    listen();
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+    };
+  }, [
+    block,
+    maxBlocksPossible,
+    numBtnsPerBlock,
+    page,
+    searchAPI,
+    valsRHF,
+    setPagination,
+  ]);
   // __cg("pagination", ["blocks", numBtnsPerBlock]);
 
-  const { setPagination } = useSearchCtxConsumer();
   const handleBlock = (operator: "+" | "-") => {
     setPagination({
       el: "block",
       val: block + (operator === "+" ? 1 : -1),
     });
   };
-
-  const maxBlocksPossible = Math.ceil(totPages / numBtnsPerBlock);
-  console.log(totPages);
 
   return !totPages ? null : (
     <div className="w-full grid grid-cols-[80px_1fr_80px] ic gap-10 pt-[100px]">

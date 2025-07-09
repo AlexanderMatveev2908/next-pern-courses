@@ -19,7 +19,6 @@ import {
 } from "@/common/types/api";
 import { ZodObject } from "zod";
 import PageCounter from "@/features/layout/components/SearchBar/components/PageCounter/PageCounter";
-import { getLimitPage } from "@/features/layout/components/SearchBar/lib/style";
 import SpinnerBtn from "../spinners/SpinnerBtn";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
@@ -32,6 +31,8 @@ type PropsType<
 > = PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT> & {
   children: () => React.ReactNode;
   formCtx: UseFormReturn<FormT>;
+  nHitsCached?: number;
+  pagesCached?: number;
 };
 
 const WrapSearchQuery = <
@@ -51,6 +52,8 @@ const WrapSearchQuery = <
   triggerRef,
   zodObj,
   formCtx,
+  nHitsCached,
+  pagesCached,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
   const [triggerRTK, res] = hook;
 
@@ -58,11 +61,11 @@ const WrapSearchQuery = <
   const valsRHF = watch();
 
   const {
-    data: { nHits, totPages } = { nHits: 0, totPages: 0 },
+    data: { nHits, pages } = { nHits: 0, pages: 0 },
     isFetching,
     isLoading,
   } = (res ?? {}) as ResultTypeRTK<
-    ResT & { nHits: number; totPages: number },
+    ResT & { nHits: number; pages: number },
     ArgT
   >;
 
@@ -103,8 +106,8 @@ const WrapSearchQuery = <
         isHydrated && (
           <PageCounter
             {...{
-              nHits: 34,
-              totPages: Math.ceil(34 / getLimitPage()),
+              nHits: nHitsCached ?? nHits,
+              totPages: pagesCached ?? pages,
               triggerRTK,
               triggerRef,
               valsRHF,

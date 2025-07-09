@@ -40,7 +40,13 @@ const ListCourses: FC = () => {
       })(state).data,
   );
 
-  const { courses: cachedCourses } = cachedData ?? {};
+  const {
+    courses: cachedCourses,
+    pages: pagesCached,
+    nHits: nHitsCached,
+  } = cachedData ?? {};
+
+  __cg("cachedData", cachedData);
 
   const { updateNoDebounce } = useSearchCtxConsumer();
   const { triggerRef } = useWrapQuery({
@@ -86,6 +92,8 @@ const ListCourses: FC = () => {
         triggerRef,
         zodObj: schemaGetListCourse,
         formCtx,
+        pagesCached,
+        nHitsCached,
       }}
     >
       {() => (
