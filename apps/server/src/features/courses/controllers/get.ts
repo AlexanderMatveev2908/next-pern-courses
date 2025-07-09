@@ -1,15 +1,13 @@
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { getCoursesGenSQL } from "../services/getCoursesList.js";
+import { handleRawSQL } from "../services/getCoursesList.js";
 
 export const getListCoursesCtrl = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  const { sql, nHits, pages } = await getCoursesGenSQL(req);
-
-  const courses = await db.$queryRawUnsafe(sql);
+  const { nHits, pages, courses } = await handleRawSQL(req);
 
   return res.res200({
     courses,

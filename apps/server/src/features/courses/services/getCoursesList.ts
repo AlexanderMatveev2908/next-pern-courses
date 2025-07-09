@@ -5,33 +5,42 @@ import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 
-export const getCoursesGenSQL = async (req: FastifyRequest) => {
+export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
+
+  const { offset, limit } = calcPagination(req);
+
   const { txtInputs } = myQuery as {
     txtInputs: FieldSearchClientType[];
   };
   const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
-  const parsed = parseTxtSql(titleVal);
+  const parsedSQL = parseTxtSql(titleVal);
 
-  const { offset, limit } = calcPagination(req);
+  const condSQL: string[] = [];
+  const valsSQL: string[] = [];
+
+  let i = 0;
+  while (i < (parsedSQL?.length ?? 1)) {
+    if (!isArrOK(parsedSQL)) {
+      condSQL.push(`c."title" IS NOT NULL`);
+      break;
+    } else {
+      condSQL.push(`c."title" ILIKE $${i + 1}`);
+      valsSQL.push(parsedSQL![i]);
+
+      i++;
+    }
+  }
 
   const sqlCount = `
   SELECT COUNT (c."id") FROM "Course" AS c
-
-  ${
-    !isArrOK(parsed)
-      ? 'WHERE (c."title" IS NOT NULL)'
-      : "WHERE " +
-        parsed!
-          .map(
-            (el, i, arg) =>
-              `c."title" ILIKE '${el}'` + (i === arg.length - 1 ? "" : " OR"),
-          )
-          .join("\n")
-  }
+  WHERE ${condSQL.join(" OR ")}
   `;
 
-  const rawCount = await db.$queryRawUnsafe<{ count: number }[]>(sqlCount);
+  const rawCount = await db.$queryRawUnsafe<{ count: number }[]>(
+    sqlCount,
+    ...valsSQL,
+  );
   const nHits = Number(rawCount?.[0]?.count ?? 0);
   const pages = Math.ceil(nHits / limit);
 
@@ -63,25 +72,16 @@ export const getCoursesGenSQL = async (req: FastifyRequest) => {
   ) AS "video"
 
 FROM "Course" AS c
-${
-  !isArrOK(parsed)
-    ? 'WHERE (c."title" IS NOT NULL)'
-    : "WHERE " +
-      parsed!
-        .map(
-          (el, i, arg) =>
-            `c."title" ILIKE '${el}'` + (i === arg.length - 1 ? "" : " OR"),
-        )
-        .join("\n")
-}
+WHERE ${condSQL.join(" OR ")}
 
 
 OFFSET ${offset}
 LIMIT ${limit}
     `;
 
+  const courses = await db.$queryRawUnsafe(sql, ...valsSQL);
   return {
-    sql,
+    courses,
     nHits,
     pages,
   };
