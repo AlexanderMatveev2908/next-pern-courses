@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -36,7 +37,7 @@ const ListCourses: FC = () => {
   const cachedData = useSelector(
     (state: AppStateTypeSSR) =>
       coursesSliceAPI.endpoints.getCourses.select({
-        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 4 })),
+        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 1 })),
       })(state).data,
   );
 
@@ -92,8 +93,8 @@ const ListCourses: FC = () => {
         triggerRef,
         zodObj: schemaGetListCourse,
         formCtx,
-        pagesCached,
-        nHitsCached,
+        // pagesCached,
+        // nHitsCached,
       }}
     >
       {() => (
@@ -107,7 +108,7 @@ const ListCourses: FC = () => {
             }
           `}
         >
-          {(cachedCourses ?? courses)?.map((item, i) => (
+          {courses?.map((item, i) => (
             <div
               key={i}
               className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"

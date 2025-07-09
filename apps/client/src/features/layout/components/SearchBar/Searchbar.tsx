@@ -127,7 +127,6 @@ const Searchbar = <
     });
   }, [resetRHF, txtInputs, searchAPI]);
 
-  useEffect(() => {}, []);
   return (
     <WrapPendingClient {...{ isLoading: false }}>
       {({ isHydrated } = { isHydrated: false }) =>
