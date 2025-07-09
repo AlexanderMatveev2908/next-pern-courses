@@ -4,82 +4,72 @@ import { calcPagination, parseTxtSql } from "../lib/etc.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
+import sql from "sql-template-tag";
 
 export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
-
   const { offset, limit } = calcPagination(req);
 
-  const { txtInputs } = myQuery as {
-    txtInputs: FieldSearchClientType[];
-  };
+  const { txtInputs } = myQuery as { txtInputs: FieldSearchClientType[] };
   const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
-  const parsedSQL = parseTxtSql(titleVal);
+  const parsed = parseTxtSql(titleVal);
 
-  const condSQL: string[] = [];
-  const valsSQL: string[] = [];
+  const condSQL = isArrOK(parsed)
+    ? parsed!.map((word) => sql`c."title" ILIKE ${`%${word}%`}`)
+    : [sql`c."title" IS NOT NULL`];
 
-  let i = 0;
-  while (i < (parsedSQL?.length ?? 1)) {
-    if (!isArrOK(parsedSQL)) {
-      condSQL.push(`c."title" IS NOT NULL`);
-      break;
-    } else {
-      condSQL.push(`c."title" ILIKE $${i + 1}`);
-      valsSQL.push(parsedSQL![i]);
+  const whereSQL = condSQL.reduce((acc, el) => sql`${acc} OR ${el}`);
 
-      i++;
-    }
-  }
-
-  const sqlCount = `
-  SELECT COUNT (c."id") FROM "Course" AS c
-  WHERE ${condSQL.join(" OR ")}
+  const countSQL = sql`
+    SELECT COUNT(c."id") FROM "Course" AS c
+    WHERE ${whereSQL}
   `;
 
   const rawCount = await db.$queryRawUnsafe<{ count: number }[]>(
-    sqlCount,
-    ...valsSQL,
+    countSQL.text,
+    ...countSQL.values,
   );
   const nHits = Number(rawCount?.[0]?.count ?? 0);
   const pages = Math.ceil(nHits / limit);
 
-  const sql = `
-    SELECT c."title", c."grade", c."techStack", c."tools",
+  const querySQL = sql`
+    SELECT
+        c."title",
+        c."grade",
+        c."techStack",
+        c."tools",
 
-  (
+    (
     SELECT json_agg(
-      json_build_object(
-        'url', ca."url",
-        'publicID', ca."publicID"
-      )
-    )
-    FROM "CloudAsset" AS ca
-    WHERE ca."type" = 'IMAGE'
-      AND ca."entityID" = c."id"
-      AND ca."entityType" = 'COURSE'
-  ) AS "images",
-
-  (
-    SELECT json_build_object(
-      'url', ca."url",
-      'publicID', ca."publicID"
+        json_build_object(
+            'url', ca."url",
+            'publicID', ca."publicID"
+        )
     )
     FROM "CloudAsset" ca
-    WHERE ca."entityID" = c."id"
-      AND ca."type" = 'VIDEO'
-    LIMIT 1
-  ) AS "video"
+        WHERE ca."type" = 'IMAGE'
+        AND ca."entityID" = c."id"
+        AND ca."entityType" = 'COURSE'
+    ) AS "images",
 
-FROM "Course" AS c
-WHERE ${condSQL.join(" OR ")}
+    (
+    SELECT json_build_object(
+        'url', ca."url",
+        'publicID', ca."publicID"
+    )
+    FROM "CloudAsset" ca
+        WHERE ca."entityID" = c."id"
+        AND ca."type" = 'VIDEO'
+    ) AS "video"
 
+    FROM "Course" AS c
+    WHERE ${whereSQL}
+    OFFSET ${offset}
+    LIMIT ${limit}
+  `;
 
-OFFSET ${offset}
-LIMIT ${limit}
-    `;
+  const courses = await db.$queryRawUnsafe(querySQL.text, ...querySQL.values);
 
-  const courses = await db.$queryRawUnsafe(sql, ...valsSQL);
   return {
     courses,
     nHits,
