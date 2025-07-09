@@ -34,7 +34,7 @@ jobs:
         run: yarn install
 
       - name: build shared packages
-        run: yarn build --filter @shared/first...
+        run: yarn turbo build --filter @shared/first
 
       - name: check client server and all packages with lint or tsc
         run: yarn check
