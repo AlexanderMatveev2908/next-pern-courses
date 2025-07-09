@@ -62,7 +62,7 @@ const WrapSearchQuery = <
   >;
 
   return (
-    <div className="w-full grid grid-cols-1 gap-10">
+    <div className="w-full grid grid-cols-1 gap-10 pb-[100px]">
       <FormProvider {...formCtx}>
         <Searchbar
           {...{
@@ -88,8 +88,8 @@ const WrapSearchQuery = <
 
       <PageCounter
         {...{
-          nHits,
-          totPages,
+          nHits: 23,
+          totPages: 3,
         }}
       />
     </div>

@@ -23,11 +23,25 @@ import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useF
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import WrapSearchQuery from "@/common/components/HOC/WrapSearchQuery";
+import { useSelector } from "react-redux";
+import { AppStateTypeSSR } from "@/core/store/store";
+import { genURLSearchParams } from "@/core/lib/processForm";
+import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
   const [triggerRTK, res] = hook;
   const { data: { courses } = {} } = res ?? {};
+
+  const cachedData = useSelector(
+    (state: AppStateTypeSSR) =>
+      coursesSliceAPI.endpoints.getCourses.select({
+        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 4 })),
+      })(state).data,
+  );
+
+  __cg("cachedData", cachedData);
+  const { courses: cachedCourses } = cachedData ?? {};
 
   const { updateNoDebounce } = useSearchCtxConsumer();
   const { triggerRef } = useWrapQuery({
@@ -86,7 +100,7 @@ const ListCourses: FC = () => {
             }
           `}
         >
-          {courses?.map((item, i) => (
+          {(cachedCourses ?? courses)?.map((item, i) => (
             <div
               key={i}
               className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"

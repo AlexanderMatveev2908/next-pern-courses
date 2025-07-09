@@ -10,6 +10,9 @@ import Toast from "@/features/layout/components/Toast/Toast";
 import { genStoreRTK } from "@/core/store/store";
 import { wakeUpSliceAPI } from "@/features/wakeUp/slices/sliceAPI";
 import { wrapCallSSR } from "@/core/lib/api";
+import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
+import { genURLSearchParams } from "@/core/lib/processForm";
+import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -45,6 +48,21 @@ export default async function RootLayout({
         wakeUpSliceAPI.endpoints.getListDummyItems.initiate(undefined, {
           forceRefetch: true,
         }),
+      ),
+    ),
+
+    wrapCallSSR(() =>
+      store.dispatch(
+        coursesSliceAPI.endpoints.getCourses.initiate(
+          {
+            vals: genURLSearchParams(
+              gabFormValsPagination({ page: 0, limit: 4 }),
+            ),
+          },
+          {
+            forceRefetch: true,
+          },
+        ),
       ),
     ),
   ]);
