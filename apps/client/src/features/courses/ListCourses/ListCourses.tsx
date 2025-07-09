@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import Searchbar from "@/features/layout/components/SearchBar/Searchbar";
-import { useCallback, type FC } from "react";
+import { type FC } from "react";
 import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   schemaGetListCourse,
@@ -19,18 +18,37 @@ import {
 } from "./uifactory/searchBar";
 import { v4 } from "uuid";
 import { __cg } from "@shared/first/lib/logger.js";
-import { genURLSearchParams } from "@/core/lib/processForm";
-import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
+import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
+import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
+import WrapSearchQuery from "@/common/components/HOC/WrapSearchQuery";
+import { useSelector } from "react-redux";
+import { AppStateTypeSSR } from "@/core/store/store";
+import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
-import cloneDeep from "lodash.clonedeep";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
   const [triggerRTK, res] = hook;
+  const { data: { courses } = {} } = res ?? {};
+
+  const cachedData = useSelector(
+    (state: AppStateTypeSSR) =>
+      coursesSliceAPI.endpoints.getCourses.select({
+        vals: genURLSearchParams(gabFormValsPagination({ page: 0, limit: 4 })),
+      })(state).data,
+  );
+
+  const {
+    courses: cachedCourses,
+    pages: pagesCached,
+    nHits: nHitsCached,
+  } = cachedData ?? {};
+
+  __cg("cachedData", cachedData);
 
   const { updateNoDebounce } = useSearchCtxConsumer();
-
   const { triggerRef } = useWrapQuery({
     ...res,
     showToast: true,
@@ -45,30 +63,15 @@ const ListCourses: FC = () => {
   });
   const { handleSubmit } = formCtx;
 
-  const searchAPI = useCallback(
-    <T extends FieldValues>(
-      data: T,
-      { page, limit }: { page?: number; limit?: number },
-    ) => {
-      const merged = cloneDeep({
-        ...data,
-        ...gabFormValsPagination({ page, limit }),
-      });
-
-      const str = genURLSearchParams(merged);
-
-      triggerRef();
-      updateNoDebounce({
-        vals: merged,
-      });
-      triggerRTK({ vals: str, _: Date.now() }, false);
-    },
-    [triggerRef, triggerRTK, updateNoDebounce],
-  );
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
 
   const handleSave = handleSubmit(
     (data) => {
-      searchAPI(data, {});
+      searchAPI(data, { syncPending: "submit" });
     },
     (errs) => {
       __cg("errs submit", errs);
@@ -78,33 +81,45 @@ const ListCourses: FC = () => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-20">
-      <FormProvider {...formCtx}>
-        <Searchbar
-          {...{
-            hook,
-            txtInputs: txtInputsCourses,
-            filters: filtersCourses,
-            sorters: sortersCourses,
-            innerJoinConf: innerJoinFilters,
-            handleSave,
-            zodObj: schemaGetListCourse,
-            triggerRef,
-          }}
-        />
-      </FormProvider>
+    <WrapSearchQuery
+      {...{
+        filters: filtersCourses,
+        handleSave,
+        hook,
+        sorters: sortersCourses,
+        innerJoinConf: innerJoinFilters,
+        txtInputs: txtInputsCourses,
+        triggerRef,
+        zodObj: schemaGetListCourse,
+        formCtx,
+        pagesCached,
+        nHitsCached,
+      }}
+    >
+      {() => (
+        <div
+          className="w-full grid gap-10"
+          css={css`
+            grid-template-columns: 1fr;
 
-      <WrapPendingClient {...{ isLoading: res.isLoading }}>
-        {() => (
-          <div className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-            harum, alias minus fuga molestiae non ea voluptas atque ducimus sint
-            veniam iure aliquid ipsa exercitationem pariatur deserunt tenetur
-            eos consectetur.
-          </div>
-        )}
-      </WrapPendingClient>
-    </div>
+            ${resp(600)} {
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+          `}
+        >
+          {(cachedCourses ?? courses)?.map((item, i) => (
+            <div
+              key={i}
+              className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
+            >
+              <span className="txt__md  break-all">
+                {JSON.stringify(item, null, 2)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </WrapSearchQuery>
   );
 };
 

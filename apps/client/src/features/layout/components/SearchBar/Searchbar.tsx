@@ -3,11 +3,17 @@
 "use client";
 
 import {
+  PaginatedResAPI,
   ReqSearchAPI,
   ResultTypeRTK,
   TriggerTypeRTK,
 } from "@/common/types/api";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+import {
+  DefaultValues,
+  FieldValues,
+  Path,
+  useFormContext,
+} from "react-hook-form";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
 import PrimaryRow from "./components/PrimaryRow";
@@ -22,14 +28,18 @@ import {
 } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { v4 } from "uuid";
+import { useFactoryAPI } from "./hooks/useFactoryAPI";
+import ShowCount from "./components/ShowCount";
+import { useListenDummyPending } from "./hooks/useListenDummyPending";
 
-type PropsType<
-  ResT,
+export type PropsTypeSearchBar<
+  ResT extends PaginatedResAPI<any>,
   ArgT extends ReqSearchAPI,
   FormT extends FieldValues,
   PathT extends Path<FormT>,
@@ -46,7 +56,7 @@ type PropsType<
 };
 
 const Searchbar = <
-  ResT,
+  ResT extends PaginatedResAPI<any>,
   ArgT extends ReqSearchAPI,
   FormT extends FieldValues,
   PathT extends Path<FormT>,
@@ -60,14 +70,18 @@ const Searchbar = <
   zodObj,
   hook,
   triggerRef,
-}: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
-  const { setSearcher } = useSearchCtxConsumer();
+}: PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT>) => {
+  const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
 
   const formCtx = useFormContext<FormT>();
-  const { setFocus, watch } = formCtx;
+  const { setFocus, watch, reset: resetRHF } = formCtx;
   const formDataRHF = watch();
+  const mainInput = formDataRHF?.txtInputs?.[0];
 
-  const [triggerRTK] = hook;
+  const [triggerRTK, res] = hook;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: { nHits, totPages } = { nHits: 0, totPages: 0 } } = (res ??
+    {}) as ResultTypeRTK<ResT & { nHits: number; totPages: number }, ArgT>;
 
   useFocus({
     cb: () => setFocus(`txtInputs.0.val` as any),
@@ -87,37 +101,70 @@ const Searchbar = <
     triggerRef,
   });
 
+  useListenDummyPending({
+    isLoading: res.isLoading || res.isFetching,
+  });
+
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
+
+  const triggerResetAPI = useCallback(() => {
+    const formDevVals = {
+      txtInputs: [
+        {
+          ...txtInputs[0],
+          id: v4(),
+        },
+      ],
+    };
+
+    resetRHF(formDevVals as unknown as DefaultValues<FormT>);
+    searchAPI(formDevVals, {
+      syncPending: "clear",
+    });
+  }, [resetRHF, txtInputs, searchAPI]);
+
+  useEffect(() => {}, []);
   return (
     <WrapPendingClient {...{ isLoading: false }}>
       {({ isHydrated } = { isHydrated: false }) =>
         !isHydrated ? (
           <SkeletonSearch />
         ) : (
-          <form
-            onSubmit={handleSave}
-            className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]"
-          >
-            <PrimaryRow {...{ txtInputs }} />
-
-            <div
-              className="w-full grid grid-cols-1 gap-6"
-              css={css`
-                ${resp(1150)} {
-                  grid-template-columns: repeat(2, 1fr);
-                }
-              `}
+          <>
+            <form
+              onSubmit={handleSave}
+              className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]"
             >
-              <SecondaryRowBtns {...{ txtInputs }} />
+              <PrimaryRow {...{ txtInputs }} />
 
-              <div className="w-full grid grid-cols-1 gap-6">
-                <WrapImpBtns {...{ txtInputs }} />
+              <div
+                className="w-full grid grid-cols-1 gap-6"
+                css={css`
+                  ${resp(1150)} {
+                    grid-template-columns: repeat(2, 1fr);
+                  }
+                `}
+              >
+                <SecondaryRowBtns {...{ txtInputs }} />
+
+                <div className="w-full grid grid-cols-1 gap-6">
+                  <WrapImpBtns {...{ txtInputs, triggerResetAPI }} />
+                </div>
               </div>
-            </div>
 
-            <FilterFooter {...{ filters, innerJoinConf, txtInputs }} />
+              <FilterFooter
+                {...{ filters, innerJoinConf, txtInputs, triggerResetAPI }}
+              />
 
-            <SortPop {...{ sorters }} />
-          </form>
+              <SortPop {...{ sorters }} />
+            </form>
+
+            <ShowCount {...{ nHits, mainInput, isLoading: res.isFetching }} />
+          </>
         )
       }
     </WrapPendingClient>

@@ -14,12 +14,17 @@ type PropsType = {
   $customCSS?: {
     css: SerializedStyles;
   };
+  $SvgCustomCSS?: {
+    css: SerializedStyles;
+  };
   btnActType: BtnActType;
   Svg?: IconType;
   labelConf: [number?, string?];
+  isLoading?: boolean;
 
   type?: "button" | "submit";
   handleClick?: () => void;
+  isEnabled?: boolean;
 };
 
 const WrapSearchBarBtn: FC<PropsType> = ({
@@ -28,7 +33,10 @@ const WrapSearchBarBtn: FC<PropsType> = ({
   Svg,
   handleClick,
   labelConf,
+  isLoading,
   type = "button",
+  $SvgCustomCSS,
+  isEnabled = true,
 }) => {
   return (
     <div
@@ -43,9 +51,9 @@ const WrapSearchBarBtn: FC<PropsType> = ({
     >
       <BtnIcon
         {...{
-          $svgCSS: svgSearchBarCSS,
-          isEnabled: true,
-          isLoading: false,
+          $svgCSS: $SvgCustomCSS ?? svgSearchBarCSS,
+          isEnabled,
+          isLoading,
           type,
           label: typeof labelConf?.[0] !== "number" ? null : labelConf?.[1],
           $labelCSS:
