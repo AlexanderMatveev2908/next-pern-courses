@@ -10,7 +10,6 @@ import { css } from "@emotion/react";
 import RowBtnCounter from "./components/RowBtnCounter";
 import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
 import { getLimitPage, grabNumBlockBtns } from "../../lib/style";
-import { __cg } from "@shared/first/lib/logger.js";
 import {
   PaginatedResAPI,
   ReqSearchAPI,
@@ -75,11 +74,11 @@ const PageCounter = <
       const newLimit = getLimitPage();
       if (newLimit === limit) return;
 
-      __cg(
-        "trigger limit update",
-        ["old limit", newLimit],
-        ["new limit", limit],
-      );
+      // __cg(
+      //   "trigger limit update",
+      //   ["old limit", newLimit],
+      //   ["new limit", limit],
+      // );
 
       searchAPI(valsRHF, {
         page: 0,
@@ -154,7 +153,7 @@ const PageCounter = <
     });
   };
 
-  __cg("pagination", ["block", block], ["page", page], ["limit", limit]);
+  // __cg("pagination", ["block", block], ["page", page], ["limit", limit]);
 
   return !totPages ? null : (
     <div className="w-full grid grid-cols-[80px_1fr_80px] ic gap-10 pt-[100px]">
