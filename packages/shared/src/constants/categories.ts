@@ -1,11 +1,11 @@
-export const Difficulties = {
+export const GradePkg = {
   BEGINNER: "Beginner",
   JUNIOR: "Junior",
   INTERMEDIATE: "Intermediate",
   EXPERT: "Expert",
 } as const;
 
-export const TechStack = {
+export const TechStackPkg = {
   HTML: "HTML",
   CSS: "CSS",
   JAVASCRIPT: "JavaScript",
@@ -20,7 +20,7 @@ export const TechStack = {
   DESIGN: "Design",
 } as const;
 
-export const Tools = {
+export const ToolsPkg = {
   HTML: {
     PRETTIER: "Prettier",
     EMMET: "Emmet",
@@ -108,22 +108,24 @@ export const Tools = {
 } as const;
 
 // ? ROOT
-// ? typeof Tools
-// ? [keyof typeof Tools] => get keys of Tools root
+// ? typeof ToolsPkg
+// ? [keyof typeof ToolsPkg] => get keys of ToolsPkg root
 // ? [keyof *] => get nested vals inside root
-// ? (typeof Tools) repeat pattern as first one
-export type ToolValType = keyof (typeof Tools)[keyof typeof Tools];
+// ? (typeof ToolsPkg) repeat pattern as first one
+export type ToolValType = keyof (typeof ToolsPkg)[keyof typeof ToolsPkg];
 
-export type TechValType = keyof typeof TechStack;
+export type TechValType = keyof typeof TechStackPkg;
 
-export type DifficultyType = keyof typeof Difficulties;
+export type DifficultyType = keyof typeof GradePkg;
 
 export const isValidTool = (
-  Tech: keyof typeof TechStack,
+  Tech: keyof typeof TechStackPkg,
   tool: ToolValType,
 ) => {
-  return (Object.keys(Tools[Tech as keyof typeof Tools]) ?? []).includes(tool);
+  return (Object.keys(ToolsPkg[Tech as keyof typeof ToolsPkg]) ?? []).includes(
+    tool,
+  );
 };
 
-export const getToolsByTech = (Tech: keyof typeof TechStack) =>
-  Object.entries(Tools[Tech as keyof typeof Tools]);
+export const getToolsByTech = (Tech: keyof typeof TechStackPkg) =>
+  Object.entries(ToolsPkg[Tech as keyof typeof ToolsPkg]);

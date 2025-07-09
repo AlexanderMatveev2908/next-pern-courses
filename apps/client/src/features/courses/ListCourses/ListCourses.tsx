@@ -46,7 +46,7 @@ const ListCourses: FC = () => {
     nHits: nHitsCached,
   } = cachedData ?? {};
 
-  __cg("cachedData", cachedData);
+  // __cg("cachedData", cachedData);
 
   const { updateNoDebounce } = useSearchCtxConsumer();
   const { triggerRef } = useWrapQuery({

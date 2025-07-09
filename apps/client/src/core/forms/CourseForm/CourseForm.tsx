@@ -25,9 +25,9 @@ import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/For
 import WrapCheck from "./components/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import {
-  Difficulties,
-  TechStack,
-  Tools,
+  GradePkg,
+  TechStackPkg,
+  ToolsPkg,
 } from "@shared/first/constants/categories";
 import TagsForm from "./components/TagsForm";
 
@@ -48,7 +48,8 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
   useFocus({ cb: () => setFocus("title") });
 
   const formData = formCtx.watch();
-  const availableTool = Tools[formData.techStack as keyof typeof Tools] ?? {};
+  const availableTool =
+    ToolsPkg[formData.techStack as keyof typeof ToolsPkg] ?? {};
 
   // console.log(formCtx.watch());
 
@@ -74,11 +75,11 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
 
       <FormFieldMD {...{ el: fieldMarkdown, cb: () => trigger("video") }} />
 
-      <WrapCheck {...{ el: fieldHard, vals: Difficulties }}>
+      <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: TechStack }}>
+      <WrapCheck {...{ el: fieldTech, vals: TechStackPkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 

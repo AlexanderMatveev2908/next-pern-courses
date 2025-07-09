@@ -5,10 +5,7 @@ import { getValidSubCat, pickRandomObjKey, repeatKey } from "./utils.js";
 import { addAssetsToCourse, readMarkdown } from "./assetsHandlers.js";
 import { existingMock } from "./data.js";
 import db from "@src/conf/db.js";
-import {
-  Difficulties,
-  Tools as CustomServerTools,
-} from "@shared/first/constants/categories.js";
+import { GradePkg, ToolsPkg } from "@shared/first/constants/categories.js";
 import { genIpsum } from "@shared/first/lib/etc.js";
 
 export const genMock = async () => {
@@ -32,12 +29,9 @@ export const genMock = async () => {
         data: {
           title: `Awesome course about ${v}`,
           description: genIpsum(10),
-          grade: pickRandomObjKey(Difficulties) as Grade,
+          grade: pickRandomObjKey(GradePkg) as Grade,
           techStack: v as TechStack,
-          tools: getValidSubCat(
-            CustomServerTools,
-            v as keyof typeof CustomServerTools,
-          ) as Tools,
+          tools: getValidSubCat(ToolsPkg, v as keyof typeof ToolsPkg) as Tools,
           markdown: md,
         },
       });

@@ -1,7 +1,7 @@
 import {
-  Difficulties,
+  GradePkg,
   DifficultyType,
-  TechStack,
+  TechStackPkg,
   TechValType,
 } from "@shared/first/constants/categories.js";
 import { isInObjKeys, isStr } from "@shared/first/lib/dataStructure.js";
@@ -12,7 +12,7 @@ export const gradeSchema = () =>
     .string()
     .refine(isStr, "Grade is required")
     .refine(
-      (v) => isInObjKeys(Difficulties, v as DifficultyType),
+      (v) => isInObjKeys(GradePkg, v as DifficultyType),
       "Grade is invalid",
     );
 
@@ -23,7 +23,7 @@ export const schemaTechStack = () =>
       message: "Tech stack is required",
     })
     .refine(
-      (v) => isInObjKeys(TechStack, v as TechValType),
+      (v) => isInObjKeys(TechStackPkg, v as TechValType),
       "Tech stack is invalid",
     );
 

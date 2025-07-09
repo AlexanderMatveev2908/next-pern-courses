@@ -7,9 +7,9 @@ import {
   SearchSortType,
 } from "@/features/layout/components/SearchBar/types/uiFactory";
 import {
-  Difficulties,
-  TechStack,
-  Tools,
+  GradePkg,
+  TechStackPkg,
+  ToolsPkg,
 } from "@shared/first/constants/categories.js";
 import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema.get.js";
 import { Rocket } from "lucide-react";
@@ -48,7 +48,7 @@ const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
   label: "Grade",
   Svg: IoStatsChart,
   id: v4(),
-  options: genArrFromConst(Difficulties, "grade"),
+  options: genArrFromConst(GradePkg, "grade"),
 };
 
 const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
@@ -56,7 +56,7 @@ const filterTech: SearchFilterType<SchemaGetListCoursesType, "techStack"> = {
   label: "Tech stack",
   Svg: Rocket,
   id: v4(),
-  options: genArrFromConst(TechStack, "techStack"),
+  options: genArrFromConst(TechStackPkg, "techStack"),
 };
 
 export const filtersCourses = [filterGrade, filterTech];
@@ -92,7 +92,7 @@ const innerJoinToolsFilter: SearchFilterType<
   label: "Tools",
   Svg: SvgTools,
   id: v4(),
-  options: Object.values(Tools).flatMap((v) =>
+  options: Object.values(ToolsPkg).flatMap((v) =>
     Object.entries(v).map((pair) => ({
       name: "tools",
       id: v4(),
@@ -109,7 +109,7 @@ const innerJoinFilterTools: InnerJoinFilterConfType<
 > = {
   keyDependsOn: "techStack",
   filter: innerJoinToolsFilter,
-  parentFilterToSync: Tools,
+  parentFilterToSync: ToolsPkg,
 };
 
 export const innerJoinFilters = [innerJoinFilterTools];
