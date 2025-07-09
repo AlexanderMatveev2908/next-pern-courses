@@ -86,7 +86,7 @@ const ListCourses: FC = () => {
             }
           `}
         >
-          {(courses ?? []).map((item, i) => (
+          {courses?.map((item, i) => (
             <div
               key={i}
               className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"

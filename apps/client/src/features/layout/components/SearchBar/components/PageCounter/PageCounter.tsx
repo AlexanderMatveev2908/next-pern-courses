@@ -8,7 +8,7 @@ type PropsType = {
   nHits?: number;
 };
 
-const PageCounter: FC<PropsType> = ({ nHits, totPages }) => {
+const PageCounter: FC<PropsType> = ({}) => {
   return <div></div>;
 };
 

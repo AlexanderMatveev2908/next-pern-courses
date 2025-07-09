@@ -83,7 +83,7 @@ const WrapSearchQuery = <
           isLoading: isLoading || isFetching,
         }}
       >
-        {children}
+        {() => children()}
       </WrapPendingClient>
 
       <PageCounter
