@@ -10,7 +10,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
   const { offset, limit } = calcPagination(req);
 
-  const { txtInputs, grade, techStack, tools } = myQuery as {
+  const { txtInputs, grade, techStack, tools, createdAtSort } = myQuery as {
     txtInputs: FieldSearchClientType[];
   } & Record<string, any>;
 
@@ -29,6 +29,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
   const andCondSQL: Sql[] = [];
 
+  // ? here work grade as string because i forgot to cast it as enum
   if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
   if (isArrOK(techStack))
     andCondSQL.push(
@@ -37,7 +38,6 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   if (isArrOK(tools))
     andCondSQL.push(sql([`c."tools" = ANY(${parseArrSQL(tools, "Tools")})`]));
 
-  // if (isArrOK(tools)) andCondSQL.push(sql`c."tools" = ANY(${tools})`);
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
 
@@ -49,6 +49,15 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     (acc, curr) => sql`${acc} AND ${curr}`,
     sql`TRUE`,
   );
+
+  const order: Sql[] = [];
+
+  if (createdAtSort === "ASC" || createdAtSort === "DESC")
+    order.push(sql([`c."createdAt" ${createdAtSort}`]));
+
+  const orderSQL = order.reduce((acc, curr) => sql`${acc}, ${curr}`);
+
+  __cg("orderSQL", orderSQL.text);
 
   const whereSQL = sql`(${orGroup}) AND (${andGroup})`;
 
@@ -96,6 +105,9 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
     FROM "Course" AS c
     WHERE ${whereSQL}
+
+    ORDER BY ${orderSQL}
+
     OFFSET ${offset}
     LIMIT ${limit}
   `;
