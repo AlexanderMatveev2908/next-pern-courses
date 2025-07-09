@@ -52,10 +52,13 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
   const order: Sql[] = [];
 
-  if (createdAtSort === "ASC" || createdAtSort === "DESC")
+  if (createdAtSort === "ASC" || createdAtSort === "DESC") {
     order.push(sql([`c."createdAt" ${createdAtSort}`]));
+  }
 
-  const orderSQL = order.reduce((acc, curr) => sql`${acc}, ${curr}`);
+  const orderSQL = order.length
+    ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
+    : sql`c."createdAt" DESC`;
 
   __cg("orderSQL", orderSQL.text);
 
