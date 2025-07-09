@@ -1,27 +1,15 @@
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
-import { readSQL } from "@src/lib/system/index.js";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { getCoursesGenSQL } from "../services/getCoursesList.js";
 
 export const getListCoursesCtrl = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  const { myQuery } = req;
+  const { sql, nHits, pages } = await getCoursesGenSQL(req);
 
-  const { limit, page } = myQuery as Record<string, any>;
-  const offset = page * limit;
-  const nHits = await db.course.count({
-    where: {},
-  });
-
-  const pages = Math.ceil(nHits / limit);
-
-  const courses = await db.$queryRawUnsafe(
-    readSQL("get_courses"),
-    offset,
-    limit,
-  );
+  const courses = await db.$queryRawUnsafe(sql);
 
   return res.res200({
     courses,

@@ -9,6 +9,12 @@ export type AppFile = {
   path?: string;
 };
 
+export type FieldSearchClientType = Record<string, any> & {
+  name: string;
+  val: string;
+  id: string;
+};
+
 declare module "fastify" {
   interface FastifyInstance {
     env: {
@@ -29,8 +35,10 @@ declare module "fastify" {
       files: AppFile[];
     };
 
-    myQuery?: {
-      [key: string]: any;
+    myQuery?: Record<string, any> & {
+      txtInputs: FieldSearchClientType[];
+      page: number;
+      limit: number;
     };
   }
 

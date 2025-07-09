@@ -26,8 +26,8 @@ SELECT c."title", c."grade", c."techStack", c."tools",
   ) AS "video"
 
 FROM "Course" AS c
+WHERE ($1::TEXT IS NULL OR c."title" ILIKE $1::TEXT)
 
-OFFSET $1
-LIMIT $2
--- OFFSET 0
--- LIMIT 1
+
+OFFSET $2
+LIMIT $3
