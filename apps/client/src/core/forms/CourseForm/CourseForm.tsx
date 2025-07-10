@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import {
   descriptionField,
   fieldHard,
@@ -14,7 +14,7 @@ import {
   titleField,
   videoField,
 } from "./uiFactory";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import WrapSingleField from "./components/WrapSingleField";
@@ -28,11 +28,12 @@ import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import {
   GradePkg,
   StackPkg,
-  TechNormPkg,
+  StackType,
   TechPkg,
 } from "@shared/first/constants/categories";
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
-// import { __cg } from "@shared/first/lib/logger.js";
+import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
+import { parseTechObj } from "@shared/first/lib/etc.js";
 
 type PropsType = {
   handleSave: () => void;
@@ -47,6 +48,10 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     setFocus,
     setValue,
   } = formCtx;
+  const stackVal = useWatch({
+    control,
+    name: "stack",
+  });
 
   useFocus({ cb: () => setFocus("title") });
 
@@ -57,6 +62,14 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       shouldValidate: true,
     });
   };
+
+  const filteredTech = useMemo(
+    () =>
+      parseTechObj(
+        grabValidTechs(stackVal as StackType).filtered as typeof TechPkg,
+      ),
+    [stackVal],
+  );
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -88,8 +101,15 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: TechNormPkg, cb: handleSyncCheck }}>
-        {(args) => WrapBoxes(args)}
+      <WrapCheck {...{ el: fieldTech, vals: filteredTech }}>
+        {(args) =>
+          WrapBoxes({
+            ...args,
+            txtFallback:
+              "Select a Stack se we can generate a list of technologies",
+            cb: handleSyncCheck,
+          })
+        }
       </WrapCheck>
 
       <FormFiledMiniCheck

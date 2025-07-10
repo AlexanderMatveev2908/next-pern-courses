@@ -37,13 +37,13 @@ export const genFormData = <T>(data: T) => {
     }
   }
 
-  // for (const [key, val] of formData.entries()) {
-  //   if (val instanceof File) {
-  //     console.log(`📁 ${key}:`, val.name, val.size);
-  //   } else {
-  //     console.log(`📄 ${key}:`, val);
-  //   }
-  // }
+  for (const [key, val] of formData.entries()) {
+    if (val instanceof File) {
+      console.log(`📁 ${key}:`, val.name, val.size);
+    } else {
+      console.log(`📄 ${key}:`, val);
+    }
+  }
 
   return formData;
 };

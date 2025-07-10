@@ -9,14 +9,12 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FieldCheckType<T>;
   vals: Record<string, string>;
   children: (args: PropsTypeWrapBoxes<T, K>) => React.ReactNode;
-  cb?: (val: T[K]) => void;
 };
 
 const WrapCheck = <T extends FieldValues, K extends Path<T>>({
   el,
   vals,
   children,
-  cb,
 }: PropsType<T, K>) => {
   return (
     <div className="w-full grid grid-cols-1 gap-4">
@@ -25,7 +23,6 @@ const WrapCheck = <T extends FieldValues, K extends Path<T>>({
       {children({
         el,
         vals,
-        cb,
       })}
     </div>
   );
