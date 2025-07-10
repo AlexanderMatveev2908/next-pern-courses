@@ -15,17 +15,19 @@ import ErrFormField from "../../errors/ErrFormField";
 import { isObjOK } from "@shared/first/lib/dataStructure";
 import { v4 } from "uuid";
 
-export type PropsTypeWrapBoxes<T extends FieldValues> = {
+export type PropsTypeWrapBoxes<T extends FieldValues, K extends Path<T>> = {
   vals: Record<string, string>;
   el: FieldCheckType<T>;
   txtFallback?: string;
+  cb?: (val: T[K]) => void;
 };
 
 const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
   vals,
   el,
   txtFallback,
-}: PropsTypeWrapBoxes<T>) => {
+  cb,
+}: PropsTypeWrapBoxes<T, K>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
 
@@ -135,6 +137,7 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
                   setValue,
                   el,
                   isCurrSwap: i === currSwap,
+                  cb,
                 }}
               />
             );

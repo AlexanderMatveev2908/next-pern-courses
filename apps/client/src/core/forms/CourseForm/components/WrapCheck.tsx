@@ -3,19 +3,21 @@
 
 import { PropsTypeWrapBoxes } from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import { FieldCheckType } from "@/common/types/uiFactory";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 
-type PropsType<T extends FieldValues> = {
+type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FieldCheckType<T>;
   vals: Record<string, string>;
-  children: (args: PropsTypeWrapBoxes<T>) => React.ReactNode;
+  children: (args: PropsTypeWrapBoxes<T, K>) => React.ReactNode;
+  cb?: (val: T[K]) => void;
 };
 
-const WrapCheck = <T extends FieldValues>({
+const WrapCheck = <T extends FieldValues, K extends Path<T>>({
   el,
   vals,
   children,
-}: PropsType<T>) => {
+  cb,
+}: PropsType<T, K>) => {
   return (
     <div className="w-full grid grid-cols-1 gap-4">
       <span className="txt__lg text-neutral-200">{el.label}</span>
@@ -23,6 +25,7 @@ const WrapCheck = <T extends FieldValues>({
       {children({
         el,
         vals,
+        cb,
       })}
     </div>
   );

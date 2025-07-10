@@ -29,6 +29,7 @@ import {
   GradePkg,
   StackPkg,
   TechNormPkg,
+  TechPkg,
 } from "@shared/first/constants/categories";
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
 // import { __cg } from "@shared/first/lib/logger.js";
@@ -44,9 +45,18 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     control,
     formState: { errors },
     setFocus,
+    setValue,
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
+
+  const handleSyncCheck = (val: unknown) => {
+    const techObj = TechPkg[val as keyof typeof TechPkg];
+
+    setValue("rootLanguage", techObj.rootLanguage, {
+      shouldValidate: true,
+    });
+  };
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -78,7 +88,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: TechNormPkg }}>
+      <WrapCheck {...{ el: fieldTech, vals: TechNormPkg, cb: handleSyncCheck }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
