@@ -21,7 +21,7 @@ const ImgLoader: FC<PropsType> = ({ src, alt }) => {
       <Image
         src={src}
         alt={alt ?? ""}
-        className={`transition-all rounded-xl duration-500 w-full h-full ${
+        className={`transition-all rounded-xl duration-500 object-cover ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
         fill

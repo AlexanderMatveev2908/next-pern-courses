@@ -8,7 +8,6 @@ import { CardShapeStyled } from "./Styled";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import { css } from "@emotion/react";
 import { __cg } from "@shared/first/lib/logger.js";
-import ImagesScroll from "../../elements/ImagesScroll";
 import ImgLoader from "../../HOC/assets/ImgLoader";
 
 type PropsType = {
@@ -74,7 +73,7 @@ const CardShape: FC<PropsType> = ({ images, title }) => {
         className="flipper"
       >
         <div ref={contentRef} className="client">
-          <div className="w-full flex justify-center bg-[#000] py-2 px-4 rounded border-2 border-neutral-800">
+          <div className="w-full flex justify-center bg-[#000] py-2 px-4 rounded-xl border-2 border-neutral-600">
             <span
               className="txt__lg grad__txt clamp__txt"
               style={{
