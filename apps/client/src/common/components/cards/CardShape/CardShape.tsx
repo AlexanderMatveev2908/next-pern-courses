@@ -6,9 +6,10 @@ import { useEffect, useRef, useState, type FC } from "react";
 import { easeInOut, motion } from "framer-motion";
 import { CardShapeStyled } from "./Styled";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
-import { css } from "@emotion/react";
 import { __cg } from "@shared/first/lib/logger.js";
 import ImgLoader from "../../HOC/assets/ImgLoader";
+import Shim from "../../elements/Shim";
+import { css } from "@emotion/react";
 
 type PropsType = {
   images: CloudAssetType[];
@@ -49,7 +50,16 @@ const CardShape: FC<PropsType> = ({ images, Label, ContentServer }) => {
   }, [isHydrated]);
 
   return !isHydrated ? (
-    <div className="skeleton w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl max-w-[350px] h-[425px] relative"></div>
+    <Shim
+      {...{
+        $CSS: {
+          css: css`
+            width: 350px;
+            height: 425px;
+          `,
+        },
+      }}
+    />
   ) : (
     <CardShapeStyled
       onMouseEnter={() => setIsHover(true)}
