@@ -11,7 +11,7 @@ type PropsType = {
 };
 
 const CourseItem: FC<PropsType> = ({ course }) => {
-  const { images, title } = course;
+  const { images } = course;
 
   return (
     <CardShape
