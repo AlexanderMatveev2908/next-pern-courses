@@ -16,3 +16,9 @@ export const genRowsInfo = (course: CourseType) =>
       val: course.tech,
     },
   ].map((el) => ({ ...el, id: v4() }));
+
+export const genLinksCard = (...arg: string[]) =>
+  arg.map((el) => ({
+    href: el,
+    id: v4(),
+  }));

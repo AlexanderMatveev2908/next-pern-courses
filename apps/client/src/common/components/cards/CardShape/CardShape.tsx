@@ -10,14 +10,21 @@ import { __cg } from "@shared/first/lib/logger.js";
 import ImgLoader from "../../HOC/assets/ImgLoader";
 import Shim from "../../elements/Shim";
 import { css } from "@emotion/react";
+import LinkShadow from "../../buttons/LinkShadow";
 
 type PropsType = {
   images: CloudAssetType[];
   Label: React.ReactNode;
   ContentServer: React.ReactNode;
+  linksHref: { href: string; id: string }[];
 };
 
-const CardShape: FC<PropsType> = ({ images, Label, ContentServer }) => {
+const CardShape: FC<PropsType> = ({
+  images,
+  Label,
+  ContentServer,
+  linksHref,
+}) => {
   const [isHover, setIsHover] = useState(false);
   const [contentH, setContentH] = useState(0);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +71,7 @@ const CardShape: FC<PropsType> = ({ images, Label, ContentServer }) => {
     <CardShapeStyled
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onMouseDown={() => window?.innerWidth > 600 && setIsHover(!isHover)}
+      // onClick={() => window?.innerWidth > 600 && setIsHover(!isHover)}
       className="w-full max-w-[350px] border-[3px] border-neutral-800 p-5 rounded-xl relative"
       css={css`
         height: ${contentH}px;
@@ -94,7 +101,23 @@ const CardShape: FC<PropsType> = ({ images, Label, ContentServer }) => {
             />
           </div>
         </div>
-        <div className="server">{ContentServer}</div>
+        <div className="server">
+          {ContentServer}
+
+          <div className="w-full grid grid-cols-1 gap-6 mt-4">
+            <div className="w-full justify-self-center max-w-[250px]">
+              {linksHref.map((el, i) => (
+                <LinkShadow
+                  key={el.id}
+                  {...{
+                    label: !i ? "View more" : "👻",
+                    href: el.href,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </motion.div>
     </CardShapeStyled>
   );
