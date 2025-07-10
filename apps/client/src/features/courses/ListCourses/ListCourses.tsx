@@ -27,6 +27,7 @@ import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 import { dynamicFiltersCourses } from "./uifactory/searchBar";
+import CourseItem from "./components/CourseItem";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -111,15 +112,8 @@ const ListCourses: FC = () => {
               }
             `}
           >
-            {arg!.map((item, i) => (
-              <div
-                key={i}
-                className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
-              >
-                <span className="txt__md  break-all">
-                  {JSON.stringify(item, null, 2)}
-                </span>
-              </div>
+            {arg!.map((course) => (
+              <CourseItem key={course.id} {...{ course }} />
             ))}
           </div>
         );

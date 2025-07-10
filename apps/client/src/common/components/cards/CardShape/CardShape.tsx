@@ -1,0 +1,92 @@
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import { CloudAssetType } from "@/common/types/cloud";
+import { useEffect, useRef, useState, type FC } from "react";
+import { easeInOut, motion } from "framer-motion";
+import { CardShapeStyled } from "./Styled";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
+import { css } from "@emotion/react";
+import { __cg } from "@shared/first/lib/logger.js";
+
+type PropsType = {
+  images: CloudAssetType[];
+  title: string;
+};
+
+const CardShape: FC<PropsType> = ({ images, title }) => {
+  const [isHover, setIsHover] = useState(false);
+  const [contentH, setContentH] = useState(0);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const { isHydrated } = useListenHydration();
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const el = contentRef.current;
+
+    if (!el) {
+      __cg("stage 1 — el is null");
+      return;
+    }
+
+    const cb = () => setContentH(el.scrollHeight + 20 * 2);
+
+    cb();
+
+    const obs = new ResizeObserver(cb);
+    obs.observe(el);
+
+    window.addEventListener("resize", cb);
+
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("resize", cb);
+    };
+  }, [isHydrated]);
+
+  return !isHydrated ? (
+    <div className="skeleton w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl max-w-[400px] h-[300px] relative"></div>
+  ) : (
+    <CardShapeStyled
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      onMouseDown={() => window?.innerWidth > 600 && setIsHover(!isHover)}
+      className="w-full max-w-[400px] border-[3px] border-neutral-800 p-5 rounded-xl relative tb"
+      css={css`
+        height: ${contentH}px;
+        max-height: ${contentH}px;
+        min-height: ${contentH}px;
+      `}
+    >
+      <motion.div
+        initial={{ rotateY: 0 }}
+        transition={{
+          duration: 0.5,
+          ease: easeInOut,
+        }}
+        animate={{
+          rotateY: isHover ? 180 : 0,
+        }}
+        className="flipper"
+      >
+        <div ref={contentRef} className="client h-fit">
+          <span>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio,
+            ratione tenetur debitis voluptate eius expedita tempore molestias
+            quidem iusto veniam ea! Illo alias est blanditiis repudiandae
+            similique ipsum quos excepturi.
+          </span>
+        </div>
+        <div className="server h-fit">
+          tenetur debitis voluptate eius expedita tempore molestias quidem iusto
+          veniam ea! Illo alias est blanditiis repudiandae similique ipsum quos
+          excepturi.
+        </div>
+      </motion.div>
+    </CardShapeStyled>
+  );
+};
+
+export default CardShape;

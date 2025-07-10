@@ -43,6 +43,7 @@ export type PaginatedResAPI<T extends Record<string, any>> =
 export type ServerModel<T> = {
   id: string;
   createdAt: number;
+  deletedAt: number | null;
 } & T;
 
 export type TriggerTypeRTK<T, K> = TypedLazyQueryTrigger<T, K, BaseQueryType>;
