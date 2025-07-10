@@ -30,7 +30,7 @@ import {
   StackPkg,
   TechNormPkg,
 } from "@shared/first/constants/categories";
-import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck";
+import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
 import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {

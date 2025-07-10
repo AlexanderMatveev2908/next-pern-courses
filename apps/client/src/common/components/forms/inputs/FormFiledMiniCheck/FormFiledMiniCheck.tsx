@@ -3,9 +3,9 @@
 
 import { FieldMiniCheckType } from "@/common/types/uiFactory";
 import { FieldValues, Path, PathValue, useFormContext } from "react-hook-form";
-import Anchor from "../etc/Anchor";
-import ErrFormField from "../errors/ErrFormField";
-import { motion } from "framer-motion";
+import { easeInOut, motion } from "framer-motion";
+import ErrFormField from "../../errors/ErrFormField";
+import Anchor from "../../etc/Anchor";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FieldMiniCheckType<T, K>;
@@ -23,7 +23,10 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
     formState: { errors },
     setValue,
     getValues,
+    watch,
   } = useFormContext<T>();
+
+  const isChecked = watch(el.name);
 
   const handleChange = () => {
     const existing = getValues(el.name);
@@ -58,10 +61,42 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
 
         <label
           htmlFor={el.name}
-          className="w-[40px] h-[40px] relative"
+          className="w-[40px] h-[40px] relative cursor-pointer"
           onClick={handleChange}
         >
-          <motion.div className=" border-[3px] absolute rounded-xl inset-0 border-neutral-600"></motion.div>
+          <motion.div
+            key={isChecked}
+            initial={{
+              scaleX: 1,
+              scaleY: 1,
+            }}
+            transition={{
+              duration: 0.75,
+              ease: easeInOut,
+            }}
+            animate={{
+              scaleX: [0.6, 1.4, 0.8, 0.9, 1],
+              scaleY: [1.4, 0.6, 1.2, 1.1, 1],
+            }}
+            className=" border-[3px] absolute rounded-xl inset-0 border-neutral-600"
+          ></motion.div>
+
+          <motion.div
+            className="absolute -top-[10px] -left-[5px] w-full h-[70%] rotate-45 border-[5px] border-green-600 border-t-transparent border-l-transparent"
+            initial={{
+              scale: 0,
+              rotate: 0,
+            }}
+            transition={{
+              duration: 0.2,
+              delay: 0.1,
+              ease: easeInOut,
+            }}
+            animate={{
+              scale: isChecked ? [0, 1.4, 1] : 0,
+              rotate: isChecked ? [-22.5, 0] : 0,
+            }}
+          ></motion.div>
         </label>
 
         <span className="txt__md text-neutral-300">{el.txt}</span>
