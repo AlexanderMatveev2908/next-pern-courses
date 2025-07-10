@@ -36,19 +36,21 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
     : sql`TRUE`;
 
-  const whereSQL = sql`(${orGroupSQL})`;
+  const andCondSQL: Sql[] = [];
+  if (isArrOK(grade))
+    andCondSQL.push(sql`c."grade" = ANY(${sql`${grade}::"Grade"[]`})`);
+
+  if (isArrOK(stack))
+    andCondSQL.push(sql`c."stack" = ANY(${sql`${stack}::"Stack"[]`})`);
+  if (isArrOK(tech))
+    andCondSQL.push(sql`c."tech" = ANY(${sql`${tech}::"Tech"[]`})`);
+  const andGroup = andCondSQL.length
+    ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
+    : sql`TRUE`;
+
+  const whereSQL = sql`(${orGroupSQL}) AND ${andGroup}`;
 
   const { limit, offset, nHits, pages } = await handlePagination(req, whereSQL);
-  // const andCondSQL: Sql[] = [];
-
-  // ? here work grade as string because i forgot to cast it as enum
-  // if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
-  // if (isArrOK(techStack))
-  //   andCondSQL.push(
-  //     sql([`c."techStack" = ANY(${parseArrSQL(techStack, "TechStack")})`]),
-  //   );
-  // if (isArrOK(tools))
-  //   andCondSQL.push(sql([`c."tools" = ANY(${parseArrSQL(tools, "Tools")})`]));
 
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
