@@ -30,11 +30,11 @@ const PostCourse: FC = () => {
     async (data: CourseFormType) => {
       const formData = genFormData(data);
 
-      // const res = await wrapMutation({
-      //   cbAPI: () => mutate(formData as FormData),
-      // });
+      const res = await wrapMutation({
+        cbAPI: () => mutate(formData as FormData),
+      });
 
-      // if (!res) return;
+      if (!res) return;
     },
     (err) => {
       __cg("err", err);

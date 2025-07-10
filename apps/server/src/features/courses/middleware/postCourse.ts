@@ -17,9 +17,6 @@ export const checkPostCourse = async (
 
   const normalized = {
     ...fields,
-    tags: Array.isArray(fields.tags)
-      ? fields.tags.map((tag) => JSON.parse(tag)).filter((el) => isStr(el.val))
-      : [],
     imageFiles: files.filter((f) => f.mimetype.startsWith("image/")),
     videoFile: files.find((f) => f.mimetype.startsWith("video/")),
   };

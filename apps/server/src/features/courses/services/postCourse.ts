@@ -22,9 +22,9 @@ export const postCourseService = async ({
     const course = await db.$transaction(async (trx) => {
       const course = await trx.course.create({
         data: {
-          ...(fields as Course),
+          ...fields,
           title: capt(fields.title),
-        },
+        } as Course,
       });
 
       if (isArrOK(images))
