@@ -86,16 +86,22 @@ const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
     id: v4(),
   };
 
-const sortPoints = {
-  name: "pointsGainedSort",
-  label: "Points",
-  Svg: GrScorecard,
-};
+const sortPoints: SearchSortType<SchemaGetListCoursesType, "pointsGainedSort"> =
+  {
+    name: "pointsGainedSort",
+    label: "Points",
+    Svg: GrScorecard,
+    id: v4(),
+  };
 
-const timeEstimatedSort = {
+const timeEstimatedSort: SearchSortType<
+  SchemaGetListCoursesType,
+  "timeEstimatedSort"
+> = {
   name: "timeEstimatedSort",
   label: "Time estimated",
   Svg: FaRegHourglassHalf,
+  id: v4(),
 };
 
 export const sortersCourses = [sortCreatedAt, timeEstimatedSort, sortPoints];

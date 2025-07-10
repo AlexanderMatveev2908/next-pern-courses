@@ -56,7 +56,7 @@ packages/*/.turbo
 .env.*
 
 
-logger
-uploads
-
+logger/
+uploads/
+assets/
 
