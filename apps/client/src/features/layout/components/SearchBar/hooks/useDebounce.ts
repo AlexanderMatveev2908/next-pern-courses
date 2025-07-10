@@ -52,7 +52,7 @@ export const useDebounce = <
     const resultZod = zodObj.safeParse(merged);
     const isValid = resultZod.success;
 
-    if (isValid && canMakeAPI)
+    if (isValid && canMakeAPI && !timerID.current)
       isSameData = isSameObj(preValsRef.current, merged);
     // __cg("comparison data", merged, preValsRef.current);
 

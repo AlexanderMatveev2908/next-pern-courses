@@ -1,6 +1,11 @@
 import { FieldSearchClientType } from "@src/types/fastify.js";
 import { FastifyRequest } from "fastify";
-import { calcPagination, parseArrSQL, parseTxtSql } from "../lib/etc.js";
+import {
+  calcPagination,
+  handlePagination,
+  parseArrSQL,
+  parseTxtSql,
+} from "../lib/etc.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -8,25 +13,32 @@ import sql, { Sql } from "sql-template-tag";
 
 export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
-  const { offset, limit } = calcPagination(req);
 
-  // const { txtInputs, grade, techStack, tools, createdAtSort } = myQuery as {
-  //   txtInputs: FieldSearchClientType[];
-  // } & Record<string, any>;
+  const {
+    txtInputs,
+    grade,
+    stack,
+    tech,
+    createdAtSort,
+    timeEstimatedSort,
+    pointsGainedSort,
+  } = myQuery as {
+    txtInputs: FieldSearchClientType[];
+  } & Record<string, any>;
 
-  // const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
-  // const parsed = parseTxtSql(titleVal);
+  const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
+  const parsed = parseTxtSql(titleVal);
 
-  // const orCondSQL = isArrOK(parsed)
-  //   ? parsed!.map(
-  //       (word) => sql`c."title" ILIKE ${`%${word}%`} OR
-  //   EXISTS(
-  //     SELECT 1 FROM unnest(c."tags") AS t
-  //     WHERE t ILIKE ${`%${word}%`}
-  //   )`,
-  //     )
-  //   : [sql`TRUE`];
+  const orCondSQL = (parsed ?? []).map(
+    (word) => sql`c."title" ILIKE ${`%${word}%`}`,
+  );
+  const orGroupSQL = orCondSQL.length
+    ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
+    : sql`TRUE`;
 
+  const whereSQL = sql`(${orGroupSQL})`;
+
+  const { limit, offset, nHits, pages } = await handlePagination(req, whereSQL);
   // const andCondSQL: Sql[] = [];
 
   // ? here work grade as string because i forgot to cast it as enum
@@ -41,9 +53,6 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
 
-  // const orGroup = orCondSQL.length
-  //   ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
-  //   : sql`TRUE`;
   // const andGroup = andCondSQL.length
   //   ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
   //   : sql`TRUE`;
@@ -58,29 +67,12 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   //   ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
   //   : sql`c."createdAt" DESC`;
 
-  // const whereSQL = sql`(${orGroup}) AND (${andGroup})`;
-
-  const countSQL = sql`
-    SELECT COUNT(c."id") FROM "Course" AS c
-  `;
-  // const countSQL = sql`
-  //   SELECT COUNT(c."id") FROM "Course" AS c
-  //   -- WHERE ${whereSQL}
-  // `;
-
-  const rawCount = await db.$queryRawUnsafe<{ count: bigint }[]>(
-    countSQL.text,
-    ...countSQL.values,
-  );
-  const nHits = Number(rawCount?.[0]?.count ?? 0);
-  const pages = Math.ceil(nHits / limit);
-
   const querySQL = sql`
     SELECT
         c."title",
         c."grade",
-        c."techStack",
-        c."tools",
+        c."stack",
+        c."tech",
 
     (
     SELECT json_agg(
@@ -107,15 +99,13 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
     FROM "Course" AS c
 
+    WHERE ${whereSQL}
+
     LIMIT ${limit}
     OFFSET ${offset}
   `;
 
-  // const courses = await db.$queryRawUnsafe(querySQL.text);
-
-  const courses = await db.course.findMany({
-    where: {},
-  });
+  const courses = await db.$queryRawUnsafe(querySQL.text, ...querySQL.values);
 
   return {
     courses,
