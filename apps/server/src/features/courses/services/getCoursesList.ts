@@ -44,26 +44,30 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     andCondSQL.push(sql`c."stack" = ANY(${sql`${stack}::"Stack"[]`})`);
   if (isArrOK(tech))
     andCondSQL.push(sql`c."tech" = ANY(${sql`${tech}::"Tech"[]`})`);
-  const andGroup = andCondSQL.length
+  const andGroupSQL = andCondSQL.length
     ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
     : sql`TRUE`;
 
-  const whereSQL = sql`(${orGroupSQL}) AND ${andGroup}`;
+  const whereSQL = sql`(${orGroupSQL}) AND ${andGroupSQL}`;
+
+  const objSQL = {
+    ASC: sql`ASC`,
+    DESC: sql`DESC`,
+  };
+
+  const orderSQL: Sql[] = [];
+  if (createdAtSort)
+    orderSQL.push(
+      sql`c."createdAt" ${objSQL[createdAtSort as keyof typeof objSQL]}`,
+    );
+  const groupOrderSQL = orderSQL.length
+    ? orderSQL.reduce((acc, curr) => sql`${acc}, ${curr}`)
+    : sql`c."createdAt" ASC`;
 
   const { limit, offset, nHits, pages } = await handlePagination(req, whereSQL);
 
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
-
-  // const andGroup = andCondSQL.length
-  //   ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
-  //   : sql`TRUE`;
-
-  // const order: Sql[] = [];
-
-  // if (createdAtSort) {
-  //   order.push(sql([`c."createdAt" ${createdAtSort}`]));
-  // }
 
   // const orderSQL = order.length
   //   ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
@@ -102,6 +106,8 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     FROM "Course" AS c
 
     WHERE ${whereSQL}
+
+    ORDER BY ${groupOrderSQL}
 
     LIMIT ${limit}
     OFFSET ${offset}
