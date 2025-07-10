@@ -17,8 +17,8 @@ const LinkShadow: FC<PropsType> = ({ href, label }) => {
 
   return (
     <Link
-      href={href}
-      onClick={() => console.log("clicked")}
+      href={"/"}
+      // href={href}
       className="el__app w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl max-w-full"
       style={
         {
@@ -27,7 +27,7 @@ const LinkShadow: FC<PropsType> = ({ href, label }) => {
       }
       css={css`
         border: 2px solid ${clr};
-        &:enabled:hover {
+        &:hover {
           box-shadow:
             0 0 5px ${clr},
             0 0 10px ${clr},

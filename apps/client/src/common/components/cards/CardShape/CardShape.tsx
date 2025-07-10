@@ -56,6 +56,8 @@ const CardShape: FC<PropsType> = ({
     };
   }, [isHydrated]);
 
+  __cg("render");
+
   return !isHydrated ? (
     <Shim
       {...{
@@ -80,18 +82,20 @@ const CardShape: FC<PropsType> = ({
       `}
     >
       <motion.div
-        initial={{ rotateY: 0 }}
+        initial={{ rotateY: 180 }}
         transition={{
           duration: 0.5,
           ease: easeInOut,
         }}
-        animate={{
-          rotateY: isHover ? 180 : 0,
-        }}
+        animate={
+          {
+            // rotateY: isHover ? 180 : 0,
+          }
+        }
         className="flipper"
       >
         <div ref={contentRef} className="client">
-          {Label}
+          {/* {Label} */}
 
           <div className="w-[300px] h-[300px]">
             <ImgLoader
@@ -102,9 +106,12 @@ const CardShape: FC<PropsType> = ({
           </div>
         </div>
         <div className="server">
-          {ContentServer}
+          {/* {ContentServer} */}
 
-          <div className="w-full grid grid-cols-1 gap-6 mt-4">
+          <div
+            onClick={() => console.log("click")}
+            className="w-full grid grid-cols-1 gap-6 mt-4 tb"
+          >
             <div className="w-full justify-self-center max-w-[250px]">
               {linksHref.map((el, i) => (
                 <LinkShadow

@@ -38,13 +38,11 @@ export const CardShapeStyled = styled.div`
 
     .client {
       transform: rotateY(0deg);
-      /* background: green; */
     }
 
     .server {
       transform: rotateY(180deg);
       color: var(--white__0);
-      /* background: red; */
     }
   }
 `;
