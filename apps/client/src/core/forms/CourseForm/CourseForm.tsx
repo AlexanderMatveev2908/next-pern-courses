@@ -7,6 +7,7 @@ import {
   descriptionField,
   fieldHard,
   fieldMarkdown,
+  fieldStack,
   fieldTech,
   imagesField,
   titleField,
@@ -23,7 +24,11 @@ import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVid
 import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
 import WrapCheck from "./components/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
-import { GradePkg, TechNormPkg } from "@shared/first/constants/categories";
+import {
+  GradePkg,
+  StackPkg,
+  TechNormPkg,
+} from "@shared/first/constants/categories";
 
 type PropsType = {
   handleSave: () => void;
@@ -65,6 +70,10 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <FormFieldMD {...{ el: fieldMarkdown }} />
 
       <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
+        {(args) => WrapBoxes(args)}
+      </WrapCheck>
+
+      <WrapCheck {...{ el: fieldStack, vals: StackPkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 

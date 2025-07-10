@@ -38,12 +38,18 @@ export const fieldMarkdown: FormFieldType<CourseFormType> = {
 
 export const fieldHard: FieldCheckType<CourseFormType> = {
   name: "grade",
-  label: "Course grade *",
+  label: "Course Difficulty *",
+  type: "radio",
+};
+
+export const fieldStack: FieldCheckType<CourseFormType> = {
+  name: "stack",
+  label: "Stack *",
   type: "radio",
 };
 
 export const fieldTech: FieldCheckType<CourseFormType> = {
   name: "tech",
-  label: "Tech stack *",
+  label: "Tech *",
   type: "radio",
 };

@@ -52,9 +52,11 @@ export const schemaCoursePost = z.object({
     .string()
     .min(1, "Markdown is required")
     .max(10000, "Markdown must be less than 10000 characters"),
+
   grade: gradeSchema(),
   stack: schemaStack(),
   tech: schemaTech(),
+
   rootLanguage: z.boolean().optional(),
 });
 
