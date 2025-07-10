@@ -2,8 +2,8 @@
 //   console.log("i am new in this town");
 // };
 
-import { SafeParseError, SafeParseReturnType, ZodTypeAny } from "zod";
-import { ZodObject } from "zod/v4";
+import { SafeParseReturnType, ZodTypeAny } from "zod";
+import { TechPkg } from "@shared/first/constants/categories.js";
 
 // export const newStuff2 = () => {
 //   console.log("i am new in this town 2");
@@ -83,3 +83,6 @@ export const genIpsum = (num: number = 1) =>
   `Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque ea amet consectetur soluta, veritatis iste, at repudiandae praesentium esse nihil eaque maiores facilis ad! Alias eveniet maiores illum obcaecati perferendis!`.repeat(
     num,
   );
+
+export const parseTechObj = (techObj: typeof TechPkg) =>
+  Object.fromEntries(Object.entries(techObj).map(([k, v]) => [[k], v.label]));

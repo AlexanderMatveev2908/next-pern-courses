@@ -15,6 +15,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   setValue: UseFormSetValue<T>;
   el: FieldCheckType<T>;
   isCurrSwap: boolean;
+  cb?: (val: T[K]) => void;
 };
 
 const Swap = <T extends FieldValues, K extends Path<T>>({
@@ -24,6 +25,7 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
   setValue,
   el,
   isCurrSwap,
+  cb,
 }: PropsType<T, K>) => {
   const { ids } = useGenIDs({ lengths: [valsToMap.length] });
 
@@ -45,6 +47,8 @@ const Swap = <T extends FieldValues, K extends Path<T>>({
         },
       );
     }
+
+    cb?.(val);
   };
 
   return (

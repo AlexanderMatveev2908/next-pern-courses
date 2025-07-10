@@ -2,18 +2,19 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import {
   descriptionField,
   fieldHard,
   fieldMarkdown,
+  fieldRootLanguage,
+  fieldStack,
   fieldTech,
-  fieldTools,
   imagesField,
   titleField,
   videoField,
 } from "./uiFactory";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import WrapSingleField from "./components/WrapSingleField";
@@ -26,10 +27,13 @@ import WrapCheck from "./components/WrapCheck";
 import WrapBoxes from "@/common/components/forms/HOC/WrapBoxes/WrapBoxes";
 import {
   GradePkg,
-  TechStackPkg,
-  ToolsPkg,
+  StackPkg,
+  StackType,
+  TechPkg,
 } from "@shared/first/constants/categories";
-import TagsForm from "./components/TagsForm";
+import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
+import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
+import { parseTechObj } from "@shared/first/lib/etc.js";
 
 type PropsType = {
   handleSave: () => void;
@@ -42,16 +46,30 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     control,
     formState: { errors },
     setFocus,
-    trigger,
+    setValue,
   } = formCtx;
+  const stackVal = useWatch({
+    control,
+    name: "stack",
+  });
 
   useFocus({ cb: () => setFocus("title") });
 
-  const formData = formCtx.watch();
-  const availableTool =
-    ToolsPkg[formData.techStack as keyof typeof ToolsPkg] ?? {};
+  const handleSyncCheck = (val: unknown) => {
+    const techObj = TechPkg[val as keyof typeof TechPkg];
 
-  // console.log(formCtx.watch());
+    setValue("rootLanguage", techObj.rootLanguage, {
+      shouldValidate: true,
+    });
+  };
+
+  const filteredTech = useMemo(
+    () =>
+      parseTechObj(
+        grabValidTechs(stackVal as StackType).filtered as typeof TechPkg,
+      ),
+    [stackVal],
+  );
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -71,34 +89,34 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
 
       <FormFieldImages {...{ el: imagesField }} />
 
-      <FormFieldVideo {...{ el: videoField, cb: () => trigger("markdown") }} />
+      <FormFieldVideo {...{ el: videoField }} />
 
-      <FormFieldMD {...{ el: fieldMarkdown, cb: () => trigger("video") }} />
+      <FormFieldMD {...{ el: fieldMarkdown }} />
 
       <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck {...{ el: fieldTech, vals: TechStackPkg }}>
+      <WrapCheck {...{ el: fieldStack, vals: StackPkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
 
-      <WrapCheck
-        {...{
-          el: fieldTools,
-          vals: availableTool,
-        }}
-      >
+      <WrapCheck {...{ el: fieldTech, vals: filteredTech }}>
         {(args) =>
           WrapBoxes({
             ...args,
             txtFallback:
-              "You must chose first the Tech so we can show you the relative tools available",
+              "Select a Stack se we can generate a list of technologies",
+            cb: handleSyncCheck,
           })
         }
       </WrapCheck>
 
-      <TagsForm />
+      <FormFiledMiniCheck
+        {...{
+          el: fieldRootLanguage,
+        }}
+      />
 
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim

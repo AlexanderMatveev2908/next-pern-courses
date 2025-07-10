@@ -16,7 +16,7 @@ import RowButtonsFile from "@/common/components/HOC/assets/RowButtonsFile";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FormFieldType<T>;
-  cb: (val: T[K] | File | null) => void;
+  cb?: (val: T[K] | File | null) => void;
 };
 
 const FormFieldVideo = <T extends FieldValues, K extends Path<T>>({

@@ -6,10 +6,7 @@ import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer"
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import CloseBtn from "@/common/components/buttons/CloseBtn";
-import {
-  InnerJoinFilterConfType,
-  SearchFilterType,
-} from "../../types/uiFactory";
+import { SearchFilterType } from "../../types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import ColumnLabels from "./components/ColumnLabels";
 import ColumnVals from "./components/ColumnVals";
@@ -18,14 +15,12 @@ import WrapImpBtns from "../HOC/WrapImpBtns";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
-  innerJoinConf: InnerJoinFilterConfType<T, K>[];
   txtInputs: T["txtInputs"];
   triggerResetAPI: () => void;
 };
 
 const FilterFooter = <T extends FieldValues, K extends Path<T>>({
   filters,
-  innerJoinConf,
   txtInputs,
   triggerResetAPI,
 }: PropsType<T, K>) => {
@@ -109,7 +104,6 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           <ColumnLabels
             {...{
               filters,
-              innerJoinConf,
             }}
           />
           <div className="w-full min-h-full bg-neutral-800 "></div>
@@ -117,7 +111,6 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           <ColumnVals
             {...{
               filters,
-              innerJoinConf,
             }}
           />
         </div>

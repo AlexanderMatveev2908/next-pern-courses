@@ -5,6 +5,7 @@ enum TypeAsset {
 
 enum EntityType {
     COURSE
+    CONCEPT
 }
 
 model CloudAsset {

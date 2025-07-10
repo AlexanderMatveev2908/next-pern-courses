@@ -1,0 +1,8 @@
+model Concept {
+    id String @id @default(uuid())
+    title String
+    markdown String
+
+    courseID String
+    course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
+}

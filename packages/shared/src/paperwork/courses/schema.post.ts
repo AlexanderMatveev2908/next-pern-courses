@@ -1,16 +1,24 @@
 import {
-  isValidTool,
-  TechValType,
-  ToolValType,
-} from "@shared/first/constants/categories.js";
-import {
   REG_CLOUD_URL,
   REG_DESCRIPTION,
   REG_TITLE,
 } from "@shared/first/constants/regex.js";
-import { isStr } from "../../lib/dataStructure.js";
-import { z } from "zod";
-import { gradeSchema, schemaTechStack, schemaTool } from "./schema.shared.js";
+import { RefinementCtx, z } from "zod";
+import { gradeSchema, schemaStack, schemaTech } from "./schema.shared.js";
+import { isValidTech } from "@shared/first/lib/dataStructure.js";
+import { StackType, TechValType } from "@shared/first/constants/categories.js";
+
+export const refineTechByStack = (
+  data: Record<string, any>,
+  ctx: RefinementCtx,
+) => {
+  if (!isValidTech(data.tech as TechValType, data.stack as StackType))
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Invalid tech for stack",
+      path: ["tech"],
+    });
+};
 
 export const schemaCoursePost = z
   .object({
@@ -57,52 +65,17 @@ export const schemaCoursePost = z
 
     markdown: z
       .string()
-      .max(10000, "Markdown must be less than 10000 characters")
-      .optional(),
+      .min(1, "Markdown is required")
+      .max(10000, "Markdown must be less than 10000 characters"),
 
     grade: gradeSchema(),
-    techStack: schemaTechStack(),
-    tools: schemaTool(),
+    stack: schemaStack(),
+    tech: schemaTech(),
 
-    tags: z
-      .array(
-        z.object({
-          field: z.string(),
-          name: z.string(),
-          label: z.string(),
-          type: z.string(),
-          id: z.string(),
-          val: z
-            .string()
-            .max(50, "Tag must be less than 50 characters")
-            .regex(REG_TITLE, "Tag has invalid characters")
-            .refine(
-              (v) => !isStr(v) || v.trim().length >= 2,
-              "If provided tag must be at least 2 characters",
-            ),
-        }),
-      )
-      .max(5, "You can only add 5 tags")
-      .optional(),
+    rootLanguage: z.boolean().nullable().optional(),
   })
   .superRefine((data, ctx) => {
-    if (!isValidTool(data.techStack as TechValType, data.tools as ToolValType))
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Tool is invalid",
-        path: ["tools"],
-      });
-
-    if (
-      !isStr(data.markdown) &&
-      !(data.video instanceof File) &&
-      !isStr(data.video)
-    )
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "A video or a markdown at least is required",
-        path: ["markdown"],
-      });
+    refineTechByStack(data, ctx);
   });
 
 export type CourseFormType = z.infer<typeof schemaCoursePost>;

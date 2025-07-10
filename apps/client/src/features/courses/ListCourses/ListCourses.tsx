@@ -12,7 +12,6 @@ import {
 } from "@shared/first/paperwork/courses/schema.get.js";
 import {
   filtersCourses,
-  innerJoinFilters,
   sortersCourses,
   txtInputsCourses,
 } from "./uifactory/searchBar";
@@ -87,7 +86,6 @@ const ListCourses: FC = () => {
         handleSave,
         hook,
         sorters: sortersCourses,
-        innerJoinConf: innerJoinFilters,
         txtInputs: txtInputsCourses,
         triggerRef,
         zodObj: schemaGetListCourse,

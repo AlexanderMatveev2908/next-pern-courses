@@ -12,20 +12,22 @@ import { easeInOut, motion } from "framer-motion";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
-import { isObjOK, isStr } from "@shared/first/lib/dataStructure";
+import { isObjOK } from "@shared/first/lib/dataStructure";
 import { v4 } from "uuid";
 
-export type PropsTypeWrapBoxes<T extends FieldValues> = {
+export type PropsTypeWrapBoxes<T extends FieldValues, K extends Path<T>> = {
   vals: Record<string, string>;
   el: FieldCheckType<T>;
   txtFallback?: string;
+  cb?: (val: T[K]) => void;
 };
 
 const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
   vals,
   el,
   txtFallback,
-}: PropsTypeWrapBoxes<T>) => {
+  cb,
+}: PropsTypeWrapBoxes<T, K>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
 
@@ -44,7 +46,7 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
         name: el.name as K,
         label: pair[1],
         val: pair[0],
-        type:el.type
+        type: el.type,
       })),
     [vals, el],
   );
@@ -91,10 +93,10 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
     setCurrSwap(0);
   }, [vals]);
 
-  return !isObjOK(vals, Boolean) && isStr(txtFallback) ? (
+  return !isObjOK(vals, Boolean) ? (
     <div className="w-full flex justify-center">
       <span className="txt__md text-neutral-200 pb-1 border-b border-neutral-200">
-        {txtFallback}
+        {txtFallback ?? "Missing fallback text"}
       </span>
     </div>
   ) : (
@@ -135,6 +137,7 @@ const WrapBoxes = <T extends FieldValues, K extends Path<T>>({
                   setValue,
                   el,
                   isCurrSwap: i === currSwap,
+                  cb,
                 }}
               />
             );

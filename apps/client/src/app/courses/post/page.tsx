@@ -9,7 +9,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger";
 import CourseForm from "@/core/forms/CourseForm/CourseForm";
-import { genTagField } from "@/core/forms/CourseForm/uiFactory";
 import { genFormData } from "@/core/lib/processForm";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
@@ -19,7 +18,7 @@ const PostCourse: FC = () => {
     resolver: zodResolver(schemaCoursePost),
     mode: "onChange",
     defaultValues: {
-      tags: [genTagField(0)],
+      rootLanguage: false,
     },
   });
 
