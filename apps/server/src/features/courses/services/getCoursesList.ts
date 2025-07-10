@@ -60,6 +60,15 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     orderSQL.push(
       sql`c."createdAt" ${objSQL[createdAtSort as keyof typeof objSQL]}`,
     );
+  if (timeEstimatedSort)
+    orderSQL.push(
+      sql`c."estimatedTime" ${objSQL[timeEstimatedSort as keyof typeof objSQL]}`,
+    );
+  if (pointsGainedSort)
+    orderSQL.push(
+      sql`c."pointsGained" ${objSQL[pointsGainedSort as keyof typeof objSQL]}`,
+    );
+
   const groupOrderSQL = orderSQL.length
     ? orderSQL.reduce((acc, curr) => sql`${acc}, ${curr}`)
     : sql`c."createdAt" ASC`;
@@ -68,10 +77,6 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
-
-  // const orderSQL = order.length
-  //   ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
-  //   : sql`c."createdAt" DESC`;
 
   const querySQL = sql`
     SELECT
