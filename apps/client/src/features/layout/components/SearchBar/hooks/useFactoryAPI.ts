@@ -1,10 +1,10 @@
-import cloneDeep from "lodash.clonedeep";
 import { useCallback } from "react";
 import { FieldValues } from "react-hook-form";
 import { gabFormValsPagination } from "../lib/style";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { ReqSearchAPI, TriggerTypeRTK } from "@/common/types/api";
 import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
+import { cpyObj } from "@shared/first/lib/etc.js";
 
 type Params<T, K extends ReqSearchAPI, U> = {
   triggerRef: () => void;
@@ -28,7 +28,7 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
         syncPending,
       }: { page?: number; limit?: number; syncPending?: "submit" | "clear" },
     ) => {
-      const merged = cloneDeep({
+      const merged = cpyObj({
         ...data,
         ...gabFormValsPagination({ page, limit }),
       });

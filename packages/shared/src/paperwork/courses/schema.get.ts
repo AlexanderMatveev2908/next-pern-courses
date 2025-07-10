@@ -8,10 +8,6 @@ const optItems = {
     reg: REG_TITLE,
     mavLen: 50,
   },
-  test: {
-    reg: /test/,
-    mavLen: 10,
-  },
 };
 
 export const schemaGetListCourse = z.object({
@@ -27,6 +23,8 @@ export const schemaGetListCourse = z.object({
   tech: z.array(schemaTech()).optional(),
 
   createdAtSort: schemaOrder().optional(),
+  timeEstimatedSort: schemaOrder().optional(),
+  pointsGainedSort: schemaOrder().optional(),
 
   _: z.number().optional(),
 });

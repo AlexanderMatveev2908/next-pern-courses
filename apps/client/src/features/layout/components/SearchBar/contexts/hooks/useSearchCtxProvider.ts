@@ -11,8 +11,8 @@ import {
 } from "../reducer/actions";
 import { SearchCtxStateType } from "../reducer/initState";
 import { FieldValues } from "react-hook-form";
-import cloneDeep from "lodash.clonedeep";
 import { __cg } from "@shared/first/lib/logger.js";
+import { cpyObj } from "@shared/first/lib/etc.js";
 
 type Params = {
   stateReact: SearchCtxStateType;
@@ -74,7 +74,7 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
   const updateNoDebounce = useCallback(
     ({ vals }: ParamsUpdateNoDebounce<FieldValues>) => {
       setCheckPreSubmit({ el: "canMakeAPI", val: false });
-      preValsRef.current = cloneDeep(vals);
+      preValsRef.current = cpyObj(vals);
       __cg("update no debounce");
     },
     [setCheckPreSubmit],

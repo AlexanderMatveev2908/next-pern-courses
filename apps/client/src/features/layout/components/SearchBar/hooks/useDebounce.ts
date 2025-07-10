@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
 import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
-import cloneDeep from "lodash.clonedeep";
 import { gabFormValsPagination } from "../lib/style";
-import { isSameObj } from "@shared/first/lib/etc.js";
+import { cpyObj, isSameObj } from "@shared/first/lib/etc.js";
 import { FieldValues } from "react-hook-form";
 import { ZodObject } from "zod";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -43,7 +42,7 @@ export const useDebounce = <
   } = useSearchCtxConsumer();
 
   useEffect(() => {
-    const merged = cloneDeep({
+    const merged = cpyObj({
       ...formDataRHF,
       ...gabFormValsPagination({}),
     });
@@ -52,7 +51,7 @@ export const useDebounce = <
     const resultZod = zodObj.safeParse(merged);
     const isValid = resultZod.success;
 
-    if (isValid && canMakeAPI)
+    if (isValid && canMakeAPI && !timerID.current)
       isSameData = isSameObj(preValsRef.current, merged);
     // __cg("comparison data", merged, preValsRef.current);
 
