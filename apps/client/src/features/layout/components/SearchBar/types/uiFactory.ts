@@ -34,6 +34,6 @@ export type InnerJoinFilterConfType<
 
 export type DynamicSubCategoryType<T extends FieldValues, K extends Path<T>> = {
   filter: SearchFilterType<T, K>;
-  keyDependsOn: Path<T>;
+  keyDependsOn: string;
   rawObj: NestedRecord;
 };
