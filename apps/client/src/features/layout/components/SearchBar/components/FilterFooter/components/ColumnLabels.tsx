@@ -10,7 +10,6 @@ import { genStyleFilterLabel } from "../uiFactory";
 import { useSearchCtxConsumer } from "../../../contexts/hooks/useSearchCtxConsumer";
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 import { useMemo } from "react";
-import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
