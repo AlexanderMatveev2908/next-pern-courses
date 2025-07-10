@@ -9,6 +9,7 @@ import {
   grabValidTechs,
   isValidTech,
 } from "@shared/first/lib/dataStructure.js";
+import { getExistingMock } from "./dev_only/mock/data.js";
 
 const app = Fastify({
   logger: {

@@ -6,6 +6,7 @@ import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "@src/types/fastify.js";
 import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
 import { ServerSideFormCourse } from "../controllers/post.js";
+import { boolObj } from "@shared/first/lib/etc.js";
 
 export const postCourseService = async ({
   fields,
@@ -24,6 +25,9 @@ export const postCourseService = async ({
         data: {
           ...fields,
           title: capt(fields.title),
+          rootLanguage: boolObj[
+            fields.rootLanguage as unknown as keyof typeof boolObj
+          ] as boolean,
         } as Course,
       });
 

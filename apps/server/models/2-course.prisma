@@ -71,6 +71,7 @@ model Course {
     stack Stack
     tech Tech
 
+    rootLanguage Boolean @default(false)
     estimatedTime Int @default(0)
     pointsGained Int @default(0)
     
