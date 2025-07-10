@@ -17,8 +17,7 @@ const LinkShadow: FC<PropsType> = ({ href, label }) => {
 
   return (
     <Link
-      href={"/"}
-      // href={href}
+      href={href}
       className="el__app w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl max-w-full"
       style={
         {

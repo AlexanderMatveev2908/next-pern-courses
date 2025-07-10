@@ -11,6 +11,7 @@ import ImgLoader from "../../HOC/assets/ImgLoader";
 import Shim from "../../elements/Shim";
 import { css } from "@emotion/react";
 import LinkShadow from "../../buttons/LinkShadow";
+import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 
 type PropsType = {
   images: CloudAssetType[];
@@ -56,7 +57,9 @@ const CardShape: FC<PropsType> = ({
     };
   }, [isHydrated]);
 
-  __cg("render");
+  const { ids } = useGenIDs({
+    lengths: [linksHref.length],
+  });
 
   return !isHydrated ? (
     <Shim
@@ -73,8 +76,8 @@ const CardShape: FC<PropsType> = ({
     <CardShapeStyled
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      // onClick={() => window?.innerWidth > 600 && setIsHover(!isHover)}
-      className="w-full max-w-[350px] border-[3px] border-neutral-800 p-5 rounded-xl relative"
+      onClick={() => window?.innerWidth > 600 && setIsHover(!isHover)}
+      className="w-full max-w-[350px] border-[3px] border-neutral-800 p-5 rounded-xl"
       css={css`
         height: ${contentH}px;
         max-height: ${contentH}px;
@@ -82,20 +85,18 @@ const CardShape: FC<PropsType> = ({
       `}
     >
       <motion.div
-        initial={{ rotateY: 180 }}
+        initial={{ rotateY: 0 }}
         transition={{
           duration: 0.5,
           ease: easeInOut,
         }}
-        animate={
-          {
-            // rotateY: isHover ? 180 : 0,
-          }
-        }
+        animate={{
+          rotateY: isHover ? 180 : 0,
+        }}
         className="flipper"
       >
         <div ref={contentRef} className="client">
-          {/* {Label} */}
+          {Label}
 
           <div className="w-[300px] h-[300px]">
             <ImgLoader
@@ -106,16 +107,13 @@ const CardShape: FC<PropsType> = ({
           </div>
         </div>
         <div className="server">
-          {/* {ContentServer} */}
+          {ContentServer}
 
-          <div
-            onClick={() => console.log("click")}
-            className="w-full grid grid-cols-1 gap-6 mt-4 tb"
-          >
+          <div className="w-full grid grid-cols-1 gap-6 mt-4">
             <div className="w-full justify-self-center max-w-[250px]">
               {linksHref.map((el, i) => (
                 <LinkShadow
-                  key={el.id}
+                  key={ids[0][i]}
                   {...{
                     label: !i ? "View more" : "👻",
                     href: el.href,
