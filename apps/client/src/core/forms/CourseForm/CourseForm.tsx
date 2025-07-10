@@ -7,6 +7,7 @@ import {
   descriptionField,
   fieldHard,
   fieldMarkdown,
+  fieldRootLanguage,
   fieldStack,
   fieldTech,
   imagesField,
@@ -29,6 +30,8 @@ import {
   StackPkg,
   TechNormPkg,
 } from "@shared/first/constants/categories";
+import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   handleSave: () => void;
@@ -45,7 +48,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
 
   useFocus({ cb: () => setFocus("title") });
 
-  // console.log(formCtx.watch());
+  __cg("form data", formCtx.watch());
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
@@ -80,6 +83,12 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <WrapCheck {...{ el: fieldTech, vals: TechNormPkg }}>
         {(args) => WrapBoxes(args)}
       </WrapCheck>
+
+      <FormFiledMiniCheck
+        {...{
+          el: fieldRootLanguage,
+        }}
+      />
 
       <div className="w-full max-w-[200px] justify-self-center mt-8">
         <BtnShim

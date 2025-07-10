@@ -18,14 +18,12 @@ const WrapCheck = <T extends FieldValues>({
 }: PropsType<T>) => {
   return (
     <div className="w-full grid grid-cols-1 gap-4">
-      <div className="w-full grid grid-cols-1 gap-3">
-        <span className="txt__lg text-neutral-200">{el.label}</span>
+      <span className="txt__lg text-neutral-200">{el.label}</span>
 
-        {children({
-          el,
-          vals,
-        })}
-      </div>
+      {children({
+        el,
+        vals,
+      })}
     </div>
   );
 };

@@ -1,4 +1,8 @@
-import { FieldCheckType, FormFieldType } from "@/common/types/uiFactory";
+import {
+  FieldCheckType,
+  FieldMiniCheckType,
+  FormFieldType,
+} from "@/common/types/uiFactory";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 
 export const titleField: FormFieldType<CourseFormType> = {
@@ -52,4 +56,13 @@ export const fieldTech: FieldCheckType<CourseFormType> = {
   name: "tech",
   label: "Tech *",
   type: "radio",
+};
+
+export const fieldRootLanguage: FieldMiniCheckType<
+  CourseFormType,
+  "rootLanguage"
+> = {
+  name: "rootLanguage",
+  label: "Root Language *",
+  txt: "Is this language a root one ? 🧐",
 };
