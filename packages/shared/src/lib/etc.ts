@@ -86,3 +86,8 @@ export const genIpsum = (num: number = 1) =>
 
 export const parseTechObj = (techObj: typeof TechPkg) =>
   Object.fromEntries(Object.entries(techObj).map(([k, v]) => [[k], v.label]));
+
+export const boolObj = {
+  true: true,
+  false: false,
+};
