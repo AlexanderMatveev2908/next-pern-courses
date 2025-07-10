@@ -14,7 +14,7 @@ export const genMock = async () => {
 
   const interval = setInterval(() => {
     seconds++;
-    __cg(`doing stuff 🛠️ => ${seconds}`);
+    console.log(`doing stuff 🛠️ => ${seconds}s`);
   }, 1000);
 
   await DEL_ALL();
@@ -30,10 +30,11 @@ export const genMock = async () => {
         data: {
           title: `Awesome course about ${v}`,
           description: genIpsum(10),
+          markdown: md,
           grade: pickRandomObjKey(GradePkg) as Grade,
           stack: TechPkg[v as keyof typeof TechPkg].stack,
           tech: v as Tech,
-          markdown: md,
+          rootLanguage: TechPkg[v as keyof typeof TechPkg].rootLanguage,
         },
       });
 
