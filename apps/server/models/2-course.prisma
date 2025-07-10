@@ -1,43 +1,3 @@
-
-/* => start 0-connect.prisma */
-datasource db {
-    provider = "postgresql"
-    url = env("DB_URI")
-}
-
-
-generator client {
-  provider = "prisma-client-js"
-}
-/* => end 0-connect.prisma */
-
-/* => start 1-cloud-asset.prisma */
-enum TypeAsset {
-  VIDEO 
-  IMAGE 
-}
-
-enum EntityType {
-    COURSE
-    CONCEPT
-}
-
-model CloudAsset {
-    id String @id @default(uuid())
-    url String
-    publicID String
-    type TypeAsset
-
-    entityID String
-    entityType EntityType
-    
-    createdAt DateTime @default(now())
-
-    @@index([entityID, entityType])
-}
-/* => end 1-cloud-asset.prisma */
-
-/* => start 2-course.prisma */
 enum Grade {
   BEGINNER
   INTERMEDIATE
@@ -121,15 +81,3 @@ model Course {
 
     concepts Concept[] @relation("CourseConcept")
 }
-/* => end 2-course.prisma */
-
-/* => start 3-concept-course.prisma */
-model Concept {
-    id String @id @default(uuid())
-    title String
-    markdown String
-
-    courseID String
-    course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
-}
-/* => end 3-concept-course.prisma */
