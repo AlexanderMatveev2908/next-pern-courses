@@ -34,6 +34,8 @@ export const genFormData = <T>(data: T) => {
       }
     } else if (v instanceof File || typeof v === "string") {
       formData.append(k, v);
+    } else if (typeof v === "boolean") {
+      formData.append(k, v + "");
     }
   }
 

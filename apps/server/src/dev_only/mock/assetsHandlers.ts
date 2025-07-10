@@ -50,7 +50,7 @@ export const getInfoAsset = async (p: string) => {
 
   return {
     filename: v4() + ext,
-    mimetype: mimetype,
+    mimetype,
     buffer: null,
     size: fileBuff.length,
   };

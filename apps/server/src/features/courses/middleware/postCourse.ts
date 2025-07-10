@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { schemaPostCourseServer } from "../paperwork/postCourse.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import fs from "fs";
-import { grabErrMsgZOD } from "@shared/first/lib/etc.js";
+import { boolObj, grabErrMsgZOD } from "@shared/first/lib/etc.js";
 
 export const checkPostCourse = async (
   req: FastifyRequest,
@@ -17,6 +17,7 @@ export const checkPostCourse = async (
 
   const normalized = {
     ...fields,
+    rootLanguage: boolObj[fields.rootLanguage as keyof typeof boolObj],
     imageFiles: files.filter((f) => f.mimetype.startsWith("image/")),
     videoFile: files.find((f) => f.mimetype.startsWith("video/")),
   };
