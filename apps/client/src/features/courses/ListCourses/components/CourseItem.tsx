@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { CourseType } from "../../types/courses";
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import LabelCourse from "./components/LabelCourse";
+import ContentCourse from "./components/ContentCourse/ContentCourse";
 
 type PropsType = {
   course: CourseType;
@@ -15,7 +16,11 @@ const CourseItem: FC<PropsType> = ({ course }) => {
 
   return (
     <CardShape
-      {...{ images, Label: <LabelCourse {...{ course }} /> }}
+      {...{
+        images,
+        Label: <LabelCourse {...{ course }} />,
+        ContentServer: <ContentCourse {...{ course }} />,
+      }}
     ></CardShape>
   );
 };

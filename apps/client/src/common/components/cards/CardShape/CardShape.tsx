@@ -13,9 +13,10 @@ import ImgLoader from "../../HOC/assets/ImgLoader";
 type PropsType = {
   images: CloudAssetType[];
   Label: React.ReactNode;
+  ContentServer: React.ReactNode;
 };
 
-const CardShape: FC<PropsType> = ({ images, Label }) => {
+const CardShape: FC<PropsType> = ({ images, Label, ContentServer }) => {
   const [isHover, setIsHover] = useState(false);
   const [contentH, setContentH] = useState(0);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -48,7 +49,7 @@ const CardShape: FC<PropsType> = ({ images, Label }) => {
   }, [isHydrated]);
 
   return !isHydrated ? (
-    <div className="skeleton w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl max-w-[350px] h-[300px] relative"></div>
+    <div className="skeleton w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl max-w-[350px] h-[425px] relative"></div>
   ) : (
     <CardShapeStyled
       onMouseEnter={() => setIsHover(true)}
@@ -83,11 +84,7 @@ const CardShape: FC<PropsType> = ({ images, Label }) => {
             />
           </div>
         </div>
-        <div className="server">
-          tenetur debitis voluptate eius expedita tempore molestias quidem iusto
-          veniam ea! Illo alias est blanditiis repudiandae similique ipsum quos
-          excepturi.
-        </div>
+        <div className="server">{ContentServer}</div>
       </motion.div>
     </CardShapeStyled>
   );
