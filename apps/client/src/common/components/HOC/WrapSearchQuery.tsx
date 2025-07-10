@@ -20,6 +20,7 @@ import {
 import { ZodObject } from "zod";
 import PageCounter from "@/features/layout/components/SearchBar/components/PageCounter/PageCounter";
 import SpinnerBtn from "../spinners/SpinnerBtn";
+import { DynamicSubCategoryType } from "@/features/layout/components/SearchBar/types/uiFactory";
 
 type PropsType<
   ResT extends PaginatedResAPI<any>,
@@ -32,6 +33,7 @@ type PropsType<
   formCtx: UseFormReturn<FormT>;
   nHitsCached?: number;
   pagesCached?: number;
+  dynamicFilters: DynamicSubCategoryType<FormT, PathT>[];
 };
 
 const WrapSearchQuery = <
@@ -51,6 +53,7 @@ const WrapSearchQuery = <
   zodObj,
   formCtx,
   nHitsCached,
+  dynamicFilters,
   // pagesCached,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
   const [triggerRTK, res] = hook;
@@ -95,6 +98,7 @@ const WrapSearchQuery = <
             zodObj,
             triggerRef,
             nHitsCached,
+            dynamicFilters,
           }}
         />
       </FormProvider>

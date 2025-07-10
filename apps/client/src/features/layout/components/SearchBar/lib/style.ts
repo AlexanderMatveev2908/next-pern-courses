@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { uiBreaks } from "@/core/constants/uiBreaks";
 import { isWindow } from "@/core/lib/etc";
+import { DynamicSubCategoryType } from "../types/uiFactory";
+import { FieldValues, Path, PathValue } from "react-hook-form";
 
 export const getLimitPage = () =>
   !isWindow()
@@ -59,3 +63,18 @@ export const grabNumBlockBtns = () =>
             : window.innerWidth > 400
               ? 2
               : 1;
+
+export const extractDynamicAllowedFilters = <
+  T extends FieldValues,
+  K extends Path<T>,
+>(
+  dynamicFilter: DynamicSubCategoryType<T, K>,
+  dataDependsOn: PathValue<T, Path<T>>,
+) =>
+  Object.entries(dynamicFilter.rawObj)
+    .filter(([_, v]: [string, any]) =>
+      (dataDependsOn as string[]).includes(
+        v[dynamicFilter.keyDependsOn as keyof typeof v] as unknown as string,
+      ),
+    )
+    .map(([k]) => k);

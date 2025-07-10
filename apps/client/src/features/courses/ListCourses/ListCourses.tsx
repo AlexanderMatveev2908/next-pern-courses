@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
+import { dynamicFiltersCourses } from "./uifactory/searchBar";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -92,6 +93,7 @@ const ListCourses: FC = () => {
         formCtx,
         pagesCached,
         nHitsCached,
+        dynamicFilters: dynamicFiltersCourses,
       }}
     >
       {({ isHydrated }) => {

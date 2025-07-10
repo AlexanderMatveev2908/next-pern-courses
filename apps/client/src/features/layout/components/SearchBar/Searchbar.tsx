@@ -21,7 +21,11 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import SkeletonSearch from "./components/SkeletonSearch";
 import FilterFooter from "./components/FilterFooter/FilterFooter";
-import { SearchFilterType, SearchSortType } from "./types/uiFactory";
+import {
+  DynamicSubCategoryType,
+  SearchFilterType,
+  SearchSortType,
+} from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
 import { useCallback, useEffect } from "react";
@@ -49,6 +53,7 @@ export type PropsTypeSearchBar<
   zodObj: ZodT;
   triggerRef: () => void;
   nHitsCached?: number;
+  dynamicFilters: DynamicSubCategoryType<FormT, PathT>[];
 };
 
 const Searchbar = <
@@ -66,6 +71,7 @@ const Searchbar = <
   hook,
   triggerRef,
   nHitsCached,
+  dynamicFilters,
 }: PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT>) => {
   const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
 
@@ -154,7 +160,9 @@ const Searchbar = <
                 </div>
               </div>
 
-              <FilterFooter {...{ filters, txtInputs, triggerResetAPI }} />
+              <FilterFooter
+                {...{ filters, txtInputs, triggerResetAPI, dynamicFilters }}
+              />
 
               <SortPop {...{ sorters }} />
             </form>
