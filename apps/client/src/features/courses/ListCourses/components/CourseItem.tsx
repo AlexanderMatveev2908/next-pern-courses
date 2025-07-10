@@ -4,6 +4,7 @@
 import type { FC } from "react";
 import { CourseType } from "../../types/courses";
 import CardShape from "@/common/components/cards/CardShape/CardShape";
+import LabelCourse from "./components/LabelCourse";
 
 type PropsType = {
   course: CourseType;
@@ -12,7 +13,11 @@ type PropsType = {
 const CourseItem: FC<PropsType> = ({ course }) => {
   const { images, title } = course;
 
-  return <CardShape {...{ images, title }}></CardShape>;
+  return (
+    <CardShape
+      {...{ images, Label: <LabelCourse {...{ course }} /> }}
+    ></CardShape>
+  );
 };
 
 export default CourseItem;

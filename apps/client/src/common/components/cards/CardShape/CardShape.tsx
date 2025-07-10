@@ -12,10 +12,10 @@ import ImgLoader from "../../HOC/assets/ImgLoader";
 
 type PropsType = {
   images: CloudAssetType[];
-  title: string;
+  Label: React.ReactNode;
 };
 
-const CardShape: FC<PropsType> = ({ images, title }) => {
+const CardShape: FC<PropsType> = ({ images, Label }) => {
   const [isHover, setIsHover] = useState(false);
   const [contentH, setContentH] = useState(0);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -73,16 +73,7 @@ const CardShape: FC<PropsType> = ({ images, title }) => {
         className="flipper"
       >
         <div ref={contentRef} className="client">
-          <div className="w-full flex justify-center bg-[#000] py-2 px-4 rounded-xl border-2 border-neutral-600">
-            <span
-              className="txt__lg grad__txt clamp__txt"
-              style={{
-                WebkitLineClamp: 2,
-              }}
-            >
-              {title}
-            </span>
-          </div>
+          {Label}
 
           <div className="w-[300px] h-[300px]">
             <ImgLoader
