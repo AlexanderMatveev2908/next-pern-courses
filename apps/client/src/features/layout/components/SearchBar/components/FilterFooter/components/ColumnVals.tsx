@@ -32,6 +32,8 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
       (f): f is SearchFilterType<T, K> => f.name === currFilter,
     );
 
+    if (!hypotheticalParentToShow) return [];
+
     return cloneDeep(
       (hypotheticalParentToShow as SearchFilterType<T, K>).options,
     ) as FieldCheckValType<T, K>[];

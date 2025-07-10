@@ -37,6 +37,7 @@ import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
 import { useListenDummyPending } from "./hooks/useListenDummyPending";
+import { __cg } from "@shared/first/lib/logger.js";
 
 export type PropsTypeSearchBar<
   ResT extends PaginatedResAPI<any>,
@@ -74,6 +75,8 @@ const Searchbar = <
   dynamicFilters,
 }: PropsTypeSearchBar<ResT, ArgT, FormT, PathT, ZodT>) => {
   const { setSearcher, updateNoDebounce } = useSearchCtxConsumer();
+
+  __cg("filt", dynamicFilters);
 
   const formCtx = useFormContext<FormT>();
   const { setFocus, watch, reset: resetRHF } = formCtx;
