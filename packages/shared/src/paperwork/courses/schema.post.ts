@@ -57,12 +57,7 @@ export const schemaCoursePost = z.object({
   stack: schemaStack(),
   tech: schemaTech(),
 
-  rootLanguage: z
-    .boolean()
-    .nullable()
-    .refine((v) => !!v, {
-      message: "Root language must be true",
-    }),
+  rootLanguage: z.boolean().nullable().optional(),
 });
 
 export type CourseFormType = z.infer<typeof schemaCoursePost>;

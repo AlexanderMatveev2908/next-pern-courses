@@ -82,10 +82,10 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
           ></motion.div>
 
           <motion.div
-            className="absolute -top-[10px] -left-[5px] w-full h-[70%] rotate-45 border-[5px] border-green-600 border-t-transparent border-l-transparent"
+            className="absolute -top-[10px] -left-[5px] w-full h-[70%] border-[5px] border-green-600 border-t-transparent border-l-transparent"
             initial={{
               scale: 0,
-              rotate: 0,
+              rotate: 22.5,
             }}
             transition={{
               duration: 0.2,
@@ -94,7 +94,7 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
             }}
             animate={{
               scale: isChecked ? [0, 1.4, 1] : 0,
-              rotate: isChecked ? [-22.5, 0] : 0,
+              rotate: isChecked ? [22.5, 45] : 0,
             }}
           ></motion.div>
         </label>

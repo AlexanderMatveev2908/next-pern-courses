@@ -31,7 +31,7 @@ import {
   TechNormPkg,
 } from "@shared/first/constants/categories";
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
-import { __cg } from "@shared/first/lib/logger.js";
+// import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   handleSave: () => void;
@@ -47,8 +47,6 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
   } = formCtx;
 
   useFocus({ cb: () => setFocus("title") });
-
-  __cg("form data", formCtx.watch());
 
   return (
     <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
