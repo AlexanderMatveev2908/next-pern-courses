@@ -29,7 +29,8 @@
   }
 }
 
-.btn__app:enabled {
+.btn__app:enabled,
+.el__app {
   cursor: pointer;
   transition: 0.3s;
 
@@ -42,7 +43,8 @@
   @apply cursor-not-allowed opacity-50;
 }
 
-.btn__app:enabled:active {
+.btn__app:enabled:active,
+.el__app:active {
   transition: 0.15s;
   transform: scale(0.8);
 }

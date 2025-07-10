@@ -20,13 +20,13 @@ import { __cg } from "@shared/first/lib/logger.js";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/contexts/hooks/useSearchCtxConsumer";
 import { useFactoryAPI } from "@/features/layout/components/SearchBar/hooks/useFactoryAPI";
 import { css } from "@emotion/react";
-import { resp } from "@/core/lib/style";
 import WrapSearchQuery from "@/common/components/HOC/WrapSearchQuery";
 import { useSelector } from "react-redux";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 import { dynamicFiltersCourses } from "./uifactory/searchBar";
+import CourseItem from "./components/CourseItem";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -71,7 +71,7 @@ const ListCourses: FC = () => {
 
   const handleSave = handleSubmit(
     (data) => {
-      searchAPI(data, { syncPending: "submit" });
+      searchAPI(data, { syncPending: "submit", page: 0, block: 0 });
     },
     (errs) => {
       __cg("errs submit", errs);
@@ -102,24 +102,13 @@ const ListCourses: FC = () => {
 
         return (
           <div
-            className="w-full grid gap-10"
+            className="w-full grid gap-10 justify-items-center"
             css={css`
-              grid-template-columns: 1fr;
-
-              ${resp(600)} {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-              }
+              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             `}
           >
-            {arg!.map((item, i) => (
-              <div
-                key={i}
-                className="border-[3px] border-neutral-600 rounded-xl p-5 min-h-0 max-h-[400px] overflow-y-auto scroll__app"
-              >
-                <span className="txt__md  break-all">
-                  {JSON.stringify(item, null, 2)}
-                </span>
-              </div>
+            {arg!.map((course) => (
+              <CourseItem key={course.id} {...{ course }} />
             ))}
           </div>
         );

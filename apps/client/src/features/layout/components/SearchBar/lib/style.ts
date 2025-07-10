@@ -8,9 +8,9 @@ import { FieldValues, Path, PathValue } from "react-hook-form";
 export const getLimitPage = () =>
   !isWindow()
     ? 1
-    : window.innerWidth > uiBreaks.lg
+    : window.innerWidth > uiBreaks.xl
       ? 4
-      : window.innerWidth > uiBreaks.md
+      : window.innerWidth > 840
         ? 2
         : 1;
 

@@ -80,6 +80,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
 
   const querySQL = sql`
     SELECT
+        c."id",
         c."title",
         c."grade",
         c."stack",

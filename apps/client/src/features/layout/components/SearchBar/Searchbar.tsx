@@ -17,9 +17,7 @@ import {
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import SecondaryRowBtns from "./components/SecondaryRowBtns";
 import PrimaryRow from "./components/PrimaryRow";
-import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
-import SkeletonSearch from "./components/SkeletonSearch";
 import FilterFooter from "./components/FilterFooter/FilterFooter";
 import {
   DynamicSubCategoryType,
@@ -37,6 +35,8 @@ import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
 import { useListenDummyPending } from "./hooks/useListenDummyPending";
+import Shim from "@/common/components/elements/Shim";
+import { css } from "@emotion/react";
 
 export type PropsTypeSearchBar<
   ResT extends PaginatedResAPI<any>,
@@ -129,6 +129,8 @@ const Searchbar = <
     resetRHF(formDevVals as unknown as DefaultValues<FormT>);
     searchAPI(formDevVals, {
       syncPending: "clear",
+      page: 0,
+      block: 0,
     });
   }, [resetRHF, txtInputs, searchAPI]);
 
@@ -136,7 +138,17 @@ const Searchbar = <
     <WrapPendingClient {...{ isLoading: false }}>
       {({ isHydrated } = { isHydrated: false }) =>
         !isHydrated ? (
-          <SkeletonSearch />
+          <Shim
+            {...{
+              $CSS: {
+                css: css`
+                  width: 95%;
+                  max-width: 1200px;
+                  height: 200px;
+                `,
+              },
+            }}
+          />
         ) : (
           <>
             <form

@@ -12,7 +12,6 @@ import { css } from "@emotion/react";
 import FormFieldBoxV2 from "@/common/components/forms/inputs/FormFieldBoxV2";
 import { FieldCheckValType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { __cg } from "@shared/first/lib/logger.js";
 import { extractDynamicAllowedFilters } from "../../../lib/style";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
@@ -28,8 +27,6 @@ const ColumnVals = <T extends FieldValues, K extends Path<T>>({
   const {
     searchers: { currFilter },
   } = useSearchCtxConsumer();
-
-  __cg("vals", watch());
 
   const filtered: FieldCheckValType<T, K>[] = useMemo(() => {
     const normalFilter = filters.find((f) => f.name === currFilter);
