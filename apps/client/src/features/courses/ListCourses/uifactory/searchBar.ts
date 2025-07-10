@@ -1,10 +1,16 @@
 import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { genArrFromConst } from "@/core/lib/etc";
 import {
+  DynamicSubCategoryType,
   SearchFilterType,
   SearchSortType,
 } from "@/features/layout/components/SearchBar/types/uiFactory";
-import { GradePkg, TechNormPkg } from "@shared/first/constants/categories.js";
+import {
+  GradePkg,
+  StackPkg,
+  TechNormPkg,
+  TechPkg,
+} from "@shared/first/constants/categories.js";
 import { SchemaGetListCoursesType } from "@shared/first/paperwork/courses/schema.get.js";
 import { Rocket } from "lucide-react";
 import { IoCalendarNumberSharp, IoStatsChart } from "react-icons/io5";
@@ -45,15 +51,32 @@ const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {
   options: genArrFromConst(GradePkg, "grade"),
 };
 
-const filterTech: SearchFilterType<SchemaGetListCoursesType, "tech"> = {
-  name: "tech",
-  label: "Tech stack",
+const filterStack: SearchFilterType<SchemaGetListCoursesType, "stack"> = {
+  name: "stack",
+  label: "Stack",
   Svg: Rocket,
   id: v4(),
-  options: genArrFromConst(TechNormPkg, "tech"),
+  options: genArrFromConst(StackPkg, "stack"),
 };
 
-export const filtersCourses = [filterGrade, filterTech];
+export const filtersCourses = [filterGrade, filterStack];
+
+const dynamicFilterTech: DynamicSubCategoryType<
+  SchemaGetListCoursesType,
+  "tech"
+> = {
+  filter: {
+    name: "tech",
+    label: "Tech",
+    Svg: Rocket,
+    id: v4(),
+    options: genArrFromConst(TechNormPkg, "tech"),
+  },
+  keyDependsOn: "stack",
+  rawObj: TechPkg,
+};
+
+export const dynamicFiltersCourses = [dynamicFilterTech];
 
 const sortCreatedAt: SearchSortType<SchemaGetListCoursesType, "createdAtSort"> =
   {

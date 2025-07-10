@@ -10,62 +10,63 @@ export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
   const { offset, limit } = calcPagination(req);
 
-  const { txtInputs, grade, techStack, tools, createdAtSort } = myQuery as {
-    txtInputs: FieldSearchClientType[];
-  } & Record<string, any>;
+  // const { txtInputs, grade, techStack, tools, createdAtSort } = myQuery as {
+  //   txtInputs: FieldSearchClientType[];
+  // } & Record<string, any>;
 
-  const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
-  const parsed = parseTxtSql(titleVal);
+  // const titleVal = (txtInputs ?? []).find((npt) => npt.name === "title")?.val;
+  // const parsed = parseTxtSql(titleVal);
 
-  const orCondSQL = isArrOK(parsed)
-    ? parsed!.map(
-        (word) => sql`c."title" ILIKE ${`%${word}%`} OR 
-    EXISTS(
-      SELECT 1 FROM unnest(c."tags") AS t 
-      WHERE t ILIKE ${`%${word}%`}
-    )`,
-      )
-    : [sql`TRUE`];
+  // const orCondSQL = isArrOK(parsed)
+  //   ? parsed!.map(
+  //       (word) => sql`c."title" ILIKE ${`%${word}%`} OR
+  //   EXISTS(
+  //     SELECT 1 FROM unnest(c."tags") AS t
+  //     WHERE t ILIKE ${`%${word}%`}
+  //   )`,
+  //     )
+  //   : [sql`TRUE`];
 
-  const andCondSQL: Sql[] = [];
+  // const andCondSQL: Sql[] = [];
 
   // ? here work grade as string because i forgot to cast it as enum
-  if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
-  if (isArrOK(techStack))
-    andCondSQL.push(
-      sql([`c."techStack" = ANY(${parseArrSQL(techStack, "TechStack")})`]),
-    );
-  if (isArrOK(tools))
-    andCondSQL.push(sql([`c."tools" = ANY(${parseArrSQL(tools, "Tools")})`]));
+  // if (isArrOK(grade)) andCondSQL.push(sql`c."grade" = ANY(${grade})`);
+  // if (isArrOK(techStack))
+  //   andCondSQL.push(
+  //     sql([`c."techStack" = ANY(${parseArrSQL(techStack, "TechStack")})`]),
+  //   );
+  // if (isArrOK(tools))
+  //   andCondSQL.push(sql([`c."tools" = ANY(${parseArrSQL(tools, "Tools")})`]));
 
   // andCondSQL.push(sql`
   //     c."tags" @> ARRAY['Async await', 'Variables']`);
 
-  const orGroup = orCondSQL.length
-    ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
-    : sql`TRUE`;
-  const andGroup = andCondSQL.length
-    ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
-    : sql`TRUE`;
+  // const orGroup = orCondSQL.length
+  //   ? orCondSQL.reduce((acc, curr) => sql`${acc} OR ${curr}`)
+  //   : sql`TRUE`;
+  // const andGroup = andCondSQL.length
+  //   ? andCondSQL.reduce((acc, curr) => sql`${acc} AND ${curr}`)
+  //   : sql`TRUE`;
 
-  const order: Sql[] = [];
+  // const order: Sql[] = [];
 
-  if (createdAtSort === "ASC" || createdAtSort === "DESC") {
-    order.push(sql([`c."createdAt" ${createdAtSort}`]));
-  }
+  // if (createdAtSort) {
+  //   order.push(sql([`c."createdAt" ${createdAtSort}`]));
+  // }
 
-  const orderSQL = order.length
-    ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
-    : sql`c."createdAt" DESC`;
+  // const orderSQL = order.length
+  //   ? order.reduce((acc, curr) => sql`${acc}, ${curr}`)
+  //   : sql`c."createdAt" DESC`;
 
-  __cg("orderSQL", orderSQL.text);
-
-  const whereSQL = sql`(${orGroup}) AND (${andGroup})`;
+  // const whereSQL = sql`(${orGroup}) AND (${andGroup})`;
 
   const countSQL = sql`
     SELECT COUNT(c."id") FROM "Course" AS c
-    WHERE ${whereSQL}
   `;
+  // const countSQL = sql`
+  //   SELECT COUNT(c."id") FROM "Course" AS c
+  //   -- WHERE ${whereSQL}
+  // `;
 
   const rawCount = await db.$queryRawUnsafe<{ count: bigint }[]>(
     countSQL.text,
@@ -105,15 +106,16 @@ export const handleRawSQL = async (req: FastifyRequest) => {
     ) AS "video"
 
     FROM "Course" AS c
-    WHERE ${whereSQL}
 
-    ORDER BY ${orderSQL}
-
-    OFFSET ${offset}
     LIMIT ${limit}
+    OFFSET ${offset}
   `;
 
-  const courses = await db.$queryRawUnsafe(querySQL.text, ...querySQL.values);
+  // const courses = await db.$queryRawUnsafe(querySQL.text);
+
+  const courses = await db.course.findMany({
+    where: {},
+  });
 
   return {
     courses,

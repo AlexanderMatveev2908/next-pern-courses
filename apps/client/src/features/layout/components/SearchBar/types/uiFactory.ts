@@ -20,7 +20,7 @@ export type SearchSortType<T extends FieldValues, K extends Path<T>> = {
 };
 
 export type NestedRecord = {
-  [key: string]: string | NestedRecord;
+  [key: string]: NestedRecord | string | boolean;
 };
 
 export type InnerJoinFilterConfType<
@@ -30,4 +30,10 @@ export type InnerJoinFilterConfType<
   filter: SearchFilterType<T, K>;
   keyDependsOn: Path<T>;
   parentFilterToSync: NestedRecord;
+};
+
+export type DynamicSubCategoryType<T extends FieldValues, K extends Path<T>> = {
+  filter: SearchFilterType<T, K>;
+  keyDependsOn: Path<T>;
+  rawObj: NestedRecord;
 };

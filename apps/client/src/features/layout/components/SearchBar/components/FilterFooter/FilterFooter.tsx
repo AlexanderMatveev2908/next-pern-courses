@@ -6,7 +6,10 @@ import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer"
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import CloseBtn from "@/common/components/buttons/CloseBtn";
-import { SearchFilterType } from "../../types/uiFactory";
+import {
+  DynamicSubCategoryType,
+  SearchFilterType,
+} from "../../types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import ColumnLabels from "./components/ColumnLabels";
 import ColumnVals from "./components/ColumnVals";
@@ -17,12 +20,14 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
   txtInputs: T["txtInputs"];
   triggerResetAPI: () => void;
+  dynamicFilters: DynamicSubCategoryType<T, K>[];
 };
 
 const FilterFooter = <T extends FieldValues, K extends Path<T>>({
   filters,
   txtInputs,
   triggerResetAPI,
+  dynamicFilters,
 }: PropsType<T, K>) => {
   const barRef = useRef<HTMLDivElement | null>(null);
   const labelRef = useRef<HTMLDivElement | null>(null);
@@ -32,6 +37,8 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
     if (!labelRef.current) return;
 
     const cb = () => setElementHeight(labelRef.current?.scrollHeight ?? 0);
+
+    cb();
 
     const obs = new ResizeObserver(cb);
     window.addEventListener("resize", cb);
@@ -104,6 +111,7 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           <ColumnLabels
             {...{
               filters,
+              dynamicFilters,
             }}
           />
           <div className="w-full min-h-full bg-neutral-800 "></div>
@@ -111,6 +119,7 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           <ColumnVals
             {...{
               filters,
+              dynamicFilters,
             }}
           />
         </div>

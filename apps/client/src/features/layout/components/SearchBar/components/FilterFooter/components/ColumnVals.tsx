@@ -2,7 +2,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { SearchFilterType } from "../../../types/uiFactory";
+import {
+  DynamicSubCategoryType,
+  SearchFilterType,
+} from "../../../types/uiFactory";
 import { FieldValues, Path, PathValue, useFormContext } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
 import { useSearchCtxConsumer } from "../../../contexts/hooks/useSearchCtxConsumer";
@@ -12,10 +15,12 @@ import { FieldCheckValType } from "@/common/types/uiFactory";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
+  dynamicFilters: DynamicSubCategoryType<T, K>[];
 };
 
 const ColumnVals = <T extends FieldValues, K extends Path<T>>({
   filters,
+  dynamicFilters,
 }: PropsType<T, K>) => {
   const { watch, setValue, getValues } = useFormContext<T>();
   const {

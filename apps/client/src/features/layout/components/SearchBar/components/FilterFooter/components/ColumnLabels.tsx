@@ -2,13 +2,17 @@
 "use client";
 
 import { FieldValues, Path } from "react-hook-form";
-import { SearchFilterType } from "../../../types/uiFactory";
+import {
+  DynamicSubCategoryType,
+  SearchFilterType,
+} from "../../../types/uiFactory";
 import { genStyleFilterLabel } from "../uiFactory";
 import { useSearchCtxConsumer } from "../../../contexts/hooks/useSearchCtxConsumer";
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
+  dynamicFilters: DynamicSubCategoryType<T, K>[];
 };
 
 const ColumnLabels = <T extends FieldValues, K extends Path<T>>({

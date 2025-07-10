@@ -1,5 +1,4 @@
 import { __cg } from "@shared/first/lib/logger.js";
-import db from "@src/conf/db.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { handleRawSQL } from "../services/getCoursesList.js";
 
