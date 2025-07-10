@@ -72,7 +72,7 @@ const ListCourses: FC = () => {
 
   const handleSave = handleSubmit(
     (data) => {
-      searchAPI(data, { syncPending: "submit" });
+      searchAPI(data, { syncPending: "submit", page: 0, block: 0 });
     },
     (errs) => {
       __cg("errs submit", errs);

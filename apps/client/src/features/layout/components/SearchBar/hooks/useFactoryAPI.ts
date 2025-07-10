@@ -25,8 +25,14 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
       {
         page,
         limit,
+        block,
         syncPending,
-      }: { page?: number; limit?: number; syncPending?: "submit" | "clear" },
+      }: {
+        page?: number;
+        limit?: number;
+        block?: number;
+        syncPending?: "submit" | "clear";
+      },
     ) => {
       const merged = cpyObj({
         ...data,
@@ -45,6 +51,11 @@ export const useFactoryAPI = <T, K extends ReqSearchAPI, U>({
         setPagination({
           el: "page",
           val: page,
+        });
+      if (typeof block === "number")
+        setPagination({
+          el: "block",
+          val: block,
         });
       if (typeof limit === "number")
         setPagination({

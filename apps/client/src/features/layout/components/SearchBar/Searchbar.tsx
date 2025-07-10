@@ -129,6 +129,8 @@ const Searchbar = <
     resetRHF(formDevVals as unknown as DefaultValues<FormT>);
     searchAPI(formDevVals, {
       syncPending: "clear",
+      page: 0,
+      block: 0,
     });
   }, [resetRHF, txtInputs, searchAPI]);
 

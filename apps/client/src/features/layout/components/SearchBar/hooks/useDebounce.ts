@@ -39,6 +39,7 @@ export const useDebounce = <
     preValsRef,
     setCheckPreSubmit,
     checkPreSubmit: { canMakeAPI },
+    setPagination,
   } = useSearchCtxConsumer();
 
   useEffect(() => {
@@ -85,6 +86,14 @@ export const useDebounce = <
         vals: genURLSearchParams(merged),
       } as R);
       preValsRef.current = merged;
+      setPagination({
+        el: "block",
+        val: 0,
+      });
+      setPagination({
+        el: "page",
+        val: 0,
+      });
       clearT(timerID);
     }, 500);
 
@@ -99,6 +108,7 @@ export const useDebounce = <
     canMakeAPI,
     setCheckPreSubmit,
     triggerRTK,
+    setPagination,
   ]);
 
   return {};

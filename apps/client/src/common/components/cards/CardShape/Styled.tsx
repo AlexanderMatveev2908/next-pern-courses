@@ -29,18 +29,22 @@ export const CardShapeStyled = styled.div`
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
+      height: fit-content;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
       /* background: var(--neutral__950); */
     }
 
     .client {
       transform: rotateY(0deg);
-      background: green;
+      /* background: green; */
     }
 
     .server {
       transform: rotateY(180deg);
       color: var(--white__0);
-      background: red;
+      /* background: red; */
     }
   }
 `;
