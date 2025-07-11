@@ -30,7 +30,7 @@ const BlockCode: FC<PropsType> = ({ children, className }: PropsType) => {
 
   return (
     <div
-      className="w-full relative overflow-y-visible"
+      className="w-fit min-w-full relative px-3 pb-4 pt-8"
       suppressHydrationWarning
     >
       {/* ? CONTENT IS CUT OUT, I DO NOT NEED SCROLL ON BIGGER PARENT TO SHOW MD FILES EASIER IN POPUP */}
@@ -53,7 +53,7 @@ const BlockCode: FC<PropsType> = ({ children, className }: PropsType) => {
       <button
         type="button"
         aria-label="Copy the text to your clipboard"
-        className="btn__app absolute top-2 right-2 enabled:cursor-pointer"
+        className="btn__app absolute top-1 right-1 enabled:cursor-pointer"
         style={
           {
             "--scale__up": 1.3,

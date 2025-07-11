@@ -15,7 +15,7 @@ const ContentMD: FC<PropsType> = ({ data }) => {
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-col min-h-0 max-h-full overflow-y-auto scroll__app px-3 pb-8 prose prose-neutral dark:prose-invert">
-        <div className="h-fit w-full overflow-y-visible">
+        <div className="h-fit w-full">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeHighlight]}
