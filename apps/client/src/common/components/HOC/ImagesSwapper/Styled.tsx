@@ -16,12 +16,16 @@ export const StyledContainer = styled.div`
     z-index: 100;
     padding: 10px;
     border-radius: 15px;
-    &:hover {
+    &:enabled:hover {
       transform: translateY(-50%) scale(1.3);
     }
-    &:active {
+    &:enabled:active {
       transition: 0.15s;
       transform: translateY(-50%) scale(0.8);
+    }
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
 
     svg {
