@@ -13,7 +13,7 @@ type PropsType = {
 const RowInfo: FC<PropsType> = ({ info }) => {
   return (
     <div className="w-full flex justify-start items-center gap-6">
-      <span className="txt__lg text-neutral-200">{info.label}</span>
+      <span className="txt__md text-neutral-200">{info.label}</span>
       <span className="txt__md text-neutral-400">{info.val}</span>
     </div>
   );

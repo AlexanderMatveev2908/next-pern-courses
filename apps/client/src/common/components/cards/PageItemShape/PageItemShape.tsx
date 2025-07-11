@@ -10,6 +10,7 @@ import { isStr } from "@shared/first/lib/dataStructure.js";
 import ClickTxtLonger from "../../elements/ClickTxtLonger";
 import SubTitle from "../../elements/SubTitle";
 import PreviewMarkdown from "../../HOC/PreviewMarkdown/PreviewMarkdown";
+import Title from "../../elements/Title";
 
 type PropsType = {
   title: string;
@@ -17,6 +18,7 @@ type PropsType = {
   video?: CloudAssetType | null;
   description?: string | null;
   markdown: string;
+  Content: React.ReactNode;
 };
 
 const PageItemShape: FC<PropsType> = ({
@@ -25,6 +27,7 @@ const PageItemShape: FC<PropsType> = ({
   title,
   description,
   markdown,
+  Content,
 }) => {
   return (
     <div
@@ -33,9 +36,7 @@ const PageItemShape: FC<PropsType> = ({
         margin-bottom: ${isStr(video?.url) ? -100 : 0}px;
       `}
     >
-      <div className="w-full flex justify-center">
-        <span className="txt__xl grad__txt">{title}</span>
-      </div>
+      <Title {...{ title }} />
 
       <ImagesSwapper
         {...{
@@ -43,31 +44,35 @@ const PageItemShape: FC<PropsType> = ({
         }}
       />
 
-      <div className="w-full flex flex-col gap-2">
-        <SubTitle
-          {...{
-            txt: "Description",
-          }}
-        />
+      <div className="w-full grid grid-cols-1 gap-6">
+        <div className="w-full flex flex-col gap-2">
+          <SubTitle
+            {...{
+              txt: "Description",
+            }}
+          />
 
-        <ClickTxtLonger
-          {...{
-            description,
-          }}
-        />
+          <ClickTxtLonger
+            {...{
+              description,
+            }}
+          />
+        </div>
+
+        <div className="w-full grid grid-cols-1 gap-2">
+          <SubTitle
+            {...{
+              txt: "Markdown",
+            }}
+          />
+
+          <PreviewMarkdown {...{ data: markdown }} />
+        </div>
+
+        {Content}
       </div>
 
-      <div className="w-full grid grid-cols-1 gap-2">
-        <SubTitle
-          {...{
-            txt: "Markdown",
-          }}
-        />
-
-        <PreviewMarkdown {...{ data: markdown }} />
-      </div>
-
-      <div className="w-full aspect-[16/9] max-w-[800px] justify-self-center mt-[100px]">
+      <div className="w-full aspect-[16/9] max-w-[800px] justify-self-center mt-[150px]">
         <VideoLoader
           {...{
             src: video?.url,

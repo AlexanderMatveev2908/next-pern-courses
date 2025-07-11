@@ -5,7 +5,7 @@ import type { FC } from "react";
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import LabelCourse from "./components/LabelCourse";
 import ContentCourse from "./components/ContentCourse/ContentCourse";
-import { genLinksCard } from "../uifactory/cards";
+import { genLinksCard } from "../../../uiFactory/cards";
 import { CourseType } from "@/features/courses/types/courses";
 
 type PropsType = {
