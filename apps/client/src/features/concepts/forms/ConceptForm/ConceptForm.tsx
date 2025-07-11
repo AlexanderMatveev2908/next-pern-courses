@@ -3,12 +3,14 @@
 
 import WarnForm from "@/common/components/forms/etc/WarnForm";
 import WrapSingleField from "@/common/components/forms/HOC/WrapSingleField";
+import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
+import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { fieldGenerator } from "@/core/uiFactory/forms";
+import { FieldGenerator } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import type { FC } from "react";
-import { useFormContext } from "react-hook-form";
+import { Path, useFormContext } from "react-hook-form";
 
 type PropsType = {
   handleSave: () => void;
@@ -20,7 +22,9 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
     formState: { errors },
   } = useFormContext<FormConceptType>();
 
-  const localFieldGenerator = fieldGenerator<FormConceptType>("Concept");
+  const gen = new FieldGenerator<FormConceptType, Path<FormConceptType>>(
+    "Concept",
+  );
   return (
     <form onSubmit={handleSave} className="form__shape">
       <WarnForm />
@@ -28,7 +32,7 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
       <WrapSingleField>
         <FormFieldTxt
           {...{
-            el: localFieldGenerator.genTitleField(),
+            el: gen.genTitle(),
             control,
             errors,
           }}
@@ -38,12 +42,24 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
       <WrapSingleField>
         <FormFieldArea
           {...{
-            el: localFieldGenerator.genDescriptionField(),
+            el: gen.genDesc(),
             control,
             errors,
           }}
         />
       </WrapSingleField>
+
+      <FormFieldImages
+        {...{
+          el: gen.genImages(),
+        }}
+      />
+
+      <FormFieldVideo
+        {...{
+          el: gen.genVideo(),
+        }}
+      />
     </form>
   );
 };
