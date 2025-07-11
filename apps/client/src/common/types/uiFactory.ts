@@ -1,9 +1,17 @@
-import type { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
+import type {
+  ArrayPath,
+  Control,
+  FieldErrors,
+  FieldValues,
+  Path,
+} from "react-hook-form";
+
+export type FieldDataType = "file" | "text" | "number";
 
 export type FormFieldType<T extends FieldValues> = {
   name: Path<T>;
   label: string;
-  type?: "text" | "number" | "file";
+  type?: FieldDataType;
   required?: boolean;
   id?: string;
   place?: string;
@@ -13,12 +21,22 @@ export type FormFieldType<T extends FieldValues> = {
 export type FormFieldArrayType = {
   name: string;
   label: string;
-  type: "text" | "number";
+  type: Exclude<FieldDataType, "file">;
   required?: boolean;
   id: string;
   place?: string;
   field: string;
   val: string;
+};
+
+export type FieldArrType<T extends FieldValues, K extends ArrayPath<T>> = {
+  id: string;
+  field: K;
+  name: string;
+  label: string;
+  type: Exclude<FieldDataType, "file">;
+  val: string;
+  required: true;
 };
 
 // ? T => form shape defined in zod

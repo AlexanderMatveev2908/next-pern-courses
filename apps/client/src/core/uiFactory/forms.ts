@@ -1,4 +1,4 @@
-import { FormFieldType } from "@/common/types/uiFactory";
+import { FieldDataType, FormFieldType } from "@/common/types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
@@ -31,8 +31,6 @@ import { v4 } from "uuid";
 //     required: false,
 //   }),
 // });
-
-type FieldDataType = "file" | "text" | "number";
 
 export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   constructor(private readonly prefixLabel: string) {}
