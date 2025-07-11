@@ -12,16 +12,18 @@ type PropsType = {
 
 const CoursePage: FC<PropsType> = ({ courseID }) => {
   const res = coursesSliceAPI.useGetCourseByIDQuery(courseID);
+  const { isLoading } = res;
   useWrapQuery({
     ...res,
     showToast: true,
+    throwErr: true,
   });
 
   return (
     <WrapPendingClient
       {...{
         waitHydration: true,
-        isLoading: false,
+        isLoading,
       }}
     >
       {() => <div className=""></div>}

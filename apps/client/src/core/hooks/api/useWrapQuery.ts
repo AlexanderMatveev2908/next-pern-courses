@@ -11,6 +11,7 @@ import { useListenHydration } from "./useListenHydration";
 type Params<T extends Record<string, any> | void> = {
   hideErr?: boolean;
   showToast?: boolean;
+  throwErr?: boolean;
 
   isSuccess?: boolean;
   isError?: boolean;
@@ -21,6 +22,7 @@ type Params<T extends Record<string, any> | void> = {
 export const useWrapQuery = <T extends Record<string, any> | void>({
   showToast = false,
   hideErr,
+  throwErr,
   isSuccess,
   isError,
   error,
@@ -49,7 +51,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
         );
       }
     } else if (isError) {
-      handleErr({ err: error, hideErr });
+      handleErr({ err: error, hideErr, throwErr });
     }
   }, [
     handleErr,
@@ -60,6 +62,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     isError,
     error,
     data,
+    throwErr,
   ]);
 
   useEffect(() => {

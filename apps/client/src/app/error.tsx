@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -8,12 +9,12 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 
 type PropsType = {
-  error: Error;
+  error: any;
   reset: () => void;
 };
 
-const Err: FC<PropsType> = ({ error, reset }: PropsType) => {
-  __cg("[DEBUG] Render Error", error);
+const Err: FC<PropsType> = ({ error: err, reset }: PropsType) => {
+  __cg("err", err instanceof Error);
 
   return (
     <div className="w-full min-h-[75vh] flex flex-col items-center justify-center gap-10 sm:gap-16">
@@ -35,8 +36,10 @@ const Err: FC<PropsType> = ({ error, reset }: PropsType) => {
 
       <div className="w-full flex justify-center max-w-[90%] sm:max-w-[75%]">
         <span className="text-gray-300 txt__lg">
-          {error?.message ??
-            "A wild Snorlax isfast asleep blocking the road 💤. Try later"}
+          {err instanceof Error
+            ? err?.message
+            : (err?.data?.msg ??
+              "A wild Snorlax isfast asleep blocking the road 💤. Try later")}
         </span>
       </div>
 
