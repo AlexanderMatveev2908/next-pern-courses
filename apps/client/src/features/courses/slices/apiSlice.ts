@@ -18,6 +18,7 @@ export const coursesSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: [{ type: TagsAPI.COURSES_LIST, id: "LIST" }],
     }),
 
     getCourses: builder.query<

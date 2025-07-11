@@ -26,7 +26,7 @@ import {
 } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
@@ -82,10 +82,8 @@ const Searchbar = <
 
   const [triggerRTK, res] = hook;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: { nHits, totPages } = {} } = (res ?? {}) as ResultTypeRTK<
-    ResT & { nHits: number; totPages: number },
-    ArgT
-  >;
+  const { data: { nHits, totPages } = {}, isUninitialized } = (res ??
+    {}) as ResultTypeRTK<ResT & { nHits: number; totPages: number }, ArgT>;
   const isPending = res.isLoading || res.isFetching;
 
   useFocus({
@@ -110,29 +108,34 @@ const Searchbar = <
     isLoading: isPending,
   });
 
-  const { searchAPI } = useFactoryAPI({
-    triggerRef,
-    triggerRTK,
-    updateNoDebounce,
-  });
-
-  const triggerResetAPI = useCallback(() => {
-    const formDevVals = {
+  const defValsSearch = useMemo(
+    () => ({
       txtInputs: [
         {
           ...txtInputs[0],
           id: v4(),
         },
       ],
-    };
+    }),
+    [txtInputs],
+  );
 
-    resetRHF(formDevVals as unknown as DefaultValues<FormT>);
-    searchAPI(formDevVals, {
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
+
+  useEffect(() => {
+    if (isUninitialized && !nHitsCached) searchAPI(defValsSearch, {});
+  }, [isUninitialized, nHitsCached, defValsSearch, searchAPI]);
+
+  const triggerResetAPI = useCallback(() => {
+    resetRHF(defValsSearch as unknown as DefaultValues<FormT>);
+    searchAPI(defValsSearch, {
       syncPending: "clear",
-      page: 0,
-      block: 0,
     });
-  }, [resetRHF, txtInputs, searchAPI]);
+  }, [resetRHF, searchAPI, defValsSearch]);
 
   return (
     <WrapPendingClient {...{ isLoading: false }}>
@@ -185,7 +188,7 @@ const Searchbar = <
                 mainInput,
                 nHitsCached,
                 isLoading: isPending,
-                isUninitialized: res.isUninitialized,
+                isUninitialized,
               }}
             />
           </>
