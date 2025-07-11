@@ -9,10 +9,8 @@ import {
   fieldRootLanguage,
   fieldStack,
   fieldTech,
-  imagesField,
-  videoField,
 } from "./uiFactory";
-import { Path, useFormContext, useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import WrapSingleField from "../../../../common/components/forms/HOC/WrapSingleField";
@@ -33,7 +31,7 @@ import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCh
 import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
 import { parseTechObj } from "@shared/first/lib/etc.js";
 import WarnForm from "@/common/components/forms/etc/WarnForm";
-import { genDescriptionField, genTitleField } from "@/core/uiFactory/forms";
+import { fieldGenerator } from "@/core/uiFactory/forms";
 
 type PropsType = {
   handleSave: () => void;
@@ -71,6 +69,8 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     [stackVal],
   );
 
+  const localFieldGenerator = fieldGenerator<CourseFormType>("Course");
+
   return (
     <form onSubmit={handleSave} className="form__shape">
       <WarnForm />
@@ -78,7 +78,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <WrapSingleField>
         <FormFieldTxt
           {...{
-            el: genTitleField<CourseFormType, Path<CourseFormType>>("Course"),
+            el: localFieldGenerator.genTitleField(),
             control,
             errors,
           }}
@@ -88,18 +88,24 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <WrapSingleField>
         <FormFieldArea
           {...{
-            el: genDescriptionField<CourseFormType, Path<CourseFormType>>(
-              "Course",
-            ),
+            el: localFieldGenerator.genDescriptionField(),
             control,
             errors,
           }}
         />
       </WrapSingleField>
 
-      <FormFieldImages {...{ el: imagesField }} />
+      <FormFieldImages
+        {...{
+          el: localFieldGenerator.genImagesField(),
+        }}
+      />
 
-      <FormFieldVideo {...{ el: videoField }} />
+      <FormFieldVideo
+        {...{
+          el: localFieldGenerator.genVideoField(),
+        }}
+      />
 
       <FormFieldMD {...{ el: fieldMarkdown }} />
 

@@ -1,20 +1,32 @@
 import { FormFieldType } from "@/common/types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 
-export const genTitleField = <T extends FieldValues, K extends Path<T>>(
-  label: string,
-): FormFieldType<T> => ({
-  name: "title" as K,
-  label: `${label} title *`,
-  type: "text",
-  required: true,
-});
+export const fieldGenerator = <T extends FieldValues>(label: string) => ({
+  genTitleField: <K extends Path<T>>(): FormFieldType<T> => ({
+    name: "title" as K,
+    label: `${label} title *`,
+    type: "text",
+    required: true,
+  }),
 
-export const genDescriptionField = <T extends FieldValues, K extends Path<T>>(
-  label: string,
-): FormFieldType<T> => ({
-  name: "description" as K,
-  label: `${label} description`,
-  type: "text",
-  required: false,
+  genDescriptionField: <K extends Path<T>>(): FormFieldType<T> => ({
+    name: "description" as K,
+    label: `${label} description`,
+    type: "text",
+    required: false,
+  }),
+
+  genImagesField: <K extends Path<T>>(): FormFieldType<T> => ({
+    name: "images" as K,
+    label: `${label} images * (1-5)`,
+    type: "file",
+    required: true,
+  }),
+
+  genVideoField: <K extends Path<T>>(): FormFieldType<T> => ({
+    name: "video" as K,
+    label: `${label} video`,
+    type: "file",
+    required: false,
+  }),
 });
