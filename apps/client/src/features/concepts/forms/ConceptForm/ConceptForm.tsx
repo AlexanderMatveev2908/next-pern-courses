@@ -4,6 +4,7 @@
 import WarnForm from "@/common/components/forms/etc/WarnForm";
 import WrapSingleField from "@/common/components/forms/HOC/WrapSingleField";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
+import FormFieldMD from "@/common/components/forms/inputs/assets/FormFieldMD/FormFieldMD";
 import FormFieldVideo from "@/common/components/forms/inputs/assets/FormFieldVideo/FormFieldVideo";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
@@ -60,6 +61,8 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
           el: gen.genVideo(),
         }}
       />
+
+      <FormFieldMD {...{ el: gen.genMark() }} />
     </form>
   );
 };

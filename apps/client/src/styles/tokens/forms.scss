@@ -4,6 +4,13 @@
   transition: 0.3s ease-in-out;
 
   &:focus {
-    box-shadow: 0 0 5px whitesmoke, 0 0 10px whitesmoke, 0 0 15px whitesmoke;
+    box-shadow:
+      0 0 5px whitesmoke,
+      0 0 10px whitesmoke,
+      0 0 15px whitesmoke;
   }
+}
+
+.form__shape {
+  @apply w-full grid grid-cols-1 gap-10;
 }

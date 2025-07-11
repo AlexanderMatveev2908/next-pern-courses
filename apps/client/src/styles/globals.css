@@ -16,10 +16,6 @@
   @apply px-4 py-2 w-full flex rounded-xl transition-all duration-300 text-neutral-200 hover:text-neutral-950 hover:bg-[whitesmoke] cursor-pointer;
 }
 
-.form__shape {
-  @apply w-full grid grid-cols-1 gap-10;
-}
-
 .grad__txt {
   background: linear-gradient(to right, var(--white__0), var(--neutral__600));
   background-clip: text;
@@ -190,6 +186,10 @@
 }
 .el__input:focus {
   box-shadow: 0 0 5px whitesmoke, 0 0 10px whitesmoke, 0 0 15px whitesmoke;
+}
+
+.form__shape {
+  @apply w-full grid grid-cols-1 gap-10;
 }
 
 :root {

@@ -2,35 +2,35 @@ import { FormFieldType } from "@/common/types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
-export const fieldGenerator = <T extends FieldValues>(label: string) => ({
-  genTitleField: <K extends Path<T>>(): FormFieldType<T> => ({
-    name: "title" as K,
-    label: `${label} title *`,
-    type: "text",
-    required: true,
-  }),
+// export const fieldGenerator = <T extends FieldValues>(label: string) => ({
+//   genTitleField: <K extends Path<T>>(): FormFieldType<T> => ({
+//     name: "title" as K,
+//     label: `${label} title *`,
+//     type: "text",
+//     required: true,
+//   }),
 
-  genDescriptionField: <K extends Path<T>>(): FormFieldType<T> => ({
-    name: "description" as K,
-    label: `${label} description`,
-    type: "text",
-    required: false,
-  }),
+//   genDescriptionField: <K extends Path<T>>(): FormFieldType<T> => ({
+//     name: "description" as K,
+//     label: `${label} description`,
+//     type: "text",
+//     required: false,
+//   }),
 
-  genImagesField: <K extends Path<T>>(): FormFieldType<T> => ({
-    name: "images" as K,
-    label: `${label} images * (1-5)`,
-    type: "file",
-    required: true,
-  }),
+//   genImagesField: <K extends Path<T>>(): FormFieldType<T> => ({
+//     name: "images" as K,
+//     label: `${label} images * (1-5)`,
+//     type: "file",
+//     required: true,
+//   }),
 
-  genVideoField: <K extends Path<T>>(): FormFieldType<T> => ({
-    name: "video" as K,
-    label: `${label} video`,
-    type: "file",
-    required: false,
-  }),
-});
+//   genVideoField: <K extends Path<T>>(): FormFieldType<T> => ({
+//     name: "video" as K,
+//     label: `${label} video`,
+//     type: "file",
+//     required: false,
+//   }),
+// });
 
 export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   constructor(private readonly prefixLabel: string) {}
@@ -63,5 +63,9 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
 
   genVideo(): FormFieldType<T> {
     return this.genField("video" as K, "video", "file", false);
+  }
+
+  genMark(): FormFieldType<T> {
+    return this.genField("markdown" as K, "markdown", "file", true);
   }
 }

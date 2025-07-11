@@ -1,16 +1,5 @@
-import {
-  FieldCheckType,
-  FieldMiniCheckType,
-  FormFieldType,
-} from "@/common/types/uiFactory";
+import { FieldCheckType, FieldMiniCheckType } from "@/common/types/uiFactory";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
-
-export const fieldMarkdown: FormFieldType<CourseFormType> = {
-  name: "markdown",
-  label: "Markdown file *",
-  type: "file",
-  required: false,
-};
 
 export const fieldHard: FieldCheckType<CourseFormType> = {
   name: "grade",

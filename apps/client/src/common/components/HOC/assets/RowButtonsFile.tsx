@@ -4,6 +4,7 @@
 import type { FC } from "react";
 import BtnShadow from "../../buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
+import { css } from "@emotion/react";
 
 type PropsType = {
   isData: boolean;
@@ -19,7 +20,13 @@ const RowButtonsFile: FC<PropsType> = ({
   isFile,
 }) => {
   return (
-    <div className="w-full max-w-[600px] flex items-center gap-6 sm:gap-10 mt-4">
+    <div
+      className="w-full max-w-[600px] items-center gap-6 sm:gap-10 mt-4"
+      css={css`
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
+      `}
+    >
       <div className="w-full max-w-[250px]">
         <BtnShadow
           {...{

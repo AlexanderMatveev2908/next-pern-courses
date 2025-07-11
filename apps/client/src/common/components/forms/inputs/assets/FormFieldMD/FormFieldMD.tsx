@@ -87,7 +87,7 @@ const FormFieldMD = <T extends FieldValues>({ el, cb }: PropsType<T>) => {
                 data: markdown,
                 $customCSS: {
                   css: css`
-                    min-width: 600px;
+                    max-width: 600px;
                   `,
                 },
               }}

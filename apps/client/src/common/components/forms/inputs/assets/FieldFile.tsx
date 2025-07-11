@@ -15,6 +15,7 @@ import Anchor from "../../etc/Anchor";
 import ErrFormField from "../../errors/ErrFormField";
 import { JSX } from "react/jsx-runtime";
 import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -89,7 +90,14 @@ const FieldFileInner = <T extends FieldValues>(
             errors,
             $customCSS: {
               css: css`
-                min-width: 350px;
+                min-width: 250px;
+
+                ${resp("sm")} {
+                  min-width: 300px;
+                }
+                ${resp(750)} {
+                  min-width: 350px;
+                }
                 ${isData ? "right:5%" : "left:5%"};
               `,
             },

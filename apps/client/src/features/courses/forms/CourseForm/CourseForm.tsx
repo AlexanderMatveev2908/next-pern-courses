@@ -5,7 +5,6 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { useMemo, type FC } from "react";
 import {
   fieldHard,
-  fieldMarkdown,
   fieldRootLanguage,
   fieldStack,
   fieldTech,
@@ -109,7 +108,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
         }}
       />
 
-      <FormFieldMD {...{ el: fieldMarkdown }} />
+      <FormFieldMD {...{ el: gen.genMark() }} />
 
       <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
         {(args) => WrapBoxes(args)}
