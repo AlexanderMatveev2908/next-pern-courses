@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import BtnShadow from "../../buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
 import { css } from "@emotion/react";
@@ -19,11 +19,40 @@ const RowButtonsFile: FC<PropsType> = ({
   isData,
   isFile,
 }) => {
+  const contRef = useRef<HTMLDivElement>(null);
+  const [isWrap, setIsWrap] = useState(false);
+
+  useEffect(() => {
+    const el = contRef.current;
+    if (!el) return;
+
+    const cb = () => {
+      const childTops = Array.from(el.children).map(
+        (child) => (child as HTMLElement).offsetTop,
+      );
+
+      const unique = new Set(childTops);
+      setIsWrap(unique.size > 1);
+    };
+
+    const obs = new ResizeObserver(cb);
+    obs.observe(el);
+
+    window.addEventListener("resize", cb);
+
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("resize", cb);
+    };
+  }, []);
+
   return (
     <div
+      ref={contRef}
       className="w-full max-w-[600px] items-center gap-6 sm:gap-10 mt-4"
       css={css`
         display: grid;
+        place-content: ${isWrap ? "center" : "start"};
         grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
       `}
     >
