@@ -8,12 +8,15 @@ import VideoLoader from "../../HOC/assets/VideoLoader";
 import { css } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import ClickTxtLonger from "../../elements/ClickTxtLonger";
+import SubTitle from "../../elements/SubTitle";
+import PreviewMarkdown from "../../HOC/PreviewMarkdown/PreviewMarkdown";
 
 type PropsType = {
   title: string;
   images: CloudAssetType[];
   video?: CloudAssetType | null;
   description?: string | null;
+  markdown: string;
 };
 
 const PageItemShape: FC<PropsType> = ({
@@ -21,6 +24,7 @@ const PageItemShape: FC<PropsType> = ({
   video,
   title,
   description,
+  markdown,
 }) => {
   return (
     <div
@@ -39,8 +43,12 @@ const PageItemShape: FC<PropsType> = ({
         }}
       />
 
-      <div className="w-full flex flex-col gap-2 justify-center">
-        <span className="txt__lg text-neutral-200">Description</span>
+      <div className="w-full flex flex-col gap-2">
+        <SubTitle
+          {...{
+            txt: "Description",
+          }}
+        />
 
         <ClickTxtLonger
           {...{
@@ -48,6 +56,17 @@ const PageItemShape: FC<PropsType> = ({
           }}
         />
       </div>
+
+      <div className="w-full grid grid-cols-1 gap-2">
+        <SubTitle
+          {...{
+            txt: "Markdown",
+          }}
+        />
+
+        <PreviewMarkdown {...{ data: markdown }} />
+      </div>
+
       <div className="w-full aspect-[16/9] max-w-[800px] justify-self-center mt-[100px]">
         <VideoLoader
           {...{
