@@ -1,4 +1,3 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 

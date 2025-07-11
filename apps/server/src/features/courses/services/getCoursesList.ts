@@ -10,6 +10,7 @@ import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import sql, { Sql } from "sql-template-tag";
+import { grabAssetsItem } from "@src/services/grabAssetsItem.js";
 
 export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
@@ -89,28 +90,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         c."pointsGained",
         
 
-    (
-    SELECT json_agg(
-        json_build_object(
-            'url', ca."url",
-            'publicID', ca."publicID"
-        )
-    )
-    FROM "CloudAsset" ca
-        WHERE ca."type" = 'IMAGE'
-        AND ca."entityID" = c."id"
-        AND ca."entityType" = 'COURSE'
-    ) AS "images",
-
-    (
-    SELECT json_build_object(
-        'url', ca."url",
-        'publicID', ca."publicID"
-    )
-    FROM "CloudAsset" ca
-        WHERE ca."entityID" = c."id"
-        AND ca."type" = 'VIDEO'
-    ) AS "video"
+    ${grabAssetsItem("COURSE")}
 
     FROM "Course" AS c
 

@@ -56,7 +56,7 @@ export const coursesSliceAPI = api.injectEndpoints({
       string
     >({
       query: (id) => ({
-        url: `${BASE_URL}/${id},`,
+        url: `${BASE_URL}/${id}`,
         method: "GET",
       }),
       providesTags: [TagsAPI.COURSE_ITEM],

@@ -1,6 +1,7 @@
 import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { handleRawSQL } from "../services/getCoursesList.js";
+import { serviceGetCourseByID } from "../services/getCourseByID.js";
 
 export const getListCoursesCtrl = async (
   req: FastifyRequest,
@@ -16,5 +17,11 @@ export const getListCoursesCtrl = async (
 };
 
 export const getCourseByID = async (req: FastifyRequest, res: FastifyReply) => {
-  return res.res200({ msg: "here u are the course" });
+  const {
+    params: { courseID },
+  } = req as { params: { courseID: string } };
+
+  const { course } = await serviceGetCourseByID(courseID);
+
+  return res.res200({ msg: "here u are the course", course });
 };
