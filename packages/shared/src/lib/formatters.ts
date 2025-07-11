@@ -3,8 +3,8 @@ export const formatDate = (date: Date | string | number) => {
     date instanceof Date
       ? date
       : /^\d{10,}n?$/.test(date + "")
-      ? +date
-      : new Date(date);
+        ? +date
+        : new Date(date);
 
   return new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
@@ -26,3 +26,16 @@ export const captAll = (str?: string) =>
         .filter(Boolean)
         .map((el) => capt(el))
         .join(" ");
+
+export const formatMinutes = (num: number) => {
+  const hours = Math.floor(num / 60);
+  const minutes = num % 60;
+
+  const str: string[] = [];
+
+  if (hours) str.push(`${hours}h`);
+
+  if ((hours && minutes) || !hours) str.push(`${minutes}min`);
+
+  return str.join(", ");
+};

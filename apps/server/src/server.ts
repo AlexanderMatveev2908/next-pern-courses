@@ -11,6 +11,7 @@ import {
 } from "@shared/first/lib/dataStructure.js";
 import { getExistingMock } from "./dev_only/mock/data.js";
 import { genMock } from "./dev_only/mock/genMock.js";
+import { formatMinutes } from "@shared/first/lib/formatters.js";
 
 const app = Fastify({
   logger: {

@@ -85,6 +85,9 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         c."grade",
         c."stack",
         c."tech",
+        c."estimatedTime",
+        c."pointsGained",
+        
 
     (
     SELECT json_agg(
