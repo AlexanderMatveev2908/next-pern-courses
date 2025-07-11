@@ -1,7 +1,12 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC, ForwardRefExoticComponent, RefAttributes } from "react";
+import {
+  useState,
+  type FC,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from "react";
 import { LucideProps } from "lucide-react";
 import { IconType } from "react-icons/lib";
 import { css } from "@emotion/react";
@@ -17,19 +22,22 @@ type PropsType = {
         >
       | IconType;
   };
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
-  children: React.ReactNode;
+  children: (arg: {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  }) => React.ReactNode;
 };
 
-const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
+const DropMenu: FC<PropsType> = ({ el, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { containerRef, labelRef, minH } = useHandleDrop({
     setIsOpen,
   });
   return (
     <div
-      className="w-full relative"
+      className="w-full max-w-full relative"
       css={css`
         min-height: ${minH}px;
       `}
@@ -44,7 +52,7 @@ const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
         <div
           ref={labelRef}
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between cursor-pointer py-2 pl-4 pr-4 border-b-2"
+          className="w-full flex items-center justify-between cursor-pointer py-2 pl-4 pr-4 border-b-2 text-neutral-200"
           css={css`
             transition: 0.3s;
             &:hover {
@@ -56,7 +64,11 @@ const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
             border-color: ${isOpen ? "var(--neutral__800)" : "transparent"};
           `}
         >
-          <span className="txt__lg">{el.label}</span>
+          <div className="w-full flex items-center gap-5">
+            {el.svg && <el.svg className="w-[30px] h-[30px]" />}
+
+            <span className="txt__lg">{el.label}</span>
+          </div>
 
           <FaChevronDown className="w-[32.5px] h-[32.5px]" />
         </div>
@@ -72,7 +84,7 @@ const DropMenu: FC<PropsType> = ({ el, isOpen, setIsOpen, children }) => {
             background-color: var(--neutral__950);
           `}
         >
-          {children}
+          {children({ isOpen, setIsOpen })}
         </ul>
       </div>
     </div>
