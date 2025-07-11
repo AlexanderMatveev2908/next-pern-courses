@@ -127,13 +127,17 @@ const Searchbar = <
   });
 
   useEffect(() => {
-    if (isUninitialized && !nHitsCached) searchAPI(defValsSearch, {});
+    if (isUninitialized && !nHitsCached)
+      searchAPI(defValsSearch, {
+        resetPagination: true,
+      });
   }, [isUninitialized, nHitsCached, defValsSearch, searchAPI]);
 
   const triggerResetAPI = useCallback(() => {
     resetRHF(defValsSearch as unknown as DefaultValues<FormT>);
     searchAPI(defValsSearch, {
       syncPending: "clear",
+      resetPagination: true,
     });
   }, [resetRHF, searchAPI, defValsSearch]);
 
