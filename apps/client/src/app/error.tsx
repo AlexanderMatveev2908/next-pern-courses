@@ -2,7 +2,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { __cg } from "@shared/first/lib/logger";
 import type { FC } from "react";
 import BounceErr from "@/common/components/elements/BounceErr";
 import { css } from "@emotion/react";
@@ -14,8 +13,6 @@ type PropsType = {
 };
 
 const Err: FC<PropsType> = ({ error: err, reset }: PropsType) => {
-  __cg("err", err instanceof Error);
-
   return (
     <div className="w-full min-h-[75vh] flex flex-col items-center justify-center gap-10 sm:gap-16">
       <BounceErr
