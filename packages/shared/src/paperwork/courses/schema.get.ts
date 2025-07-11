@@ -11,7 +11,7 @@ const optItems = {
 };
 
 const sortableFields = [
-  "createdAt",
+  "createdAtSort",
   "timeEstimatedSort",
   "pointsGainedSort",
 ] as const;
