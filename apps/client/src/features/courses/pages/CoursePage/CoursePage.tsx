@@ -36,6 +36,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
             images: course!.images,
             title: course!.title,
             video: course?.video,
+            description: course?.description,
           }}
         ></PageItemShape>
       )}
