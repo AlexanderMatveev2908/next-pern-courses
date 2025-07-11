@@ -32,20 +32,38 @@ import { v4 } from "uuid";
 //   }),
 // });
 
+type FieldDataType = "file" | "text" | "number";
+
 export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   constructor(private readonly prefixLabel: string) {}
 
   private genField(
     name: K,
     label: string,
-    type: "file" | "text" | "number",
+    type: FieldDataType,
     required: boolean,
   ): FormFieldType<T> {
     return {
       name,
       label: `${this.prefixLabel} ${label} ${required ? "*" : ""}`,
       type,
+      required,
       id: v4(),
+    };
+  }
+
+  public genHardCode(
+    name: K,
+    label: string,
+    type: FieldDataType,
+    required: boolean,
+  ) {
+    return {
+      id: v4(),
+      name,
+      label: `${label} ${required ? "*" : ""}`,
+      type,
+      required,
     };
   }
 

@@ -12,6 +12,8 @@ import { FieldGenerator } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import type { FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
+import { css } from "@emotion/react";
+import { numericFieldsConcept } from "./uiFactory";
 
 type PropsType = {
   handleSave: () => void;
@@ -26,6 +28,7 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
   const gen = new FieldGenerator<FormConceptType, Path<FormConceptType>>(
     "Concept",
   );
+
   return (
     <form onSubmit={handleSave} className="form__shape">
       <WarnForm />
@@ -63,6 +66,25 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
       />
 
       <FormFieldMD {...{ el: gen.genMark() }} />
+
+      <div
+        className="w-full grid gap-x-10 gap-y-5"
+        css={css`
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        `}
+      >
+        {numericFieldsConcept.map((f) => (
+          <FormFieldTxt
+            key={f.id}
+            {...{
+              el: f,
+              control,
+              errors,
+            }}
+          />
+        ))}
+      </div>
     </form>
   );
 };

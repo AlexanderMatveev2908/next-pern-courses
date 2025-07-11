@@ -11,7 +11,7 @@ import {
 } from "../shared/schema.js";
 
 const handleRangeMinMax = (vForm: string, vRange: number, sign: "<" | ">") =>
-  sign === "<" ? +vForm < vRange : +vForm > vRange;
+  sign === "<" ? +vForm <= vRange : +vForm >= vRange;
 
 const objSign = {
   autoComplete: { "<": "least", ">": "most" },
