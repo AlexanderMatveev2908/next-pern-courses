@@ -6,6 +6,7 @@ import type { FC } from "react";
 import { coursesSliceAPI } from "../../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
+import ImagesSwapper from "@/common/components/HOC/ImagesSwapper/ImagesSwapper";
 
 type PropsType = {
   courseID: string;
@@ -36,6 +37,12 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
               {course!.title.toUpperCase()}
             </span>
           </div>
+
+          <ImagesSwapper
+            {...{
+              urls: course!.images.map((img) => img.url),
+            }}
+          />
         </div>
       )}
     </WrapPendingClient>
