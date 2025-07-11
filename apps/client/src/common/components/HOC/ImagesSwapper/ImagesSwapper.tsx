@@ -2,15 +2,21 @@
 "use client";
 
 import { useGenIDs } from "@/core/hooks/ui/useGenIDs";
-import { useEffect, useMemo, useRef, useState, type FC } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FC,
+} from "react";
 import ImgLoader from "../assets/ImgLoader";
 import { genSizeCSS, getImgParSwap, grabImgWSlider } from "./uiFactory";
 import { css } from "@emotion/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { resp } from "@/core/lib/style";
 import { StyledContainer } from "./Styled";
-import { __cg } from "@shared/first/lib/logger.js";
 import { easeInOut, motion } from "framer-motion";
+import { clearT } from "@/core/lib/etc";
 
 type PropsType = {
   urls: string[];
@@ -19,8 +25,10 @@ type PropsType = {
 const ImagesSwapper: FC<PropsType> = ({ urls }) => {
   const [currSLide, setCurrSLide] = useState(0);
   const [imgW, setImgW] = useState(grabImgWSlider());
-  const timerID = useRef<NodeJS.Timeout | null>(null);
   const [imgPerSwap, setImgPerSwap] = useState(getImgParSwap());
+
+  const timerID = useRef<NodeJS.Timeout | null>(null);
+  const [pause, setPause] = useState(false);
 
   const maxSwapsPossible = useMemo(
     () => Math.ceil(urls.length / imgPerSwap),
@@ -30,8 +38,6 @@ const ImagesSwapper: FC<PropsType> = ({ urls }) => {
   const calcRange = (i: number) => {
     const start = currSLide * imgPerSwap;
     const end = (currSLide + 1) * imgPerSwap;
-
-    __cg("range", start, end);
 
     return i >= start && i < end;
   };
@@ -55,20 +61,83 @@ const ImagesSwapper: FC<PropsType> = ({ urls }) => {
     lengths: [urls.length],
   });
 
-  const handleClick = (dir: "-" | "+") =>
-    setCurrSLide((prev) => prev + (dir === "+" ? 1 : -1));
+  const handleClick = useCallback(
+    (dir: "-" | "+", triggerClick?: boolean) => {
+      if (triggerClick) {
+        setPause(true);
+        clearT(timerID);
+      }
+
+      setCurrSLide((prev) =>
+        dir === "+" && prev >= maxSwapsPossible - 1
+          ? 0
+          : dir === "-" && prev - 1 < 0
+            ? maxSwapsPossible - 1
+            : prev + (dir === "+" ? 1 : -1),
+      );
+    },
+    [maxSwapsPossible],
+  );
+
+  useEffect(() => {
+    const slideImages = async () => {
+      if (pause) {
+        clearT(timerID);
+        return;
+      }
+
+      while (!pause) {
+        clearT(timerID);
+
+        await new Promise<void>((res) => {
+          timerID.current = setTimeout(() => {
+            if (pause) {
+              clearT(timerID);
+              return;
+            }
+            handleClick("+");
+            clearT(timerID);
+            res();
+          }, 2000);
+        });
+      }
+    };
+
+    slideImages();
+
+    return () => {
+      clearT(timerID);
+    };
+  }, [handleClick, pause]);
+
+  useEffect(() => {
+    const handlePause = () => {
+      if (!pause) return;
+
+      clearT(timerID);
+      timerID.current = setTimeout(() => {
+        setPause(false);
+        clearT(timerID);
+      }, 3000);
+    };
+
+    handlePause();
+
+    return () => {
+      clearT(timerID);
+    };
+  }, [pause]);
 
   return (
     <StyledContainer
       className="flex relative justify-self-center border-[3px] border-neutral-600 rounded-xl py-3"
       css={css`
         width: fit-content;
-        max-width: ${imgW * imgPerSwap + imgPerSwap * 30}px;
+        max-width: ${imgW * imgPerSwap + imgPerSwap * 20 + 10}px;
       `}
     >
       <button
-        disabled={currSLide <= 0}
-        onClick={handleClick.bind(null, "-")}
+        onClick={handleClick.bind(null, "-", true)}
         className="btn -left-[40px]"
       >
         <FaAngleLeft />
@@ -104,8 +173,7 @@ const ImagesSwapper: FC<PropsType> = ({ urls }) => {
       </div>
 
       <button
-        disabled={currSLide >= Math.ceil(urls.length / imgPerSwap) - 1}
-        onClick={handleClick.bind(null, "+")}
+        onClick={handleClick.bind(null, "+", true)}
         className="btn -right-[40px]"
       >
         <FaAngleRight />

@@ -40,7 +40,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
 
           <ImagesSwapper
             {...{
-              urls: course!.images.map((img) => img.url),
+              urls: course!.images.map((img) => img.url).slice(1),
             }}
           />
         </div>
