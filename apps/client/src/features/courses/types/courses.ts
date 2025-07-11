@@ -10,7 +10,7 @@ export type CourseType = ServerModel<{
   title: string;
 
   description: string | null;
-  markdown: string | null;
+  markdown: string;
 
   grade: GradeType;
   stack: StackType;

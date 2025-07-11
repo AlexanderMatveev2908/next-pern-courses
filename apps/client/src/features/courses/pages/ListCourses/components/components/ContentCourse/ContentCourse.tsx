@@ -3,8 +3,8 @@
 
 import { CourseType } from "@/features/courses/types/courses";
 import { type FC } from "react";
-import { genRowsInfo } from "../../../uifactory/cards";
-import RowInfo from "./components/RowInfo";
+import { genRowsInfo } from "../../../../../uiFactory/cards";
+import RowInfo from "../../../../../../../common/components/elements/RowInfo";
 
 type PropsType = {
   course: CourseType;

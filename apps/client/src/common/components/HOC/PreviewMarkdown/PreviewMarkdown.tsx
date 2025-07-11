@@ -4,24 +4,35 @@
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { BtnActType } from "@/common/types/uiFactory";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { useState, type FC } from "react";
 import ContentMD from "./components/ContentMD";
 
 type PropsType = {
   data?: string;
+  label?: string;
+  btnActType?: BtnActType;
+  $customCSS?: {
+    css: SerializedStyles;
+  };
 };
 
-const PreviewMarkdown: FC<PropsType> = ({ data }) => {
+const PreviewMarkdown: FC<PropsType> = ({
+  data,
+  label,
+  btnActType,
+  $customCSS,
+}) => {
   const [isShow, setIsShow] = useState<boolean | null>(null);
 
   const isData = isStr(data);
 
   return !isData ? null : (
     <div
-      className="w-full flex justify-center min-w-[600px]"
+      className="w-full flex justify-center"
       css={css`
+        ${$customCSS?.css}
         margin-top: ${isData ? "1rem" : "0px"};
       `}
     >
@@ -37,9 +48,9 @@ const PreviewMarkdown: FC<PropsType> = ({ data }) => {
         <BtnShadow
           {...{
             type: "button",
-            btnActType: BtnActType.INFO,
+            btnActType: btnActType ?? BtnActType.INFO,
             isEnabled: true,
-            label: "Preview",
+            label: label ?? "Preview",
             handleClick: () => setIsShow(true),
           }}
         />

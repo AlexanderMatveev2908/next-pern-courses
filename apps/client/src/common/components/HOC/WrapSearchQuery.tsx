@@ -54,7 +54,7 @@ const WrapSearchQuery = <
   formCtx,
   nHitsCached,
   dynamicFilters,
-  // pagesCached,
+  pagesCached,
 }: PropsType<ResT, ArgT, FormT, PathT, ZodT>) => {
   const [triggerRTK, res] = hook;
 
@@ -65,6 +65,7 @@ const WrapSearchQuery = <
     data: { nHits, pages } = {},
     isFetching,
     isLoading,
+    isUninitialized,
   } = (res ?? {}) as ResultTypeRTK<
     ResT & { nHits: number; pages: number },
     ArgT
@@ -119,27 +120,24 @@ const WrapSearchQuery = <
         {...{
           isLoading: isPending,
           CustomSpinner: (
-            <>
-              <div className="w-full flex justify-center pt-[100px]">
-                <SpinnerBtn />
-              </div>
-            </>
+            <div className="w-full flex justify-center pt-[100px]">
+              <SpinnerBtn />
+            </div>
           ),
         }}
       >
-        {({ isHydrated } = { isHydrated: false }) =>
-          !isHydrated ? null : (
-            <PageCounter
-              {...{
-                nHits,
-                totPages: pages,
-                triggerRTK,
-                triggerRef,
-                valsRHF,
-              }}
-            />
-          )
-        }
+        {({ isHydrated } = { isHydrated: false }) => (
+          <PageCounter
+            {...{
+              nHits,
+              totPages: !isHydrated || isUninitialized ? pagesCached : pages,
+              triggerRTK,
+              triggerRef,
+              valsRHF,
+              isHydrated,
+            }}
+          />
+        )}
       </WrapPendingClient>
     </div>
   );

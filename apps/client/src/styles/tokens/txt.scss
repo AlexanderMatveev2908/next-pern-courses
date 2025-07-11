@@ -15,9 +15,13 @@
 }
 
 .txt__xl {
-  @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+  @apply text-xl lg:text-2xl font-bold;
 }
 
 .txt__2xl {
+  @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+}
+
+.txt__3xl {
   @apply text-3xl md:text-4xl lg:text-5xl font-bold;
 }

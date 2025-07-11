@@ -88,6 +88,14 @@ export const reducerSearchReact = (
         },
       };
 
+    case SearchCtxActions.CLEAR_PAGINATION:
+      return {
+        ...state,
+        pagination: {
+          ...searchCtxInitState.pagination,
+        },
+      };
+
     default:
       __cg("unknown action", action);
       throw new Error("unknown action");

@@ -167,7 +167,7 @@ const Toast: FC = ({}) => {
         >
           <div className="w-full flex justify-between items-center pt-2">
             <span
-              className="txt__xl"
+              className="txt__2xl"
               css={css`
                 color: ${clr};
               `}

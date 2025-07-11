@@ -13,9 +13,11 @@ export const useHandleErrAPI = () => {
     <T extends Record<string, any>>({
       err,
       hideErr,
+      throwErr,
     }: {
       err: ErrAPI<T>;
       hideErr?: boolean;
+      throwErr?: boolean;
     }) => {
       __cg("wrapper error", err);
 
@@ -28,6 +30,8 @@ export const useHandleErrAPI = () => {
             type: ApiEventType.ERROR,
           }),
         );
+
+      if (throwErr) throw err;
     },
     [dispatch],
   );

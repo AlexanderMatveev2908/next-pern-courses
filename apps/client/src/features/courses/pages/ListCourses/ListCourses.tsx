@@ -2,7 +2,6 @@
 "use client";
 
 import { type FC } from "react";
-import { coursesSliceAPI } from "../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +26,7 @@ import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
 import { dynamicFiltersCourses } from "./uifactory/searchBar";
 import CourseItem from "./components/CourseItem";
+import { coursesSliceAPI } from "../../slices/apiSlice";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -71,7 +71,7 @@ const ListCourses: FC = () => {
 
   const handleSave = handleSubmit(
     (data) => {
-      searchAPI(data, { syncPending: "submit", page: 0, block: 0 });
+      searchAPI(data, { syncPending: "submit", resetPagination: true });
     },
     (errs) => {
       __cg("errs submit", errs);

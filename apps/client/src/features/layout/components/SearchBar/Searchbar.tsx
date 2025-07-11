@@ -26,17 +26,17 @@ import {
 } from "./types/uiFactory";
 import SortPop from "./components/SortPop/SortPop";
 import { useSearchCtxConsumer } from "./contexts/hooks/useSearchCtxConsumer";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import WrapImpBtns from "./components/HOC/WrapImpBtns";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
-import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { v4 } from "uuid";
 import { useFactoryAPI } from "./hooks/useFactoryAPI";
 import ShowCount from "./components/ShowCount";
 import { useListenDummyPending } from "./hooks/useListenDummyPending";
 import Shim from "@/common/components/elements/Shim";
 import { css } from "@emotion/react";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 export type PropsTypeSearchBar<
   ResT extends PaginatedResAPI<any>,
@@ -82,10 +82,8 @@ const Searchbar = <
 
   const [triggerRTK, res] = hook;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: { nHits, totPages } = {} } = (res ?? {}) as ResultTypeRTK<
-    ResT & { nHits: number; totPages: number },
-    ArgT
-  >;
+  const { data: { nHits, totPages } = {}, isUninitialized } = (res ??
+    {}) as ResultTypeRTK<ResT & { nHits: number; totPages: number }, ArgT>;
   const isPending = res.isLoading || res.isFetching;
 
   useFocus({
@@ -110,88 +108,92 @@ const Searchbar = <
     isLoading: isPending,
   });
 
-  const { searchAPI } = useFactoryAPI({
-    triggerRef,
-    triggerRTK,
-    updateNoDebounce,
-  });
-
-  const triggerResetAPI = useCallback(() => {
-    const formDevVals = {
+  const defValsSearch = useMemo(
+    () => ({
       txtInputs: [
         {
           ...txtInputs[0],
           id: v4(),
         },
       ],
-    };
+    }),
+    [txtInputs],
+  );
+  const { isHydrated } = useListenHydration();
 
-    resetRHF(formDevVals as unknown as DefaultValues<FormT>);
-    searchAPI(formDevVals, {
+  const { searchAPI } = useFactoryAPI({
+    triggerRef,
+    triggerRTK,
+    updateNoDebounce,
+  });
+
+  useEffect(() => {
+    if (isHydrated && isUninitialized && !nHitsCached)
+      searchAPI(defValsSearch, {
+        resetPagination: true,
+      });
+  }, [isUninitialized, nHitsCached, defValsSearch, searchAPI, isHydrated]);
+
+  const triggerResetAPI = useCallback(() => {
+    resetRHF(defValsSearch as unknown as DefaultValues<FormT>);
+    searchAPI(defValsSearch, {
       syncPending: "clear",
-      page: 0,
-      block: 0,
+      resetPagination: true,
     });
-  }, [resetRHF, txtInputs, searchAPI]);
+  }, [resetRHF, searchAPI, defValsSearch]);
 
-  return (
-    <WrapPendingClient {...{ isLoading: false }}>
-      {({ isHydrated } = { isHydrated: false }) =>
-        !isHydrated ? (
-          <Shim
-            {...{
-              $CSS: {
-                css: css`
-                  width: 95%;
-                  max-width: 1200px;
-                  height: 200px;
-                `,
-              },
-            }}
-          />
-        ) : (
-          <>
-            <form
-              onSubmit={handleSave}
-              className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]"
-            >
-              <PrimaryRow {...{ txtInputs }} />
+  return !isHydrated ? (
+    <Shim
+      {...{
+        $CSS: {
+          css: css`
+            width: 95%;
+            max-width: 1200px;
+            height: 200px;
+          `,
+        },
+      }}
+    />
+  ) : (
+    <>
+      <form
+        onSubmit={handleSave}
+        className="w-[95%] mx-auto border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-6 max-w-[1200px]"
+      >
+        <PrimaryRow {...{ txtInputs }} />
 
-              <div
-                className="w-full grid grid-cols-1 gap-6"
-                css={css`
-                  ${resp(1150)} {
-                    grid-template-columns: repeat(2, 1fr);
-                  }
-                `}
-              >
-                <SecondaryRowBtns {...{ txtInputs }} />
+        <div
+          className="w-full grid grid-cols-1 gap-6"
+          css={css`
+            ${resp(1150)} {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          `}
+        >
+          <SecondaryRowBtns {...{ txtInputs }} />
 
-                <div className="w-full grid grid-cols-1 gap-6">
-                  <WrapImpBtns {...{ txtInputs, triggerResetAPI }} />
-                </div>
-              </div>
+          <div className="w-full grid grid-cols-1 gap-6">
+            <WrapImpBtns {...{ txtInputs, triggerResetAPI }} />
+          </div>
+        </div>
 
-              <FilterFooter
-                {...{ filters, txtInputs, triggerResetAPI, dynamicFilters }}
-              />
+        <FilterFooter
+          {...{ filters, txtInputs, triggerResetAPI, dynamicFilters }}
+        />
 
-              <SortPop {...{ sorters }} />
-            </form>
+        <SortPop {...{ sorters }} />
+      </form>
 
-            <ShowCount
-              {...{
-                nHits,
-                mainInput,
-                nHitsCached,
-                isLoading: isPending,
-                isUninitialized: res.isUninitialized,
-              }}
-            />
-          </>
-        )
-      }
-    </WrapPendingClient>
+      <ShowCount
+        {...{
+          nHits,
+          mainInput,
+          nHitsCached,
+          isLoading: isPending,
+          isUninitialized,
+        }}
+      />
+    </>
   );
 };
 

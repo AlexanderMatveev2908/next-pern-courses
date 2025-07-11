@@ -7,6 +7,7 @@ export enum SearchCtxActions {
   SET_SEARCHER = "SET_SEARCHER",
   RESET_DATA = "RESET_DATA",
   CLEAR_PENDING = "CLEAR_PENDING",
+  CLEAR_PAGINATION = "CLEAR_PAGINATION",
 }
 
 export type ParamsBar = {
@@ -64,4 +65,7 @@ export type SearchCtxActionsType =
     }
   | {
       type: SearchCtxActions.CLEAR_PENDING;
+    }
+  | {
+      type: SearchCtxActions.CLEAR_PAGINATION;
     };

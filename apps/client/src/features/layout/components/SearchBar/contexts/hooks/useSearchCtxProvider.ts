@@ -93,6 +93,12 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     [dispatchReact],
   );
 
+  const clearPagination = useCallback(() =>
+    dispatchReact({ type: SearchCtxActions.CLEAR_PAGINATION }),[
+      dispatchReact
+    ]
+  );
+
   return {
     ...stateReact,
     preValsRef,
@@ -105,6 +111,7 @@ export const useSearchCtxProvider = ({ dispatchReact, stateReact }: Params) => {
     updateNoDebounce,
     resetData,
     clearPending,
+    clearPagination
   };
 };
 

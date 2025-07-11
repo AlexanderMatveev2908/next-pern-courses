@@ -29,7 +29,7 @@ const NotFound: FC = () => {
 
         <div className="w-full flex justify-center">
           <Link href="/" className="link">
-            <span className="txt__xl text-[whitesmoke]">Home</span>
+            <span className="txt__2xl text-[whitesmoke]">Home</span>
           </Link>
         </div>
       </div>
