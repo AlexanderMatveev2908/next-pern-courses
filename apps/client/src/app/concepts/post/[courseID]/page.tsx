@@ -1,5 +1,6 @@
 import { NextParamPageType } from "@/common/types/api";
-import { __cg } from "@shared/first/lib/logger.js";
+import { isOkID } from "@shared/first/lib/validators.js";
+import { notFound } from "next/navigation";
 import type { FC } from "react";
 
 const page: FC<NextParamPageType<{ courseID: string }>> = async ({
@@ -7,7 +8,8 @@ const page: FC<NextParamPageType<{ courseID: string }>> = async ({
 }) => {
   const { courseID } = await params;
 
-  __cg("id", courseID);
+  if (!isOkID(courseID)) notFound();
+
   return <div className=""></div>;
 };
 
