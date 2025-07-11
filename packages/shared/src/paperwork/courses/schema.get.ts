@@ -10,6 +10,12 @@ const optItems = {
   },
 };
 
+const sortableFields = [
+  "createdAt",
+  "timeEstimatedSort",
+  "pointsGainedSort",
+] as const;
+
 export const schemaGetListCourse = z.object({
   txtInputs: z
     .array(
@@ -22,9 +28,17 @@ export const schemaGetListCourse = z.object({
   stack: z.array(schemaStack()).optional(),
   tech: z.array(schemaTech()).optional(),
 
-  createdAtSort: schemaOrder().optional(),
-  timeEstimatedSort: schemaOrder().optional(),
-  pointsGainedSort: schemaOrder().optional(),
+  ...sortableFields.reduce(
+    (acc, curr) => {
+      acc[curr as keyof typeof acc] = schemaOrder().optional();
+
+      return acc;
+    },
+    {} as Record<
+      (typeof sortableFields)[number],
+      z.ZodOptional<ReturnType<typeof schemaOrder>>
+    >,
+  ),
 
   _: z.number().optional(),
 });
