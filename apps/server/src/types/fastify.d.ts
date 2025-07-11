@@ -50,6 +50,7 @@ declare module "fastify" {
     res400<T>(data?: T): FastifyReply;
     res401<T>(data?: T): FastifyReply;
     res403<T>(data?: T): FastifyReply;
+    res404<T>(data?: T): FastifyReply;
     res409<T>(data?: T): FastifyReply;
     res419<T>(data?: T): FastifyReply;
     res422<T>(data?: T): FastifyReply;

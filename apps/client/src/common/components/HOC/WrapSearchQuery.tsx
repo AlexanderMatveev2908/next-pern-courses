@@ -120,11 +120,9 @@ const WrapSearchQuery = <
         {...{
           isLoading: isPending,
           CustomSpinner: (
-            <>
-              <div className="w-full flex justify-center pt-[100px]">
-                <SpinnerBtn />
-              </div>
-            </>
+            <div className="w-full flex justify-center pt-[100px]">
+              <SpinnerBtn />
+            </div>
           ),
         }}
       >

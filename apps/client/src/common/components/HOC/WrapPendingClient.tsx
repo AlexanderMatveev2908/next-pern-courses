@@ -8,6 +8,7 @@ import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 
 type PropsType = {
   isLoading: boolean;
+  isSuccess?: boolean;
   children: (arg?: { isHydrated: boolean }) => React.ReactNode;
   waitHydration?: boolean;
   CustomSpinner?: React.ReactNode;
@@ -15,6 +16,7 @@ type PropsType = {
 
 const WrapPendingClient: FC<PropsType> = ({
   isLoading,
+  isSuccess = true,
   children,
   waitHydration,
   CustomSpinner,
@@ -26,12 +28,12 @@ const WrapPendingClient: FC<PropsType> = ({
   ) : waitHydration ? (
     <WrapClient>
       <div className="w-full flex flex-col items-center gap-8">
-        {children()}
+        {isSuccess && children()}
       </div>
     </WrapClient>
   ) : (
     <div className="w-full flex flex-col items-center gap-8">
-      {children({ isHydrated })}
+      {isSuccess && children({ isHydrated })}
     </div>
   );
 };
