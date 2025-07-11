@@ -19,6 +19,7 @@ type PropsType = {
   description?: string | null;
   markdown: string;
   Content: React.ReactNode;
+  Header?: React.ReactNode;
 };
 
 const PageItemShape: FC<PropsType> = ({
@@ -28,6 +29,7 @@ const PageItemShape: FC<PropsType> = ({
   description,
   markdown,
   Content,
+  Header,
 }) => {
   return (
     <div
@@ -37,6 +39,8 @@ const PageItemShape: FC<PropsType> = ({
       `}
     >
       <Title {...{ title }} />
+
+      {Header}
 
       <ImagesSwapper
         {...{

@@ -31,3 +31,10 @@ export const genLinksCard = (...arg: string[]) =>
     href: el,
     id: v4(),
   }));
+
+export const linkCourseActions = (courseID: string) => [
+  {
+    label: "Add Concept",
+    href: `/concepts/post/${courseID}`,
+  },
+];

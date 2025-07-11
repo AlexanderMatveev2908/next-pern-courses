@@ -10,6 +10,10 @@
   @apply px-[20px] sm:px-[50px];
 }
 
+.li__drop {
+  @apply px-4 py-2 w-full flex rounded-xl transition-all duration-300 text-neutral-200 hover:text-neutral-950 hover:bg-[whitesmoke] cursor-pointer;
+}
+
 .grad__txt {
   background: linear-gradient(to right, var(--white__0), var(--neutral__600));
   background-clip: text;
@@ -30,7 +34,9 @@
 .scroll__app::-webkit-scrollbar-thumb {
   background: var(--white__0);
   border-radius: 10px;
-  box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+  box-shadow:
+    0 0 2.5px var(--white__0),
+    0 0 5px var(--white__0);
 }
 
 .scroll__app {

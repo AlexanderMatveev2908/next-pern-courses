@@ -8,6 +8,7 @@ import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import ContentCourse from "./components/ContentCourse";
+import HeaderCourse from "./components/HeaderCourse";
 
 type PropsType = {
   courseID: string;
@@ -39,6 +40,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
             video: course?.video,
             description: course?.description,
             markdown: course!.markdown,
+            Header: <HeaderCourse {...{ course: course! }} />,
             Content: (
               <ContentCourse
                 {...{
