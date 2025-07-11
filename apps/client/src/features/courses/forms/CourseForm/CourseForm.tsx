@@ -11,13 +11,12 @@ import {
   fieldStack,
   fieldTech,
   imagesField,
-  titleField,
   videoField,
 } from "./uiFactory";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Path, useFormContext, useWatch } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
-import WrapSingleField from "./components/WrapSingleField";
+import WrapSingleField from "../../../../common/components/forms/HOC/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
@@ -34,6 +33,8 @@ import {
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
 import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
 import { parseTechObj } from "@shared/first/lib/etc.js";
+import WarnForm from "@/common/components/forms/etc/WarnForm";
+import { genTitleField } from "@/core/uiFactory/forms";
 
 type PropsType = {
   handleSave: () => void;
@@ -72,15 +73,17 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
   );
 
   return (
-    <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
-      <div className="w-full flex justify-end">
-        <span className="txt__md text-gray-300">
-          Fields marked with * are required
-        </span>
-      </div>
+    <form onSubmit={handleSave} className="form__shape">
+      <WarnForm />
 
       <WrapSingleField>
-        <FormFieldTxt {...{ el: titleField, control, errors }} />
+        <FormFieldTxt
+          {...{
+            el: genTitleField<CourseFormType, Path<CourseFormType>>("Course"),
+            control,
+            errors,
+          }}
+        />
       </WrapSingleField>
 
       <WrapSingleField>

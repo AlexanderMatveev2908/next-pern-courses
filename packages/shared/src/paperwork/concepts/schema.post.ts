@@ -118,4 +118,4 @@ export const schemaPostConcept = z.object({
     .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
 });
 
-export type FormPostConceptType = z.infer<typeof schemaPostConcept>;
+export type FormConceptType = z.infer<typeof schemaPostConcept>;

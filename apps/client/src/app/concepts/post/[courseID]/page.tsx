@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
 import {
-  FormPostConceptType,
+  FormConceptType,
   schemaPostConcept,
 } from "@shared/first/paperwork/concepts/schema.post.js";
 import { useParams, useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ import { FormProvider, useForm } from "react-hook-form";
 const Page: FC = () => {
   const nav = useRouter();
 
-  const formCtx = useForm<FormPostConceptType>({
+  const formCtx = useForm<FormConceptType>({
     mode: "onChange",
     resolver: zodResolver(schemaPostConcept),
   });
