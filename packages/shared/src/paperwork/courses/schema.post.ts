@@ -7,6 +7,13 @@ import { RefinementCtx, z } from "zod";
 import { gradeSchema, schemaStack, schemaTech } from "./schema.shared.js";
 import { isValidTech } from "@shared/first/lib/dataStructure.js";
 import { StackType, TechValType } from "@shared/first/constants/categories.js";
+import {
+  schemaDescription,
+  schemaImages,
+  schemaMarkdown,
+  schemaTitle,
+  schemaVideo,
+} from "../shared/schema.js";
 
 export const refineTechByStack = (
   data: Record<string, any>,
@@ -22,51 +29,13 @@ export const refineTechByStack = (
 
 export const schemaCoursePost = z
   .object({
-    title: z
-      .string()
-      .min(1, "Course title is required")
-      .max(50, "Course title must be less than 50 characters")
-      .regex(REG_TITLE, "Course title has invalid characters"),
-    description: z
-      .string()
-      .max(2000, "Course description must be less than 2000 characters")
-      .regex(REG_DESCRIPTION, "Course description has invalid characters")
-      .optional(),
+    title: schemaTitle("Course"),
+    description: schemaDescription("Course"),
 
-    images: z
-      .union([z.array(z.string().url()), z.array(z.instanceof(File))])
-      .refine(
-        (v) =>
-          Array.isArray(v) &&
-          v.every((img) =>
-            img instanceof File
-              ? img.type.startsWith("image")
-              : REG_CLOUD_URL.test(img),
-          ),
-        "File must be an image",
-      )
-      .refine(
-        (v) => Array.isArray(v) && !!v.length,
-        "You must upload at least one image",
-      )
-      .refine(
-        (v) => Array.isArray(v) && v.length <= 5,
-        "You can only upload 5 images",
-      ),
-    video: z
-      .instanceof(File)
-      .nullable()
-      .optional()
-      .refine((v) => !v || v.type.startsWith("video"), "File must be a video")
-      .refine(
-        (v) => !v || v.size < 10 * 1024 * 1024,
-        "Video size must be less than 10MB",
-      ),
+    images: schemaImages(),
+    video: schemaVideo(),
 
-    markdown: z
-      .string()
-      .min(1, "Markdown is required")
-      .max(10000, "Markdown must be less than 10000 characters"),
+    markdown: schemaMarkdown(),
 
     grade: gradeSchema(),
     stack: schemaStack(),

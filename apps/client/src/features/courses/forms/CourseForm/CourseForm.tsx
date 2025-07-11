@@ -4,20 +4,15 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { useMemo, type FC } from "react";
 import {
-  descriptionField,
   fieldHard,
-  fieldMarkdown,
   fieldRootLanguage,
   fieldStack,
   fieldTech,
-  imagesField,
-  titleField,
-  videoField,
 } from "./uiFactory";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Path, useFormContext, useWatch } from "react-hook-form";
 import { CourseFormType } from "@shared/first/paperwork/courses/schema.post";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
-import WrapSingleField from "./components/WrapSingleField";
+import WrapSingleField from "../../../../common/components/forms/HOC/WrapSingleField";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import FormFieldImages from "@/common/components/forms/inputs/assets/FormFieldImages/FormFieldImages";
@@ -34,6 +29,8 @@ import {
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
 import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
 import { parseTechObj } from "@shared/first/lib/etc.js";
+import WarnForm from "@/common/components/forms/etc/WarnForm";
+import { FieldGenerator } from "@/core/uiFactory/forms";
 
 type PropsType = {
   handleSave: () => void;
@@ -71,27 +68,47 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
     [stackVal],
   );
 
+  const gen = new FieldGenerator<CourseFormType, Path<CourseFormType>>(
+    "Course",
+  );
+
   return (
-    <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-10">
-      <div className="w-full flex justify-end">
-        <span className="txt__md text-gray-300">
-          Fields marked with * are required
-        </span>
-      </div>
+    <form onSubmit={handleSave} className="form__shape">
+      <WarnForm />
 
       <WrapSingleField>
-        <FormFieldTxt {...{ el: titleField, control, errors }} />
+        <FormFieldTxt
+          {...{
+            el: gen.genTitle(),
+            control,
+            errors,
+          }}
+        />
       </WrapSingleField>
 
       <WrapSingleField>
-        <FormFieldArea {...{ el: descriptionField, control, errors }} />
+        <FormFieldArea
+          {...{
+            el: gen.genDesc(),
+            control,
+            errors,
+          }}
+        />
       </WrapSingleField>
 
-      <FormFieldImages {...{ el: imagesField }} />
+      <FormFieldImages
+        {...{
+          el: gen.genImages(),
+        }}
+      />
 
-      <FormFieldVideo {...{ el: videoField }} />
+      <FormFieldVideo
+        {...{
+          el: gen.genVideo(),
+        }}
+      />
 
-      <FormFieldMD {...{ el: fieldMarkdown }} />
+      <FormFieldMD {...{ el: gen.genMark() }} />
 
       <WrapCheck {...{ el: fieldHard, vals: GradePkg }}>
         {(args) => WrapBoxes(args)}

@@ -13,7 +13,6 @@ import { useRef } from "react";
 import RowButtonsFile from "@/common/components/HOC/assets/RowButtonsFile";
 import DOMPurify from "dompurify";
 import { isStr } from "@shared/first/lib/dataStructure";
-import { css } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldType<T>;
@@ -85,11 +84,6 @@ const FormFieldMD = <T extends FieldValues>({ el, cb }: PropsType<T>) => {
             <PreviewMarkdown
               {...{
                 data: markdown,
-                $customCSS: {
-                  css: css`
-                    min-width: 600px;
-                  `,
-                },
               }}
             />
           ),

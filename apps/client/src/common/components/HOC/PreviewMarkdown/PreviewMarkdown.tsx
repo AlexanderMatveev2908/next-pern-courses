@@ -30,7 +30,7 @@ const PreviewMarkdown: FC<PropsType> = ({
 
   return !isData ? null : (
     <div
-      className="w-full flex justify-center"
+      className="w-full max-w-full flex justify-center"
       css={css`
         ${$customCSS?.css}
         margin-top: ${isData ? "1rem" : "0px"};

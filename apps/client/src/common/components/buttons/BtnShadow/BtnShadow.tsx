@@ -23,7 +23,7 @@ const BtnShadow: FC<PropsTypeBtn & { btnActType: BtnActType }> = ({
         type={type}
         disabled={!isEnabled}
         onClick={handleClick}
-        className="btn__app w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl"
+        className="btn__app w-full max-w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl"
         style={{ "--scale__up": 1.1 } as React.CSSProperties}
         css={css`
           border: 2px solid ${clr};
