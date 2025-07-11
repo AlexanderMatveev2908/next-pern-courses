@@ -14,3 +14,7 @@ export const getListCoursesCtrl = async (
     nHits,
   });
 };
+
+export const getCourseByID = async (req: FastifyRequest, res: FastifyReply) => {
+  return res.res200({ msg: "here u are the course" });
+};

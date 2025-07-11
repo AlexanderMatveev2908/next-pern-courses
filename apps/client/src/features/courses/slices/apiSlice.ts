@@ -3,6 +3,7 @@ import {
   ReqSearchAPI,
   ResAPI,
   TagsAPI,
+  UnwrappedResAPI,
 } from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { CourseType } from "../types/courses";
@@ -12,7 +13,7 @@ const BASE_URL = "/courses";
 
 export const coursesSliceAPI = api.injectEndpoints({
   endpoints: (builder) => ({
-    postCourse: builder.mutation<ResAPI<{ msg: string }>, FormData>({
+    postCourse: builder.mutation<ResAPI<void>, FormData>({
       query: (data) => ({
         url: BASE_URL,
         method: "POST",
@@ -48,6 +49,17 @@ export const coursesSliceAPI = api.injectEndpoints({
               },
             ]),
       ],
+    }),
+
+    getCourseByID: builder.query<
+      UnwrappedResAPI<{ course: CourseType }>,
+      string
+    >({
+      query: (id) => ({
+        url: `${BASE_URL}/${id},`,
+        method: "GET",
+      }),
+      providesTags: [TagsAPI.COURSE_ITEM],
     }),
   }),
 });

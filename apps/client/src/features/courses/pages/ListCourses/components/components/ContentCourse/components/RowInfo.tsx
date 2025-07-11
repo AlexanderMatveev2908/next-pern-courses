@@ -6,7 +6,7 @@ import type { FC } from "react";
 type PropsType = {
   info: {
     label: string;
-    val: string;
+    val: string | number;
   };
 };
 

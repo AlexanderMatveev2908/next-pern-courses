@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
-import { CourseType } from "../../types/courses";
 import { formatMinutes } from "@shared/first/lib/formatters.js";
+import { CourseType } from "@/features/courses/types/courses";
 
 export const genRowsInfo = (course: CourseType) =>
   [

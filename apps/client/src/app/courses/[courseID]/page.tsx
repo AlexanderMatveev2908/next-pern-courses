@@ -1,13 +1,27 @@
+import CoursePage from "@/features/courses/pages/CoursePage/CoursePage";
+import { isOkID } from "@shared/first/lib/validators.js";
+import { notFound } from "next/navigation";
 import type { FC } from "react";
+
+export const dynamic = "force-dynamic";
 
 type PropsType = {
   params: Promise<{ courseID: string }>;
 };
 
-const CoursePage: FC<PropsType> = async ({ params }) => {
+const Page: FC<PropsType> = async ({ params }) => {
   const { courseID } = await params;
 
-  return <div className="tc">{courseID}</div>;
+  const isValidID = isOkID(courseID);
+  if (!isValidID) notFound();
+
+  return (
+    <CoursePage
+      {...{
+        courseID,
+      }}
+    />
+  );
 };
 
-export default CoursePage;
+export default Page;

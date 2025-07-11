@@ -1,4 +1,4 @@
-import ListCourses from "@/features/courses/ListCourses/ListCourses";
+import ListCourses from "@/features/courses/pages/ListCourses/ListCourses";
 import SearchCtxProvider from "@/features/layout/components/SearchBar/contexts/SearchCtxProvider";
 import type { FC } from "react";
 
