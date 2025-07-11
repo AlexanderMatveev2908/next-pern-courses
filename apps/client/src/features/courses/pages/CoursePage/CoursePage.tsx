@@ -7,6 +7,7 @@ import { coursesSliceAPI } from "../../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import ImagesSwapper from "@/common/components/HOC/ImagesSwapper/ImagesSwapper";
+import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 
 type PropsType = {
   courseID: string;
@@ -31,19 +32,12 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
       }}
     >
       {() => (
-        <div className="w-full grid grid-cols-1 gap-10">
-          <div className="w-full flex justify-center">
-            <span className="txt__xl grad__txt">
-              {course!.title.toUpperCase()}
-            </span>
-          </div>
-
-          <ImagesSwapper
-            {...{
-              urls: course!.images.map((img) => img.url).slice(1),
-            }}
-          />
-        </div>
+        <PageItemShape
+          {...{
+            images: course!.images,
+            title: course!.title,
+          }}
+        ></PageItemShape>
       )}
     </WrapPendingClient>
   );
