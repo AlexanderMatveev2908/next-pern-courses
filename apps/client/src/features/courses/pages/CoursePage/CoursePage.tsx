@@ -6,7 +6,6 @@ import type { FC } from "react";
 import { coursesSliceAPI } from "../../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
-import ImagesSwapper from "@/common/components/HOC/ImagesSwapper/ImagesSwapper";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 
 type PropsType = {
@@ -36,6 +35,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
           {...{
             images: course!.images,
             title: course!.title,
+            video: course?.video,
           }}
         ></PageItemShape>
       )}
