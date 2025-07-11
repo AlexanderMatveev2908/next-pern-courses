@@ -6,7 +6,6 @@ import { v4 } from "uuid";
 import { css } from "@emotion/react";
 
 type PropsType = {
-  nHits: number;
   totPages: number;
   numBtnsPerBlock: number;
   block: number;

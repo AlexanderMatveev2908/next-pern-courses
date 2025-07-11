@@ -23,7 +23,7 @@ const CourseItem: FC<PropsType> = ({ course }) => {
         ContentServer: <ContentCourse {...{ course }} />,
         linksHref: genLinksCard(`/courses/${course.id}`),
       }}
-    ></CardShape>
+    />
   );
 };
 

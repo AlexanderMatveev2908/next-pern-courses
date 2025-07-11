@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import WrapSearchBarBtn from "../HOC/WrapSearchBarBtn";
 import { BtnActType } from "@/common/types/uiFactory";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
-import { css } from "@emotion/react";
 import RowBtnCounter from "./components/RowBtnCounter";
 import { useSearchCtxConsumer } from "../../contexts/hooks/useSearchCtxConsumer";
 import { getLimitPage, grabNumBlockBtns } from "../../lib/style";
@@ -17,6 +16,9 @@ import {
 } from "@/common/types/api";
 import { useFactoryAPI } from "../../hooks/useFactoryAPI";
 import { FieldValues } from "react-hook-form";
+import { v4 } from "uuid";
+import Shim from "@/common/components/elements/Shim";
+import { css } from "@emotion/react";
 
 type PropsType<
   T extends PaginatedResAPI<any>,
@@ -24,10 +26,10 @@ type PropsType<
   U extends FieldValues,
 > = {
   totPages?: number;
-  nHits?: number;
   triggerRTK: TriggerTypeRTK<T, K>;
   triggerRef: () => void;
   valsRHF: U;
+  isHydrated: boolean;
 };
 
 const PageCounter = <
@@ -35,11 +37,11 @@ const PageCounter = <
   K extends ReqSearchAPI,
   U extends FieldValues,
 >({
-  nHits = 0,
   totPages = 0,
   triggerRTK,
   triggerRef,
   valsRHF,
+  isHydrated,
 }: PropsType<T, K, U>) => {
   const [numBtnsPerBlock, setNumBtnsPerBlock] = useState(grabNumBlockBtns());
 
@@ -155,7 +157,23 @@ const PageCounter = <
 
   // __cg("pagination", ["block", block], ["page", page], ["limit", limit]);
 
-  return !totPages ? null : (
+  return !isHydrated ? (
+    <div className="w-full flex justify-around items-center">
+      {Array.from({ length: 4 }, () => v4()).map((id) => (
+        <Shim
+          key={id}
+          {...{
+            $CSS: {
+              css: css`
+                width: 40px;
+                height: 40px;
+              `,
+            },
+          }}
+        />
+      ))}
+    </div>
+  ) : !totPages ? null : (
     <div className="w-full grid grid-cols-[80px_1fr_80px] ic gap-10 pt-[100px]">
       <WrapSearchBarBtn
         {...{
@@ -175,7 +193,6 @@ const PageCounter = <
 
       <RowBtnCounter
         {...{
-          nHits,
           totPages,
           numBtnsPerBlock,
           limit,
