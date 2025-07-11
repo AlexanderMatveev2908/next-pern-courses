@@ -58,3 +58,11 @@ export type ReqSearchAPI = {
   vals: string;
   _?: number;
 };
+
+export type NextParamPageType<T> = {
+  params: {} & Promise<T>;
+};
+
+export type PropsDOM = {
+  children: React.ReactNode;
+};

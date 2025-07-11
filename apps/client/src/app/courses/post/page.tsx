@@ -8,7 +8,7 @@ import type { FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger";
-import CourseForm from "@/core/forms/CourseForm/CourseForm";
+import CourseForm from "@/features/courses/forms/CourseForm/CourseForm";
 import { genFormData } from "@/core/lib/processForm";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
