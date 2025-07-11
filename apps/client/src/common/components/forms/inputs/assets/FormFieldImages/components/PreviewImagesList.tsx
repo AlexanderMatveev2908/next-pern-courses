@@ -23,9 +23,9 @@ const PreviewImagesList = <T extends FieldValues>({
     () =>
       isArrOK(
         images as unknown as (string | File)[],
-        (val) => isStr(val as string) || val instanceof File
+        (val) => isStr(val as string) || val instanceof File,
       ),
-    [images]
+    [images],
   );
 
   const handleDelImage = (img: File | string) => {
@@ -39,10 +39,11 @@ const PreviewImagesList = <T extends FieldValues>({
 
   return (
     <div
-      className="w-full max-w-fit border-2 border-neutral-800 rounded-xl overflow-x-auto flex gap-8 snap-x snap-mandatory"
+      className="w-full max-w-fit rounded-xl overflow-x-auto flex gap-8 snap-x snap-mandatory"
       css={css`
         margin-top: ${isData ? "1rem" : "0px"};
         padding: ${isData ? "30px" : "0px"};
+        border: 2px solid ${isData ? "var(--neutral__800)" : "trasnparent"};
       `}
     >
       {isData &&
