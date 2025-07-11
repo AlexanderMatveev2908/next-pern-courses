@@ -4,7 +4,6 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { useMemo, type FC } from "react";
 import {
-  descriptionField,
   fieldHard,
   fieldMarkdown,
   fieldRootLanguage,
@@ -34,7 +33,7 @@ import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCh
 import { grabValidTechs } from "@shared/first/lib/dataStructure.js";
 import { parseTechObj } from "@shared/first/lib/etc.js";
 import WarnForm from "@/common/components/forms/etc/WarnForm";
-import { genTitleField } from "@/core/uiFactory/forms";
+import { genDescriptionField, genTitleField } from "@/core/uiFactory/forms";
 
 type PropsType = {
   handleSave: () => void;
@@ -87,7 +86,15 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       </WrapSingleField>
 
       <WrapSingleField>
-        <FormFieldArea {...{ el: descriptionField, control, errors }} />
+        <FormFieldArea
+          {...{
+            el: genDescriptionField<CourseFormType, Path<CourseFormType>>(
+              "Course",
+            ),
+            control,
+            errors,
+          }}
+        />
       </WrapSingleField>
 
       <FormFieldImages {...{ el: imagesField }} />

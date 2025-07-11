@@ -3,8 +3,9 @@
 
 import WarnForm from "@/common/components/forms/etc/WarnForm";
 import WrapSingleField from "@/common/components/forms/HOC/WrapSingleField";
+import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { genTitleField } from "@/core/uiFactory/forms";
+import { genDescriptionField, genTitleField } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import type { FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
@@ -28,6 +29,18 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
           {...{
             el: genTitleField<FormConceptType, Path<FormConceptType>>(
               "Concept",
+            ),
+            control,
+            errors,
+          }}
+        />
+      </WrapSingleField>
+
+      <WrapSingleField>
+        <FormFieldArea
+          {...{
+            el: genDescriptionField<FormConceptType, Path<FormConceptType>>(
+              "Course",
             ),
             control,
             errors,
