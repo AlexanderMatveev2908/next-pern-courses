@@ -29,11 +29,14 @@ const ContentCourse: FC<PropsType> = ({ course }) => {
       <div
         className="w-full grid gap-6"
         css={css`
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         `}
       >
         {genRowsInfo(course).map((el, i) => (
-          <div key={ids[0][i]} className="w-full">
+          <div
+            key={ids[0][i]}
+            className="w-full border-2 border-neutral-600 p-3 rounded-xl"
+          >
             <RowInfo
               {...{
                 info: el,

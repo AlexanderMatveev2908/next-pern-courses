@@ -13,7 +13,7 @@ type PropsType = {
 const ContentWarn: FC<PropsType> = ({ handleClick }) => {
   return (
     <div className="w-full flex flex-col gap-20 mt-20 sm:max-w-[80%] mx-auto">
-      <span className="txt__xl text-neutral-200">
+      <span className="txt__2xl text-neutral-200">
         The server hosted on Fly.io is still waking up 💤💤💤
       </span>
 

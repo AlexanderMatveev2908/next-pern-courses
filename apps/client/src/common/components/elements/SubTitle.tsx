@@ -17,7 +17,7 @@ const SubTitle: FC<PropsType> = ({ txt, $display }) => {
         display: ${$display ?? "center"};
       `}
     >
-      <span className="txt__lg text-neutral-200">{txt}</span>
+      <span className="txt__xl text-neutral-200">{txt}</span>
     </div>
   );
 };

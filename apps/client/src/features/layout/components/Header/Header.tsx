@@ -22,7 +22,7 @@ const Header: FC = () => {
   return (
     <div className="pl-[10px] sm:pl-[20px] pr-[10px] w-full border-b-[3px] border-b-neutral-800 sticky top-0 h-[80px] z__header bg-[#000]">
       <div className="w-full h-full items-center grid grid-cols-2">
-        <Link href="/" className="grad__txt txt__2xl w-fit">
+        <Link href="/" className="grad__txt txt__3xl w-fit">
           NEXT_PERN
         </Link>
 

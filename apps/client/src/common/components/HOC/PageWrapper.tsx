@@ -13,7 +13,7 @@ type PropsType = {
 const PageWrapper: FC<PropsType> = ({ title, children, wrapHydrate }) => {
   return (
     <div className="w-full flex flex-col gap-6 text-gray-300">
-      <TxtClamp {...{ txt: title, CSS: "txt__xl grad__txt" }} />
+      <TxtClamp {...{ txt: title, CSS: "txt__2xl grad__txt" }} />
 
       {wrapHydrate ? <WrapClient>{children}</WrapClient> : children}
     </div>

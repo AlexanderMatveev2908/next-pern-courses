@@ -46,7 +46,7 @@ const Sidebar: FC = ({}) => {
             <TxtScroll
               {...{
                 txt: "john@gmail.com",
-                CSS: "txt__xl text-neutral-400",
+                CSS: "txt__2xl text-neutral-400",
               }}
             />
           </div>

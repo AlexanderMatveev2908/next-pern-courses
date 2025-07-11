@@ -88,7 +88,7 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
           ref={labelRef}
           className="w-full grid grid-cols-2 border-b-2 border-neutral-800 pb-3 pt-4 px-4"
         >
-          <span className="txt__xl justify-self-start text-neutral-200">
+          <span className="txt__2xl justify-self-start text-neutral-200">
             Filter
           </span>
 
