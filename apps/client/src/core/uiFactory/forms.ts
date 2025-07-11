@@ -39,51 +39,47 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
 
   private genField(
     name: K,
-    label: string,
-    type: FieldDataType,
-    required: boolean,
+    opt: { label?: string; type: FieldDataType; required: boolean },
   ): FormFieldType<T> {
     return {
       name,
-      label: `${this.prefixLabel} ${label} ${required ? "*" : ""}`,
-      type,
-      required,
+      label: `${this.prefixLabel} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
+      type: opt.type,
+      required: opt.required,
       id: v4(),
     };
   }
 
   public genHardCode(
     name: K,
-    label: string,
-    type: FieldDataType,
-    required: boolean,
+    opt: { label?: string; type: FieldDataType; required: boolean },
   ) {
     return {
       id: v4(),
       name,
-      label: `${label} ${required ? "*" : ""}`,
-      type,
-      required,
+      label: `${opt.label ?? name} ${opt.required ? "*" : ""}`,
+      type: opt.type,
+      required: opt.required,
     };
   }
 
   genTitle(): FormFieldType<T> {
-    return this.genField("title" as K, "title", "text", true);
+    return this.genField("title" as K, { type: "text", required: true });
   }
 
   genDesc(): FormFieldType<T> {
-    return this.genField("description" as K, "description", "text", false);
+    return this.genField("description" as K, { type: "text", required: false });
   }
 
   genImages(): FormFieldType<T> {
-    return this.genField("images" as K, "images", "file", true);
+    return this.genField("images" as K, { type: "file", required: true });
   }
 
   genVideo(): FormFieldType<T> {
-    return this.genField("video" as K, "video", "file", false);
+    return this.genField("video" as K, { type: "file", required: false });
   }
 
   genMark(): FormFieldType<T> {
-    return this.genField("markdown" as K, "markdown", "file", true);
+    return this.genField("markdown" as K, { type: "file", required: true });
   }
 }
