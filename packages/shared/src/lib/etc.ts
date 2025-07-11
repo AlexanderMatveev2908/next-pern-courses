@@ -84,6 +84,10 @@ export const genIpsum = (num: number = 1) =>
     num,
   );
 
+// ? i use just for making me a general idea of a real text length
+export const extractLoremCount = (txt: string) =>
+  txt.length / genIpsum().length;
+
 export const parseTechObj = (techObj: typeof TechPkg) =>
   Object.fromEntries(Object.entries(techObj).map(([k, v]) => [[k], v.label]));
 

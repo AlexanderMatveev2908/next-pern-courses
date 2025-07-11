@@ -1,6 +1,8 @@
 import z from "zod";
 import {
+  defaultItemObjSchema,
   schemaDescription,
+  schemaGenericTxt,
   schemaImages,
   schemaInteger,
   schemaMarkdown,
@@ -8,8 +10,23 @@ import {
   schemaVideo,
 } from "../shared/schema.js";
 
+const handleRangeMinMax = (vForm: string, vRange: number, sign: "<" | ">") =>
+  sign === "<" ? +vForm < vRange : +vForm > vRange;
 
-const schemaQuestion = 
+const objSign = {
+  autoComplete: { "<": "least", ">": "most" },
+  externalKey: {
+    "<": "min",
+    ">": "max",
+  },
+};
+
+const extractMsgErrRange = (
+  label: string,
+  sign: "<" | ">",
+  objRange: Record<string, any>,
+) =>
+  `${label} must be at ${objSign.autoComplete[sign]} ${objRange[objSign.externalKey[sign]]}`;
 
 const RANGE_POINTS = {
   min: 25,
@@ -21,6 +38,55 @@ const TIME_REQUIRED = {
   max: 20,
 };
 
+const MIN_QUESTIONS = 3;
+
+const MIN_VARIANTS = 5;
+
+const schemaAnswer = z.object({
+  answer: defaultItemObjSchema().extend({
+    val: schemaGenericTxt(250, "Answer"),
+  }),
+  isCorrect: z.boolean(),
+});
+
+const schemaQuestion = z
+  .object({
+    title: schemaTitle("Question title"),
+    question: schemaGenericTxt(500, "Question"),
+    variants: z
+      .array(schemaAnswer)
+      .min(
+        MIN_VARIANTS,
+        `You must include at least ${MIN_VARIANTS} for each question`,
+      ),
+  })
+  .superRefine((data, ctx) => {
+    const { variants } = data;
+
+    let countOK = 0;
+    let i = 0;
+
+    while (i < variants.length) {
+      const curr = variants[i];
+
+      if (curr.isCorrect) countOK++;
+    }
+
+    if (!countOK)
+      ctx.addIssue({
+        code: "custom",
+        path: ["variants"],
+        message: "One of answers provided must be true",
+      });
+
+    if (countOK > 1)
+      ctx.addIssue({
+        code: "custom",
+        path: ["variants"],
+        message: "Only one on answers provided can be true",
+      });
+  });
+
 export const schemaPostConcept = z.object({
   title: schemaTitle("Concept"),
   description: schemaDescription("Concept"),
@@ -31,20 +97,25 @@ export const schemaPostConcept = z.object({
   markdown: schemaMarkdown(),
 
   pointsGained: schemaInteger("Points Gained")
-    .refine((v) => +v > RANGE_POINTS.min, {
-      message: `Points must be at least ${RANGE_POINTS.min}`,
+    .refine((v) => handleRangeMinMax(v, RANGE_POINTS.min, ">"), {
+      message: extractMsgErrRange("Points", "<", RANGE_POINTS),
     })
-    .refine((v) => +v < RANGE_POINTS.max, {
-      message: `Points must be at least ${RANGE_POINTS.max}`,
+    .refine((v) => handleRangeMinMax(v, RANGE_POINTS.max, "<"), {
+      message: extractMsgErrRange("Points", ">", RANGE_POINTS),
     }),
   estimatedTime: schemaInteger("Estimated Time")
-    .refine((v) => +v < TIME_REQUIRED.min, {
-      message: `Time required must be at least ${TIME_REQUIRED.min}`,
+    .refine((v) => handleRangeMinMax(v, TIME_REQUIRED.min, ">"), {
+      message: extractMsgErrRange("Time estimated", "<", TIME_REQUIRED),
     })
-    .refine((v) => +v < TIME_REQUIRED.max, {
-      message: `Time required must be at most ${TIME_REQUIRED.max}`,
+    .refine((v) => handleRangeMinMax(v, TIME_REQUIRED.max, "<"), {
+      message: extractMsgErrRange("Time estimated", ">", TIME_REQUIRED),
     }),
 
   order: schemaInteger("Order"),
 
+  questions: z
+    .array(schemaQuestion)
+    .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
 });
+
+export type FormPostConceptType = z.infer<typeof schemaPostConcept>;

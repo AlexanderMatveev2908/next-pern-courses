@@ -14,6 +14,13 @@ export const schemaTitle = (label: string) =>
     .max(50, `${label} title must be less than 50 characters`)
     .regex(REG_TITLE, `${label} title has invalid characters`);
 
+export const schemaGenericTxt = (max: number, label: string) =>
+  z
+    .string()
+    .min(1, `${label} field is required`)
+    .max(max, `${label} description must be less than 500 characters`)
+    .regex(REG_DESCRIPTION, `${label} description has invalid characters`);
+
 export const schemaDescription = (label: string) =>
   z
     .string()
@@ -94,32 +101,35 @@ export const defaultItemObjSchema = () =>
     label: z.string(),
     type: z.string(),
     place: z.string().optional(),
-    val: z.string(),
   });
 
 export const schemaItemSearchBar = ({
   customValidateCB,
   opt,
 }: ParamsGenItemSearchBarType) =>
-  defaultItemObjSchema().superRefine((item, ctx) => {
-    const { name } = item;
+  defaultItemObjSchema()
+    .extend({
+      val: z.string(),
+    })
+    .superRefine((item, ctx) => {
+      const { name } = item;
 
-    const reg = opt[name]?.reg;
-    const mavLen = opt[name]?.mavLen;
+      const reg = opt[name]?.reg;
+      const mavLen = opt[name]?.mavLen;
 
-    if (reg instanceof RegExp && !reg.test(item.val))
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid ${name} value`,
-        path: ["val"],
-      });
+      if (reg instanceof RegExp && !reg.test(item.val))
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Invalid ${name} value`,
+          path: ["val"],
+        });
 
-    if (typeof mavLen === "number" && item.val.length > mavLen)
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Value must be less than ${mavLen} characters`,
-        path: ["val"],
-      });
+      if (typeof mavLen === "number" && item.val.length > mavLen)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Value must be less than ${mavLen} characters`,
+          path: ["val"],
+        });
 
-    if (typeof customValidateCB === "function") customValidateCB(item, ctx);
-  });
+      if (typeof customValidateCB === "function") customValidateCB(item, ctx);
+    });
