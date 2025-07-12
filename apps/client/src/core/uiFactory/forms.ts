@@ -52,24 +52,14 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     };
   }
 
-  private genSpecificField(
-    name: K,
-    opt: { label?: string; type: FieldDataType; required: boolean },
-  ): FormFieldType<T> {
-    return {
-      ...this.fillGenericKeys(name, {
-        label: opt.label,
-        type: opt.type,
-        required: opt.required,
-      }),
-      name: name as K,
-      label: `${this.prefixLabel} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
-    };
-  }
-
   public genHardCode(
     name: K,
-    opt: { label?: string; type: FieldDataType; required: boolean },
+    opt: {
+      label?: string;
+      type: FieldDataType;
+      required: boolean;
+      chainLabel?: boolean;
+    },
   ): FormFieldType<T> {
     return {
       ...this.fillGenericKeys(name, {
@@ -77,15 +67,15 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
         type: opt.type,
         required: opt.required,
       }),
-      name: name as K,
-    };
+      label: `${opt.chainLabel ? this.prefixLabel : ""} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
+    } as FormFieldType<T>;
   }
 
   // ? only my array fields a val key, a normal field have already it included by default internally while RHF needs more management for custom array fields
   public genArrFieldTxt(
-    name: string,
+    name: ArrayPath<T>,
     opt: {
-      field: string;
+      field: K;
       label?: string;
       type: Exclude<FieldDataType, "file">;
       required: boolean;
@@ -97,12 +87,11 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
         type: opt.type,
         required: opt.required,
       }),
-      name: name as ArrayPath<T>,
-      type: opt.type as Exclude<FieldDataType, "file">,
       val: "",
-      field: opt.field as K,
-    };
+      field: opt.field,
+    } as FieldArrType<T, K>;
   }
+
   public genArrFieldBool(
     name: string,
     opt: {
@@ -119,37 +108,42 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   }
 
   public genTitle(): FormFieldType<T> {
-    return this.genSpecificField("title" as K, {
+    return this.genHardCode("title" as K, {
       type: "text",
       required: true,
+      chainLabel: true,
     });
   }
 
   public genDesc(): FormFieldType<T> {
-    return this.genSpecificField("description" as K, {
+    return this.genHardCode("description" as K, {
       type: "text",
       required: false,
+      chainLabel: true,
     });
   }
 
   public genImages(): FormFieldType<T> {
-    return this.genSpecificField("images" as K, {
+    return this.genHardCode("images" as K, {
       type: "file",
       required: true,
+      chainLabel: true,
     });
   }
 
   public genVideo(): FormFieldType<T> {
-    return this.genSpecificField("video" as K, {
+    return this.genHardCode("video" as K, {
       type: "file",
       required: false,
+      chainLabel: true,
     });
   }
 
   public genMark(): FormFieldType<T> {
-    return this.genSpecificField("markdown" as K, {
+    return this.genHardCode("markdown" as K, {
       type: "file",
       required: true,
+      chainLabel: true,
     });
   }
 }

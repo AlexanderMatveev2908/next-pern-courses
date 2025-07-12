@@ -27,7 +27,7 @@ const orderField = gen.genHardCode("order", {
 export const numericFieldsConcept = [timeField, pointsField, orderField];
 
 export const grabAnswerShape = (i: number) => ({
-  answer: gen.genArrFieldTxt("answer", {
+  answer: gen.genArrFieldTxt("answer" as ArrayPath<FormConceptType>, {
     field: "quiz",
     label: `${i}. Answer`,
     type: "text",
@@ -38,13 +38,13 @@ export const grabAnswerShape = (i: number) => ({
 
 export const grabQuestionShape = () => ({
   id: v4(),
-  title: gen.genArrFieldTxt("title", {
+  title: gen.genArrFieldTxt("title" as ArrayPath<FormConceptType>, {
     field: "quiz",
     type: "text",
     required: true,
   }),
   question: {
-    ...gen.genArrFieldTxt("question", {
+    ...gen.genArrFieldTxt("question" as ArrayPath<FormConceptType>, {
       field: "quiz",
       type: "text" as Exclude<FieldDataType, "file">,
       required: true,
