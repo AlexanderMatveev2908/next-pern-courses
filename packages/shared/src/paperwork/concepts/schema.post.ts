@@ -81,6 +81,8 @@ const schemaQuizItem = z
       const curr = variants[i];
 
       if (curr.isCorrect) countOK++;
+
+      i++;
     }
 
     if (!countOK)

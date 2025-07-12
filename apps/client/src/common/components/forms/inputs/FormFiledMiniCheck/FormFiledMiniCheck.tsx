@@ -6,6 +6,7 @@ import { FieldValues, Path, PathValue, useFormContext } from "react-hook-form";
 import { easeInOut, motion } from "framer-motion";
 import ErrFormField from "../../errors/ErrFormField";
 import Anchor from "../../etc/Anchor";
+import { isStr } from "@shared/first/lib/dataStructure.js";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   el: FieldMiniCheckType<T, K> | FieldArrType<T, K>;
@@ -43,12 +44,12 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
   };
 
   return (
-    <div className="w-full max-w-fit grid grid-cols-1 gap-4">
+    <div className="w-full max-w-fit grid grid-cols-1 gap-4 h-fit ">
       {showLabel && (
         <span className="txt__lg text-neutral-200">{el.label}</span>
       )}
 
-      <div className="w-full max-w-fit relative flex justify-start items-center gap-8">
+      <div className="w-full max-w-fit relative flex justify-start items-center gap-8 ">
         <Anchor
           {...{
             name: el.name as Path<T>,
@@ -104,7 +105,7 @@ const FormFiledMiniCheck = <T extends FieldValues, K extends Path<T>>({
           ></motion.div>
         </label>
 
-        <span className="txt__md text-neutral-300">{txt}</span>
+        {isStr(txt) && <span className="txt__md text-neutral-300">{txt}</span>}
       </div>
     </div>
   );

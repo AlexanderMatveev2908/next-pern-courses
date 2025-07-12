@@ -96,9 +96,12 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     name: string,
     opt: {
       label?: string;
+      field: string;
     },
   ) {
     return {
+      id: v4(),
+      field: opt.field,
       name,
       label: opt.label ?? name,
       type: "",
