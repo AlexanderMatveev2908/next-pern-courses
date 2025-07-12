@@ -25,6 +25,8 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
     trigger,
   } = useFormContext();
 
+  const syncCB = () => trigger(`${el.field}.${outerIdx}.variants`);
+
   return (
     <WrapArrField
       {...{
@@ -70,7 +72,7 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
                     name: `${el.field}.${outerIdx}.${opt.field}.${varIdx}.${opt.isCorrect.name}.val`,
                   },
                   showLabel: false,
-                  cb: () => trigger(`${el.field}.${outerIdx}.${opt.field}`),
+                  cb: syncCB,
                 }}
               />
             </div>
@@ -83,6 +85,7 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
                 gappedErr: (errors as any)?.[el.field]?.[outerIdx]?.[
                   opt.field
                 ]?.[varIdx]?.[opt.answer.name]?.val?.message,
+                cb: syncCB,
                 el: {
                   ...opt.answer,
                   name: `${el.field}.${outerIdx}.${opt.field}.${varIdx}.${opt.answer.name}.val`,

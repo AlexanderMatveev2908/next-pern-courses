@@ -76,12 +76,14 @@ const schemaQuizItem = z
     const { variants } = data;
 
     let countOK = 0;
+    const counterSize = new Set();
     let i = 0;
 
     while (i < variants.length) {
       const curr = variants[i];
 
       if (curr.isCorrect.val) countOK++;
+      counterSize.add(curr.answer.val);
 
       i++;
     }
@@ -98,6 +100,13 @@ const schemaQuizItem = z
         code: "custom",
         path: ["variants"],
         message: "Only one on answers provided can be true",
+      });
+
+    if (counterSize.size < 5)
+      ctx.addIssue({
+        code: "custom",
+        path: ["variants"],
+        message: "Every answer must be different",
       });
   });
 
