@@ -15,10 +15,11 @@ import ColumnLabels from "./components/ColumnLabels";
 import ColumnVals from "./components/ColumnVals";
 import { css } from "@emotion/react";
 import WrapImpBtns from "../HOC/WrapImpBtns";
+import { FieldArrType } from "@/common/types/uiFactory";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   filters: SearchFilterType<T, K>[];
-  txtInputs: T["txtInputs"];
+  txtInputs: FieldArrType<T, K>[];
   triggerResetAPI: () => void;
   dynamicFilters: DynamicSubCategoryType<T, K>[];
 };

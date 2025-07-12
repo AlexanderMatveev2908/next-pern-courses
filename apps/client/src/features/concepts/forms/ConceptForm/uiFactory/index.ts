@@ -1,3 +1,4 @@
+import { FieldDataType } from "@/common/types/uiFactory";
 import { FieldGenerator } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import { ArrayPath, Path } from "react-hook-form";
@@ -26,7 +27,8 @@ const orderField = gen.genHardCode("order", {
 export const numericFieldsConcept = [timeField, pointsField, orderField];
 
 export const grabAnswerShape = (i: number) => ({
-  answer: gen.genArrFieldTxt("answer", "quiz", {
+  answer: gen.genArrFieldTxt("answer", {
+    field: "quiz",
     label: `${i}. Answer`,
     type: "text",
     required: true,
@@ -36,10 +38,15 @@ export const grabAnswerShape = (i: number) => ({
 
 export const grabQuestionShape = () => ({
   id: v4(),
-  title: gen.genArrFieldTxt("title", "quiz", { type: "text", required: true }),
+  title: gen.genArrFieldTxt("title", {
+    field: "quiz",
+    type: "text",
+    required: true,
+  }),
   question: {
-    ...gen.genArrFieldTxt("question", "quiz", {
-      type: "text",
+    ...gen.genArrFieldTxt("question", {
+      field: "quiz",
+      type: "text" as Exclude<FieldDataType, "file">,
       required: true,
     }),
 

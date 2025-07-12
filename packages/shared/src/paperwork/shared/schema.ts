@@ -89,7 +89,7 @@ export type ParamsGenItemSearchBarType = {
     };
   };
   customValidateCB?: (
-    item: Record<string, string>,
+    item: Record<string, string | boolean>,
     ctx: z.RefinementCtx,
   ) => boolean;
 };
@@ -102,6 +102,7 @@ export const defaultItemObjSchema = () =>
     type: z.string(),
     place: z.string().optional(),
     field: z.string().optional(),
+    required: z.boolean().optional(),
   });
 
 export const schemaItemSearchBar = ({

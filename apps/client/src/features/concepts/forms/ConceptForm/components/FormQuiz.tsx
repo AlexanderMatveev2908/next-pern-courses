@@ -3,15 +3,20 @@
 "use client";
 
 import WrapArrField from "@/common/components/forms/HOC/WrapArrField";
-import { FieldErrors, useFieldArray, useFormContext } from "react-hook-form";
+import {
+  ArrayPath,
+  FieldErrors,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 import { fieldQuiz } from "../uiFactory";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { FieldArrType } from "@/common/types/uiFactory";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { css } from "@emotion/react";
 import { useEffect } from "react";
 import { __cg } from "@shared/first/lib/logger.js";
+import { FieldDataType } from "@/common/types/uiFactory";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -24,6 +29,7 @@ const FormQuiz = () => {
     formState: { errors },
     watch,
   } = useFormContext<FormConceptType>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { append, remove } = useFieldArray<FormConceptType, "quiz">({
     control,
     name: "quiz",
@@ -58,8 +64,9 @@ const FormQuiz = () => {
               errors,
               el: {
                 ...el.title,
-                name: `quiz.${quizItemIdx}.${el.title.name}.val`,
-              } as FieldArrType,
+                name: `quiz.${quizItemIdx}.${el.title.name}.val` as ArrayPath<FormConceptType>,
+                type: el.title.type as Exclude<FieldDataType, "file">,
+              },
               gappedErr: grabNestedErr(errors, {
                 idx: quizItemIdx,
                 name: el.title.name,
@@ -74,8 +81,9 @@ const FormQuiz = () => {
               errors,
               el: {
                 ...el.question,
-                name: `quiz.${quizItemIdx}.${el.question.name}.val`,
-              } as FieldArrType,
+                name: `quiz.${quizItemIdx}.${el.question.name}.val` as ArrayPath<FormConceptType>,
+                type: el.question.type as Exclude<FieldDataType, "file">,
+              },
               gappedErr: grabNestedErr(errors, {
                 idx: quizItemIdx,
                 name: el.question.name,

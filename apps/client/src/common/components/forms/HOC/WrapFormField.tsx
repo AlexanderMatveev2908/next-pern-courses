@@ -2,11 +2,11 @@
 "use client";
 
 import { FieldArrType, FormFieldType } from "@/common/types/uiFactory";
-import { FieldErrors, FieldValues } from "react-hook-form";
+import { FieldErrors, FieldValues, Path } from "react-hook-form";
 import ErrFormField from "../errors/ErrFormField";
 
-type PropsType<T extends FieldValues> = {
-  el?: FormFieldType<T> | FieldArrType;
+type PropsType<T extends FieldValues, K extends Path<T>> = {
+  el?: FormFieldType<T> | FieldArrType<T, K>;
   showLabel: boolean;
   errors: FieldErrors<T>;
   children: React.ReactNode;
@@ -14,14 +14,14 @@ type PropsType<T extends FieldValues> = {
   gappedErr?: string;
 };
 
-const WrapFormField = <T extends FieldValues>({
+const WrapFormField = <T extends FieldValues, K extends Path<T>>({
   el,
   errors,
   showLabel,
   children,
   index,
   gappedErr,
-}: PropsType<T>) => {
+}: PropsType<T, K>) => {
   return (
     <label
       htmlFor={el?.name ?? ""}

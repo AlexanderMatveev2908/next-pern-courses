@@ -3,7 +3,7 @@ import {
   FieldDataType,
   FormFieldType,
 } from "@/common/types/uiFactory";
-import { FieldValues, Path } from "react-hook-form";
+import { ArrayPath, FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
 // export const fieldGenerator = <T extends FieldValues>(label: string) => ({
@@ -84,22 +84,23 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   // ? only my array fields a val key, a normal field have already it included by default internally while RHF needs more management for custom array fields
   public genArrFieldTxt(
     name: string,
-    field: string,
     opt: {
+      field: string;
       label?: string;
       type: Exclude<FieldDataType, "file">;
       required: boolean;
     },
-  ): FieldArrType {
+  ): FieldArrType<T, K> {
     return {
       ...this.fillGenericKeys(name, {
         label: opt.label,
-        type: opt.type as Exclude<FieldDataType, "file">,
+        type: opt.type,
         required: opt.required,
       }),
+      name: name as ArrayPath<T>,
       type: opt.type as Exclude<FieldDataType, "file">,
       val: "",
-      field,
+      field: opt.field as K,
     };
   }
   public genArrFieldBool(

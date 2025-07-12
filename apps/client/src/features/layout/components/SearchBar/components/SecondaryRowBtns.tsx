@@ -2,26 +2,18 @@
 "use client";
 
 import { IoFilterSharp } from "react-icons/io5";
-import { BtnActType, FormFieldArrayType } from "@/common/types/uiFactory";
+import { BtnActType } from "@/common/types/uiFactory";
 import { FaSort } from "react-icons/fa";
 import WrapSearchBarBtn from "./HOC/WrapSearchBarBtn";
 import { css } from "@emotion/react";
-import { ArrayPath, FieldValues } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import WrapBtnRow from "./HOC/WrapBtnRow";
 import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
 
-type PropsType<
-  T extends FieldValues & {
-    txtInputs: FormFieldArrayType[];
-  },
-  K extends ArrayPath<T>,
-> = {
+type PropsType<T extends FieldValues, K extends Path<T>> = {
   txtInputs: T[K];
 };
-const SecondaryRowBtns = <
-  T extends FieldValues & { txtInputs: FormFieldArrayType[] },
-  K extends ArrayPath<T>,
->(
+const SecondaryRowBtns = <T extends FieldValues, K extends Path<T>>(
   {
     // txtInputs,
   }: PropsType<T, K>,
