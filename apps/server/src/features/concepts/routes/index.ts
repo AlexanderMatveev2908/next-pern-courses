@@ -3,6 +3,8 @@ import { checkID } from "@src/middleware/validators/checkID.js";
 import { wrapRoute } from "@src/middleware/wrapRoute.js";
 import { FastifyInstance } from "fastify";
 import { getMinInfoCourseByID } from "../controllers/get.js";
+import { parseForm } from "@src/middleware/multipart.js";
+import { postCourseCtrl } from "../controllers/post.js";
 
 export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
@@ -10,5 +12,12 @@ export const conceptsRouter = async (app: FastifyInstance) => {
     url: "/course-stats/:courseID",
     preHandler: [wrapRoute(logJSON), checkID("courseID")],
     handler: wrapRoute(getMinInfoCourseByID),
+  });
+
+  app.route({
+    method: "POST",
+    url: "/:courseID",
+    preHandler: [wrapRoute(parseForm), wrapRoute(logJSON)],
+    handler: wrapRoute(postCourseCtrl),
   });
 };

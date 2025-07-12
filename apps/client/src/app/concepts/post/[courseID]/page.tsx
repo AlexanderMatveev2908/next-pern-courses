@@ -49,7 +49,7 @@ const Page: FC = () => {
 
   const handleSave = handleSubmit(
     async (dataRHF) => {
-      const multiForm = genFormData(dataRHF);
+      const encoded = genFormData(dataRHF);
     },
     (errs) => {
       __cg("errs", errs);
