@@ -1,8 +1,21 @@
 model Concept {
     id String @id @default(uuid())
+
     title String
+    description String? 
     markdown String
+
+    estimatedTime Int
+    pointsGained Int
+    order Int
 
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
+
+    quizzes Quiz[] @relation("QuizConcept")
+
+    @@index([courseID, title])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime?   
 }

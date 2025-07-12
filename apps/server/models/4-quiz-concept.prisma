@@ -1,0 +1,16 @@
+model Quiz {
+    id String @id @default(uuid())
+
+    title String
+    question String 
+
+    conceptID String
+    concept Concept @relation(fields: [conceptID],references: [id],name:"QuizConcept" )
+
+    variants Variant[] @relation("QuizVariant")
+
+    @@index([conceptID, title])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}

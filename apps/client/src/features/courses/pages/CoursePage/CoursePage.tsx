@@ -30,28 +30,27 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(course),
+        Content: () => (
+          <PageItemShape
+            {...{
+              images: course!.images,
+              title: course!.title,
+              video: course?.video,
+              description: course?.description,
+              markdown: course!.markdown,
+              Header: <HeaderCourse {...{ course: course! }} />,
+              Content: (
+                <ContentCourse
+                  {...{
+                    course: course!,
+                  }}
+                />
+              ),
+            }}
+          />
+        ),
       }}
-    >
-      {() => (
-        <PageItemShape
-          {...{
-            images: course!.images,
-            title: course!.title,
-            video: course?.video,
-            description: course?.description,
-            markdown: course!.markdown,
-            Header: <HeaderCourse {...{ course: course! }} />,
-            Content: (
-              <ContentCourse
-                {...{
-                  course: course!,
-                }}
-              />
-            ),
-          }}
-        ></PageItemShape>
-      )}
-    </WrapPendingClient>
+    />
   );
 };
 

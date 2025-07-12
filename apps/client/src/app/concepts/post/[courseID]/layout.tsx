@@ -3,11 +3,7 @@ import { PropsDOM } from "@/common/types/api";
 import type { FC } from "react";
 
 const layout: FC<PropsDOM> = ({ children }) => {
-  return (
-    <PageWrapper {...{ title: "Add Concept", wrapHydrate: true }}>
-      {children}
-    </PageWrapper>
-  );
+  return <PageWrapper {...{ title: "Add Concept" }}>{children}</PageWrapper>;
 };
 
 export default layout;

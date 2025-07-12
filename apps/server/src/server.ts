@@ -1,9 +1,10 @@
 import env from "./conf/env.js";
 import Fastify from "fastify";
-import router from "./routes/index.js";
+import { router } from "./routes/index.js";
 import db from "./conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { DEL_ALL } from "./dev_only/danger.js";
+import { genMock } from "./dev_only/mock/genMock.js";
 
 const app = Fastify({
   logger: {

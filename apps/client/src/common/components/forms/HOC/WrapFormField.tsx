@@ -4,6 +4,8 @@
 import { FieldArrType, FormFieldType } from "@/common/types/uiFactory";
 import { FieldErrors, FieldValues, Path } from "react-hook-form";
 import ErrFormField from "../errors/ErrFormField";
+import Tooltip from "../../elements/Tooltip";
+import { css } from "@emotion/react";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   el?: FormFieldType<T> | FieldArrType<T, K>;
@@ -12,6 +14,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   children: React.ReactNode;
   index?: number;
   gappedErr?: string;
+  notice?: string;
 };
 
 const WrapFormField = <T extends FieldValues, K extends Path<T>>({
@@ -21,15 +24,33 @@ const WrapFormField = <T extends FieldValues, K extends Path<T>>({
   children,
   index,
   gappedErr,
+  notice,
 }: PropsType<T, K>) => {
   return (
     <label
       htmlFor={el?.name ?? ""}
-      className="w-full max-w-full grid grid-cols-1 gap-4 h-fit"
+      className="w-full max-w-full grid grid-cols-1 gap-4 h-fit relative"
     >
-      {showLabel && (
-        <span className="txt__lg text-neutral-200">{el?.label}</span>
-      )}
+      <div className="w-full flex items-center gap-5">
+        {showLabel && (
+          <span className="txt__lg text-neutral-200">{el?.label}</span>
+        )}
+
+        {notice && (
+          <Tooltip
+            {...{
+              isHover: true,
+              txt: notice,
+              $customCSS: {
+                css: css`
+                  right: 0%;
+                  top: 15%;
+                `,
+              },
+            }}
+          />
+        )}
+      </div>
 
       <div className="w-full flex max-w-full relative">
         {children}

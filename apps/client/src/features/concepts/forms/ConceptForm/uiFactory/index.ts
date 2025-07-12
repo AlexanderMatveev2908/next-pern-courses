@@ -1,5 +1,7 @@
 import { FieldDataType } from "@/common/types/uiFactory";
 import { FieldGenerator } from "@/core/uiFactory/forms";
+import { CourseType } from "@/features/courses/types/courses";
+import { formatMinutes } from "@shared/first/lib/formatters.js";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import { ArrayPath, Path } from "react-hook-form";
 import { v4 } from "uuid";
@@ -23,6 +25,18 @@ const orderField = gen.genHardCode("order", {
   type: "text",
   required: true,
 });
+
+export const grabNotice = (course: Partial<CourseType>) => {
+  const {
+    conceptsStats: { conceptsCount, conceptsPoints, conceptsTime } = {},
+  } = course;
+
+  return new Map([
+    ["estimatedTime", `Course until now last ${formatMinutes(conceptsTime!)}`],
+    ["pointsGained", `Course until now provide ${conceptsPoints} points`],
+    ["order", `Concept in index order is ${conceptsCount}`],
+  ]);
+};
 
 export const numericFieldsConcept = [timeField, pointsField, orderField];
 
@@ -48,6 +62,7 @@ export const grabQuestionShape = () => ({
   title: gen.genArrFieldTxt("title" as ArrayPath<FormConceptType>, {
     field: "quiz",
     type: "text",
+    label: "Title question",
     required: true,
   }),
   question: {

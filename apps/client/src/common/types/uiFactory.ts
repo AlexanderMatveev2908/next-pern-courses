@@ -42,6 +42,7 @@ export type FormFieldPropsType<T extends FieldValues, K extends Path<T>> = {
   cb?: (val: T[K]) => void;
   index?: number;
   gappedErr?: string;
+  notice?: string;
 };
 
 export type PropsTypeBtn = {

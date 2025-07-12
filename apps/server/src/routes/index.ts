@@ -8,16 +8,18 @@ import { cookiePlugin } from "@src/middleware/cookies.js";
 import { catchErr } from "@src/middleware/catchErr.js";
 import { ratePlugin } from "@src/middleware/rate.js";
 import { wakeUpRoute } from "@src/features/wakeUp/routes/index.js";
+import { conceptsRouter } from "@src/features/concepts/routes/index.js";
 
-export default async function router(app: FastifyInstance) {
-  await app.register(catchErr);
-  await app.register(corsPlugin);
-  await app.register(ratePlugin);
-  await app.register(decoratorsPlugin);
-  await app.register(cookiePlugin);
-  await app.register(multipartPlugin);
+export const router = async (app: FastifyInstance) => {
+  app.register(catchErr);
+  app.register(corsPlugin);
+  app.register(ratePlugin);
+  app.register(decoratorsPlugin);
+  app.register(cookiePlugin);
+  app.register(multipartPlugin);
 
   app.register(helloRouter, { prefix: "/hello" });
   app.register(coursesRouter, { prefix: "/courses" });
   app.register(wakeUpRoute, { prefix: "/wake-up" });
-}
+  app.register(conceptsRouter, { prefix: "/concepts" });
+};
