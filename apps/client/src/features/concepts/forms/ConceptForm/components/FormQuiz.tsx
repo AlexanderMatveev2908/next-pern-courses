@@ -10,7 +10,10 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { fieldQuiz, grabQuestionShape } from "../uiFactory";
-import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
+import {
+  FormConceptType,
+  schemaQuizItem,
+} from "@shared/first/paperwork/concepts/schema.post.js";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { css } from "@emotion/react";
@@ -47,6 +50,10 @@ const FormQuiz = () => {
     __cg(`vls`, vls);
     __cg("errs", errors);
   }, [vls, errors]);
+
+  const canAdd = schemaQuizItem.safeParse(
+    vls.quiz?.[fieldsArg.length - 1],
+  ).success;
 
   return (
     <WrapArrField
@@ -137,7 +144,7 @@ const FormQuiz = () => {
           <BtnShadow
             {...{
               btnActType: BtnActType.SUCCESS,
-              isEnabled: fieldsArg.length <= 10,
+              isEnabled: canAdd && fieldsArg.length <= 10,
               label: "Add Question",
               type: "button",
               Svg: MdFormatListBulletedAdd,

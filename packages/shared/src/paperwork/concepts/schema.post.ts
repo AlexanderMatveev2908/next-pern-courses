@@ -54,7 +54,7 @@ const schemaAnswer = z.object({
   }),
 });
 
-const schemaQuizItem = z
+export const schemaQuizItem = z
   .object({
     id: z.string(),
     field: z.string(),
