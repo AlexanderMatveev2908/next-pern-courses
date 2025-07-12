@@ -1,8 +1,11 @@
 import { isOkID } from "@shared/first/lib/validators.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 
+type ExistentIdToCheck = "courseID";
+
 export const checkID =
-  (key: string) => async (req: FastifyRequest, res: FastifyReply) => {
+  (key: ExistentIdToCheck) =>
+  async (req: FastifyRequest, res: FastifyReply) => {
     const id = req.params?.[key as keyof typeof req.params];
 
     if (!isOkID(id))
