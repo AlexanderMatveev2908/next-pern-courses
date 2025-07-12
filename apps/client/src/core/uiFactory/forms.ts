@@ -3,6 +3,7 @@ import {
   FieldDataType,
   FormFieldType,
 } from "@/common/types/uiFactory";
+import { capt } from "@shared/first/lib/formatters.js";
 import { ArrayPath, FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
@@ -41,14 +42,20 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
 
   private fillGenericKeys(
     name: string,
-    opt: { label?: string; type: FieldDataType; required: boolean },
+    opt: {
+      label?: string;
+      type: FieldDataType;
+      required: boolean;
+      place?: string;
+    },
   ) {
     return {
       id: v4(),
       name,
-      label: `${opt.label ?? name} ${opt.required ? "*" : ""}`,
+      label: `${capt(opt.label ?? name)} ${opt.required ? "*" : ""}`,
       type: opt.type,
       required: opt.required,
+      place: opt.place ?? opt.label ?? name + "...",
     };
   }
 
@@ -79,6 +86,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
       label?: string;
       type: Exclude<FieldDataType, "file">;
       required: boolean;
+      place?: string;
     },
   ): FieldArrType<T, K> {
     return {
@@ -86,6 +94,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
         label: opt.label,
         type: opt.type,
         required: opt.required,
+        place: opt.place,
       }),
       val: "",
       field: opt.field,
@@ -138,6 +147,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   public genVideo(): FormFieldType<T> {
     return this.genHardCode("video" as K, {
       type: "file",
+      label: "video (0-1)",
       required: false,
       chainLabel: true,
     });
@@ -146,6 +156,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   public genMark(): FormFieldType<T> {
     return this.genHardCode("markdown" as K, {
       type: "file",
+      label: "markdown (1)",
       required: true,
       chainLabel: true,
     });

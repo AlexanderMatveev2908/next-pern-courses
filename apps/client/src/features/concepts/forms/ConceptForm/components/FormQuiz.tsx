@@ -25,6 +25,7 @@ import { resp } from "@/core/lib/style";
 import { FaTrashAlt } from "react-icons/fa";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { MdFormatListBulletedAdd } from "react-icons/md";
+import SubTitle from "@/common/components/elements/SubTitle";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -64,7 +65,7 @@ const FormQuiz = () => {
         gappedErr: errors?.quiz?.root?.message ?? errors?.quiz?.message,
       }}
     >
-      <div className="w-full grid grid-cols-1 gap-14">
+      <div className="w-full grid grid-cols-1 gap-8">
         {(fieldsArg ?? []).map((el, quizItemIdx) => (
           <div
             key={el.id}
@@ -83,6 +84,12 @@ const FormQuiz = () => {
               <FaTrashAlt className="min-w-[40px] min-h-[40px]" />
             </button>
 
+            <SubTitle
+              {...{
+                txt: `Question n.${quizItemIdx} `,
+              }}
+            />
+
             <div
               className="w-full"
               css={css`
@@ -90,6 +97,7 @@ const FormQuiz = () => {
                 grid-template-columns: 1fr;
                 row-gap: 1.5rem;
                 column-gap: 2.5rem;
+                margin-top: -20px;
 
                 ${resp("md")} {
                   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

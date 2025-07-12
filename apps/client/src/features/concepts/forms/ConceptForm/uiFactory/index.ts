@@ -33,6 +33,7 @@ export const grabAnswerShape = (i: number) => ({
     field: "variants" as Path<FormConceptType>,
     label: `${i}. Answer`,
     type: "text",
+    place: `Answer n.${i}`,
     required: true,
   }),
   isCorrect: gen.genArrFieldBool("isCorrect", {
