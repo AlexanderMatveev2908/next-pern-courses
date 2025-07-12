@@ -9,5 +9,13 @@ export const proxySliceAPI = api.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    grabBlobAssets: builder.query<any, any>({
+      query: () => ({
+        url: "/proxy/blob",
+        method: "GET",
+        responseType: "blob",
+      }),
+    }),
   }),
 });

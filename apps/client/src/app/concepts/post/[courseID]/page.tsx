@@ -4,15 +4,14 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { envApp } from "@/core/constants/env";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { b64ToFile } from "@/core/lib/etc";
 import { genFormData } from "@/core/lib/processForm";
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabPlaceholderConcept } from "@/features/concepts/forms/ConceptForm/lib";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
-import { proxySliceAPI } from "@/features/rootDev/slices/proxyAPI";
+import { useFillAssetsDev } from "@/features/rootDev/hooks/useFillAssetsDev";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
+import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
 import {
@@ -53,38 +52,8 @@ const Page: FC = () => {
     ...res,
     // showToast: true,
   });
-  const resProxy = proxySliceAPI.useGrabServerAssetsQuery(
-    {},
-    {
-      skip: !envApp.isDev,
-    },
-  );
-  const { data: dataAssets, isLoading: isLoadingProxy } = resProxy;
-  const { b64Arg } = dataAssets ?? [];
-  useWrapQuery({
-    ...resProxy,
-    showToast: envApp.isDev,
-  });
 
-  useEffect(() => {
-    if (!isArrOK(b64Arg)) return;
-
-    const handleAssets = async () => {
-      const argFiles: File[] = [];
-
-      for (const b of b64Arg) {
-        const f = await b64ToFile(b);
-
-        argFiles.push(f);
-      }
-
-      setValue("images", argFiles, {
-        shouldValidate: true,
-      });
-    };
-
-    handleAssets();
-  }, [b64Arg, setValue]);
+  const { isLoadingProxy } = useFillAssetsDev({ setValue });
 
   const [mutate, { isLoading: isMutating }] =
     conceptsSliceAPI.useAddConceptMutation();

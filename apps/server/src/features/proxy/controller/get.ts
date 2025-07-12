@@ -2,21 +2,10 @@ import { __cg } from "@shared/first/lib/logger.js";
 import { genRandomByMinMax, pickRandom } from "@src/dev_only/mock/utils.js";
 import axios from "axios";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { grabJsonDummyAssets } from "../lib/index.js";
 
 export const grabImages = async (req: FastifyRequest, res: FastifyReply) => {
-  const { data: jsonData } = await axios.get(`https://picsum.photos/v2/list`, {
-    params: {
-      page: genRandomByMinMax(0, 5),
-      limit: 50,
-    },
-  });
-
-  const picked = Array.from(
-    {
-      length: 5,
-    },
-    () => pickRandom(jsonData),
-  );
+  const { picked } = await grabJsonDummyAssets();
 
   const b64Arg: string[] = [];
 
@@ -38,4 +27,11 @@ export const grabImages = async (req: FastifyRequest, res: FastifyReply) => {
   return res.res200({
     b64Arg,
   });
+};
+
+export const grabAssetsBlob = async (
+  req: FastifyRequest,
+  res: FastifyReply,
+) => {
+  return res.res200({});
 };

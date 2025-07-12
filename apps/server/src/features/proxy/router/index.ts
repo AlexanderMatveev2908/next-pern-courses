@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { grabImages } from "../controller/get.js";
+import { grabAssetsBlob, grabImages } from "../controller/get.js";
 import { wrapRoute } from "@src/middleware/wrapRoute.js";
 
 export const routerProxy = async (app: FastifyInstance) => {
@@ -7,5 +7,11 @@ export const routerProxy = async (app: FastifyInstance) => {
     url: "/",
     method: "GET",
     handler: wrapRoute(grabImages),
+  });
+
+  app.route({
+    url: "/blob",
+    method: "GET",
+    handler: wrapRoute(grabAssetsBlob),
   });
 };
