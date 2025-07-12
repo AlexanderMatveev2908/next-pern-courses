@@ -10,7 +10,6 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { useFormContext } from "react-hook-form";
 import { FieldDataType } from "@/common/types/uiFactory";
 import { resp } from "@/core/lib/style";
-import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   el: FormConceptType["quiz"][number];

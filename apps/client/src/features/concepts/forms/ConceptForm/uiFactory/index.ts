@@ -63,4 +63,4 @@ export const grabQuestionShape = () => ({
 export const fieldQuiz: {
   name: ArrayPath<FormConceptType>;
   label: string;
-} = { name: "quiz", label: "Quiz (3-10)" };
+} = { name: "quiz", label: "Quiz (3-10) *" };

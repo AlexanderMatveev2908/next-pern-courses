@@ -39,6 +39,7 @@ const TIME_REQUIRED = {
 };
 
 const MIN_QUESTIONS = 3;
+const MAX_QUESTIONS = 10;
 
 const MIN_VARIANTS = 5;
 
@@ -128,7 +129,11 @@ export const schemaPostConcept = z.object({
 
   quiz: z
     .array(schemaQuizItem)
-    .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
+    .min(
+      MIN_QUESTIONS,
+      `A concepts must include at least ${MIN_QUESTIONS} question`,
+    )
+    .max(MAX_QUESTIONS, `A concept can include at most ${MAX_QUESTIONS}`),
 });
 
 export type FormConceptType = z.infer<typeof schemaPostConcept>;
