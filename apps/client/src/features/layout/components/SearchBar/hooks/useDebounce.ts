@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { useSearchCtxConsumer } from "../contexts/hooks/useSearchCtxConsumer";
 import { gabFormValsPagination } from "../lib/style";
-import { cpyObj, isSameObj } from "@shared/first/lib/etc.js";
+import { cpyObj } from "@shared/first/lib/etc.js";
 import { FieldValues } from "react-hook-form";
 import { ZodObject } from "zod";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -53,7 +53,8 @@ export const useDebounce = <
     const isValid = resultZod.success;
 
     if (isValid && canMakeAPI && !timerID.current)
-      isSameData = isSameObj(preValsRef.current, merged);
+      isSameData =
+        JSON.stringify(preValsRef.current) === JSON.stringify(merged);
     // __cg("comparison data", merged, preValsRef.current);
 
     if (!isValid || isSameData || !canMakeAPI) {

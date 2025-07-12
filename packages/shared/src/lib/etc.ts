@@ -4,6 +4,7 @@
 
 import { SafeParseReturnType, ZodTypeAny } from "zod";
 import { TechPkg } from "@shared/first/constants/categories.js";
+import { __cg } from "./logger.js";
 
 // export const newStuff2 = () => {
 //   console.log("i am new in this town 2");
