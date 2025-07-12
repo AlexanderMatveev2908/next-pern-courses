@@ -3,7 +3,7 @@ import { envApp } from "@/core/constants/env";
 import { proxySliceAPI } from "../slices/proxyAPI";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useEffect } from "react";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
+import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { b64ToFile } from "@/core/lib/etc";
 
 type Params = {
@@ -24,10 +24,19 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
     showToast: envApp.isDev,
   });
 
-  useEffect(() => {
-    if (!isArrOK(b64Arg)) return;
+  const resBlob = proxySliceAPI.useGrabBlobAssetsQuery(
+    {},
+    {
+      skip: !envApp.isDev,
+    },
+  );
+  const { data: blobData, isLoading: isBlobLoading } = resBlob;
+  useWrapQuery({ ...resBlob });
 
+  useEffect(() => {
     const handleAssets = async () => {
+      if (!isArrOK(b64Arg)) return;
+
       const argFiles: File[] = [];
 
       for (const b of b64Arg) {
@@ -42,9 +51,24 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
     };
 
     handleAssets();
-  }, [b64Arg, setValue]);
+  }, [b64Arg, setValue, blobData]);
+
+  useEffect(() => {
+    const handleBlob = async () => {
+      if (!isObjOK(blobData)) return;
+
+      const { blob } = blobData;
+      const file = new File([blob], "video.mp4", { type: "video/mp4" });
+
+      setValue("video", file, {
+        shouldValidate: true,
+      });
+    };
+
+    handleBlob();
+  }, [blobData, setValue]);
 
   return {
-    isLoadingProxy,
+    isLoadingProxy: isLoadingProxy || isBlobLoading,
   };
 };

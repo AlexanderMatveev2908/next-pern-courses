@@ -1,8 +1,9 @@
 import { __cg } from "@shared/first/lib/logger.js";
-import { genRandomByMinMax, pickRandom } from "@src/dev_only/mock/utils.js";
 import axios from "axios";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { grabJsonDummyAssets } from "../lib/index.js";
+import { chain_path } from "@src/lib/system/index.js";
+import fs from "fs";
 
 export const grabImages = async (req: FastifyRequest, res: FastifyReply) => {
   const { picked } = await grabJsonDummyAssets();
@@ -33,5 +34,11 @@ export const grabAssetsBlob = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  return res.res200({});
+  const p = chain_path("assets/videos/eg.mp4");
+  const buff = await fs.promises.readFile(p);
+
+  res.header("Content-Type", "video/mp4");
+  res.header("Content-Length", buff.length);
+
+  return res.send(buff);
 };
