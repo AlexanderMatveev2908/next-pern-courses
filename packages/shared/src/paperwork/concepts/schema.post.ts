@@ -44,6 +44,7 @@ const MIN_VARIANTS = 5;
 
 const schemaAnswer = z.object({
   id: z.string(),
+  field: z.string(),
   answer: defaultItemObjSchema().extend({
     val: schemaGenericTxt(250, "Answer"),
   }),
@@ -52,9 +53,10 @@ const schemaAnswer = z.object({
   }),
 });
 
-const schemaQuestion = z
+const schemaQuizItem = z
   .object({
     id: z.string(),
+    field: z.string(),
     title: defaultItemObjSchema().extend({
       val: schemaTitle("Question title"),
     }),
@@ -123,7 +125,7 @@ export const schemaPostConcept = z.object({
   order: schemaInteger("Order"),
 
   quiz: z
-    .array(schemaQuestion)
+    .array(schemaQuizItem)
     .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
 });
 

@@ -102,15 +102,19 @@ const FormQuiz = () => {
               ${optGridQuiz}
             `}
           >
-            {/* {el.variants.map((opt) => (
+            {el.variants.map((opt, varIdx) => (
               <div key={opt.id} className="w-full flex items-center gap-6">
                 <FormFiledMiniCheck
                   {...{
-                    el: opt.isCorrect,
+                    el: {
+                      ...opt.isCorrect,
+                      name: `${el.field}.${quizItemIdx}.${opt.field}.${varIdx}.isCorrect.val`,
+                    },
+                    showLabel: false,
                   }}
                 />
               </div>
-            ))} */}
+            ))}
           </div>
         </div>
       ))}

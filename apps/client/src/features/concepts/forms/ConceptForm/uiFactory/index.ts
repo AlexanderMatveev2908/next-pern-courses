@@ -28,17 +28,19 @@ export const numericFieldsConcept = [timeField, pointsField, orderField];
 
 export const grabAnswerShape = (i: number) => ({
   id: v4(),
+  field: "variants",
   answer: gen.genArrFieldTxt("answer" as ArrayPath<FormConceptType>, {
-    field: "quiz",
+    field: "variants" as Path<FormConceptType>,
     label: `${i}. Answer`,
     type: "text",
     required: true,
   }),
-  correct: gen.genArrFieldBool("correct", {}),
+  isCorrect: gen.genArrFieldBool("correct", {}),
 });
 
 export const grabQuestionShape = () => ({
   id: v4(),
+  field: "quiz",
   title: gen.genArrFieldTxt("title" as ArrayPath<FormConceptType>, {
     field: "quiz",
     type: "text",
@@ -50,9 +52,9 @@ export const grabQuestionShape = () => ({
       type: "text" as Exclude<FieldDataType, "file">,
       required: true,
     }),
-
-    variants: [...Array.from({ length: 5 }).map((_, i) => grabAnswerShape(i))],
   },
+
+  variants: [...Array.from({ length: 5 }).map((_, i) => grabAnswerShape(i))],
 });
 
 export const fieldQuiz: {
