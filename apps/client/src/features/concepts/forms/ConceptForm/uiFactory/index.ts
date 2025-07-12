@@ -62,6 +62,7 @@ export const grabQuestionShape = () => ({
   title: gen.genArrFieldTxt("title" as ArrayPath<FormConceptType>, {
     field: "quiz",
     type: "text",
+    label: "Title question",
     required: true,
   }),
   question: {

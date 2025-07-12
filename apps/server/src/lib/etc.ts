@@ -28,3 +28,15 @@ export const clearLocalAssets = async (videoFile?: AppFile) => {
       __cg("fail local delete");
     }
 };
+
+export const grabFilesByMime = (files: AppFile[]) => {
+  if (!files || isArrOK(files)) throw new Error("I did not received files 😡");
+
+  const imageFiles = files.filter((f) => f.mimetype.startsWith("image/"));
+  const videoFile = files.find((f) => f.mimetype.startsWith("video/"));
+
+  return {
+    imageFiles,
+    videoFile,
+  };
+};

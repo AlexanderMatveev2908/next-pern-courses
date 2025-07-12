@@ -22,9 +22,10 @@ import { CourseType } from "@/features/courses/types/courses";
 type PropsType = {
   handleSave: () => void;
   course: Partial<CourseType>;
+  isPending: boolean;
 };
 
-const ConceptForm: FC<PropsType> = ({ handleSave, course }) => {
+const ConceptForm: FC<PropsType> = ({ handleSave, course, isPending }) => {
   const {
     control,
     formState: { errors },
@@ -105,6 +106,7 @@ const ConceptForm: FC<PropsType> = ({ handleSave, course }) => {
             isEnabled: true,
             label: "Post concept",
             type: "submit",
+            isLoading: isPending,
           }}
         />
       </div>

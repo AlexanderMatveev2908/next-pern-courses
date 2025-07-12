@@ -5,6 +5,7 @@ import { FastifyInstance } from "fastify";
 import { getMinInfoCourseByID } from "../controllers/get.js";
 import { parseForm } from "@src/middleware/multipart.js";
 import { postCourseCtrl } from "../controllers/post.js";
+import { postConceptMdw } from "../middleware/postConcept.js";
 
 export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
@@ -17,7 +18,7 @@ export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
     method: "POST",
     url: "/:courseID",
-    preHandler: [wrapRoute(parseForm), wrapRoute(logJSON)],
+    preHandler: [wrapRoute(parseForm), postConceptMdw, wrapRoute(logJSON)],
     handler: wrapRoute(postCourseCtrl),
   });
 };
