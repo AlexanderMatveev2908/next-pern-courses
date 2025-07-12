@@ -13,6 +13,7 @@ export const postConceptMdw: preHandlerHookHandler = async (
   const { imageFiles, videoFile } = grabFilesByMime(files!);
 
   try {
+    throw new Error("delete stuff");
   } catch (err: any) {
     __cg("err parse multipart", err?.message);
 

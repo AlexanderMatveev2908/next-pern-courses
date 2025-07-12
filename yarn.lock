@@ -7734,6 +7734,7 @@ __metadata:
     "@shared/first": "npm:*"
     "@types/mime-types": "npm:^3"
     "@types/node": "npm:^24.0.6"
+    axios: "npm:^1.10.0"
     cloudinary: "npm:^2.7.0"
     dotenv: "npm:^17.0.0"
     fastify: "npm:^5.4.0"

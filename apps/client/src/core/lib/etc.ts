@@ -68,3 +68,27 @@ export const serializeData = <T>(arg: T): T => {
 
   return arg;
 };
+
+export const b64ToFile = async (b64: string) => {
+  // ? split metadata from code real encoding image
+  const arg = b64.split(",");
+  // ? grab mime for first match
+  const mime = arg[0].match(/:(.*?);/)?.[1];
+
+  // ? b64 to utf-8 (ASCII safe also) for browser (internally still utf-16 as js keep strings in memory)
+  const bStr = atob(arg[1]);
+
+  const n = bStr.length;
+  // ? generate box for bytes
+  const u8Arg = new Uint8Array(n);
+
+  let i = 0;
+
+  while (i < n) {
+    // ? assign utf-16 val from 0 to 255
+    u8Arg[i] = bStr.charCodeAt(i);
+    i++;
+  }
+
+  return new File([u8Arg], v4(), { type: mime });
+};
