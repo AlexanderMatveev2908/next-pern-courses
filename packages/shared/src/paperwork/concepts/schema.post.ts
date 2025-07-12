@@ -46,13 +46,20 @@ const schemaAnswer = z.object({
   answer: defaultItemObjSchema().extend({
     val: schemaGenericTxt(250, "Answer"),
   }),
-  isCorrect: z.boolean(),
+  isCorrect: defaultItemObjSchema().extend({
+    val: z.boolean(),
+  }),
 });
 
 const schemaQuestion = z
   .object({
-    title: schemaTitle("Question title"),
-    question: schemaGenericTxt(500, "Question"),
+    title: defaultItemObjSchema().extend({
+      val: schemaTitle("Question title"),
+    }),
+
+    question: defaultItemObjSchema().extend({
+      val: schemaGenericTxt(500, "Question"),
+    }),
     variants: z
       .array(schemaAnswer)
       .min(

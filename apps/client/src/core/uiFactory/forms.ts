@@ -35,21 +35,8 @@ import { v4 } from "uuid";
 export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   constructor(private readonly prefixLabel: string) {}
 
-  private genField(
-    name: K,
-    opt: { label?: string; type: FieldDataType; required: boolean },
-  ): FormFieldType<T> {
-    return {
-      name,
-      label: `${this.prefixLabel} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
-      type: opt.type,
-      required: opt.required,
-      id: v4(),
-    };
-  }
-
-  public genHardCode(
-    name: K,
+  private fillGenericKeys(
+    name: string,
     opt: { label?: string; type: FieldDataType; required: boolean },
   ) {
     return {
@@ -61,23 +48,80 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     };
   }
 
-  genTitle(): FormFieldType<T> {
+  private genField(
+    name: K,
+    opt: { label?: string; type: FieldDataType; required: boolean },
+  ): FormFieldType<T> {
+    return {
+      ...this.fillGenericKeys(name, {
+        label: opt.label,
+        type: opt.type,
+        required: opt.required,
+      }),
+      name: name as K,
+      label: `${this.prefixLabel} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
+    };
+  }
+
+  public genHardCode(
+    name: K,
+    opt: { label?: string; type: FieldDataType; required: boolean },
+  ): FormFieldType<T> {
+    return {
+      ...this.fillGenericKeys(name, {
+        label: opt.label,
+        type: opt.type,
+        required: opt.required,
+      }),
+      name: name as K,
+    };
+  }
+
+  public genArrFieldTxt(
+    name: string,
+    opt: { label?: string; type: FieldDataType; required: boolean },
+  ) {
+    return {
+      ...this.fillGenericKeys(name, {
+        label: opt.label,
+        type: opt.type,
+        required: opt.required,
+      }),
+      val: "",
+    };
+  }
+  public genArrFieldBool(
+    name: string,
+    opt: {
+      label?: string;
+    },
+  ) {
+    return {
+      name,
+      label: opt.label ?? name,
+      type: "",
+      required: false,
+      val: false,
+    };
+  }
+
+  public genTitle(): FormFieldType<T> {
     return this.genField("title" as K, { type: "text", required: true });
   }
 
-  genDesc(): FormFieldType<T> {
+  public genDesc(): FormFieldType<T> {
     return this.genField("description" as K, { type: "text", required: false });
   }
 
-  genImages(): FormFieldType<T> {
+  public genImages(): FormFieldType<T> {
     return this.genField("images" as K, { type: "file", required: true });
   }
 
-  genVideo(): FormFieldType<T> {
+  public genVideo(): FormFieldType<T> {
     return this.genField("video" as K, { type: "file", required: false });
   }
 
-  genMark(): FormFieldType<T> {
+  public genMark(): FormFieldType<T> {
     return this.genField("markdown" as K, { type: "file", required: true });
   }
 }

@@ -25,34 +25,23 @@ const orderField = gen.genHardCode("order", {
 
 export const numericFieldsConcept = [timeField, pointsField, orderField];
 
-export const questionShape = {
-  title: {
-    id: v4(),
-    name: "title",
-    label: "Title question",
-    type: "text",
-    val: "",
-    required: true,
-  },
+export const grabQuestionShape = () => ({
+  title: gen.genArrFieldTxt("title", { type: "text", required: true }),
   question: {
-    id: v4(),
-    name: "question",
-    label: "Question",
-    type: "text",
-    val: "",
-    required: true,
+    ...gen.genArrFieldTxt("question", {
+      type: "text",
+      required: true,
+    }),
 
     variants: [
       ...Array.from({ length: 5 }, () => v4()).map((id, i) => ({
-        answer: {
-          id,
-          name: "answer",
-          label: "Answer",
+        answer: gen.genArrFieldTxt("answer", {
+          label: `${i}. Answer`,
           type: "text",
           required: true,
-          val: "",
-        },
+        }),
+        correct: gen.genArrFieldBool("correct", {}),
       })),
     ],
   },
-};
+});
