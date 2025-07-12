@@ -55,7 +55,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
       label: `${capt(opt.label ?? name)} ${opt.required ? "*" : ""}`,
       type: opt.type,
       required: opt.required,
-      place: opt.place ?? opt.label ?? name + "...",
+      place: opt.place ?? opt.label ?? name,
     };
   }
 

@@ -42,6 +42,7 @@ const MIN_QUESTIONS = 3;
 const MAX_QUESTIONS = 10;
 
 const MIN_VARIANTS = 5;
+const MAX_VARIANTS = 5;
 
 const schemaAnswer = z.object({
   id: z.string(),
@@ -69,7 +70,11 @@ export const schemaQuizItem = z
       .array(schemaAnswer)
       .min(
         MIN_VARIANTS,
-        `You must include at least ${MIN_VARIANTS} for each question`,
+        `You must include at least ${MIN_VARIANTS} variants for each question`,
+      )
+      .max(
+        MAX_VARIANTS,
+        `You can include at most ${MAX_VARIANTS} variants for each question`,
       ),
   })
   .superRefine((data, ctx) => {
