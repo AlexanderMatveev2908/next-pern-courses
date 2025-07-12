@@ -127,10 +127,59 @@ model Course {
 /* => start 3-concept-course.prisma */
 model Concept {
     id String @id @default(uuid())
+
     title String
+    description String? 
     markdown String
+
+    estimatedTime Int
+    pointsGained Int
+    order Int
 
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
+
+    quizzes Quiz[] @relation("QuizConcept")
+
+    @@index([courseID, title])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime?   
 }
 /* => end 3-concept-course.prisma */
+
+/* => start 4-quiz-concept.prisma */
+model Quiz {
+    id String @id @default(uuid())
+
+    title String
+    question String 
+
+    conceptID String
+    concept Concept @relation(fields: [conceptID],references: [id],name:"QuizConcept" )
+
+    variants Variant[] @relation("QuizVariant")
+
+    @@index([conceptID, title])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
+/* => end 4-quiz-concept.prisma */
+
+/* => start 5-variants-quiz.prisma */
+model Variant {
+    id String @id @default(uuid())
+
+    isCorrect Boolean @default(false)
+    answer String
+
+    quizID String
+    quiz Quiz @relation(fields: [quizID],references: [id],name:"QuizVariant")
+
+    @@index([quizID])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
+/* => end 5-variants-quiz.prisma */

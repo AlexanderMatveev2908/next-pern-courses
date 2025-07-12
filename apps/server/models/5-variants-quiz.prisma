@@ -1,0 +1,14 @@
+model Variant {
+    id String @id @default(uuid())
+
+    isCorrect Boolean @default(false)
+    answer String
+
+    quizID String
+    quiz Quiz @relation(fields: [quizID],references: [id],name:"QuizVariant")
+
+    @@index([quizID])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}

@@ -6,6 +6,7 @@ import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
 import {
@@ -39,7 +40,6 @@ const Page: FC = () => {
     skip: !isValid,
   });
   const { isLoading, data } = res;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { course } = data ?? {};
   useWrapQuery({
     ...res,
@@ -59,8 +59,7 @@ const Page: FC = () => {
   return (
     <WrapPendingClient
       {...{
-        isSuccess: true,
-        // isSuccess: isObjOK(course),
+        isSuccess: isObjOK(course),
         wrapHydrate: true,
         isLoading,
         Content: () => (
@@ -68,7 +67,7 @@ const Page: FC = () => {
             <ConceptForm {...{ handleSave }} />
           </FormProvider>
         ),
-        // throwErr: true,
+        throwErr: true,
       }}
     />
   );
