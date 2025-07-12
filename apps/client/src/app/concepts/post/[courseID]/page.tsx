@@ -2,6 +2,7 @@
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { genFormData } from "@/core/lib/processForm";
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
@@ -14,7 +15,7 @@ import {
   schemaPostConcept,
 } from "@shared/first/paperwork/concepts/schema.post.js";
 import { useParams, useRouter } from "next/navigation";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const Page: FC = () => {
@@ -27,7 +28,7 @@ const Page: FC = () => {
       quiz: [{ ...grabQuestionShape() }],
     },
   });
-  const { handleSubmit } = formCtx;
+  const { handleSubmit, setValue } = formCtx;
 
   const { courseID } = useParams();
   const isValid = isOkID(courseID as string);
@@ -48,13 +49,20 @@ const Page: FC = () => {
 
   const handleSave = handleSubmit(
     async (dataRHF) => {
-      __cg("dataRHF", dataRHF);
+      const multiForm = genFormData(dataRHF);
     },
     (errs) => {
       __cg("errs", errs);
       return errs;
     },
   );
+
+  useEffect(() => {
+    if (isObjOK(data?.course))
+      setValue("order", data!.course!.conceptsStats!.conceptsCount + "", {
+        shouldValidate: true,
+      });
+  }, [data, setValue]);
 
   return (
     <WrapPendingClient
