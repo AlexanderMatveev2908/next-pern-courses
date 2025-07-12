@@ -13,16 +13,18 @@ import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js
 import { type FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
 import { css } from "@emotion/react";
-import { numericFieldsConcept } from "./uiFactory";
+import { grabNotice, numericFieldsConcept } from "./uiFactory";
 import FormQuiz from "./components/FormQuiz";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 import { resp } from "@/core/lib/style";
+import { CourseType } from "@/features/courses/types/courses";
 
 type PropsType = {
   handleSave: () => void;
+  course: Partial<CourseType>;
 };
 
-const ConceptForm: FC<PropsType> = ({ handleSave }) => {
+const ConceptForm: FC<PropsType> = ({ handleSave, course }) => {
   const {
     control,
     formState: { errors },
@@ -31,6 +33,7 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
   const gen = new FieldGenerator<FormConceptType, Path<FormConceptType>>(
     "Concept",
   );
+  const notices = grabNotice(course);
 
   return (
     <form onSubmit={handleSave} className="form__shape">
@@ -88,6 +91,7 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
               el: f,
               control,
               errors,
+              notice: notices.get(f.name),
             }}
           />
         ))}

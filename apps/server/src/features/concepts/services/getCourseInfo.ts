@@ -8,8 +8,9 @@ export const getInfoCourseSvc = async (id: string) => {
 
     WITH stats AS (
         SELECT
-            COUNT(*) AS "conceptsCount",
-            COALESCE(SUM("estimatedTime"), 0)::INT AS "conceptsTime"
+            COUNT(*)::INT AS "conceptsCount",
+            COALESCE(SUM("estimatedTime"), 0)::INT AS "conceptsTime",
+            COALESCE(SUM("pointsGained"), 0)::INT AS "conceptsPoints"
         FROM "Concept"
         WHERE "courseID" = ${id}
     )
@@ -18,7 +19,8 @@ export const getInfoCourseSvc = async (id: string) => {
 
     json_build_object(
         'conceptsCount', stats."conceptsCount",
-        'conceptsTime', stats."conceptsTime"
+        'conceptsTime', stats."conceptsTime",
+        'conceptsPoints', stats."conceptsPoints"
     ) AS "conceptsStats"
 
     FROM "Course" AS c, stats
@@ -27,8 +29,6 @@ export const getInfoCourseSvc = async (id: string) => {
     `;
 
   const [course] = await db.$queryRawUnsafe<Course[]>(raw.text, ...raw.values);
-
-  __cg("data");
 
   return { course };
 };

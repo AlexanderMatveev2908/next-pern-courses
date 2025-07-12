@@ -22,4 +22,10 @@ export type CourseType = ServerModel<{
 
   video: CloudAssetType | null;
   images: CloudAssetType[];
+
+  conceptsStats?: {
+    conceptsTime: number;
+    conceptsCount: number;
+    conceptsPoints: number;
+  };
 }>;
