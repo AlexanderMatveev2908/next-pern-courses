@@ -17,15 +17,13 @@ import {
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import { css } from "@emotion/react";
-import { useEffect } from "react";
-import { __cg } from "@shared/first/lib/logger.js";
 import { BtnActType, FieldDataType } from "@/common/types/uiFactory";
 import VariantsQuiz from "./components/VariantsQuiz/VariantsQuiz";
 import { resp } from "@/core/lib/style";
-import { FaTrashAlt } from "react-icons/fa";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import SubTitle from "@/common/components/elements/SubTitle";
+import BtnTrash from "@/common/components/buttons/BtnTrash";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -47,10 +45,6 @@ const FormQuiz = () => {
   const fieldsArg = watch("quiz");
 
   const vls = watch();
-  useEffect(() => {
-    __cg(`vls`, vls);
-    __cg("errs", errors);
-  }, [vls, errors]);
 
   const canAdd = schemaQuizItem.safeParse(
     vls.quiz?.[fieldsArg.length - 1],
@@ -71,18 +65,11 @@ const FormQuiz = () => {
             key={el.id}
             className="w-full grid grid-cols-1 gap-12 border-[3px] p-5 border-neutral-800 rounded-xl relative"
           >
-            <button
-              onClick={remove.bind(null, quizItemIdx)}
-              className="btn__app text-red-600 absolute -top-8 -right-4 border-2 border-red-600 p-3 z-60 bg-[#000] rounded-xl"
-              style={
-                {
-                  "--scale__up": 1.2,
-                } as React.CSSProperties
-              }
-              type="button"
-            >
-              <FaTrashAlt className="min-w-[40px] min-h-[40px]" />
-            </button>
+            <BtnTrash
+              {...{
+                handleClick: remove.bind(null, quizItemIdx),
+              }}
+            />
 
             <SubTitle
               {...{
@@ -148,7 +135,7 @@ const FormQuiz = () => {
           </div>
         ))}
 
-        <div className="w-full max-w-[300px]">
+        <div className="w-full max-w-[350px]">
           <BtnShadow
             {...{
               btnActType: BtnActType.SUCCESS,

@@ -16,6 +16,7 @@ import { css } from "@emotion/react";
 import { numericFieldsConcept } from "./uiFactory";
 import FormQuiz from "./components/FormQuiz";
 import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
+import { resp } from "@/core/lib/style";
 
 type PropsType = {
   handleSave: () => void;
@@ -73,7 +74,11 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
         className="w-full grid gap-x-10 gap-y-5"
         css={css`
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: 1fr;
+
+          ${resp("md")} {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          }
         `}
       >
         {numericFieldsConcept.map((f) => (
