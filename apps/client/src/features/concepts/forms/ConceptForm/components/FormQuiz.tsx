@@ -17,6 +17,7 @@ import { css } from "@emotion/react";
 import { useEffect } from "react";
 import { __cg } from "@shared/first/lib/logger.js";
 import { FieldDataType } from "@/common/types/uiFactory";
+import { resp } from "@/core/lib/style";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -55,7 +56,11 @@ const FormQuiz = () => {
           key={el.id}
           className="w-full border-[3px] border-neutral-800 p-5 rounded-xl grid gap-10"
           css={css`
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr;
+
+            ${resp("md")} {
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
           `}
         >
           <FormFieldTxt
