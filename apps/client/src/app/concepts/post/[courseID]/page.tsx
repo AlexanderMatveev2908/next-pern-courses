@@ -20,7 +20,7 @@ const Page: FC = () => {
     mode: "onChange",
     resolver: zodResolver(schemaPostConcept),
     defaultValues: {
-      questions: [{ ...grabQuestionShape() }],
+      quiz: [{ ...grabQuestionShape() }],
     },
   });
   const { handleSubmit } = formCtx;

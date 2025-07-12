@@ -10,11 +10,11 @@ import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { FieldGenerator } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
 import { css } from "@emotion/react";
 import { numericFieldsConcept } from "./uiFactory";
-import { __cg } from "@shared/first/lib/logger.js";
+import FormQuiz from "./components/FormQuiz";
 
 type PropsType = {
   handleSave: () => void;
@@ -24,17 +24,11 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
   const {
     control,
     formState: { errors },
-    watch,
   } = useFormContext<FormConceptType>();
 
   const gen = new FieldGenerator<FormConceptType, Path<FormConceptType>>(
     "Concept",
   );
-
-  const vls = watch();
-  useEffect(() => {
-    __cg("vls", vls);
-  }, [vls]);
 
   return (
     <form onSubmit={handleSave} className="form__shape">
@@ -92,6 +86,8 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
           />
         ))}
       </div>
+
+      <FormQuiz />
     </form>
   );
 };

@@ -53,6 +53,7 @@ const schemaAnswer = z.object({
 
 const schemaQuestion = z
   .object({
+    id: z.string(),
     title: defaultItemObjSchema().extend({
       val: schemaTitle("Question title"),
     }),
@@ -120,7 +121,7 @@ export const schemaPostConcept = z.object({
 
   order: schemaInteger("Order"),
 
-  questions: z
+  quiz: z
     .array(schemaQuestion)
     .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
 });

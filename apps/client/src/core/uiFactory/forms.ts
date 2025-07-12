@@ -1,4 +1,8 @@
-import { FieldDataType, FormFieldType } from "@/common/types/uiFactory";
+import {
+  FieldArrType,
+  FieldDataType,
+  FormFieldType,
+} from "@/common/types/uiFactory";
 import { FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
@@ -48,7 +52,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     };
   }
 
-  private genField(
+  private genSpecificField(
     name: K,
     opt: { label?: string; type: FieldDataType; required: boolean },
   ): FormFieldType<T> {
@@ -77,17 +81,25 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     };
   }
 
+  // ? only my array fields a val key, a normal field have already it included by default internally while RHF needs more management for custom array fields
   public genArrFieldTxt(
     name: string,
-    opt: { label?: string; type: FieldDataType; required: boolean },
-  ) {
+    field: string,
+    opt: {
+      label?: string;
+      type: Exclude<FieldDataType, "file">;
+      required: boolean;
+    },
+  ): FieldArrType {
     return {
       ...this.fillGenericKeys(name, {
         label: opt.label,
-        type: opt.type,
+        type: opt.type as Exclude<FieldDataType, "file">,
         required: opt.required,
       }),
+      type: opt.type as Exclude<FieldDataType, "file">,
       val: "",
+      field,
     };
   }
   public genArrFieldBool(
@@ -106,22 +118,37 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   }
 
   public genTitle(): FormFieldType<T> {
-    return this.genField("title" as K, { type: "text", required: true });
+    return this.genSpecificField("title" as K, {
+      type: "text",
+      required: true,
+    });
   }
 
   public genDesc(): FormFieldType<T> {
-    return this.genField("description" as K, { type: "text", required: false });
+    return this.genSpecificField("description" as K, {
+      type: "text",
+      required: false,
+    });
   }
 
   public genImages(): FormFieldType<T> {
-    return this.genField("images" as K, { type: "file", required: true });
+    return this.genSpecificField("images" as K, {
+      type: "file",
+      required: true,
+    });
   }
 
   public genVideo(): FormFieldType<T> {
-    return this.genField("video" as K, { type: "file", required: false });
+    return this.genSpecificField("video" as K, {
+      type: "file",
+      required: false,
+    });
   }
 
   public genMark(): FormFieldType<T> {
-    return this.genField("markdown" as K, { type: "file", required: true });
+    return this.genSpecificField("markdown" as K, {
+      type: "file",
+      required: true,
+    });
   }
 }

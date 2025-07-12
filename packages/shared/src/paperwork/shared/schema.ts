@@ -101,6 +101,7 @@ export const defaultItemObjSchema = () =>
     label: z.string(),
     type: z.string(),
     place: z.string().optional(),
+    field: z.string().optional(),
   });
 
 export const schemaItemSearchBar = ({
