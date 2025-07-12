@@ -64,7 +64,7 @@ const Page: FC = () => {
         isLoading,
         Content: () => (
           <FormProvider {...formCtx}>
-            <ConceptForm {...{ handleSave, course }} />
+            <ConceptForm {...{ handleSave, course: course! }} />
           </FormProvider>
         ),
         throwErr: true,
