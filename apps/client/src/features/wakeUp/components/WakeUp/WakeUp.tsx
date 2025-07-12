@@ -45,41 +45,47 @@ const WakeUp: FC = () => {
   };
 
   return (
-    <WrapPendingClient {...{ isLoading }}>
-      {({ isHydrated } = { isHydrated: false }) => (
-        <div className="flex flex-col justify-center items-center gap-10">
-          <div className="w-full flex flex-wrap gap-8 justify-center">
-            {items.map((el) => (
-              <div key={el.id} className="w-[150px]">
-                <BtnShadow
-                  {...{
-                    btnActType: BtnActType.NEUTRAL,
-                    isEnabled: isHydrated,
-                    type: "button",
-                    label: el.val + "",
-                    isLoading: false,
-                    handleClick: handleClick.bind(null, el.id),
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+    <WrapPendingClient
+      {...{
+        isLoading,
+        Content: ({ isHydrated } = { isHydrated: false }) => (
+          <div className="flex flex-col justify-center items-center gap-10">
+            <div className="w-full flex flex-wrap gap-8 justify-center">
+              {items.map((el) => (
+                <div key={el.id} className="w-[150px]">
+                  <BtnShadow
+                    {...{
+                      btnActType: BtnActType.NEUTRAL,
+                      isEnabled: isHydrated,
+                      type: "button",
+                      label: el.val + "",
+                      isLoading: false,
+                      handleClick: handleClick.bind(null, el.id),
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
 
-          <WrapPop
-            {...{
-              isShow,
-              setIsShow,
-              Content: () => (
-                <ContentWarn
-                  {...{ handleClick: () => __cg("yayyyyyyyyy 🤟🏽"), isLoading }}
-                />
-              ),
-              allowClose: false,
-            }}
-          ></WrapPop>
-        </div>
-      )}
-    </WrapPendingClient>
+            <WrapPop
+              {...{
+                isShow,
+                setIsShow,
+                Content: () => (
+                  <ContentWarn
+                    {...{
+                      handleClick: () => __cg("yayyyyyyyyy 🤟🏽"),
+                      isLoading,
+                    }}
+                  />
+                ),
+                allowClose: false,
+              }}
+            ></WrapPop>
+          </div>
+        ),
+      }}
+    />
   );
 };
 

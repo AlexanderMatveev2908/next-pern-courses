@@ -1,7 +1,10 @@
 "use client";
 
+import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
@@ -26,11 +29,22 @@ const Page: FC = () => {
   const { handleSubmit } = formCtx;
 
   const { courseID } = useParams();
+  const isValid = isOkID(courseID as string);
 
-  if (!isOkID(courseID as string)) {
+  if (!isValid) {
     nav.replace("/404");
-    return null;
   }
+
+  const res = conceptsSliceAPI.useGrabStatsCourseQuery(courseID as string, {
+    skip: !isValid,
+  });
+  const { isLoading, data } = res;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { course } = data ?? {};
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
 
   const handleSave = handleSubmit(
     async (dataRHF) => {
@@ -43,9 +57,20 @@ const Page: FC = () => {
   );
 
   return (
-    <FormProvider {...formCtx}>
-      <ConceptForm {...{ handleSave }} />
-    </FormProvider>
+    <WrapPendingClient
+      {...{
+        isSuccess: true,
+        // isSuccess: isObjOK(course),
+        wrapHydrate: true,
+        isLoading,
+        Content: () => (
+          <FormProvider {...formCtx}>
+            <ConceptForm {...{ handleSave }} />
+          </FormProvider>
+        ),
+        // throwErr: true,
+      }}
+    />
   );
 };
 

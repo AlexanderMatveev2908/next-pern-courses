@@ -3,15 +3,14 @@
 "use client";
 
 import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { css } from "@emotion/react";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { Path, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { FieldDataType } from "@/common/types/uiFactory";
 import { resp } from "@/core/lib/style";
 import WrapArrField from "@/common/components/forms/HOC/WrapArrField";
-import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   el: FormConceptType["quiz"][number];
@@ -24,7 +23,6 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
     formState: { errors },
     register,
     trigger,
-    watch,
   } = useFormContext();
 
   // const { append, remove } = useFieldArray({
@@ -32,13 +30,13 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
   //   name: `${el.field}.${outerIdx}.variants`,
   // });
 
-  const fields = watch(
-    `${el.field}.${outerIdx}.variants` as Path<FormConceptType>,
-  );
+  // const fields = watch(
+  //   `${el.field}.${outerIdx}.variants` as Path<FormConceptType>,
+  // );
 
-  useEffect(() => {
-    __cg("nested", fields);
-  }, [fields]);
+  // useEffect(() => {
+  //   __cg("nested", fields);
+  // }, [fields]);
 
   const syncCB = () => trigger(`${el.field}.${outerIdx}.variants`);
 
