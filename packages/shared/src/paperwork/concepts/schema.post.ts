@@ -39,20 +39,32 @@ const TIME_REQUIRED = {
 };
 
 const MIN_QUESTIONS = 3;
+const MAX_QUESTIONS = 10;
 
 const MIN_VARIANTS = 5;
 
 const schemaAnswer = z.object({
+  id: z.string(),
+  field: z.string(),
   answer: defaultItemObjSchema().extend({
     val: schemaGenericTxt(250, "Answer"),
   }),
-  isCorrect: z.boolean(),
+  isCorrect: defaultItemObjSchema().extend({
+    val: z.boolean(),
+  }),
 });
 
-const schemaQuestion = z
+export const schemaQuizItem = z
   .object({
-    title: schemaTitle("Question title"),
-    question: schemaGenericTxt(500, "Question"),
+    id: z.string(),
+    field: z.string(),
+    title: defaultItemObjSchema().extend({
+      val: schemaTitle("Question title"),
+    }),
+
+    question: defaultItemObjSchema().extend({
+      val: schemaGenericTxt(500, "Question"),
+    }),
     variants: z
       .array(schemaAnswer)
       .min(
@@ -64,12 +76,16 @@ const schemaQuestion = z
     const { variants } = data;
 
     let countOK = 0;
+    const counterSize = new Set();
     let i = 0;
 
     while (i < variants.length) {
       const curr = variants[i];
 
-      if (curr.isCorrect) countOK++;
+      if (curr.isCorrect.val) countOK++;
+      counterSize.add(curr.answer.val);
+
+      i++;
     }
 
     if (!countOK)
@@ -84,6 +100,13 @@ const schemaQuestion = z
         code: "custom",
         path: ["variants"],
         message: "Only one on answers provided can be true",
+      });
+
+    if (counterSize.size < 5)
+      ctx.addIssue({
+        code: "custom",
+        path: ["variants"],
+        message: "Every answer must be different",
       });
   });
 
@@ -113,9 +136,13 @@ export const schemaPostConcept = z.object({
 
   order: schemaInteger("Order"),
 
-  questions: z
-    .array(schemaQuestion)
-    .min(MIN_QUESTIONS, `A concepts must include at least ${MIN_QUESTIONS}`),
+  quiz: z
+    .array(schemaQuizItem)
+    .min(
+      MIN_QUESTIONS,
+      `A concepts must include at least ${MIN_QUESTIONS} question`,
+    )
+    .max(MAX_QUESTIONS, `A concept can include at most ${MAX_QUESTIONS}`),
 });
 
 export type FormConceptType = z.infer<typeof schemaPostConcept>;

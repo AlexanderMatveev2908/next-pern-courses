@@ -1,5 +1,9 @@
-import { FormFieldType } from "@/common/types/uiFactory";
-import { FieldValues, Path } from "react-hook-form";
+import {
+  FieldArrType,
+  FieldDataType,
+  FormFieldType,
+} from "@/common/types/uiFactory";
+import { ArrayPath, FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
 
 // export const fieldGenerator = <T extends FieldValues>(label: string) => ({
@@ -32,58 +36,118 @@ import { v4 } from "uuid";
 //   }),
 // });
 
-type FieldDataType = "file" | "text" | "number";
-
 export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   constructor(private readonly prefixLabel: string) {}
 
-  private genField(
-    name: K,
-    label: string,
-    type: FieldDataType,
-    required: boolean,
-  ): FormFieldType<T> {
+  private fillGenericKeys(
+    name: string,
+    opt: { label?: string; type: FieldDataType; required: boolean },
+  ) {
     return {
-      name,
-      label: `${this.prefixLabel} ${label} ${required ? "*" : ""}`,
-      type,
-      required,
       id: v4(),
+      name,
+      label: `${opt.label ?? name} ${opt.required ? "*" : ""}`,
+      type: opt.type,
+      required: opt.required,
     };
   }
 
   public genHardCode(
     name: K,
-    label: string,
-    type: FieldDataType,
-    required: boolean,
+    opt: {
+      label?: string;
+      type: FieldDataType;
+      required: boolean;
+      chainLabel?: boolean;
+    },
+  ): FormFieldType<T> {
+    return {
+      ...this.fillGenericKeys(name, {
+        label: opt.label,
+        type: opt.type,
+        required: opt.required,
+      }),
+      label: `${opt.chainLabel ? this.prefixLabel : ""} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
+    } as FormFieldType<T>;
+  }
+
+  // ? only my array fields a val key, a normal field have already it included by default internally while RHF needs more management for custom array fields
+  public genArrFieldTxt(
+    name: ArrayPath<T>,
+    opt: {
+      field: K;
+      label?: string;
+      type: Exclude<FieldDataType, "file">;
+      required: boolean;
+    },
+  ): FieldArrType<T, K> {
+    return {
+      ...this.fillGenericKeys(name, {
+        label: opt.label,
+        type: opt.type,
+        required: opt.required,
+      }),
+      val: "",
+      field: opt.field,
+    } as FieldArrType<T, K>;
+  }
+
+  public genArrFieldBool(
+    name: string,
+    opt: {
+      label?: string;
+      field: string;
+    },
   ) {
     return {
       id: v4(),
+      field: opt.field,
       name,
-      label: `${label} ${required ? "*" : ""}`,
-      type,
-      required,
+      label: opt.label ?? name,
+      type: "",
+      required: false,
+      val: false,
     };
   }
 
-  genTitle(): FormFieldType<T> {
-    return this.genField("title" as K, "title", "text", true);
+  public genTitle(): FormFieldType<T> {
+    return this.genHardCode("title" as K, {
+      type: "text",
+      required: true,
+      chainLabel: true,
+    });
   }
 
-  genDesc(): FormFieldType<T> {
-    return this.genField("description" as K, "description", "text", false);
+  public genDesc(): FormFieldType<T> {
+    return this.genHardCode("description" as K, {
+      type: "text",
+      required: false,
+      chainLabel: true,
+    });
   }
 
-  genImages(): FormFieldType<T> {
-    return this.genField("images" as K, "images", "file", true);
+  public genImages(): FormFieldType<T> {
+    return this.genHardCode("images" as K, {
+      type: "file",
+      label: "images (1-5)",
+      required: true,
+      chainLabel: true,
+    });
   }
 
-  genVideo(): FormFieldType<T> {
-    return this.genField("video" as K, "video", "file", false);
+  public genVideo(): FormFieldType<T> {
+    return this.genHardCode("video" as K, {
+      type: "file",
+      required: false,
+      chainLabel: true,
+    });
   }
 
-  genMark(): FormFieldType<T> {
-    return this.genField("markdown" as K, "markdown", "file", true);
+  public genMark(): FormFieldType<T> {
+    return this.genHardCode("markdown" as K, {
+      type: "file",
+      required: true,
+      chainLabel: true,
+    });
   }
 }

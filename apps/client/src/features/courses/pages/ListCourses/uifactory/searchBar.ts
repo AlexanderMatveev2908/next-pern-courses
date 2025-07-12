@@ -1,4 +1,3 @@
-import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { genArrFromConst } from "@/core/lib/etc";
 import {
   DynamicSubCategoryType,
@@ -17,30 +16,21 @@ import { IoCalendarNumberSharp, IoStatsChart } from "react-icons/io5";
 import { v4 } from "uuid";
 import { GrScorecard } from "react-icons/gr";
 import { FaRegHourglassHalf } from "react-icons/fa6";
+import { ArrayPath, Path } from "react-hook-form";
+import { FieldDataType } from "@/common/types/uiFactory";
 
-export const txtInputsCourses: FormFieldArrayType[] = [
+export const txtInputsCourses = [
   {
-    name: "title",
+    name: "title" as ArrayPath<SchemaGetListCoursesType>,
     label: "Title",
-  },
-  {
-    name: "test",
-    label: "Test",
-  },
-  {
-    name: "test2",
-    label: "Test2",
-  },
-  {
-    name: "test3",
-    label: "Test4",
   },
 ].map((el) => ({
   ...el,
-  type: "text",
-  field: "txtInputs",
+  type: "text" as Exclude<FieldDataType, "file">,
+  field: "txtInputs" as Path<SchemaGetListCoursesType>,
   val: "",
   id: v4(),
+  required: false,
 }));
 
 const filterGrade: SearchFilterType<SchemaGetListCoursesType, "grade"> = {

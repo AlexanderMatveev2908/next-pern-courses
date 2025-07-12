@@ -16,6 +16,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   cb,
   isDisabled,
   index,
+  gappedErr,
 }: FormFieldPropsType<T, K>) => {
   return !isObjOK(el) ? null : (
     <WrapFormField
@@ -24,6 +25,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
         errors,
         showLabel,
         index,
+        gappedErr,
       }}
     >
       <Controller
@@ -31,8 +33,9 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
         control={control}
         render={({ field }) => (
           <input
+            {...field}
             ref={field.ref}
-            name={el.name}
+            // name={el.name}
             required={el.required}
             type={el.type ?? "text"}
             placeholder={getSomePlaceholder(el)}

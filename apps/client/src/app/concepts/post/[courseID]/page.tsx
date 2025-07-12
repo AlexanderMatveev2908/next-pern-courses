@@ -1,6 +1,7 @@
 "use client";
 
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
+import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
@@ -18,6 +19,9 @@ const Page: FC = () => {
   const formCtx = useForm<FormConceptType>({
     mode: "onChange",
     resolver: zodResolver(schemaPostConcept),
+    defaultValues: {
+      quiz: [{ ...grabQuestionShape() }],
+    },
   });
   const { handleSubmit } = formCtx;
 

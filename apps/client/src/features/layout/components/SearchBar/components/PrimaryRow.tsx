@@ -2,25 +2,17 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { FormFieldArrayType } from "@/common/types/uiFactory";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { ArrayPath, FieldValues, useFormContext } from "react-hook-form";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 
-type PropsType<
-  T extends FieldValues & {
-    txtInputs: FormFieldArrayType[];
-  },
-  K extends ArrayPath<T>,
-> = {
+type PropsType<T extends FieldValues, K extends Path<T>> = {
   txtInputs: T[K];
 };
 
-const PrimaryRow = <
-  T extends FieldValues & {
-    txtInputs: FormFieldArrayType[];
-  },
-  K extends ArrayPath<T>,
->({}: PropsType<T, K>) => {
+const PrimaryRow = <T extends FieldValues, K extends Path<T>>({}: PropsType<
+  T,
+  K
+>) => {
   const {
     control,
     formState: { errors },
@@ -31,7 +23,7 @@ const PrimaryRow = <
   //   name: "txtInputs" as K,
   // });
 
-  const fields: FormFieldArrayType[] = watch("txtInputs" as T[K]);
+  const fields: T[K][] = watch("txtInputs" as T[K]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-4">

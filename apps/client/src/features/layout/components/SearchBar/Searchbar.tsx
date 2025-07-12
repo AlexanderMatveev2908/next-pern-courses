@@ -37,6 +37,7 @@ import { useListenDummyPending } from "./hooks/useListenDummyPending";
 import Shim from "@/common/components/elements/Shim";
 import { css } from "@emotion/react";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
+import { FieldArrType } from "@/common/types/uiFactory";
 
 export type PropsTypeSearchBar<
   ResT extends PaginatedResAPI<any>,
@@ -46,7 +47,7 @@ export type PropsTypeSearchBar<
   ZodT extends ZodObject<any>,
 > = {
   hook: [TriggerTypeRTK<ResT, ArgT>, ResultTypeRTK<ResT, ArgT>, any];
-  txtInputs: FormT["txtInputs"];
+  txtInputs: FieldArrType<FormT, PathT>[];
   filters: SearchFilterType<FormT, PathT>[];
   sorters: SearchSortType<FormT, PathT>[];
   handleSave: () => void;

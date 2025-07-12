@@ -1,4 +1,4 @@
-import { FormFieldArrayType, FormFieldType } from "@/common/types/uiFactory";
+import { FieldArrType, FormFieldType } from "@/common/types/uiFactory";
 import { capt } from "@shared/first/lib/formatters";
 import { RefObject } from "react";
 import { FieldValues, Path } from "react-hook-form";
@@ -10,8 +10,8 @@ export const addID = <T>(arg: T[]): (T & { id: string })[] =>
     id: v4(),
   }));
 
-export const getSomePlaceholder = <T extends FieldValues>(
-  el: FormFieldType<T> | FormFieldArrayType,
+export const getSomePlaceholder = <T extends FieldValues, K extends Path<T>>(
+  el: FormFieldType<T> | FieldArrType<T, K>,
 ): string => {
   const place = el.place ?? el.label ?? el.name;
   const parsed = capt(place.replace("*", ""));

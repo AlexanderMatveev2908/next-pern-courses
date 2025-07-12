@@ -10,10 +10,12 @@ import FormFieldArea from "@/common/components/forms/inputs/FormFieldArea";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { FieldGenerator } from "@/core/uiFactory/forms";
 import { FormConceptType } from "@shared/first/paperwork/concepts/schema.post.js";
-import type { FC } from "react";
+import { type FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
 import { css } from "@emotion/react";
 import { numericFieldsConcept } from "./uiFactory";
+import FormQuiz from "./components/FormQuiz";
+import BtnShim from "@/common/components/buttons/BneShim/BtnShim";
 
 type PropsType = {
   handleSave: () => void;
@@ -84,6 +86,18 @@ const ConceptForm: FC<PropsType> = ({ handleSave }) => {
             }}
           />
         ))}
+      </div>
+
+      <FormQuiz />
+
+      <div className="justify-self-center max-w-[300px]">
+        <BtnShim
+          {...{
+            isEnabled: true,
+            label: "Post concept",
+            type: "submit",
+          }}
+        />
       </div>
     </form>
   );

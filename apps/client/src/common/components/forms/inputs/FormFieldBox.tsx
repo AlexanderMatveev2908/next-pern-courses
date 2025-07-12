@@ -12,6 +12,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   data?: PathValue<T, K>[] | PathValue<T, K>;
   handleClick: () => void;
   el: FieldCheckType<T>;
+  index?: number;
 };
 
 const FormFieldBox = <T extends FieldValues, K extends Path<T>>({

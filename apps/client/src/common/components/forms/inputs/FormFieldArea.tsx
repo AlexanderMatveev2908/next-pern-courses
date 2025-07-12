@@ -13,9 +13,11 @@ const FormFieldArea = <T extends FieldValues, K extends Path<T>>({
   cb,
   isDisabled,
   showLabel = true,
+  index,
+  gappedErr,
 }: FormFieldPropsType<T, K>) => {
   return (
-    <WrapFormField {...{ el, errors, showLabel }}>
+    <WrapFormField {...{ el, errors, showLabel, index, gappedErr }}>
       <Controller
         name={el.name as K}
         control={control}

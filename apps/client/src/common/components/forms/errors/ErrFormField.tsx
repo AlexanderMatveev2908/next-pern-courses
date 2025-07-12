@@ -2,12 +2,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import {
-  FieldCheckType,
-  FormFieldArrayType,
-  FormFieldType,
-} from "@/common/types/uiFactory";
-import { FieldErrors, FieldValues } from "react-hook-form";
+import { FormFieldType } from "@/common/types/uiFactory";
+import { FieldErrors, FieldValues, Path } from "react-hook-form";
 import { easeInOut, motion } from "framer-motion";
 import { isStr } from "@shared/first/lib/dataStructure";
 import { useEffect, useState } from "react";
@@ -15,12 +11,16 @@ import { css, SerializedStyles } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   errors: FieldErrors<T>;
-  el?: FormFieldType<T> | FieldCheckType<T> | FormFieldArrayType;
+  el?: {
+    name: string;
+    field?: string;
+  };
   $customCSS?: {
     css: SerializedStyles;
   };
   index?: number;
-  root?: boolean;
+  rootErr?: string;
+  gappedErr?: string;
 };
 
 const ErrFormField = <T extends FieldValues>({
@@ -28,19 +28,17 @@ const ErrFormField = <T extends FieldValues>({
   errors,
   $customCSS,
   index,
-  root,
+  gappedErr,
 }: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
-  const defMsg = errors?.[el?.name]?.message as string | undefined;
-  const msg =
-    typeof index === "number"
+  const defMsg = errors?.[el?.name as Path<T>]?.message as string | undefined;
+  const msg = isStr(gappedErr)
+    ? gappedErr
+    : typeof index === "number"
       ? ((errors as any)?.[(el as FormFieldType<T>)?.field as string]?.[index]
           ?.val?.message as string | undefined)
-      : root
-        ? (((errors?.[el?.name]?.root as any)?.message as string | undefined) ??
-          defMsg)
-        : defMsg;
+      : defMsg;
 
   useEffect(() => {
     if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {
