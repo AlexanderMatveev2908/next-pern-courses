@@ -54,6 +54,7 @@ const FormQuiz = () => {
         el: fieldQuiz,
         errors,
         register,
+        gappedErr: errors?.quiz?.root?.message ?? errors?.quiz?.message,
       }}
     >
       <div className="w-full grid grid-cols-1 gap-14">

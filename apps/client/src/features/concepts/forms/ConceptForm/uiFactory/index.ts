@@ -35,7 +35,7 @@ export const grabAnswerShape = (i: number) => ({
     type: "text",
     required: true,
   }),
-  isCorrect: gen.genArrFieldBool("correct", {
+  isCorrect: gen.genArrFieldBool("isCorrect", {
     field: "variants",
     label: `${i}. Answer`,
   }),

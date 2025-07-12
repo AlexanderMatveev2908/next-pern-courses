@@ -129,6 +129,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   public genImages(): FormFieldType<T> {
     return this.genHardCode("images" as K, {
       type: "file",
+      label: "images (1-5)",
       required: true,
       chainLabel: true,
     });
