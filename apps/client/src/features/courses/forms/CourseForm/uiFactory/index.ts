@@ -25,5 +25,4 @@ export const fieldRootLanguage: FieldMiniCheckType<
 > = {
   name: "rootLanguage",
   label: "Root Language *",
-  txt: "Is this language a root one ? 🧐",
 };

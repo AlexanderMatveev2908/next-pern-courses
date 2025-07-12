@@ -18,6 +18,8 @@ import { useEffect } from "react";
 import { __cg } from "@shared/first/lib/logger.js";
 import { FieldDataType } from "@/common/types/uiFactory";
 import { resp } from "@/core/lib/style";
+import { optGridQuiz } from "./uiFactory";
+import FormFiledMiniCheck from "@/common/components/forms/inputs/FormFiledMiniCheck/FormFiledMiniCheck";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -52,50 +54,64 @@ const FormQuiz = () => {
       }}
     >
       {(fieldsArg ?? []).map((el, quizItemIdx) => (
-        <div
-          key={el.id}
-          className="w-full border-[3px] border-neutral-800 p-5 rounded-xl grid gap-10"
-          css={css`
-            grid-template-columns: 1fr;
+        <div key={el.id} className="w-full grid grid-cols-1 gap-16">
+          <div
+            className="w-full border-[3px] border-neutral-800 p-5 rounded-xl"
+            css={css`
+              ${optGridQuiz}
+            `}
+          >
+            <FormFieldTxt
+              {...{
+                control,
+                errors,
+                el: {
+                  ...el.title,
+                  name: `quiz.${quizItemIdx}.${el.title.name}.val` as ArrayPath<FormConceptType>,
+                  type: el.title.type as Exclude<FieldDataType, "file">,
+                },
+                gappedErr: grabNestedErr(errors, {
+                  idx: quizItemIdx,
+                  name: el.title.name,
+                  field: el.title.field,
+                }),
+              }}
+            />
 
-            ${resp("md")} {
-              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
-          `}
-        >
-          <FormFieldTxt
-            {...{
-              control,
-              errors,
-              el: {
-                ...el.title,
-                name: `quiz.${quizItemIdx}.${el.title.name}.val` as ArrayPath<FormConceptType>,
-                type: el.title.type as Exclude<FieldDataType, "file">,
-              },
-              gappedErr: grabNestedErr(errors, {
-                idx: quizItemIdx,
-                name: el.title.name,
-                field: el.title.field,
-              }),
-            }}
-          />
+            <FormFieldArea
+              {...{
+                control,
+                errors,
+                el: {
+                  ...el.question,
+                  name: `quiz.${quizItemIdx}.${el.question.name}.val` as ArrayPath<FormConceptType>,
+                  type: el.question.type as Exclude<FieldDataType, "file">,
+                },
+                gappedErr: grabNestedErr(errors, {
+                  idx: quizItemIdx,
+                  name: el.question.name,
+                  field: el.question.field,
+                }),
+              }}
+            />
+          </div>
 
-          <FormFieldArea
-            {...{
-              control,
-              errors,
-              el: {
-                ...el.question,
-                name: `quiz.${quizItemIdx}.${el.question.name}.val` as ArrayPath<FormConceptType>,
-                type: el.question.type as Exclude<FieldDataType, "file">,
-              },
-              gappedErr: grabNestedErr(errors, {
-                idx: quizItemIdx,
-                name: el.question.name,
-                field: el.question.field,
-              }),
-            }}
-          />
+          <div
+            className="w-full"
+            css={css`
+              ${optGridQuiz}
+            `}
+          >
+            {/* {el.variants.map((opt) => (
+              <div key={opt.id} className="w-full flex items-center gap-6">
+                <FormFiledMiniCheck
+                  {...{
+                    el: opt.isCorrect,
+                  }}
+                />
+              </div>
+            ))} */}
+          </div>
         </div>
       ))}
     </WrapArrField>

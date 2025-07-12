@@ -43,6 +43,7 @@ const MIN_QUESTIONS = 3;
 const MIN_VARIANTS = 5;
 
 const schemaAnswer = z.object({
+  id: z.string(),
   answer: defaultItemObjSchema().extend({
     val: schemaGenericTxt(250, "Answer"),
   }),

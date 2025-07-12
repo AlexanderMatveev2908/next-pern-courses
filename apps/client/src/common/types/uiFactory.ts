@@ -79,6 +79,5 @@ export type FieldMiniCheckType<T extends FieldValues, K extends Path<T>> = {
   name: K;
   label: string;
   field?: string;
-  txt?: string;
   id?: string;
 };

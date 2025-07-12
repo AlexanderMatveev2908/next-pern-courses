@@ -132,6 +132,7 @@ const CourseForm: FC<PropsType> = ({ handleSave, isLoading }) => {
       <FormFiledMiniCheck
         {...{
           el: fieldRootLanguage,
+          txt: "Is this language a root one ? 🧐",
         }}
       />
 
