@@ -33,5 +33,6 @@ export const postCourseCtrl = async (
 
   return res.res201({
     msg: "Concept added",
+    concept,
   });
 };
