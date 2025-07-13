@@ -5,6 +5,7 @@ import { normalizeForm } from "@src/middleware/multipart/normalize.js";
 import { AppFile } from "@src/types/fastify.js";
 import { checkZod } from "@src/middleware/validators/zodCheck.js";
 import { schemaConceptServer } from "../paperwork/postConept.js";
+import { genFancyForm } from "@src/middleware/multipart/genFancyForm.js";
 
 export const postConceptMdw: preHandlerHookHandler = async (
   req: FastifyRequest,
@@ -30,6 +31,8 @@ export const postConceptMdw: preHandlerHookHandler = async (
     });
 
     if (!isOK) return res.res422({ msg, fancyErrsList });
+
+    genFancyForm(req, normalized);
 
     await clearLocalAssets(videoFile);
   } catch (err: any) {

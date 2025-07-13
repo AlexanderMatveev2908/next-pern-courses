@@ -43,3 +43,8 @@ export const isValidTech = (val: TechValType, stack: StackType) => {
 
   return isInObjKeys(filtered, val);
 };
+
+export const isStrBool = (v: string) => ["true", "false"].includes(v);
+
+export const isJsObj = (obj: unknown) =>
+  typeof obj === "object" && obj !== null;

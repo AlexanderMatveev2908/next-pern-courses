@@ -77,6 +77,8 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    if (!envApp.isDev) return;
+
     if (isStr(markdown) && isArrOK(b64Arg) && isObjOK(blobData))
       dispatch(
         toastSlice.actions.open({
