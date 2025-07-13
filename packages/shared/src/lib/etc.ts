@@ -67,17 +67,21 @@ export const isSameObj = <T>(obj1: T, obj2: T): boolean => {
 export const grabErrMsgZOD = <T extends ZodTypeAny>(
   result: SafeParseReturnType<unknown, T>,
 ) => {
-  const fancyErrsList = result!.error!.format();
-  const msg =
-    fancyErrsList._errors[0] ??
-    Object.values(fancyErrsList)
-      .flatMap((errs) => (errs as any)?._errors)
-      .filter(Boolean)[0];
+  try {
+    const fancyErrsList = result!.error!.format();
+    const msg =
+      fancyErrsList._errors[0] ??
+      Object.values(fancyErrsList)
+        .flatMap((errs) => (errs as any)?._errors)
+        .filter(Boolean)[0];
 
-  return {
-    msg,
-    fancyErrsList,
-  };
+    return {
+      msg,
+      fancyErrsList,
+    };
+  } catch (err: any) {
+    __cg("err extracting err zod", err);
+  }
 };
 
 export const genIpsum = (num: number = 1) =>

@@ -4,6 +4,7 @@ import { delCloud } from "./cloud/delete.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import fs from "fs";
 import { AppFile } from "@src/types/fastify.js";
+import { FastifyRequest } from "fastify";
 
 export const clearAssets = async (
   images: Partial<CloudAsset>[],
@@ -18,7 +19,7 @@ export const clearAssets = async (
   if (isObjOK(video)) await delCloud([video!.publicID!], "video");
 };
 
-export const clearLocalAssets = async (videoFile?: AppFile) => {
+export const clearLocalAssets = async (videoFile?: AppFile | null) => {
   if (isStr(videoFile?.path))
     try {
       await fs.promises.unlink(videoFile!.path!);
@@ -30,7 +31,7 @@ export const clearLocalAssets = async (videoFile?: AppFile) => {
 };
 
 export const grabFilesByMime = (files: AppFile[]) => {
-  if (!files || isArrOK(files)) throw new Error("I did not received files 😡");
+  if (!files?.length) throw new Error("I did not received files 😡");
 
   const imageFiles = files.filter((f) => f.mimetype.startsWith("image/"));
   const videoFile = files.find((f) => f.mimetype.startsWith("video/"));
@@ -39,4 +40,9 @@ export const grabFilesByMime = (files: AppFile[]) => {
     imageFiles,
     videoFile,
   };
+};
+export const grabVideo = (req: FastifyRequest) => {
+  const { myFormData: { files } = {} } = req;
+
+  return files?.find((el) => el.mimetype.startsWith("video/")) || null;
 };

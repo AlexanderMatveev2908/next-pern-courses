@@ -1,15 +1,17 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { envApp } from "@/core/constants/env";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { genFormData } from "@/core/lib/processForm";
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
+import { grabPlaceholderConcept } from "@/features/concepts/forms/ConceptForm/lib";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { useFillAssetsDev } from "@/features/rootDev/hooks/useFillAssetsDev";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
-import { genIpsum } from "@shared/first/lib/etc.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { isOkID } from "@shared/first/lib/validators.js";
 import {
@@ -27,38 +29,9 @@ const Page: FC = () => {
     mode: "onChange",
     resolver: zodResolver(schemaPostConcept),
     defaultValues: {
-      title: "concept for taught cookies",
-      description: genIpsum(5),
-      order: 0 + "",
-      pointsGained: 100 + "",
-      estimatedTime: 15 + "",
-      quiz: Array.from({ length: 3 }).map((_, i) => {
-        const item = grabQuestionShape();
-
-        return {
-          ...item,
-          title: {
-            ...item.title,
-            val: `Title of question ${i}`,
-          },
-          question: {
-            ...item.question,
-            val: `Hard question num ${i}`,
-          },
-          variants: item.variants.map((v, idx) => ({
-            ...v,
-            answer: {
-              ...v.answer,
-              val: `Answer n ${idx} (outer is ${i})`,
-            },
-            isCorrect: {
-              ...v.isCorrect,
-              val: !idx,
-            },
-          })),
-        };
-      }),
-      // quiz: [{ ...grabQuestionShape() }],
+      ...(envApp.isDev
+        ? grabPlaceholderConcept()
+        : { quiz: [{ ...grabQuestionShape() }] }),
     },
   });
   const { handleSubmit, setValue } = formCtx;
@@ -77,8 +50,10 @@ const Page: FC = () => {
   const { course } = data ?? {};
   useWrapQuery({
     ...res,
-    showToast: true,
+    // showToast: true,
   });
+
+  const { isLoadingProxy } = useFillAssetsDev({ setValue });
 
   const [mutate, { isLoading: isMutating }] =
     conceptsSliceAPI.useAddConceptMutation();
@@ -111,7 +86,7 @@ const Page: FC = () => {
       {...{
         isSuccess: isObjOK(course),
         wrapHydrate: true,
-        isLoading,
+        isLoading: isLoading || (envApp.isDev ? isLoadingProxy : false),
         Content: () => (
           <FormProvider {...formCtx}>
             <ConceptForm

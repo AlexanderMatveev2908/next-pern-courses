@@ -35,6 +35,9 @@ declare module "fastify" {
       files: AppFile[];
     };
 
+    // ? this version convert '5' to int and 'true' to real boolean or JSON to javascript objects
+    myFancyForm?: Record<string, any>;
+
     myQuery?: Record<string, any> & {
       txtInputs: FieldSearchClientType[];
       page: number;
