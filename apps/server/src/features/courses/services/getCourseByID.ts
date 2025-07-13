@@ -1,4 +1,4 @@
-import { Course } from "@prisma/client";
+import { Course, EntityType } from "@prisma/client";
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
@@ -29,6 +29,18 @@ export const serviceGetCourseByID = async (id: string) => {
         SELECT json_agg(
           json_build_object(
             ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+            'images', (
+                  SELECT json_agg(
+                    json_build_object(
+                      'url', ca."url",
+                      'publicID', ca."publicID"
+                    )
+                  )
+                  FROM "CloudAsset" AS ca
+                  WHERE ca."type" = 'IMAGE'
+                    AND ca."entityID" = cpt."id"
+                    AND ca."entityType" = ${sql`${EntityType.CONCEPT}::"EntityType"`}
+            ),
             'quizzes', (
               SELECT json_agg(
                 json_build_object(
