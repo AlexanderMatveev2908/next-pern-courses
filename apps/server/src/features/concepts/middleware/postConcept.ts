@@ -33,8 +33,6 @@ export const postConceptMdw: preHandlerHookHandler = async (
     if (!isOK) return res.res422({ msg, fancyErrsList });
 
     genFancyForm(req, normalized);
-
-    await clearLocalAssets(videoFile);
   } catch (err: any) {
     __cg("err parse multipart", err?.message);
 

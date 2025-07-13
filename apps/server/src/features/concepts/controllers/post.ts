@@ -1,4 +1,5 @@
 import { __cg } from "@shared/first/lib/logger.js";
+import { handleUploadAssets } from "@src/lib/assetsHOF.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export const postCourseCtrl = async (
@@ -6,8 +7,11 @@ export const postCourseCtrl = async (
   res: FastifyReply,
 ) => {
   const { myFancyForm } = req;
+  const { imageFiles, videoFile } = myFancyForm ?? {};
 
-  __cg("fancy", myFancyForm);
+  const { images, video } = await handleUploadAssets(imageFiles, videoFile);
+
+  __cg("uploaded", images, video);
 
   return res.res201({
     msg: "Concept added",

@@ -19,6 +19,12 @@ const parseStr = (v: unknown) => {
 };
 
 const applyDeepParse = (arg: unknown): unknown => {
+  if (
+    arg instanceof Buffer ||
+    (isJsObj(arg) && "buffer" in arg && arg.buffer instanceof Buffer)
+  )
+    return arg;
+
   if (Array.isArray(arg)) return arg.map(applyDeepParse);
 
   if (isJsObj(arg)) {
