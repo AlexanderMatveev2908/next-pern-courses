@@ -15,6 +15,10 @@ const conceptsKeys = [
   "order",
 ];
 
+const quizKeys = ["id", "title", "question"];
+
+const variantKeys = ["id", "answer", "isCorrect"];
+
 export const serviceGetCourseByID = async (id: string) => {
   const raw = sql`
     SELECT c.*,
@@ -28,15 +32,13 @@ export const serviceGetCourseByID = async (id: string) => {
             'quizzes', (
               SELECT json_agg(
                 json_build_object(
-                  'id', q.id,
-                  'title', q.title,
-                  'question', q.question,
+                 ${injectKeyValSQL(quizKeys, {
+                   prefix: "q",
+                 })},
                   'variants', (
                     SELECT json_agg(
                       json_build_object(
-                        'id', v.id,
-                        'answer', v.answer,
-                        'isCorrect', v."isCorrect"
+                       ${injectKeyValSQL(variantKeys, { prefix: "v" })}
                       )
                     )
                     FROM "Variant" v
