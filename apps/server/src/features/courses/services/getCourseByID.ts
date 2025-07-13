@@ -14,9 +14,7 @@ const conceptsKeys = [
   "pointsGained",
   "order",
 ];
-
 const quizKeys = ["id", "title", "question"];
-
 const variantKeys = ["id", "answer", "isCorrect"];
 
 export const serviceGetCourseByID = async (id: string) => {
@@ -82,9 +80,6 @@ export const serviceGetCourseByID = async (id: string) => {
      WHERE c."id" = ${id}
 
     `;
-
-  __cg("raw", raw.text);
-  __cg("vls", raw.values);
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
