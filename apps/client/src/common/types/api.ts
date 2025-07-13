@@ -23,13 +23,14 @@ export type ResAPI<T> = {
   data: {
     msg: string;
     status: number;
+    blob?: Blob;
   } & T;
 };
 
 export type UnwrappedResAPI<T extends void | Record<string, any>> =
   T extends void
-    ? { msg: string; status: number }
-    : { msg: string; status: number } & T;
+    ? { msg: string; status: number; blob?: Blob }
+    : { msg: string; status: number; blob?: Blob } & T;
 
 export type ErrAPI<T> = {
   data: { msg: string; status: number };

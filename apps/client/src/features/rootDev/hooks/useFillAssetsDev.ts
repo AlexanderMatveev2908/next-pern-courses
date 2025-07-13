@@ -24,12 +24,9 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
     showToast: envApp.isDev,
   });
 
-  const resBlob = proxySliceAPI.useGrabBlobAssetsQuery(
-    {},
-    {
-      skip: !envApp.isDev,
-    },
-  );
+  const resBlob = proxySliceAPI.useGrabBlobAssetsQuery(undefined, {
+    skip: !envApp.isDev,
+  });
   const { data: blobData, isLoading: isBlobLoading } = resBlob;
   useWrapQuery({ ...resBlob });
 

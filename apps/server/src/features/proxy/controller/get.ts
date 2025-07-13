@@ -39,6 +39,7 @@ export const grabAssetsBlob = async (
 
   res.header("Content-Type", "video/mp4");
   res.header("Content-Length", buff.length);
+  res.status(200);
 
   return res.send(buff);
 };
