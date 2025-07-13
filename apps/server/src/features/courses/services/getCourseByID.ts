@@ -9,6 +9,41 @@ export const serviceGetCourseByID = async (id: string) => {
     
      ${grabAssetsItem("COURSE")},
 
+      (
+        SELECT json_agg(
+          json_build_object(
+            'id', cpt.id,
+            'title', cpt.title,
+            'description', cpt.description,
+            'quizzes', (
+              SELECT json_agg(
+                json_build_object(
+                  'id', q.id,
+                  'title', q.title,
+                  'question', q.question,
+                  'variants', (
+                    SELECT json_agg(
+                      json_build_object(
+                        'id', v.id,
+                        'answer', v.answer,
+                        'isCorrect', v."isCorrect"
+                      )
+                    )
+                    FROM "Variant" v
+                    WHERE v."quizID" = q.id
+                  )
+                )
+              )
+              FROM "Quiz" q
+              WHERE q."conceptID" = cpt.id
+            )
+          )
+        )
+        FROM "Concept" cpt
+        WHERE cpt."courseID" = c.id
+      ) AS "concepts",
+
+
      json_build_object(
       'conceptsCount', 
         (
@@ -21,6 +56,7 @@ export const serviceGetCourseByID = async (id: string) => {
      FROM "Course" AS c
 
      WHERE c."id" = ${id}
+
     `;
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
