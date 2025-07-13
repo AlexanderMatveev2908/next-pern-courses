@@ -32,8 +32,6 @@ export const proxySliceAPI = api.injectEndpoints({
             },
           );
 
-          __cg("blob", blobData);
-
           return {
             data: {
               blob: blobData,
@@ -46,6 +44,13 @@ export const proxySliceAPI = api.injectEndpoints({
           throw err;
         }
       },
+    }),
+
+    grabServerMd: builder.query<any, void>({
+      query: () => ({
+        url: `${BASE_URL}/markdown`,
+        method: "GET",
+      }),
     }),
   }),
 });

@@ -2,6 +2,7 @@ import fs, { readFile, readFileSync } from "fs";
 import path from "path";
 import "dotenv/config";
 import { fileURLToPath } from "url";
+import { __cg } from "@shared/first/lib/logger.js";
 
 export const app_dir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -32,5 +33,11 @@ export const getPathENV = () => {
   }
 };
 
-export const readSQL = (p: string) =>
+export const readSQL = async (p: string) =>
   read_file_app(path.join("sql", `${p}.sql`), "utf-8");
+
+export const writeJsObj = async (obj: unknown) => {
+  const p = chain_path("logger/data.json");
+
+  await fs.promises.writeFile(p, JSON.stringify(obj, null, 2));
+};

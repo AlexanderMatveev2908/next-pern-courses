@@ -43,3 +43,12 @@ export const grabAssetsBlob = async (
 
   return res.send(buff);
 };
+
+export const grabMarkdown = async (req: FastifyRequest, res: FastifyReply) => {
+  const md = await fs.promises.readFile(chain_path("assets/markdown/eg.md"));
+  const str = md.toString("utf-8");
+
+  return res.res200({
+    markdown: str,
+  });
+};

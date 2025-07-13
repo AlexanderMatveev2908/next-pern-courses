@@ -6,6 +6,7 @@ import {
 import { capt } from "@shared/first/lib/formatters.js";
 import { ArrayPath, FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
+import { envApp } from "../constants/env";
 
 // export const fieldGenerator = <T extends FieldValues>(label: string) => ({
 //   genTitleField: <K extends Path<T>>(): FormFieldType<T> => ({
@@ -139,7 +140,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     return this.genHardCode("images" as K, {
       type: "file",
       label: "images (1-5)",
-      required: true,
+      required: !envApp.isDev,
       chainLabel: true,
     });
   }
@@ -157,7 +158,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     return this.genHardCode("markdown" as K, {
       type: "file",
       label: "markdown (1)",
-      required: true,
+      required: !envApp.isDev,
       chainLabel: true,
     });
   }

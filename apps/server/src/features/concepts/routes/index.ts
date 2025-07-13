@@ -18,7 +18,7 @@ export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
     method: "POST",
     url: "/:courseID",
-    preHandler: [wrapRoute(parseForm), postConceptMdw, wrapRoute(logJSON)],
+    preHandler: [wrapRoute(parseForm), wrapRoute(logJSON), postConceptMdw],
     handler: wrapRoute(postCourseCtrl),
   });
 };

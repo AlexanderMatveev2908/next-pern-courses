@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { envApp } from "@/core/constants/env";
 import { proxySliceAPI } from "../slices/proxyAPI";
-import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useEffect } from "react";
-import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
+import { isArrOK, isObjOK, isStr } from "@shared/first/lib/dataStructure.js";
 import { b64ToFile } from "@/core/lib/etc";
+import { useDispatch } from "react-redux";
+import { toastSlice } from "@/features/layout/components/Toast/slice";
+import { ApiEventType } from "@/common/types/api";
 
 type Params = {
   setValue: any;
@@ -19,16 +21,16 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
   );
   const { data: dataAssets, isLoading: isLoadingProxy } = resProxy;
   const { b64Arg } = dataAssets ?? [];
-  useWrapQuery({
-    ...resProxy,
-    showToast: envApp.isDev,
-  });
 
   const resBlob = proxySliceAPI.useGrabBlobAssetsQuery(undefined, {
     skip: !envApp.isDev,
   });
   const { data: blobData, isLoading: isBlobLoading } = resBlob;
-  useWrapQuery({ ...resBlob });
+
+  const resMd = proxySliceAPI.useGrabServerMdQuery(undefined, {
+    skip: !envApp.isDev,
+  });
+  const { data: { markdown } = {}, isLoading: isLoadingMd } = resMd;
 
   useEffect(() => {
     const handleAssets = async () => {
@@ -65,7 +67,26 @@ export const useFillAssetsDev = ({ setValue }: Params) => {
     handleBlob();
   }, [blobData, setValue]);
 
+  useEffect(() => {
+    if (!isStr(markdown)) return;
+
+    setValue("markdown", markdown, {
+      shouldValidate: true,
+    });
+  }, [markdown, setValue]);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isStr(markdown) && isArrOK(b64Arg) && isObjOK(blobData))
+      dispatch(
+        toastSlice.actions.open({
+          msg: "pre-filled form dev",
+          type: ApiEventType.INFO,
+        }),
+      );
+  }, [markdown, b64Arg, blobData, dispatch]);
+
   return {
-    isLoadingProxy: isLoadingProxy || isBlobLoading,
+    isLoadingProxy: isLoadingProxy || isBlobLoading || isLoadingMd,
   };
 };
