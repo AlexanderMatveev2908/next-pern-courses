@@ -1,4 +1,4 @@
-import { UnwrappedResAPI } from "@/common/types/api";
+import { TagsAPI, UnwrappedResAPI } from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { CourseType } from "@/features/courses/types/courses";
 import { ConceptType } from "../types";
@@ -26,6 +26,15 @@ export const conceptsSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: (res, err, arg) => {
+        return [
+          TagsAPI.COURSE_ITEM,
+          {
+            type: TagsAPI.COURSES_LIST,
+            id: arg.courseID,
+          },
+        ];
+      },
     }),
   }),
 });
