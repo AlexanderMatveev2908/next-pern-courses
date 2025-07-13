@@ -7,63 +7,59 @@ import { AppFile } from "@src/types/fastify.js";
 import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
 import { ServerSideFormCourse } from "../controllers/post.js";
 import { boolObj } from "@shared/first/lib/etc.js";
+import { wrapServiceCleanCloud } from "@src/lib/assetsHOF.js";
 
 export const postCourseService = async ({
   fields,
-  images,
-  video,
+  imagesUploaded,
+  videoUploaded,
   videoFile,
 }: {
   fields: ServerSideFormCourse;
-  images: Partial<CloudAsset>[];
-  video: Partial<CloudAsset> | null;
+  imagesUploaded: Partial<CloudAsset>[];
+  videoUploaded: Partial<CloudAsset> | null;
   videoFile?: AppFile;
-}): Promise<Course> => {
-  try {
-    const course = await db.$transaction(async (trx) => {
-      const course = await trx.course.create({
-        data: {
-          ...fields,
-          title: capt(fields.title),
-          rootLanguage: boolObj[
-            fields.rootLanguage as unknown as keyof typeof boolObj
-          ] as boolean,
-        } as Course,
+}): Promise<Course> =>
+  await wrapServiceCleanCloud(
+    { imagesUploaded, videoFile, videoUploaded },
+    async () => {
+      const course = await db.$transaction(async (trx) => {
+        const course = await trx.course.create({
+          data: {
+            ...fields,
+            title: capt(fields.title),
+            rootLanguage: boolObj[
+              fields.rootLanguage as unknown as keyof typeof boolObj
+            ] as boolean,
+          } as Course,
+        });
+
+        if (isArrOK(imagesUploaded))
+          await trx.cloudAsset.createMany({
+            data: imagesUploaded.map(
+              (img) =>
+                ({
+                  ...img,
+                  entityType: EntityType.COURSE,
+                  entityID: course.id,
+                  type: TypeAsset.IMAGE,
+                }) as CloudAsset,
+            ),
+          });
+
+        if (isObjOK(videoUploaded))
+          await trx.cloudAsset.create({
+            data: {
+              ...videoUploaded,
+              entityType: EntityType.COURSE,
+              entityID: course.id,
+              type: TypeAsset.VIDEO,
+            } as CloudAsset,
+          });
+
+        return course;
       });
 
-      if (isArrOK(images))
-        await trx.cloudAsset.createMany({
-          data: images.map(
-            (img) =>
-              ({
-                ...img,
-                entityType: EntityType.COURSE,
-                entityID: course.id,
-                type: TypeAsset.IMAGE,
-              }) as CloudAsset,
-          ),
-        });
-
-      if (isObjOK(video))
-        await trx.cloudAsset.create({
-          data: {
-            ...video,
-            entityType: EntityType.COURSE,
-            entityID: course.id,
-            type: TypeAsset.VIDEO,
-          } as CloudAsset,
-        });
-
       return course;
-    });
-
-    return course;
-  } catch (err) {
-    __cg("err transaction", err);
-
-    await clearLocalAssets(videoFile);
-    await clearAssets(images, video);
-
-    throw err;
-  }
-};
+    },
+  );

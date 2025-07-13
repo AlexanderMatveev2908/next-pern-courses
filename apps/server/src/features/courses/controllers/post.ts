@@ -27,7 +27,7 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
 
   const { files, fields } = myFormData ?? {};
   const { imageFiles, videoFile } = grabFilesByMime(files!);
-  const { images, video } = await handleUploadAssets({
+  const { imagesUploaded, videoUploaded } = await handleUploadAssets({
     imageFiles,
     videoFile,
     folder: "concept",
@@ -35,8 +35,8 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
 
   const course = await postCourseService({
     fields: fields!,
-    images,
-    video,
+    imagesUploaded,
+    videoUploaded,
     videoFile,
   });
 

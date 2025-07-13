@@ -6,6 +6,11 @@ import { uploadDisk } from "./cloud/disk.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearAssets, clearLocalAssets } from "./etc.js";
 
+export type ReturnFromCLoud = Promise<{
+  imagesUploaded: CloudAsset[];
+  videoUploaded: CloudAsset | null;
+}>;
+
 export const handleUploadAssets = async ({
   folder,
   imageFiles,
@@ -14,19 +19,19 @@ export const handleUploadAssets = async ({
   imageFiles: AppFile[];
   videoFile?: AppFile;
   folder: string;
-}) => {
-  let images: Partial<CloudAsset>[] = [];
-  let video: Partial<CloudAsset> | null = null;
+}): ReturnFromCLoud => {
+  let imagesUploaded: Partial<CloudAsset>[] = [];
+  let videoUploaded: Partial<CloudAsset> | null = null;
 
   try {
     if (isArrOK(imageFiles))
-      images = await Promise.all(
+      imagesUploaded = await Promise.all(
         imageFiles.map(
           async (f) => await uploadRam(f, { folder: `${folder}_images` }),
         ),
       );
     if (isObjOK(videoFile))
-      video = await uploadDisk(videoFile as AppFile, {
+      videoUploaded = await uploadDisk(videoFile as AppFile, {
         folder: `${folder}_videos`,
         resource: "video",
       });
@@ -34,13 +39,37 @@ export const handleUploadAssets = async ({
     __cg("upload error", err);
 
     await clearLocalAssets(videoFile);
-    await clearAssets(images, video);
+    await clearAssets(imagesUploaded, videoUploaded);
 
     throw err;
   }
 
   return {
-    images,
-    video,
-  };
+    imagesUploaded,
+    videoUploaded,
+  } as unknown as ReturnFromCLoud;
+};
+
+export const wrapServiceCleanCloud = async <T>(
+  {
+    imagesUploaded,
+    videoUploaded,
+    videoFile,
+  }: {
+    imagesUploaded: Partial<CloudAsset>[];
+    videoUploaded?: Partial<CloudAsset> | null;
+    videoFile?: AppFile | null;
+  },
+  cb: () => Promise<T>,
+) => {
+  try {
+    return await cb();
+  } catch (err: any) {
+    __cg("err transaction");
+
+    await clearLocalAssets(videoFile);
+    await clearAssets(imagesUploaded, videoUploaded);
+
+    throw err;
+  }
 };

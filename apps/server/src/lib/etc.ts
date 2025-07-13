@@ -8,7 +8,7 @@ import { FastifyRequest } from "fastify";
 
 export const clearAssets = async (
   images: Partial<CloudAsset>[],
-  video: Partial<CloudAsset> | null,
+  video?: Partial<CloudAsset> | null,
 ): Promise<void> => {
   if (isArrOK(images))
     await delCloud(
