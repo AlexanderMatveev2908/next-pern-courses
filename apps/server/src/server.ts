@@ -22,6 +22,7 @@ const app = Fastify({
 
 // DEL_ALL();
 
+//  !  145s time required
 // genMock();
 
 process.on("SIGTERM", () => {

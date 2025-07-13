@@ -7,6 +7,7 @@ import mime from "mime-types";
 import { v4 } from "uuid";
 import path from "path";
 import db from "@src/conf/db.js";
+import { EntityType } from "@prisma/client";
 
 export const getAssetsByFolder = async (folderName: string) => {
   const techDir = chain_path(`assets/images/${folderName}`);
@@ -96,18 +97,25 @@ export const uploadCloudMyVideo = async (p: string) => {
   return uploaded;
 };
 
-export const addAssetsToCourse = async (
-  newCourseID: string,
-  nameFolder: string,
-) => {
+export const addCloudAssetsModel = async ({
+  entityID,
+  nameFolder,
+  entityType,
+  maxImages = 5,
+}: {
+  entityID: string;
+  nameFolder: string;
+  entityType: EntityType;
+  maxImages?: number;
+}) => {
   const { paths } = await getAssetsByFolder(nameFolder);
   const uploadedImgs = await Promise.all(
-    paths.map(async (p) => await uploadCloudMyImages(p)),
+    paths.slice(0, maxImages).map(async (p) => await uploadCloudMyImages(p)),
   );
   await db.cloudAsset.createMany({
     data: uploadedImgs.map((img) => ({
-      entityID: newCourseID,
-      entityType: "COURSE",
+      entityID: entityID,
+      entityType,
       type: "IMAGE",
       url: img.url!,
       publicID: img.publicID!,
@@ -118,8 +126,8 @@ export const addAssetsToCourse = async (
   const vidUploaded = await uploadCloudMyVideo(vidPath);
   await db.cloudAsset.create({
     data: {
-      entityID: newCourseID,
-      entityType: "COURSE",
+      entityID: entityID,
+      entityType,
       type: "VIDEO",
       url: vidUploaded.url!,
       publicID: vidUploaded.publicID!,

@@ -6,6 +6,9 @@ export const DEL_ALL = async () => {
   __cg("start deleting 🕰️");
 
   await db.cloudAsset.deleteMany();
+  await db.variant.deleteMany();
+  await db.quiz.deleteMany();
+  await db.concept.deleteMany();
   await db.course.deleteMany();
 
   await cloud.api.delete_resources_by_prefix("next_pern_courses__", {
