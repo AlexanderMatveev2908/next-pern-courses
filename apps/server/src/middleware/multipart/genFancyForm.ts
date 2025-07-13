@@ -18,27 +18,31 @@ const parseStr = (v: unknown) => {
   }
 };
 
-const applyDeepParse = (v: unknown): unknown => {
-  if (Array.isArray(v)) return v.map(applyDeepParse);
+const applyDeepParse = (arg: unknown): unknown => {
+  if (Array.isArray(arg)) return arg.map(applyDeepParse);
 
-  if (isJsObj(v)) {
+  if (isJsObj(arg)) {
     const parsed: Record<string, unknown> = {};
-    for (const key in v) {
-      parsed[key] = applyDeepParse(v[key as keyof typeof v]);
+    for (const k in arg) {
+      parsed[k] = applyDeepParse(arg[k as keyof typeof arg]);
     }
     return parsed;
   }
 
-  return parseStr(v);
+  return parseStr(arg);
 };
 export const genFancyForm = async <T>(req: FastifyRequest, obj: T) => {
-  const parsedForSvc: any = {};
+  try {
+    const parsedForSvc: any = {};
 
-  for (const k in obj) {
-    const v = obj[k];
+    for (const k in obj) {
+      const v = obj[k];
 
-    parsedForSvc[k] = applyDeepParse(v);
+      parsedForSvc[k] = applyDeepParse(v);
+    }
+
+    req.myFancyForm = parsedForSvc;
+  } catch (err: any) {
+    __cg("err recursive parse", err);
   }
-
-  req.myFancyForm = parsedForSvc;
 };

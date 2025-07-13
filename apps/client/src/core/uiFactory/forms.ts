@@ -157,7 +157,7 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   public genMark(): FormFieldType<T> {
     return this.genHardCode("markdown" as K, {
       type: "file",
-      label: "markdown (1)",
+      label: "markdown (1) *",
       required: !envApp.isDev,
       chainLabel: true,
     });
