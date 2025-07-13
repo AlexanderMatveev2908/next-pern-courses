@@ -9,7 +9,11 @@ export const postCourseCtrl = async (
   const { myFancyForm } = req;
   const { imageFiles, videoFile } = myFancyForm ?? {};
 
-  const { images, video } = await handleUploadAssets(imageFiles, videoFile);
+  const { images, video } = await handleUploadAssets({
+    imageFiles,
+    videoFile,
+    folder: "course",
+  });
 
   __cg("uploaded", images, video);
 

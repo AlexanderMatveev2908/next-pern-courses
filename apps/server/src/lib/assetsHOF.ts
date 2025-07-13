@@ -6,10 +6,15 @@ import { uploadDisk } from "./cloud/disk.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { clearAssets, clearLocalAssets } from "./etc.js";
 
-export const handleUploadAssets = async (
-  imageFiles: AppFile[],
-  videoFile?: AppFile,
-) => {
+export const handleUploadAssets = async ({
+  folder,
+  imageFiles,
+  videoFile,
+}: {
+  imageFiles: AppFile[];
+  videoFile?: AppFile;
+  folder: string;
+}) => {
   let images: Partial<CloudAsset>[] = [];
   let video: Partial<CloudAsset> | null = null;
 
@@ -17,12 +22,12 @@ export const handleUploadAssets = async (
     if (isArrOK(imageFiles))
       images = await Promise.all(
         imageFiles.map(
-          async (f) => await uploadRam(f, { folder: "course_images" }),
+          async (f) => await uploadRam(f, { folder: `${folder}_images` }),
         ),
       );
     if (isObjOK(videoFile))
       video = await uploadDisk(videoFile as AppFile, {
-        folder: "course_videos",
+        folder: `${folder}_videos`,
         resource: "video",
       });
   } catch (err: any) {
