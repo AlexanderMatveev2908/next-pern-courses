@@ -4,7 +4,6 @@ import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "@src/types/fastify.js";
-import { clearAssets, clearLocalAssets } from "@src/lib/etc.js";
 import { ServerSideFormCourse } from "../controllers/post.js";
 import { boolObj } from "@shared/first/lib/etc.js";
 import { wrapServiceCleanCloud } from "@src/lib/assetsHOF.js";

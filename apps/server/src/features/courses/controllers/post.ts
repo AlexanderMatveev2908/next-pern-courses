@@ -40,8 +40,6 @@ export const postCourse = async (req: FastifyRequest, res: FastifyReply) => {
     videoFile,
   });
 
-  await clearLocalAssets(videoFile);
-
   return res.res200({
     msg: "new course created",
     course,

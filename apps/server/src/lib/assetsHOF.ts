@@ -63,7 +63,11 @@ export const wrapServiceCleanCloud = async <T>(
   cb: () => Promise<T>,
 ) => {
   try {
-    return await cb();
+    const data = await cb();
+
+    await clearLocalAssets(videoFile);
+
+    return data;
   } catch (err: any) {
     __cg("err transaction");
 
