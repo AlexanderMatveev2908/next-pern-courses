@@ -3,7 +3,7 @@ import { checkID } from "@src/middleware/validators/checkID.js";
 import { wrapRoute } from "@src/middleware/wrapRoute.js";
 import { FastifyInstance } from "fastify";
 import { getMinInfoCourseByID } from "../controllers/get.js";
-import { parseForm } from "@src/middleware/multipart.js";
+import { parseForm } from "@src/middleware/multipart/multipart.js";
 import { postCourseCtrl } from "../controllers/post.js";
 import { postConceptMdw } from "../middleware/postConcept.js";
 

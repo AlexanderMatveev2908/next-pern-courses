@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { postCourse } from "../controllers/post.js";
 import { logJSON } from "@src/middleware/log.js";
 import { wrapRoute } from "@src/middleware/wrapRoute.js";
-import { parseForm } from "@src/middleware/multipart.js";
+import { parseForm } from "@src/middleware/multipart/multipart.js";
 import { checkPostCourse } from "../middleware/postCourse.js";
 import { getCourseByID, getListCoursesCtrl } from "../controllers/get.js";
 import { parseQuery } from "@src/middleware/parseQuery.js";

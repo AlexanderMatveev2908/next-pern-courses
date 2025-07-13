@@ -7,6 +7,13 @@ export const schemaConceptServer = schemaPostConcept
     images: true,
     video: true,
   })
-  .extend(serverFilesValidation());
+  .extend({
+    ...serverFilesValidation(),
+    dummyField: z
+      .string({
+        required_error: "Your must send a dummy string",
+      })
+      .regex(/^dummy[\s_]field$/, "Invalid field ☢️"),
+  });
 
 export type ServerConceptFormType = z.infer<typeof schemaConceptServer>;
