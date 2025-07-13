@@ -1,7 +1,19 @@
 import { Course } from "@prisma/client";
+import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
+import { injectKeyValSQL } from "@src/lib/sql.js";
 import { grabAssetsItem } from "@src/services/grabAssetsItem.js";
 import sql from "sql-template-tag";
+
+const conceptsKeys = [
+  "id",
+  "title",
+  "description",
+  "markdown",
+  "estimatedTime",
+  "pointsGained",
+  "order",
+];
 
 export const serviceGetCourseByID = async (id: string) => {
   const raw = sql`
@@ -12,9 +24,7 @@ export const serviceGetCourseByID = async (id: string) => {
       (
         SELECT json_agg(
           json_build_object(
-            'id', cpt.id,
-            'title', cpt.title,
-            'description', cpt.description,
+            ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
             'quizzes', (
               SELECT json_agg(
                 json_build_object(
@@ -58,6 +68,9 @@ export const serviceGetCourseByID = async (id: string) => {
      WHERE c."id" = ${id}
 
     `;
+
+  __cg("raw", raw.text);
+  __cg("vls", raw.values);
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
