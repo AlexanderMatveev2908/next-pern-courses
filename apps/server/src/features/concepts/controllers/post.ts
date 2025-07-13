@@ -4,7 +4,7 @@ export const postCourseCtrl = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
-  return res.res200({
+  return res.res201({
     msg: "Concept added",
   });
 };

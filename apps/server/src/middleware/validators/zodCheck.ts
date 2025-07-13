@@ -12,7 +12,7 @@ export const checkZod = async <T extends ZodSchema>(
 
   if (result.success)
     return {
-      isOk: true,
+      isOK: true,
     };
 
   const { fancyErrsList, msg } = grabErrMsgZOD(result) ?? {};
@@ -29,6 +29,6 @@ export const checkZod = async <T extends ZodSchema>(
   return {
     fancyErrsList,
     msg,
-    isOk: false,
+    isOK: false,
   };
 };

@@ -25,13 +25,13 @@ export const postConceptMdw: preHandlerHookHandler = async (
 
     const { normalized } = await normalizeForm(req);
 
-    const { isOk, fancyErrsList, msg } = await checkZod(normalized, {
+    const { isOK, fancyErrsList, msg } = await checkZod(normalized, {
       schema: schemaConceptServer,
     });
 
-    __cg("zod", isOk, msg, fancyErrsList);
+    if (!isOK) return res.res422({ msg, fancyErrsList });
 
-    throw new Error("delete stuff");
+    await clearLocalAssets(videoFile);
   } catch (err: any) {
     __cg("err parse multipart", err?.message);
 

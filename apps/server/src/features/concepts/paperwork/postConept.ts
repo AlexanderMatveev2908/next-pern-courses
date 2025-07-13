@@ -13,7 +13,8 @@ export const schemaConceptServer = schemaPostConcept
       .string({
         required_error: "Your must send a dummy string",
       })
-      .regex(/^dummy[\s_]field$/, "Invalid field ☢️"),
+      .regex(/^dummy[\s_]field$/, "Invalid field ☢️")
+      .optional(),
   });
 
 export type ServerConceptFormType = z.infer<typeof schemaConceptServer>;
