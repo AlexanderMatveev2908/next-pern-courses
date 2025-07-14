@@ -5,36 +5,26 @@ import SubTitle from "@/common/components/elements/SubTitle";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import { ConceptType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
-import { useEffect, useRef, useState, type FC } from "react";
 import { motion } from "framer-motion";
 import { genIpsum } from "@/core/lib/etc";
+import { useQuiz } from "./reducer/useQuiz";
+import { FC } from "react";
+import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
 
 type PropsType = {
   concept: ConceptType;
 };
 
 const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
-  const [currSwap, setCurrSwap] = useState(0);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const [maxH, setMaxH] = useState(0);
+  // const [currSwap, setCurrSwap] = useState(0);
 
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
+  const { currSwap, maxH, setCurrSwap, contentRef, setMaxH } = useQuiz();
 
-    const listen = () => setMaxH(el.scrollHeight);
-    listen();
-
-    const obs = new ResizeObserver(listen);
-    obs.observe(el);
-    window.addEventListener("resize", listen);
-
-    return () => {
-      window.removeEventListener("resize", listen);
-      obs.disconnect();
-    };
-  }, [currSwap]);
-
+  useResizeElementHeight({
+    contentRef,
+    optionalDep: [currSwap],
+    setMaxH,
+  });
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <SubTitle {...{ txt: "Questions" }} />

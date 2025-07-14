@@ -8,7 +8,9 @@ import { css } from "@emotion/react";
 
 type PropsType = {
   currSwap: number;
-  setCurrSwap: React.Dispatch<React.SetStateAction<number>>;
+  setCurrSwap:
+    | React.Dispatch<React.SetStateAction<number>>
+    | ((val: number) => void);
   totSwaps: number;
 };
 
@@ -28,8 +30,7 @@ const RowSwapBtns: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
               ...btn,
               type: "button",
               isEnabled: !i ? !!currSwap : currSwap < totSwaps - 1,
-              handleClick: () =>
-                setCurrSwap((prev) => (!i ? prev - 1 : prev + 1)),
+              handleClick: () => setCurrSwap(!i ? currSwap - 1 : currSwap + 1),
             }}
           />
         </div>

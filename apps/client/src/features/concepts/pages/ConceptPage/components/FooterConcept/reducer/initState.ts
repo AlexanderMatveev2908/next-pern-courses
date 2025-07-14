@@ -3,12 +3,14 @@ export type ResQuizType = {
   answerID: string;
 };
 
-export type QuizzesStateType = {
-  currSwapper: number;
+export type QuizStateType = {
+  currSwap: number;
+  maxH: number;
   answers: ResQuizType[];
 };
 
-export const initState = {
-  currSwapper: 0,
-  responses: [],
+export const initStateQuiz: QuizStateType = {
+  currSwap: 0,
+  maxH: 0,
+  answers: [] as ResQuizType[],
 };
