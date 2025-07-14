@@ -3,7 +3,9 @@
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useCheckID } from "@/core/hooks/useCheckID";
+import ConceptPage from "@/features/concepts/pages/ConceptPage/ConceptPage";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import type { FC } from "react";
 
 const Page: FC = () => {
@@ -12,6 +14,7 @@ const Page: FC = () => {
   const res = conceptsSliceAPI.useGetConceptByIDQuery(conceptID, {
     skip: !isValid,
   });
+  const { isLoading, data: { concept } = {} } = res;
   useWrapQuery({
     ...res,
     showToast: true,
@@ -22,10 +25,17 @@ const Page: FC = () => {
       {...{
         title: conceptID as string,
         waitHydration: true,
-        isLoading: false,
+        isLoading,
+        isSuccess: isObjOK(concept),
       }}
     >
-      {() => <div className=""></div>}
+      {() => (
+        <ConceptPage
+          {...{
+            concept: concept!,
+          }}
+        />
+      )}
     </WrapPendingClient>
   );
 };

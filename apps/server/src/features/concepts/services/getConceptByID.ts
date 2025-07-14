@@ -1,3 +1,4 @@
+import { Concept } from "@prisma/client";
 import db from "@src/conf/db.js";
 import { objKeysConcept } from "@src/features/courses/lib/sqlData.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
@@ -7,6 +8,30 @@ import sql from "sql-template-tag";
 export const getConceptByIDSvc = async (id: string) => {
   const raw = sql`
         SELECT cpt.*,
+
+
+        (
+            json_build_object(
+                'prev',(
+                    SELECT row_to_json(ref_data)
+                    FROM (
+                        SELECT ref.id, ref.title, ref."courseID"
+                        FROM "Concept" ref
+                        WHERE ref.order = cpt.order - 1
+                        AND ref."courseID" = cpt."courseID"
+                    ) ref_data
+                ),
+                'next',(
+                    SELECT row_to_json(ref_data)
+                    FROM (
+                        SELECT ref.id, ref.title, ref."courseID"
+                        FROM "Concept" ref
+                        WHERE ref.order = cpt.order + 1
+                        AND ref."courseID" = cpt."courseID"
+                    ) ref_data
+                )
+            )
+        ) refs,
 
         ${grabAssetsItem("CONCEPT", { prefix: "cpt" })},
 
@@ -35,12 +60,16 @@ export const getConceptByIDSvc = async (id: string) => {
         ) quizzes
 
         FROM "Concept" cpt
+
         WHERE cpt.id = ${id}
     `;
 
-  const res = await db.$queryRawUnsafe(raw.text, ...raw.values);
+  const [concept] = await db.$queryRawUnsafe<Concept[]>(
+    raw.text,
+    ...raw.values,
+  );
 
   return {
-    concept: res,
+    concept,
   };
 };
