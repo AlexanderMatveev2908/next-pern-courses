@@ -23,36 +23,50 @@ export const serviceGetCourseByID = async (id: string) => {
 
    ${grabAssetsItem("COURSE")},
 
-    (
-      SELECT COALESCE(json_agg(
+  (
+    SELECT COALESCE(
+      json_agg(
         json_build_object(
           ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+          'hasVideo', (
+            SELECT EXISTS (
+              SELECT 1 
+              FROM "CloudAsset" ca
+              WHERE ca."entityID" = cpt.id
+              AND ca.type = 'VIDEO'::"TypeAsset"
+              AND ca."entityType" = 'CONCEPT'::"EntityType"
+            )
+          ),
           'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
           'quizzes', (
-            SELECT COALESCE(json_agg(
-              json_build_object(
-               ${injectKeyValSQL(quizKeys, {
-                 prefix: "q",
-               })},
-                'variants', (
-                  SELECT COALESCE(json_agg(
-                    json_build_object(
-                     ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+            SELECT COALESCE(
+              json_agg(
+                json_build_object(
+                  ${injectKeyValSQL(quizKeys, { prefix: "q" })},
+                  'variants', (
+                    SELECT COALESCE(
+                      json_agg(
+                        json_build_object(
+                          ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+                        )
+                      ), '[]'::JSON
                     )
-                  ), '[]'::JSON)
-                  FROM "Variant" v
-                  WHERE v."quizID" = q.id
+                    FROM "Variant" v
+                    WHERE v."quizID" = q.id
+                  )
                 )
-              )
-            ), '[]'::JSON)
+              ), '[]'::JSON
+            )
             FROM "Quiz" q
             WHERE q."conceptID" = cpt.id
           )
         )
-      ), '[]'::JSON)
-      FROM "Concept" cpt
-      WHERE cpt."courseID" = c.id
-    ) AS "concepts",
+      ORDER BY cpt."order" ASC
+      ), '[]'::JSON
+    )
+    FROM "Concept" cpt
+    WHERE cpt."courseID" = c.id
+  ) concepts,
 
    json_build_object(
     'conceptsCount',

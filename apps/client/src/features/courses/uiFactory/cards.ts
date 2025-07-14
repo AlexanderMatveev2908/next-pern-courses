@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 import { formatMinutes } from "@shared/first/lib/formatters.js";
 import { CourseType } from "@/features/courses/types/courses";
 
-export const genRowsInfo = (course: CourseType) =>
+export const genRowsInfoCourse = (course: CourseType) =>
   [
     {
       label: "Difficulty",
