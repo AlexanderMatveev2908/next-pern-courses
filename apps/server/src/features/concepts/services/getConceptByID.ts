@@ -7,34 +7,32 @@ import sql from "sql-template-tag";
 
 export const getConceptByIDSvc = async (id: string) => {
   const raw = sql`
+        WITH cpt_list AS (
+        SELECT id, title, "courseID", "order"
+        FROM "Concept"
+        WHERE "courseID" = (
+            SELECT "courseID"
+            FROM "Concept"
+            WHERE id = ${id}
+            )
+        )
+
         SELECT cpt.*,
 
-        (
-            json_build_object(
-                'conceptsCount', (
-                    SELECT COUNT(*)::INT 
-                    FROM "Concept" others
-                    WHERE others."courseID" = cpt."courseID"
-                ),
-                'prev',(
-                    SELECT row_to_json(ref_data)
-                    FROM (
-                        SELECT ref.id, ref.title, ref."courseID"
-                        FROM "Concept" ref
-                        WHERE ref.order = cpt.order - 1
-                        AND ref."courseID" = cpt."courseID"
-                    ) ref_data
-                ),
-                'next',(
-                    SELECT row_to_json(ref_data)
-                    FROM (
-                        SELECT ref.id, ref.title, ref."courseID"
-                        FROM "Concept" ref
-                        WHERE ref.order = cpt.order + 1
-                        AND ref."courseID" = cpt."courseID"
-                    ) ref_data
-                )
-            )
+        json_build_object(
+        'conceptsCount', (
+            SELECT COUNT(*) FROM cpt_list
+        ),
+        'prev', (
+            SELECT row_to_json(ref)
+            FROM cpt_list ref
+            WHERE ref."order" = cpt."order" - 1
+        ),
+        'next', (
+            SELECT row_to_json(ref)
+            FROM cpt_list ref
+            WHERE ref."order" = cpt."order" + 1
+        )
         ) refs,
 
         ${grabAssetsItem("CONCEPT", { prefix: "cpt" })},
