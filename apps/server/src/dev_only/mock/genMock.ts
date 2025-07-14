@@ -48,6 +48,8 @@ export const genMock = async () => {
 
       await Promise.all(
         Array.from({ length: 10 }).map(async (_, cptIdx) => {
+          __cg(`working on cpt idx ${cptIdx}... 🛠️`);
+
           const estimatedTime = genRandomByMinMax(5, 30);
           const pointsGained = genRandomByMinMax(25, 200);
           const newCpt = await db.concept.create({
@@ -59,6 +61,7 @@ export const genMock = async () => {
               description: genIpsum(10),
               markdown: md,
               courseID: newCourse.id,
+              createdAt: new Date(Date.now() + cptIdx * 100),
             },
           });
 
@@ -90,6 +93,7 @@ export const genMock = async () => {
                   title: `question idx ${quizIdx} for concept idx ${cptIdx} for course about ${v}`,
                   question: genIpsum(2),
                   conceptID: newCpt.id,
+                  createdAt: new Date(Date.now() + quizIdx * 100),
                 },
               });
 
@@ -98,6 +102,7 @@ export const genMock = async () => {
                   answer: `Answer idx ${varIdx} for quiz idx ${quizIdx} for concept ${cptIdx} for course about ${v} (${!varIdx ? "correct" : "false"})`,
                   isCorrect: !varIdx,
                   quizID: newQuiz.id,
+                  createdAt: new Date(Date.now() + varIdx * 100),
                 })),
               });
             }),

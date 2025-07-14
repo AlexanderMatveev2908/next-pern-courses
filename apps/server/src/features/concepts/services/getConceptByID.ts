@@ -42,7 +42,7 @@ export const getConceptByIDSvc = async (id: string) => {
             SELECT COALESCE( 
                 json_agg(
                     json_build_object(
-                        ${injectKeyValSQL(objKeysConcept.quiz, { prefix: "q" })},
+                        ${injectKeyValSQL([...objKeysConcept.quiz, "createdAt"], { prefix: "q" })},
                         'variants',(
                             SELECT COALESCE (
                                 json_agg(
@@ -56,6 +56,7 @@ export const getConceptByIDSvc = async (id: string) => {
                             WHERE v."quizID" = q.id
                         )
                     )
+                    ORDER BY q."createdAt" ASC
                 ), '[]'::JSON
             )
             FROM "Quiz" q
