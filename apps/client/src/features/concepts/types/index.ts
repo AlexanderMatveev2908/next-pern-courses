@@ -38,4 +38,9 @@ export type ConceptType = ServerModel<{
   video?: CloudAssetType | null;
 
   hasVideo?: boolean;
+  refs?: {
+    conceptsCount: number;
+    prev: Partial<ConceptType> | null;
+    next: Partial<ConceptType> | null;
+  };
 }>;
