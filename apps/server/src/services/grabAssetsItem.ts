@@ -3,7 +3,7 @@ import { EntityType } from "@prisma/client";
 
 export const sqlStrImages = (
   entity: EntityType,
-  { prefix }: { prefix: string },
+  { prefix }: { prefix: "c" | "cpt" },
 ) =>
   sql([
     `
@@ -22,19 +22,17 @@ export const sqlStrImages = (
 `,
   ]);
 
-export const grabAssetsItem = (entity: EntityType) => sql`
-  (
-    SELECT json_agg(
-      json_build_object(
-        'url', ca."url",
-        'publicID', ca."publicID"
-      )
-    )
-    FROM "CloudAsset" AS ca
-    WHERE ca."type" = 'IMAGE'
-      AND ca."entityID" = c."id"
-      AND ca."entityType" = ${sql`${entity}::"EntityType"`}
-  ) AS "images",
+export const grabAssetsItem = (
+  entity: EntityType,
+  {
+    prefix,
+  }: {
+    prefix: "c" | "cpt";
+  },
+) =>
+  sql([
+    `
+  ${sqlStrImages(entity, { prefix }).text} AS "images",
 
   (
     SELECT json_build_object(
@@ -42,8 +40,9 @@ export const grabAssetsItem = (entity: EntityType) => sql`
       'publicID', ca."publicID"
     )
     FROM "CloudAsset" AS ca
-    WHERE ca."entityID" = c."id"
+    WHERE ca."entityID" = ${prefix}."id"
       AND ca."type" = 'VIDEO'
-      AND ca."entityType" = ${sql`${entity}::"EntityType"`}
+      AND ca."entityType" = '${entity}'::"EntityType"
   ) AS "video"
-`;
+`,
+  ]);

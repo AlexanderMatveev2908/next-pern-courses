@@ -9,7 +9,7 @@ import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import ContentCourse from "./components/ContentCourse";
 import HeaderCourse from "./components/HeaderCourse";
-import ConceptsList from "./components/ConceptsList/ConceptsList";
+import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList";
 
 type PropsType = {
   courseID: string;
@@ -31,28 +31,29 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(course),
-        Content: () => (
-          <PageItemShape
-            {...{
-              images: course!.images,
-              title: course!.title,
-              video: course?.video,
-              description: course?.description,
-              markdown: course!.markdown,
-              Header: <HeaderCourse {...{ course: course! }} />,
-              Content: (
-                <ContentCourse
-                  {...{
-                    course: course!,
-                  }}
-                />
-              ),
-              Footer: <ConceptsList {...{ concepts: course?.concepts }} />,
-            }}
-          />
-        ),
       }}
-    />
+    >
+      {() => (
+        <PageItemShape
+          {...{
+            images: course!.images,
+            title: course!.title,
+            video: course?.video,
+            description: course?.description,
+            markdown: course!.markdown,
+            Header: <HeaderCourse {...{ course: course! }} />,
+            Content: (
+              <ContentCourse
+                {...{
+                  course: course!,
+                }}
+              />
+            ),
+            Footer: <ConceptsList {...{ concepts: course?.concepts }} />,
+          }}
+        />
+      )}
+    </WrapPendingClient>
   );
 };
 

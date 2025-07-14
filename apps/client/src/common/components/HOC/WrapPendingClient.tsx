@@ -9,7 +9,8 @@ import PrependTitle from "./PrependTitle";
 type PropsType = {
   isLoading: boolean;
   isSuccess?: boolean;
-  Content: (arg?: { isHydrated: boolean }) => React.ReactNode;
+  children: (arg: { isHydrated: boolean }) => React.ReactNode;
+  // Content: (arg?: { isHydrated: boolean }) => React.ReactNode;
   waitHydration?: boolean;
   CustomSpinner?: React.ReactNode;
   title?: string;
@@ -19,7 +20,8 @@ type PropsType = {
 const WrapPendingClient: FC<PropsType> = ({
   isLoading,
   isSuccess = true,
-  Content,
+  children,
+  // Content,
   waitHydration,
   CustomSpinner,
   title,
@@ -34,7 +36,7 @@ const WrapPendingClient: FC<PropsType> = ({
     CustomSpinner || <SpinnerNoHooks />
   ) : (
     <PrependTitle {...{ title }}>
-      {isSuccess && Content({ isHydrated })}
+      {isSuccess && typeof children === "function" && children({ isHydrated })}
     </PrependTitle>
   );
 };

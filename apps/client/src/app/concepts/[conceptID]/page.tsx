@@ -1,14 +1,42 @@
-import { NextParamPageType } from "@/common/types/api";
+"use client";
+
+import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { useCheckID } from "@/core/hooks/useCheckID";
+import ConceptPage from "@/features/concepts/pages/ConceptPage/ConceptPage";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import type { FC } from "react";
 
-const page: FC<NextParamPageType<{ conceptID: string }>> = async (
-  {
-    //   params,
-  },
-) => {
-  //   const { conceptID } = await params;
+const Page: FC = () => {
+  const { isValid, id: conceptID } = useCheckID({ keyID: "conceptID" });
 
-  return <div></div>;
+  const res = conceptsSliceAPI.useGetConceptByIDQuery(conceptID, {
+    skip: !isValid,
+  });
+  const { isLoading, data: { concept } = {} } = res;
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
+
+  return (
+    <WrapPendingClient
+      {...{
+        waitHydration: true,
+        isLoading,
+        isSuccess: isObjOK(concept),
+      }}
+    >
+      {() => (
+        <ConceptPage
+          {...{
+            concept: concept!,
+          }}
+        />
+      )}
+    </WrapPendingClient>
+  );
 };
 
-export default page;
+export default Page;

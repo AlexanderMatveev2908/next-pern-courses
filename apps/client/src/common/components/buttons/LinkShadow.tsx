@@ -4,21 +4,26 @@
 import Link from "next/link";
 import type { FC } from "react";
 import { BtnActType } from "@/common/types/uiFactory";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import { btnColors } from "@/core/uiFactory/style";
+import { IconType } from "react-icons/lib";
 
 type PropsType = {
-  href: string;
-  label: string;
+  href?: string;
+  label?: string;
+  Svg?: IconType;
+  $customLabelCSS?: SerializedStyles;
 };
 
-const LinkShadow: FC<PropsType> = ({ href, label }) => {
+const LinkShadow: FC<PropsType> = ({ href, label, Svg, $customLabelCSS }) => {
   const clr = btnColors[BtnActType.NEUTRAL];
 
-  return (
+  return !href ? (
+    <div className=""></div>
+  ) : (
     <Link
-      href={href}
-      className="el__app w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl max-w-full"
+      href={href ?? ""}
+      className="el__app w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl max-w-full items-center gap-6 text-gray-300"
       style={
         {
           "--scale__up": 1.2,
@@ -37,7 +42,17 @@ const LinkShadow: FC<PropsType> = ({ href, label }) => {
         }
       `}
     >
-      <span className="txt__lg text-gray-300">{label}</span>
+      {Svg && <Svg className="min-w-[35px] min-h-[35px]" />}
+      {label && (
+        <span
+          css={css`
+            ${$customLabelCSS}
+          `}
+          className="txt__lg"
+        >
+          {label}
+        </span>
+      )}
     </Link>
   );
 };

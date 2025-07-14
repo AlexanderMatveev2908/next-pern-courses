@@ -107,12 +107,14 @@ const WrapSearchQuery = <
       <WrapPendingClient
         {...{
           isLoading: isPending,
-          Content: ({ isHydrated } = { isHydrated: false }) =>
-            children({
-              isHydrated,
-            }),
         }}
-      />
+      >
+        {({ isHydrated } = { isHydrated: false }) =>
+          children({
+            isHydrated,
+          })
+        }
+      </WrapPendingClient>
 
       <WrapPendingClient
         {...{
@@ -122,20 +124,21 @@ const WrapSearchQuery = <
               <SpinnerBtn />
             </div>
           ),
-          Content: ({ isHydrated } = { isHydrated: false }) => (
-            <PageCounter
-              {...{
-                nHits,
-                totPages: !isHydrated || isUninitialized ? pagesCached : pages,
-                triggerRTK,
-                triggerRef,
-                valsRHF,
-                isHydrated,
-              }}
-            />
-          ),
         }}
-      />
+      >
+        {({ isHydrated } = { isHydrated: false }) => (
+          <PageCounter
+            {...{
+              nHits,
+              totPages: !isHydrated || isUninitialized ? pagesCached : pages,
+              triggerRTK,
+              triggerRef,
+              valsRHF,
+              isHydrated,
+            }}
+          />
+        )}
+      </WrapPendingClient>
     </div>
   );
 };

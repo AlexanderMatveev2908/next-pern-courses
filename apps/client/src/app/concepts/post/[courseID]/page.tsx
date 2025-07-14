@@ -4,6 +4,7 @@ import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
 import { envApp } from "@/core/constants/env";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { useCheckID } from "@/core/hooks/useCheckID";
 import { genFormData } from "@/core/lib/processForm";
 import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabPlaceholderConcept } from "@/features/concepts/forms/ConceptForm/lib";
@@ -13,18 +14,14 @@ import { useFillAssetsDev } from "@/features/rootDev/hooks/useFillAssetsDev";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import { isOkID } from "@shared/first/lib/validators.js";
 import {
   FormConceptType,
   schemaPostConcept,
 } from "@shared/first/paperwork/concepts/schema.post.js";
-import { useParams, useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const Page: FC = () => {
-  const nav = useRouter();
-
   const formCtx = useForm<FormConceptType>({
     mode: "onChange",
     resolver: zodResolver(schemaPostConcept),
@@ -36,12 +33,7 @@ const Page: FC = () => {
   });
   const { handleSubmit, setValue } = formCtx;
 
-  const { courseID } = useParams();
-  const isValid = isOkID(courseID as string);
-
-  if (!isValid) {
-    nav.replace("/404");
-  }
+  const { isValid, id: courseID } = useCheckID({ keyID: "courseID" });
 
   const res = conceptsSliceAPI.useGrabStatsCourseQuery(courseID as string, {
     skip: !isValid,
@@ -87,16 +79,17 @@ const Page: FC = () => {
         isSuccess: isObjOK(course),
         wrapHydrate: true,
         isLoading: isLoading || (envApp.isDev ? isLoadingProxy : false),
-        Content: () => (
-          <FormProvider {...formCtx}>
-            <ConceptForm
-              {...{ handleSave, course: course!, isPending: isMutating }}
-            />
-          </FormProvider>
-        ),
         throwErr: true,
       }}
-    />
+    >
+      {() => (
+        <FormProvider {...formCtx}>
+          <ConceptForm
+            {...{ handleSave, course: course!, isPending: isMutating }}
+          />
+        </FormProvider>
+      )}
+    </WrapPendingClient>
   );
 };
 

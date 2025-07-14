@@ -4,30 +4,19 @@ import db from "@src/conf/db.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
 import { grabAssetsItem, sqlStrImages } from "@src/services/grabAssetsItem.js";
 import sql from "sql-template-tag";
-
-const conceptsKeys = [
-  "id",
-  "title",
-  "description",
-  "markdown",
-  "estimatedTime",
-  "pointsGained",
-  "order",
-];
-const quizKeys = ["id", "title", "question"];
-const variantKeys = ["id", "answer", "isCorrect"];
+import { objKeysConcept } from "../lib/sqlData.js";
 
 export const serviceGetCourseByID = async (id: string) => {
   const raw = sql`
   SELECT c.*,
 
-   ${grabAssetsItem("COURSE")},
+   ${grabAssetsItem("COURSE", { prefix: "c" })},
 
   (
     SELECT COALESCE(
       json_agg(
         json_build_object(
-          ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+          ${injectKeyValSQL(objKeysConcept.concept, { prefix: "cpt" })},
           'hasVideo', (
             SELECT EXISTS (
               SELECT 1 
@@ -42,12 +31,12 @@ export const serviceGetCourseByID = async (id: string) => {
             SELECT COALESCE(
               json_agg(
                 json_build_object(
-                  ${injectKeyValSQL(quizKeys, { prefix: "q" })},
+                  ${injectKeyValSQL(objKeysConcept.quiz, { prefix: "q" })},
                   'variants', (
                     SELECT COALESCE(
                       json_agg(
                         json_build_object(
-                          ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+                          ${injectKeyValSQL(objKeysConcept.variant, { prefix: "v" })}
                         )
                       ), '[]'::JSON
                     )

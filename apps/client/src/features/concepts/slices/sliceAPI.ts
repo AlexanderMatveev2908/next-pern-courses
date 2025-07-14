@@ -36,5 +36,16 @@ export const conceptsSliceAPI = api.injectEndpoints({
         ];
       },
     }),
+
+    getConceptByID: builder.query<
+      UnwrappedResAPI<{ concept: ConceptType }>,
+      string
+    >({
+      query: (conceptID) => ({
+        url: `${BASE_URL}/${conceptID}`,
+        method: "GET",
+      }),
+      providesTags: [TagsAPI.CONCEPT_ITEM],
+    }),
   }),
 });
