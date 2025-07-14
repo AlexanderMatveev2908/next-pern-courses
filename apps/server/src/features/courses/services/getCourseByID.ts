@@ -71,8 +71,6 @@ export const serviceGetCourseByID = async (id: string) => {
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
-  __cg("res", courses[0]);
-
   return {
     course: courses?.[0] ?? null,
   };
