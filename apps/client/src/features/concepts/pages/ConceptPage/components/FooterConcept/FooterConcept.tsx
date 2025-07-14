@@ -9,12 +9,12 @@ import { motion } from "framer-motion";
 import { useQuiz } from "./reducer/useQuiz";
 import { FC, useMemo } from "react";
 import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
-import { useForm } from "react-hook-form";
-import {
-  FormQuizType,
-  schemaQuiz,
-} from "@shared/first/paperwork/concepts/schema.quiz.js";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm } from "react-hook-form";
+// import {
+//   FormQuizType,
+//   schemaQuiz,
+// } from "@shared/first/paperwork/concepts/schema.quiz.js";
+// import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionItem from "./components/QuestionItem";
 
 type PropsType = {
@@ -33,10 +33,10 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     optionalDep,
   });
 
-  const formCtx = useForm<FormQuizType>({
-    resolver: zodResolver(schemaQuiz),
-    mode: "onChange",
-  });
+  // const formCtx = useForm<FormQuizType>({
+  //   resolver: zodResolver(schemaQuiz),
+  //   mode: "onChange",
+  // });
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">
