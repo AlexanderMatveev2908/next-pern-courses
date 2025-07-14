@@ -18,6 +18,7 @@ type PropsType = {
   markdown: string;
   Content: React.ReactNode;
   Header?: React.ReactNode;
+  Footer?: React.ReactNode;
 };
 
 const PageItemShape: FC<PropsType> = ({
@@ -28,6 +29,7 @@ const PageItemShape: FC<PropsType> = ({
   markdown,
   Content,
   Header,
+  Footer,
 }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-10">
@@ -76,6 +78,8 @@ const PageItemShape: FC<PropsType> = ({
           }}
         />
       </div>
+
+      {Footer}
     </div>
   );
 };

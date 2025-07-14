@@ -9,6 +9,7 @@ import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import ContentCourse from "./components/ContentCourse";
 import HeaderCourse from "./components/HeaderCourse";
+import ConceptsList from "./components/ConceptsList/ConceptsList";
 
 type PropsType = {
   courseID: string;
@@ -46,6 +47,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
                   }}
                 />
               ),
+              Footer: <ConceptsList {...{ concepts: course?.concepts }} />,
             }}
           />
         ),

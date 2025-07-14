@@ -23,36 +23,44 @@ export const serviceGetCourseByID = async (id: string) => {
 
    ${grabAssetsItem("COURSE")},
 
-    (
-      SELECT COALESCE(json_agg(
-        json_build_object(
-          ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
-          'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
-          'quizzes', (
-            SELECT COALESCE(json_agg(
+(
+  SELECT COALESCE(
+    json_agg(concept_obj ORDER BY order_pmk ASC),
+    '[]'::JSON
+  )
+  FROM (
+    SELECT
+      json_build_object(
+        ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+        'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
+        'quizzes', (
+          SELECT COALESCE(
+            json_agg(
               json_build_object(
-               ${injectKeyValSQL(quizKeys, {
-                 prefix: "q",
-               })},
+                ${injectKeyValSQL(quizKeys, { prefix: "q" })},
                 'variants', (
-                  SELECT COALESCE(json_agg(
-                    json_build_object(
-                     ${injectKeyValSQL(variantKeys, { prefix: "v" })}
-                    )
-                  ), '[]'::JSON)
+                  SELECT COALESCE(
+                    json_agg(
+                      json_build_object(
+                        ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+                      )
+                    ), '[]'::JSON
+                  )
                   FROM "Variant" v
                   WHERE v."quizID" = q.id
                 )
               )
-            ), '[]'::JSON)
-            FROM "Quiz" q
-            WHERE q."conceptID" = cpt.id
+            ), '[]'::JSON
           )
+          FROM "Quiz" q
+          WHERE q."conceptID" = cpt.id
         )
-      ), '[]'::JSON)
-      FROM "Concept" cpt
-      WHERE cpt."courseID" = c.id
-    ) AS "concepts",
+      ) concept_obj,
+      cpt."order" order_pmk
+    FROM "Concept" cpt
+    WHERE cpt."courseID" = c.id
+  ) ordered_concepts
+) concepts,
 
    json_build_object(
     'conceptsCount',

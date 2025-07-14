@@ -1,5 +1,6 @@
 import { ServerModel } from "@/common/types/api";
 import { CloudAssetType } from "@/common/types/cloud";
+import { ConceptType } from "@/features/concepts/types";
 import {
   GradeType,
   StackType,
@@ -28,4 +29,6 @@ export type CourseType = ServerModel<{
     conceptsCount: number;
     conceptsPoints: number;
   };
+
+  concepts?: ConceptType[];
 }>;

@@ -1,4 +1,5 @@
 import { ServerModel } from "@/common/types/api";
+import { CloudAssetType } from "@/common/types/cloud";
 import { CourseType } from "@/features/courses/types/courses";
 
 export type VariantType = ServerModel<{
@@ -32,4 +33,6 @@ export type ConceptType = ServerModel<{
   order: number;
 
   quizzes: QuizType[];
+
+  images: CloudAssetType[];
 }>;

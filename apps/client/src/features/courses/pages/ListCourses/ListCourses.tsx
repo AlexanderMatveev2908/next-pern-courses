@@ -27,6 +27,7 @@ import { gabFormValsPagination } from "@/features/layout/components/SearchBar/li
 import { dynamicFiltersCourses } from "./uifactory/searchBar";
 import CourseItem from "./components/CourseItem";
 import { coursesSliceAPI } from "../../slices/apiSlice";
+import { $listItemsCSS } from "@/core/uiFactory/style";
 
 const ListCourses: FC = () => {
   const hook = coursesSliceAPI.useLazyGetCoursesQuery();
@@ -102,9 +103,8 @@ const ListCourses: FC = () => {
 
         return (
           <div
-            className="w-full grid gap-10 justify-items-center"
             css={css`
-              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+              ${$listItemsCSS}
             `}
           >
             {arg!.map((course) => (
