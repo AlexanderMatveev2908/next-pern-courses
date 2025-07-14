@@ -13,9 +13,10 @@ const Page: FC = () => {
         title: conceptID as string,
         waitHydration: true,
         isLoading: false,
-        Content: () => <div></div>,
       }}
-    />
+    >
+      {() => <div className=""></div>}
+    </WrapPendingClient>
   );
 };
 

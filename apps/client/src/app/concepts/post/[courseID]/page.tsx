@@ -87,16 +87,17 @@ const Page: FC = () => {
         isSuccess: isObjOK(course),
         wrapHydrate: true,
         isLoading: isLoading || (envApp.isDev ? isLoadingProxy : false),
-        Content: () => (
-          <FormProvider {...formCtx}>
-            <ConceptForm
-              {...{ handleSave, course: course!, isPending: isMutating }}
-            />
-          </FormProvider>
-        ),
         throwErr: true,
       }}
-    />
+    >
+      {() => (
+        <FormProvider {...formCtx}>
+          <ConceptForm
+            {...{ handleSave, course: course!, isPending: isMutating }}
+          />
+        </FormProvider>
+      )}
+    </WrapPendingClient>
   );
 };
 
