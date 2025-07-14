@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -21,6 +22,7 @@ import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
+import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
 
 type PropsType = {
   concept: ConceptType;
@@ -76,6 +78,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
   const {
     handleSubmit,
     formState: { errors },
+    trigger,
   } = formCtx;
   const handleSave = handleSubmit(
     async (dataRHF) => {
@@ -83,6 +86,23 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     },
     (errs) => {
       __cg("errs", errs);
+
+      if (isArrOK(errs?.quiz as any)) {
+        let i = 0;
+
+        while (i < errs!.quiz!.length!) {
+          const curr = errs.quiz![i];
+
+          __cg("idx", i);
+          if (isStr(curr?.answerIDs?.message)) {
+            trigger(`quiz.${i}`);
+            setCurrSwap(i);
+            break;
+          }
+
+          i++;
+        }
+      }
 
       return errs;
     },
