@@ -2,10 +2,10 @@
 "use client";
 
 import SubTitle from "@/common/components/elements/SubTitle";
-import { genIpsum } from "@/core/lib/etc";
 import { QuizType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { forwardRef } from "react";
+import VariantQuiz from "./components/VariantQuiz";
 
 type PropsType = {
   outerIdx: number;
@@ -36,16 +36,20 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
         <SubTitle
           {...{
             txt: question.question,
-            $styleTwd: "txt__md text-neutral-300",
+            $styleTwd: "txt__md text-neutral-400",
           }}
         />
 
-        {outerIdx % 2 === 0 ? genIpsum(7) : 0}
-        {/* <div className="w-full grid grid-cols-1 gap-4">
+        <div className="w-full grid grid-cols-1 gap-6">
           {question.variants.map((vrt) => (
-            <div key={vrt.id} className="w-full flex"></div>
+            <VariantQuiz
+              key={vrt.id}
+              {...{
+                variant: vrt,
+              }}
+            />
           ))}
-        </div> */}
+        </div>
       </div>
     );
   },
