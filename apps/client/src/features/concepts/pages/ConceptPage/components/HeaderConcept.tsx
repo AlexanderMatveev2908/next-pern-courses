@@ -2,7 +2,6 @@
 "use client";
 
 import { ConceptType } from "@/features/concepts/types";
-import { __cg } from "@shared/first/lib/logger.js";
 import type { FC } from "react";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
@@ -15,8 +14,6 @@ type PropsType = {
 };
 
 const HeaderConcept: FC<PropsType> = ({ refs }) => {
-  __cg("refs", refs);
-
   const { ids } = useGenIDsV2({
     lengths: [2],
   });
