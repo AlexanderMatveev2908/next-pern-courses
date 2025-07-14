@@ -98,7 +98,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         )
     ) AS "conceptsStats",
 
-    ${grabAssetsItem("COURSE")}
+    ${grabAssetsItem("COURSE", { prefix: "c" })}
 
     FROM "Course" AS c
 

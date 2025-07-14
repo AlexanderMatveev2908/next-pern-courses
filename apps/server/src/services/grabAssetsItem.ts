@@ -22,7 +22,16 @@ export const sqlStrImages = (
 `,
   ]);
 
-export const grabAssetsItem = (entity: EntityType) => sql`
+export const grabAssetsItem = (
+  entity: EntityType,
+  {
+    prefix,
+  }: {
+    prefix: "c" | "cpt";
+  },
+) =>
+  sql([
+    `
   (
     SELECT json_agg(
       json_build_object(
@@ -32,8 +41,8 @@ export const grabAssetsItem = (entity: EntityType) => sql`
     )
     FROM "CloudAsset" AS ca
     WHERE ca."type" = 'IMAGE'
-      AND ca."entityID" = c."id"
-      AND ca."entityType" = ${sql`${entity}::"EntityType"`}
+      AND ca."entityID" = ${prefix}."id"
+      AND ca."entityType" = '${entity}'::"EntityType"
   ) AS "images",
 
   (
@@ -42,8 +51,9 @@ export const grabAssetsItem = (entity: EntityType) => sql`
       'publicID', ca."publicID"
     )
     FROM "CloudAsset" AS ca
-    WHERE ca."entityID" = c."id"
+    WHERE ca."entityID" = ${prefix}."id"
       AND ca."type" = 'VIDEO'
-      AND ca."entityType" = ${sql`${entity}::"EntityType"`}
+      AND ca."entityType" = '${entity}'::"EntityType"
   ) AS "video"
-`;
+`,
+  ]);
