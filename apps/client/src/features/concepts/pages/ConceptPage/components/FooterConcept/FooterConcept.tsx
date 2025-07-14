@@ -20,11 +20,13 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
 
   const { currSwap, maxH, setCurrSwap, contentRef, setMaxH } = useQuiz();
 
-  useResizeElementHeight({
-    contentRef,
-    optionalDep: [currSwap],
-    setMaxH,
-  });
+  useResizeElementHeight(
+    {
+      contentRef,
+      setMaxH,
+    },
+    currSwap,
+  );
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <SubTitle {...{ txt: "Questions" }} />
