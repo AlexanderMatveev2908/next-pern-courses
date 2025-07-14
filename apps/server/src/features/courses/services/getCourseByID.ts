@@ -2,7 +2,7 @@ import { Course, EntityType } from "@prisma/client";
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
-import { grabAssetsItem } from "@src/services/grabAssetsItem.js";
+import { grabAssetsItem, sqlStrImages } from "@src/services/grabAssetsItem.js";
 import sql from "sql-template-tag";
 
 const conceptsKeys = [
@@ -18,77 +18,105 @@ const quizKeys = ["id", "title", "question"];
 const variantKeys = ["id", "answer", "isCorrect"];
 
 export const serviceGetCourseByID = async (id: string) => {
-  __cg("dynamic", injectKeyValSQL(conceptsKeys, { prefix: "cpt" }));
+  __cg("str", sqlStrImages("CONCEPT", { prefix: "cpt" }));
 
   const raw = sql`
-    SELECT c.*,
-    
-     ${grabAssetsItem("COURSE")},
+  SELECT c.*,
 
+   ${grabAssetsItem("COURSE")},
+  
+   json_agg(
+    json_build_object(
+      ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+      'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })}
+    )
+   ) concepts,
+
+   json_build_object(
+    'conceptsCount',
       (
-        SELECT json_agg(
-          json_build_object(
-            ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
-            'images', (
-                  SELECT json_agg(
-                    json_build_object(
-                      'url', ca."url",
-                      'publicID', ca."publicID"
-                    )
-                  )
-                  FROM "CloudAsset" AS ca
-                  WHERE ca."type" = 'IMAGE'
-                    AND ca."entityID" = cpt."id"
-                    AND ca."entityType" = ${sql`${EntityType.CONCEPT}::"EntityType"`}
-            ),
-            'quizzes', (
-              SELECT json_agg(
-                json_build_object(
-                 ${injectKeyValSQL(quizKeys, {
-                   prefix: "q",
-                 })},
-                  'variants', (
-                    SELECT json_agg(
-                      json_build_object(
-                       ${injectKeyValSQL(variantKeys, { prefix: "v" })}
-                      )
-                    )
-                    FROM "Variant" v
-                    WHERE v."quizID" = q.id
-                  )
-                )
-              )
-              FROM "Quiz" q
-              WHERE q."conceptID" = cpt.id
-            )
-          )
-        )
-        FROM "Concept" cpt
-        WHERE cpt."courseID" = c.id
-      ) AS "concepts",
+        SELECT COUNT(*)::INT
+        FROM "Concept" AS cpt
+        WHERE cpt."courseID" = ${id}
+      )
+   ) AS "conceptsStats"
 
+   FROM "Course" c
+   LEFT JOIN "Concept" cpt
+   ON cpt."courseID" = c.id
 
-     json_build_object(
-      'conceptsCount', 
-        (
-          SELECT COUNT(*)::INT
-          FROM "Concept" AS cpt
-          WHERE cpt."courseID" = ${id}
-        )
-     ) AS "conceptsStats"
+   WHERE c.id = ${id}
+   GROUP BY c.id
 
-     FROM "Course" AS c
-
-     WHERE c."id" = ${id}
-
-    `;
-
-  __cg("raw txt", raw.text);
-  __cg("raw vls", raw.values);
+  `;
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
+
+  __cg("res", courses[0]);
 
   return {
     course: courses?.[0] ?? null,
   };
 };
+
+// const raw = sql`
+//   SELECT c.*,
+
+//    ${grabAssetsItem("COURSE")},
+
+//     (
+//       SELECT json_agg(
+//         json_build_object(
+//           ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+//           'images', (
+//                 SELECT json_agg(
+//                   json_build_object(
+//                     'url', ca."url",
+//                     'publicID', ca."publicID"
+//                   )
+//                 )
+//                 FROM "CloudAsset" AS ca
+//                 WHERE ca."type" = 'IMAGE'
+//                   AND ca."entityID" = cpt."id"
+//                   AND ca."entityType" = ${sql`${EntityType.CONCEPT}::"EntityType"`}
+//           ),
+//           'quizzes', (
+//             SELECT json_agg(
+//               json_build_object(
+//                ${injectKeyValSQL(quizKeys, {
+//                  prefix: "q",
+//                })},
+//                 'variants', (
+//                   SELECT json_agg(
+//                     json_build_object(
+//                      ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+//                     )
+//                   )
+//                   FROM "Variant" v
+//                   WHERE v."quizID" = q.id
+//                 )
+//               )
+//             )
+//             FROM "Quiz" q
+//             WHERE q."conceptID" = cpt.id
+//           )
+//         )
+//       )
+//       FROM "Concept" cpt
+//       WHERE cpt."courseID" = c.id
+//     ) AS "concepts",
+
+//    json_build_object(
+//     'conceptsCount',
+//       (
+//         SELECT COUNT(*)::INT
+//         FROM "Concept" AS cpt
+//         WHERE cpt."courseID" = ${id}
+//       )
+//    ) AS "conceptsStats"
+
+//    FROM "Course" AS c
+
+//    WHERE c."id" = ${id}
+
+//   `;
