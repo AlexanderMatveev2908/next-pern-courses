@@ -7,11 +7,10 @@ import { QuizType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { forwardRef, RefObject, useMemo } from "react";
 import VariantQuiz from "./components/VariantQuiz";
-import ErrFormField from "@/common/components/forms/errors/ErrFormField";
 import { useFormContext } from "react-hook-form";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
-import Portal from "@/common/components/HOC/Portal";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
+import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 
 type PropsType = {
   outerIdx: number;
@@ -42,28 +41,15 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
           pointer-events: ${outerIdx === currSwap ? "all" : "none"};
         `}
       >
-        <Portal>
-          <div
-            className="absolute w-[200px] sm:w-[300px]"
-            css={css`
-              z-index: 999;
-              top: ${posParent[0]}px;
-              left: ${posParent[1]}px;
-            `}
-          >
-            <ErrFormField
-              {...{
-                el: {
-                  name: "",
-                },
-                errors,
-                gappedErr:
-                  currSwap === outerIdx &&
-                  (errors as any)?.quiz?.[outerIdx]?.answerIDs?.message,
-              }}
-            />
-          </div>
-        </Portal>
+        <ExternalTooltipErr
+          {...{
+            top: posParent[0],
+            left: posParent[1],
+            gappedErr:
+              currSwap === outerIdx &&
+              (errors as any)?.quiz?.[outerIdx]?.answerIDs?.message,
+          }}
+        />
 
         <SubTitle
           {...{

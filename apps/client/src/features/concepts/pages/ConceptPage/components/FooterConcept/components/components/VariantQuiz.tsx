@@ -14,7 +14,7 @@ type PropsType = {
 };
 
 const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
-  const { setValue, watch } = useFormContext<FormQuizType>();
+  const { setValue, watch, trigger } = useFormContext<FormQuizType>();
 
   const data =
     watch(`quiz.${outerIdx}`) ?? ({} as FormQuizType["quiz"][number]);
@@ -26,7 +26,7 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
     (data?.answerIDs?.length ?? 0) >= 1 &&
     data!.answerIDs.every((id) => id !== variant.id);
 
-  const handleClick = () =>
+  const handleClick = () => {
     setValue(
       `quiz.${outerIdx}`,
       {
@@ -39,6 +39,9 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
       },
       { shouldValidate: true },
     );
+
+    trigger("quiz");
+  };
 
   return (
     <div className="w-full flex items-center gap-6">

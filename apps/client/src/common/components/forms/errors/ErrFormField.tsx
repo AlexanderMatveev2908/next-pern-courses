@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { css, SerializedStyles } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
-  errors: FieldErrors<T>;
+  errors?: FieldErrors<T>;
   el?: {
     name: string;
     field?: string;

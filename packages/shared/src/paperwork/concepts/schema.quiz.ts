@@ -10,7 +10,9 @@ const schemaQuestion = z.object({
 });
 
 export const schemaQuiz = z.object({
-  quiz: z.array(schemaQuestion.nullable()),
+  quiz: z.array(schemaQuestion, {
+    required_error: "Quiz is not finished",
+  }),
 });
 
 export type FormQuizType = z.infer<typeof schemaQuiz>;

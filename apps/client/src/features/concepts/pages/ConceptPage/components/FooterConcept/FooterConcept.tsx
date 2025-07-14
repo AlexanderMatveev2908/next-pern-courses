@@ -20,6 +20,7 @@ import { __cg } from "@shared/first/lib/logger.js";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { BtnActType } from "@/common/types/uiFactory";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
+import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 
 type PropsType = {
   concept: ConceptType;
@@ -72,7 +73,10 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     resolver: zodResolver(syncSchema),
     mode: "onChange",
   });
-  const { handleSubmit } = formCtx;
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = formCtx;
   const handleSave = handleSubmit(
     async (dataRHF) => {
       __cg("RHF", dataRHF);
@@ -92,6 +96,15 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
         <SubTitle {...{ txt: "Questions" }} />
+
+        <ExternalTooltipErr
+          {...{
+            top: posParent[0],
+            left: posParent[1] - 100,
+            gappedErr: errors?.quiz?.message,
+            cssZ: 750,
+          }}
+        />
 
         <div
           ref={parentRef}
