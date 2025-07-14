@@ -11,6 +11,13 @@ export const reducerQuiz = (
       return {
         ...state,
         currSwap: action.payload,
+        stageSwap: "swapping",
+      };
+
+    case ActionsQuiz.SET_STAGE_SWAP:
+      return {
+        ...state,
+        stageSwap: action.payload,
       };
 
     case ActionsQuiz.SET_MAX_H:
