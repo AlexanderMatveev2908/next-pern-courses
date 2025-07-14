@@ -24,32 +24,32 @@ export const serviceGetCourseByID = async (id: string) => {
    ${grabAssetsItem("COURSE")},
 
     (
-      SELECT json_agg(
+      SELECT COALESCE(json_agg(
         json_build_object(
           ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
           'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
           'quizzes', (
-            SELECT json_agg(
+            SELECT COALESCE(json_agg(
               json_build_object(
                ${injectKeyValSQL(quizKeys, {
                  prefix: "q",
                })},
                 'variants', (
-                  SELECT json_agg(
+                  SELECT COALESCE(json_agg(
                     json_build_object(
                      ${injectKeyValSQL(variantKeys, { prefix: "v" })}
                     )
-                  )
+                  ), '[]'::JSON)
                   FROM "Variant" v
                   WHERE v."quizID" = q.id
                 )
               )
-            )
+            ), '[]'::JSON)
             FROM "Quiz" q
             WHERE q."conceptID" = cpt.id
           )
         )
-      )
+      ), '[]'::JSON)
       FROM "Concept" cpt
       WHERE cpt."courseID" = c.id
     ) AS "concepts",
