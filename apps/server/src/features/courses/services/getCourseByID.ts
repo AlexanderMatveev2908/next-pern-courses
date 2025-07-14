@@ -18,6 +18,8 @@ const quizKeys = ["id", "title", "question"];
 const variantKeys = ["id", "answer", "isCorrect"];
 
 export const serviceGetCourseByID = async (id: string) => {
+  __cg("dynamic", injectKeyValSQL(conceptsKeys, { prefix: "cpt" }));
+
   const raw = sql`
     SELECT c.*,
     
@@ -80,6 +82,9 @@ export const serviceGetCourseByID = async (id: string) => {
      WHERE c."id" = ${id}
 
     `;
+
+  __cg("raw txt", raw.text);
+  __cg("raw vls", raw.values);
 
   const courses: Course[] = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
