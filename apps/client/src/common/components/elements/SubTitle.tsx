@@ -7,9 +7,10 @@ import { css } from "@emotion/react";
 type PropsType = {
   txt: string;
   $display?: string;
+  $styleTwd?: string;
 };
 
-const SubTitle: FC<PropsType> = ({ txt, $display }) => {
+const SubTitle: FC<PropsType> = ({ txt, $display, $styleTwd }) => {
   return (
     <div
       className="w-full flex"
@@ -17,7 +18,9 @@ const SubTitle: FC<PropsType> = ({ txt, $display }) => {
         display: ${$display ?? "center"};
       `}
     >
-      <span className="txt__xl text-neutral-200">{txt}</span>
+      <span className={`${$styleTwd ?? "txt__xl text-neutral-200"}`}>
+        {txt}
+      </span>
     </div>
   );
 };

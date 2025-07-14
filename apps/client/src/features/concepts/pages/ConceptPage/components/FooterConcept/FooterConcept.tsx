@@ -6,10 +6,16 @@ import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import { ConceptType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { motion } from "framer-motion";
-import { genIpsum } from "@/core/lib/etc";
 import { useQuiz } from "./reducer/useQuiz";
 import { FC, useMemo } from "react";
 import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
+import { useForm } from "react-hook-form";
+import {
+  FormQuizType,
+  schemaQuiz,
+} from "@shared/first/paperwork/concepts/schema.quiz.js";
+import { zodResolver } from "@hookform/resolvers/zod";
+import QuestionItem from "./components/QuestionItem";
 
 type PropsType = {
   concept: ConceptType;
@@ -26,6 +32,12 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     setMaxH,
     optionalDep,
   });
+
+  const formCtx = useForm<FormQuizType>({
+    resolver: zodResolver(schemaQuiz),
+    mode: "onChange",
+  });
+
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <SubTitle {...{ txt: "Questions" }} />
@@ -57,23 +69,15 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
           }}
         >
           {quizzes.map((q, i) => (
-            <div
-              ref={i === currSwap ? contentRef : null}
+            <QuestionItem
               key={q.id}
-              className="text-neutral-200 min-w-full border-2 border-neutral-600 max-h-fit h-fit p-3"
-              css={css`
-                transition: 0.4s;
-                opacity: ${i === currSwap ? 1 : 0};
-              `}
-            >
-              {!i
-                ? genIpsum(2)
-                : i === 1
-                  ? genIpsum(8)
-                  : i === 2
-                    ? genIpsum(3)
-                    : genIpsum(10)}
-            </div>
+              {...{
+                currSwap,
+                outerIdx: i,
+                question: q,
+              }}
+              ref={contentRef}
+            />
           ))}
         </motion.div>
 
