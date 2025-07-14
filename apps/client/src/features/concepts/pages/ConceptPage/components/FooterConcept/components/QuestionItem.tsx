@@ -5,13 +5,13 @@
 import SubTitle from "@/common/components/elements/SubTitle";
 import { QuizType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, RefObject, useMemo } from "react";
 import VariantQuiz from "./components/VariantQuiz";
 import ErrFormField from "@/common/components/forms/errors/ErrFormField";
 import { useFormContext } from "react-hook-form";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import Portal from "@/common/components/HOC/Portal";
-import { __cg } from "@shared/first/lib/logger.js";
+import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 
 type PropsType = {
   outerIdx: number;
@@ -24,20 +24,12 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
     const {
       formState: { errors },
     } = useFormContext<FormQuizType>();
-    const [posParent, setPosParent] = useState<[number, number]>([0, 0]);
 
-    useEffect(() => {
-      if (!contentRef || typeof contentRef === "function") return;
-      const el = contentRef?.current;
-      if (!el) return;
-
-      const { top, left } = el.getBoundingClientRect();
-      const windowH = window.scrollY;
-
-      setPosParent([top + windowH, left]);
-    }, [contentRef, errors]);
-
-    __cg("pos", posParent);
+    const optDep = useMemo(() => [errors], [errors]);
+    const { posParent } = useGetPosPortal({
+      contentRef: contentRef as RefObject<HTMLDivElement | null>,
+      optDep,
+    });
 
     return (
       <div
@@ -62,7 +54,7 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
             <ErrFormField
               {...{
                 el: {
-                  name: `quiz`,
+                  name: "",
                 },
                 errors,
                 gappedErr:
