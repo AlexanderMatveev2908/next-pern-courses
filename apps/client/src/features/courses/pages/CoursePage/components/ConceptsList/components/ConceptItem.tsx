@@ -8,8 +8,8 @@ import {
   genRowsInfoConcept,
 } from "@/features/courses/uiFactory/cards";
 import type { FC } from "react";
-import LabelConcept from "./components/LabelConcept";
-import ShowInfoRowsBackCard from "@/common/components/elements/ShowInfoRowsBackCard";
+import ShowInfoRowsBackCard from "@/common/components/cards/fragments/ShowInfoRowsBackCard";
+import LabelCard from "@/common/components/cards/fragments/LabelCard";
 
 type PropsType = {
   concept: ConceptType;
@@ -22,7 +22,7 @@ const ConceptItem: FC<PropsType> = ({ concept }) => {
     <CardShape
       {...{
         images,
-        Label: <LabelConcept {...{ concept }} />,
+        Label: <LabelCard {...{ txt: concept.title }} />,
         ContentServer: (
           <ShowInfoRowsBackCard {...{ arg: genRowsInfoConcept(concept) }} />
         ),
