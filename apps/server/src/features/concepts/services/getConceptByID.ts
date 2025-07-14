@@ -11,6 +11,7 @@ export const getConceptByIDSvc = async (id: string) => {
         SELECT id, title, "courseID", "order"
         FROM "Concept"
         WHERE "courseID" = (
+            -- could just pass id as arg, i wanted just see how many sql patterns i could
             SELECT "courseID"
             FROM "Concept"
             WHERE id = ${id}
@@ -22,17 +23,17 @@ export const getConceptByIDSvc = async (id: string) => {
         json_build_object(
         'conceptsCount', (
             SELECT COUNT(*) FROM cpt_list
-        ),
+            ),
         'prev', (
             SELECT row_to_json(ref)
             FROM cpt_list ref
             WHERE ref."order" = cpt."order" - 1
-        ),
+            ),
         'next', (
             SELECT row_to_json(ref)
             FROM cpt_list ref
             WHERE ref."order" = cpt."order" + 1
-        )
+            )
         ) refs,
 
         ${grabAssetsItem("CONCEPT", { prefix: "cpt" })},
