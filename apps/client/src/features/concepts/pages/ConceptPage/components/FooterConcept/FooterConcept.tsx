@@ -37,7 +37,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">
-      <SubTitle {...{ txt: "Quizzes" }} />
+      <SubTitle {...{ txt: "Questions" }} />
 
       <div
         className="mx-auto w-full max-w-[1000px] border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
