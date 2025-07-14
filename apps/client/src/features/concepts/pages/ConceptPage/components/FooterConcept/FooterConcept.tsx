@@ -5,8 +5,9 @@ import SubTitle from "@/common/components/elements/SubTitle";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import { ConceptType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
-import { useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { motion } from "framer-motion";
+import { genIpsum } from "@/core/lib/etc";
 
 type PropsType = {
   concept: ConceptType;
@@ -14,17 +15,45 @@ type PropsType = {
 
 const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
   const [currSwap, setCurrSwap] = useState(0);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [maxH, setMaxH] = useState(0);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const listen = () => setMaxH(el.scrollHeight);
+    listen();
+
+    const obs = new ResizeObserver(listen);
+    obs.observe(el);
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+      obs.disconnect();
+    };
+  }, [currSwap]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <SubTitle {...{ txt: "Quizzes" }} />
 
-      <div className="w-full max-w-[800px] border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-x-hidden">
+      <div
+        className="mx-auto w-full max-w-[1000px] border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
+        css={css`
+          /* general hypothetical hight of btns rows for all screens and font sizes */
+          max-height: ${maxH + 200}px;
+        `}
+      >
         <motion.div
           className="grid gap-[10%]"
           css={css`
             max-width: ${quizzes.length * 100}%;
+            align-items: start;
             grid-template-columns: repeat(${quizzes.length}, 100%);
+            justify-items: center;
+            max-height: ${maxH}px;
           `}
           initial={{
             x: 0,
@@ -38,14 +67,21 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
         >
           {quizzes.map((q, i) => (
             <div
+              ref={i === currSwap ? contentRef : null}
               key={q.id}
-              className="text-neutral-200 min-w-full border-2 border-neutral-600"
+              className="text-neutral-200 min-w-full border-2 border-neutral-600 max-h-fit h-fit p-3"
               css={css`
                 transition: 0.4s;
                 opacity: ${i === currSwap ? 1 : 0};
               `}
             >
-              {q.id}
+              {!i
+                ? genIpsum(2)
+                : i === 1
+                  ? genIpsum(8)
+                  : i === 2
+                    ? genIpsum(3)
+                    : genIpsum(10)}
             </div>
           ))}
         </motion.div>
