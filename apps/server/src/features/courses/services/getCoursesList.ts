@@ -88,7 +88,15 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         c."tech",
         c."estimatedTime",
         c."pointsGained",
-        
+    
+    json_build_object(
+      'conceptsCount',
+        (
+          SELECT COUNT(*)::INT 
+          FROM "Concept" AS cpt
+          WHERE cpt."courseID" = c."id"
+        )
+    ) AS "conceptsStats",
 
     ${grabAssetsItem("COURSE")}
 

@@ -4,6 +4,7 @@
 import RowInfo from "@/common/components/elements/RowInfo";
 import SubTitle from "@/common/components/elements/SubTitle";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
+import { resp } from "@/core/lib/style";
 import { CourseType } from "@/features/courses/types/courses";
 import { genRowsInfo } from "@/features/courses/uiFactory/cards";
 import { css } from "@emotion/react";
@@ -15,7 +16,7 @@ type PropsType = {
 
 const ContentCourse: FC<PropsType> = ({ course }) => {
   const { ids } = useGenIDsV2({
-    lengths: [5],
+    lengths: [6],
   });
 
   return (
@@ -29,7 +30,10 @@ const ContentCourse: FC<PropsType> = ({ course }) => {
       <div
         className="w-full grid gap-6"
         css={css`
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          grid-template-columns: 1fr;
+          ${resp("sm")} {
+          }
+          grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
         `}
       >
         {genRowsInfo(course).map((el, i) => (

@@ -24,6 +24,10 @@ export const genRowsInfo = (course: CourseType) =>
       label: "Points gained",
       val: course.pointsGained,
     },
+    {
+      label: "Concepts available",
+      val: course.conceptsStats!.conceptsCount,
+    },
   ].map((el) => ({ ...el, id: v4() }));
 
 export const genLinksCard = (...arg: string[]) =>

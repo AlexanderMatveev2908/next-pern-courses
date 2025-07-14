@@ -1,14 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 } from "uuid";
 
 type Params = {
   lengths: number[];
 };
 
+const genV4 = (lengths: Params["lengths"]) =>
+  lengths.map((num) => Array.from({ length: num }, () => v4()));
+
 export const useGenIDsV2 = ({ lengths }: Params) => {
-  const idsRef = useRef<string[][]>(
-    lengths.map((num) => Array.from({ length: num }, () => v4())),
-  );
+  const [ids, setIDs] = useState(genV4(lengths));
   const prevLengths = useRef<number[]>([]);
 
   useEffect(() => {
@@ -18,13 +19,11 @@ export const useGenIDsV2 = ({ lengths }: Params) => {
 
     if (!shouldRerender) return;
 
-    idsRef.current = lengths.map((num) =>
-      Array.from({ length: num }, () => v4()),
-    );
+    setIDs(genV4(lengths));
     prevLengths.current = [...lengths];
   }, [lengths]);
 
   return {
-    ids: idsRef.current,
+    ids,
   };
 };
