@@ -1,14 +1,22 @@
-import { NextParamPageType } from "@/common/types/api";
+"use client";
+
+import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
+import { useParams } from "next/navigation";
 import type { FC } from "react";
 
-const page: FC<NextParamPageType<{ conceptID: string }>> = async (
-  {
-    //   params,
-  },
-) => {
-  //   const { conceptID } = await params;
+const Page: FC = () => {
+  const { conceptID } = useParams();
 
-  return <div></div>;
+  return (
+    <WrapPendingClient
+      {...{
+        title: conceptID as string,
+        waitHydration: true,
+        isLoading: false,
+        Content: () => <div></div>,
+      }}
+    />
+  );
 };
 
-export default page;
+export default Page;
