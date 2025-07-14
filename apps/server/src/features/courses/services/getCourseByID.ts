@@ -18,19 +18,41 @@ const quizKeys = ["id", "title", "question"];
 const variantKeys = ["id", "answer", "isCorrect"];
 
 export const serviceGetCourseByID = async (id: string) => {
-  __cg("str", sqlStrImages("CONCEPT", { prefix: "cpt" }));
-
   const raw = sql`
   SELECT c.*,
 
    ${grabAssetsItem("COURSE")},
-  
-   json_agg(
-    json_build_object(
-      ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
-      'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })}
-    )
-   ) concepts,
+
+    (
+      SELECT json_agg(
+        json_build_object(
+          ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+          'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
+          'quizzes', (
+            SELECT json_agg(
+              json_build_object(
+               ${injectKeyValSQL(quizKeys, {
+                 prefix: "q",
+               })},
+                'variants', (
+                  SELECT json_agg(
+                    json_build_object(
+                     ${injectKeyValSQL(variantKeys, { prefix: "v" })}
+                    )
+                  )
+                  FROM "Variant" v
+                  WHERE v."quizID" = q.id
+                )
+              )
+            )
+            FROM "Quiz" q
+            WHERE q."conceptID" = cpt.id
+          )
+        )
+      )
+      FROM "Concept" cpt
+      WHERE cpt."courseID" = c.id
+    ) AS "concepts",
 
    json_build_object(
     'conceptsCount',
@@ -41,12 +63,9 @@ export const serviceGetCourseByID = async (id: string) => {
       )
    ) AS "conceptsStats"
 
-   FROM "Course" c
-   LEFT JOIN "Concept" cpt
-   ON cpt."courseID" = c.id
+   FROM "Course" AS c
 
-   WHERE c.id = ${id}
-   GROUP BY c.id
+   WHERE c."id" = ${id}
 
   `;
 
@@ -60,63 +79,38 @@ export const serviceGetCourseByID = async (id: string) => {
 };
 
 // const raw = sql`
-//   SELECT c.*,
+// SELECT c.*,
 
-//    ${grabAssetsItem("COURSE")},
+//  ${grabAssetsItem("COURSE")},
 
+//  json_agg(
+//   json_build_object(
+//     ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+//     'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
+//     'quizzes', json_agg(
+//       json_build_object(
+//         ${injectKeyValSQL(quizKeys, { prefix: "q" })}
+//       )
+//     )
+//   )
+//  ) concepts,
+
+//  json_build_object(
+//   'conceptsCount',
 //     (
-//       SELECT json_agg(
-//         json_build_object(
-//           ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
-//           'images', (
-//                 SELECT json_agg(
-//                   json_build_object(
-//                     'url', ca."url",
-//                     'publicID', ca."publicID"
-//                   )
-//                 )
-//                 FROM "CloudAsset" AS ca
-//                 WHERE ca."type" = 'IMAGE'
-//                   AND ca."entityID" = cpt."id"
-//                   AND ca."entityType" = ${sql`${EntityType.CONCEPT}::"EntityType"`}
-//           ),
-//           'quizzes', (
-//             SELECT json_agg(
-//               json_build_object(
-//                ${injectKeyValSQL(quizKeys, {
-//                  prefix: "q",
-//                })},
-//                 'variants', (
-//                   SELECT json_agg(
-//                     json_build_object(
-//                      ${injectKeyValSQL(variantKeys, { prefix: "v" })}
-//                     )
-//                   )
-//                   FROM "Variant" v
-//                   WHERE v."quizID" = q.id
-//                 )
-//               )
-//             )
-//             FROM "Quiz" q
-//             WHERE q."conceptID" = cpt.id
-//           )
-//         )
-//       )
-//       FROM "Concept" cpt
-//       WHERE cpt."courseID" = c.id
-//     ) AS "concepts",
+//       SELECT COUNT(*)::INT
+//       FROM "Concept" AS cpt
+//       WHERE cpt."courseID" = ${id}
+//     )
+//  ) AS "conceptsStats"
 
-//    json_build_object(
-//     'conceptsCount',
-//       (
-//         SELECT COUNT(*)::INT
-//         FROM "Concept" AS cpt
-//         WHERE cpt."courseID" = ${id}
-//       )
-//    ) AS "conceptsStats"
+//  FROM "Course" c
+//  LEFT JOIN "Concept" cpt
+//  ON cpt."courseID" = c.id
+//  LEFT JOIN "Quiz" q
+//  ON q."conceptID" = cpt.id
 
-//    FROM "Course" AS c
+//  WHERE c.id = ${id}
+//  GROUP BY c.id
 
-//    WHERE c."id" = ${id}
-
-//   `;
+// `;
