@@ -29,7 +29,8 @@ type PropsType = {
 };
 
 const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
-  const { currSwap, maxH, setCurrSwap, contentRef, setMaxH } = useQuiz();
+  const { currSwap, maxH, setCurrSwap, contentRef, setMaxH, stageSwap } =
+    useQuiz();
 
   const parentRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,7 +94,6 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
         while (i < errs!.quiz!.length!) {
           const curr = errs.quiz![i];
 
-          __cg("idx", i);
           if (isStr(curr?.answerIDs?.message)) {
             trigger(`quiz.${i}`);
             setCurrSwap(i);
@@ -160,6 +160,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
                   currSwap,
                   outerIdx: i,
                   question: q,
+                  stageSwap,
                 }}
                 ref={contentRef}
               />

@@ -11,15 +11,17 @@ import { useFormContext } from "react-hook-form";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
+import { SwapStageType } from "../reducer/initState";
 
 type PropsType = {
   outerIdx: number;
   currSwap: number;
   question: QuizType;
+  stageSwap: SwapStageType;
 };
 
 const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
-  ({ currSwap, outerIdx, question }, contentRef) => {
+  ({ currSwap, outerIdx, question, stageSwap }, contentRef) => {
     const {
       formState: { errors },
     } = useFormContext<FormQuizType>();
@@ -32,7 +34,9 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
 
     return (
       <div
-        ref={outerIdx === currSwap ? contentRef : null}
+        ref={
+          outerIdx === currSwap && stageSwap === "swapped" ? contentRef : null
+        }
         key={question.id}
         className="w-full h-fit p-3 grid grid-cols-1 gap-4 text-white relative"
         css={css`

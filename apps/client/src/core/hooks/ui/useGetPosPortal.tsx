@@ -10,9 +10,8 @@ export const useGetPosPortal = ({ contentRef, optDep }: Params) => {
   const [posParent, setPosParent] = useState<[number, number]>([0, 0]);
 
   useEffect(() => {
-    if (!contentRef || typeof contentRef === "function") return;
-    const el = contentRef?.current;
-    if (!el) return;
+    if (!contentRef?.current || typeof contentRef === "function") return;
+    const el = contentRef.current;
 
     const { top, left } = el.getBoundingClientRect();
     const windowH = window.scrollY;
