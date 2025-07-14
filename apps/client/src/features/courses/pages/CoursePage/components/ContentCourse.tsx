@@ -6,7 +6,7 @@ import SubTitle from "@/common/components/elements/SubTitle";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
 import { resp } from "@/core/lib/style";
 import { CourseType } from "@/features/courses/types/courses";
-import { genRowsInfo } from "@/features/courses/uiFactory/cards";
+import { genRowsInfoCourse } from "@/features/courses/uiFactory/cards";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 
@@ -36,7 +36,7 @@ const ContentCourse: FC<PropsType> = ({ course }) => {
           grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
         `}
       >
-        {genRowsInfo(course).map((el, i) => (
+        {genRowsInfoCourse(course).map((el, i) => (
           <div
             key={ids[0][i]}
             className="w-full border-2 border-neutral-600 p-3 rounded-xl"

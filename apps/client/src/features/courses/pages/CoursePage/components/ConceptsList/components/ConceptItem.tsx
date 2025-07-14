@@ -3,10 +3,13 @@
 
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import { ConceptType } from "@/features/concepts/types";
-import { genLinksCard } from "@/features/courses/uiFactory/cards";
+import {
+  genLinksCard,
+  genRowsInfoConcept,
+} from "@/features/courses/uiFactory/cards";
 import type { FC } from "react";
 import LabelConcept from "./components/LabelConcept";
-import ContentConcept from "./components/ContentConcept";
+import ShowInfoRowsBackCard from "@/common/components/elements/ShowInfoRowsBackCard";
 
 type PropsType = {
   concept: ConceptType;
@@ -20,7 +23,9 @@ const ConceptItem: FC<PropsType> = ({ concept }) => {
       {...{
         images,
         Label: <LabelConcept {...{ concept }} />,
-        ContentServer: <ContentConcept {...{ concept }} />,
+        ContentServer: (
+          <ShowInfoRowsBackCard {...{ arg: genRowsInfoConcept(concept) }} />
+        ),
         linksHref: genLinksCard(`/concepts/${concept.id}`),
       }}
     />

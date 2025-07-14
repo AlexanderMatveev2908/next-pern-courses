@@ -4,9 +4,9 @@
 import type { FC } from "react";
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import LabelCourse from "./components/LabelCourse";
-import ContentCourse from "./components/ContentCourse";
-import { genLinksCard } from "../../../uiFactory/cards";
+import { genLinksCard, genRowsInfoCourse } from "../../../uiFactory/cards";
 import { CourseType } from "@/features/courses/types/courses";
+import ShowInfoRowsBackCard from "@/common/components/elements/ShowInfoRowsBackCard";
 
 type PropsType = {
   course: CourseType;
@@ -20,7 +20,9 @@ const CourseItem: FC<PropsType> = ({ course }) => {
       {...{
         images,
         Label: <LabelCourse {...{ course }} />,
-        ContentServer: <ContentCourse {...{ course }} />,
+        ContentServer: (
+          <ShowInfoRowsBackCard {...{ arg: genRowsInfoCourse(course) }} />
+        ),
         linksHref: genLinksCard(`/courses/${course.id}`),
       }}
     />
