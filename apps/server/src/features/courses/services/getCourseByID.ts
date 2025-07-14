@@ -28,6 +28,15 @@ export const serviceGetCourseByID = async (id: string) => {
       json_agg(
         json_build_object(
           ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
+          'hasVideo', (
+            SELECT EXISTS (
+              SELECT 1 
+              FROM "CloudAsset" ca
+              WHERE ca."entityID" = cpt.id
+              AND ca.type = 'VIDEO'::"TypeAsset"
+              AND ca."entityType" = 'CONCEPT'::"EntityType"
+            )
+          ),
           'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
           'quizzes', (
             SELECT COALESCE(

@@ -3,13 +3,11 @@
 
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import { ConceptType } from "@/features/concepts/types";
-import {
-  genLinksCard,
-  genRowsInfoConcept,
-} from "@/features/courses/uiFactory/cards";
+import { genLinksCard } from "@/features/courses/uiFactory/cards";
 import type { FC } from "react";
 import ShowInfoRowsBackCard from "@/common/components/cards/fragments/ShowInfoRowsBackCard";
 import LabelCard from "@/common/components/cards/fragments/LabelCard";
+import { genRowsInfoConcept } from "@/features/concepts/uiFactory";
 
 type PropsType = {
   concept: ConceptType;

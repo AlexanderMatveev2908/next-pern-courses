@@ -35,4 +35,7 @@ export type ConceptType = ServerModel<{
   quizzes: QuizType[];
 
   images: CloudAssetType[];
+  video?: CloudAssetType | null;
+
+  hasVideo?: boolean;
 }>;

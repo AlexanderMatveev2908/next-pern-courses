@@ -1,7 +1,6 @@
 import { v4 } from "uuid";
 import { formatMinutes } from "@shared/first/lib/formatters.js";
 import { CourseType } from "@/features/courses/types/courses";
-import { ConceptType } from "@/features/concepts/types";
 
 export const genRowsInfoCourse = (course: CourseType) =>
   [
@@ -41,16 +40,5 @@ export const linkCourseActions = (courseID: string) => [
   {
     label: "Add Concept",
     href: `/concepts/post/${courseID}`,
-  },
-];
-
-export const genRowsInfoConcept = (cpt: ConceptType) => [
-  {
-    label: "Time estimated",
-    val: formatMinutes(cpt.estimatedTime),
-  },
-  {
-    label: "Points gained",
-    val: cpt.pointsGained,
   },
 ];
