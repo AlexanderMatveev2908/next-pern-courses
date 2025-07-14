@@ -16,7 +16,7 @@ type PropsType = {
   video?: CloudAssetType | null;
   description?: string | null;
   markdown: string;
-  Content: React.ReactNode;
+  Content?: React.ReactNode;
   Header?: React.ReactNode;
   Footer?: React.ReactNode;
 };

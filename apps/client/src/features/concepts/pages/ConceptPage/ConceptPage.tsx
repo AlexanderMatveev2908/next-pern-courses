@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { ConceptType } from "../../types";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import HeaderConcept from "./components/HeaderConcept";
+import FooterConcept from "./components/FooterConcept/FooterConcept";
 
 type PropsType = {
   concept: ConceptType;
@@ -20,7 +21,13 @@ const ConceptPage: FC<PropsType> = ({ concept }) => {
         description: concept?.description,
         markdown: concept!.markdown,
         Header: <HeaderConcept {...{ refs: concept.refs }} />,
-        Content: <div></div>,
+        Footer: (
+          <FooterConcept
+            {...{
+              concept,
+            }}
+          />
+        ),
       }}
     />
   );

@@ -15,7 +15,7 @@ export const genRowsInfoConcept = (cpt: ConceptType) => [
     val: cpt.pointsGained,
   },
   {
-    label: "Quizzes available",
+    label: "Questions available",
     val: cpt.quizzes.length,
   },
   {

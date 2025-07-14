@@ -8,7 +8,7 @@ import { IconType } from "react-icons/lib";
 
 type PropsType<T extends FieldValues, K extends Path<T>> = {
   // ? radio form field has just a string real checkbox array of strings
-  data?: PathValue<T, K>[];
+  data?: PathValue<T, K>[] | PathValue<T, K>;
   handleClick: () => void;
   el: FieldCheckValType<T, K> & {
     Svg?: IconType;
