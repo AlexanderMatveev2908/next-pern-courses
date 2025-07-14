@@ -1,4 +1,4 @@
-import { Course, EntityType } from "@prisma/client";
+import { Course } from "@prisma/client";
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
