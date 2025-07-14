@@ -1,11 +1,21 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import { useParams } from "next/navigation";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { useCheckID } from "@/core/hooks/useCheckID";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import type { FC } from "react";
 
 const Page: FC = () => {
-  const { conceptID } = useParams();
+  const { isValid, id: conceptID } = useCheckID({ keyID: "conceptID" });
+
+  const res = conceptsSliceAPI.useGetConceptByIDQuery(conceptID, {
+    skip: !isValid,
+  });
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
 
   return (
     <WrapPendingClient

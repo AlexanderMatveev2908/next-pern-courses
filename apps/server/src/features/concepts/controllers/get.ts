@@ -13,3 +13,12 @@ export const getMinInfoCourseByID = async (
 
   return res.res200({ msg: "course info", course });
 };
+
+export const getConceptByIDCtrl = async (
+  req: FastifyRequest,
+  res: FastifyReply,
+) => {
+  return res.res200({
+    msg: "her u are the cpt",
+  });
+};

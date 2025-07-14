@@ -11,6 +11,7 @@ export enum TagsAPI {
   DUMMY_TAG_LIST = "DUMMY_TAG_LIST",
   COURSES_LIST = "COURSES_LIST",
   COURSE_ITEM = "COURSE_ITEM",
+  CONCEPT_ITEM = "CONCEPT_ITEM",
 }
 
 export enum ApiEventType {
