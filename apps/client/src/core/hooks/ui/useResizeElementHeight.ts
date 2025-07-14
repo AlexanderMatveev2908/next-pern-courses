@@ -1,19 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { __cg } from "@shared/first/lib/logger.js";
 import { RefObject, useEffect } from "react";
 
 type Params = {
   contentRef: RefObject<HTMLDivElement | null>;
   setMaxH: (val: number) => void;
+  optionalDep: any;
 };
 
-export const useResizeElementHeight = (
-  { contentRef, setMaxH }: Params,
-  ...optionalDep: any[]
-): void => {
-  __cg("opt", optionalDep);
-
+export const useResizeElementHeight = ({
+  contentRef,
+  setMaxH,
+  optionalDep,
+}: Params): void => {
   useEffect(() => {
     const el = contentRef.current;
     if (!el) return;
@@ -29,5 +27,5 @@ export const useResizeElementHeight = (
       window.removeEventListener("resize", listen);
       obs.disconnect();
     };
-  }, [setMaxH, contentRef, ...optionalDep]);
+  }, [setMaxH, contentRef, optionalDep]);
 };

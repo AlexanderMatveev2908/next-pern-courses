@@ -8,7 +8,7 @@ import { css } from "@emotion/react";
 import { motion } from "framer-motion";
 import { genIpsum } from "@/core/lib/etc";
 import { useQuiz } from "./reducer/useQuiz";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
 
 type PropsType = {
@@ -20,13 +20,12 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
 
   const { currSwap, maxH, setCurrSwap, contentRef, setMaxH } = useQuiz();
 
-  useResizeElementHeight(
-    {
-      contentRef,
-      setMaxH,
-    },
-    currSwap,
-  );
+  const optionalDep = useMemo(() => [currSwap], [currSwap]);
+  useResizeElementHeight({
+    contentRef,
+    setMaxH,
+    optionalDep,
+  });
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <SubTitle {...{ txt: "Questions" }} />
