@@ -6,7 +6,7 @@ const db = new PrismaClient({
       url: process.env.DB_URI,
     },
   },
-  log: ["query", "error", "warn", "info"],
+  // log: ["query", "error", "warn", "info"],
 });
 
 export default db;
