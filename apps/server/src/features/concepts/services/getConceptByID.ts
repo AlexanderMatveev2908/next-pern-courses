@@ -9,9 +9,13 @@ export const getConceptByIDSvc = async (id: string) => {
   const raw = sql`
         SELECT cpt.*,
 
-
         (
             json_build_object(
+                'conceptsCount', (
+                    SELECT COUNT(*)::INT 
+                    FROM "Concept" others
+                    WHERE others."courseID" = cpt."courseID"
+                ),
                 'prev',(
                     SELECT row_to_json(ref_data)
                     FROM (
