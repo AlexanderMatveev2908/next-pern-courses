@@ -23,7 +23,6 @@ const Page: FC = () => {
   return (
     <WrapPendingClient
       {...{
-        title: conceptID as string,
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(concept),

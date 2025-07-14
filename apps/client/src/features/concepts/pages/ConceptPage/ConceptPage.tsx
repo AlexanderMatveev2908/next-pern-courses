@@ -3,13 +3,25 @@
 
 import type { FC } from "react";
 import { ConceptType } from "../../types";
+import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 
 type PropsType = {
   concept: ConceptType;
 };
 
 const ConceptPage: FC<PropsType> = ({ concept }) => {
-  return <div></div>;
+  return (
+    <PageItemShape
+      {...{
+        images: concept!.images,
+        title: concept!.title,
+        video: concept?.video,
+        description: concept?.description,
+        markdown: concept!.markdown,
+        Content: <div></div>,
+      }}
+    />
+  );
 };
 
 export default ConceptPage;
