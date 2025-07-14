@@ -19,7 +19,7 @@ export const genRowsInfoConcept = (cpt: ConceptType) => [
     val: cpt.quizzes.length,
   },
   {
-    label: "Video lectiongmm",
+    label: "Video lection",
     val: cpt.hasVideo + "",
   },
 ];
