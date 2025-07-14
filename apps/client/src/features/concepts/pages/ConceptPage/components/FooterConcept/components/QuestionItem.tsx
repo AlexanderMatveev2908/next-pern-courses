@@ -46,6 +46,7 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
               key={vrt.id}
               {...{
                 variant: vrt,
+                outerIdx,
               }}
             />
           ))}
