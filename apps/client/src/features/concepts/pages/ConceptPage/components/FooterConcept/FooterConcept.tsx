@@ -16,6 +16,7 @@ import {
 } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionItem from "./components/QuestionItem";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   concept: ConceptType;
@@ -35,6 +36,8 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
     resolver: zodResolver(schemaQuiz),
     mode: "onChange",
   });
+
+  __cg("vls", formCtx.watch());
 
   return (
     <FormProvider {...formCtx}>

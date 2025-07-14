@@ -19,27 +19,24 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
   const data =
     watch(`quiz.${outerIdx}`) ?? ({} as FormQuizType["quiz"][number]);
 
-  const isAlreadyChosen = !!data!.answerIDs?.length;
-  const isChecked =
+  const isChecked: boolean =
     isArrOK(data!.answerIDs) &&
-    data!.answerIDs?.some((asw) => asw === variant.id);
+    data!.answerIDs!.some((id) => id === variant.id);
+  const isAlreadyChosen =
+    (data?.answerIDs?.length ?? 0) >= 1 &&
+    data!.answerIDs.every((id) => id !== variant.id);
 
   const handleClick = () =>
     setValue(
       `quiz.${outerIdx}`,
-      isChecked
-        ? isAlreadyChosen
-          ? {
-              questionID: data!.questionID,
-              answerIDs: data!.answerIDs.filter((id) => id !== variant.id),
-            }
-          : null
-        : {
-            questionID: variant.quizID,
-            answerIDs: isAlreadyChosen
-              ? [...data!.answerIDs, variant.id]
-              : [variant.id],
-          },
+      {
+        questionID: variant.quizID,
+        answerIDs: isAlreadyChosen
+          ? [...data!.answerIDs, variant.id]
+          : isChecked
+            ? data!.answerIDs.filter((id) => id !== variant.id)
+            : [variant.id],
+      },
       { shouldValidate: true },
     );
 
