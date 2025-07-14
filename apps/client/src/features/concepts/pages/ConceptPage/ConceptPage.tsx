@@ -4,7 +4,7 @@
 import type { FC } from "react";
 import { ConceptType } from "../../types";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
-import HeaderConcept from "./_/HeaderConcept";
+import HeaderConcept from "./components/HeaderConcept";
 
 type PropsType = {
   concept: ConceptType;

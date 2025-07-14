@@ -4,7 +4,7 @@
 import Link from "next/link";
 import type { FC } from "react";
 import { BtnActType } from "@/common/types/uiFactory";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import { btnColors } from "@/core/uiFactory/style";
 import { IconType } from "react-icons/lib";
 
@@ -12,9 +12,10 @@ type PropsType = {
   href?: string;
   label?: string;
   Svg?: IconType;
+  $customLabelCSS?: SerializedStyles;
 };
 
-const LinkShadow: FC<PropsType> = ({ href, label, Svg }) => {
+const LinkShadow: FC<PropsType> = ({ href, label, Svg, $customLabelCSS }) => {
   const clr = btnColors[BtnActType.NEUTRAL];
 
   return !href ? (
@@ -42,7 +43,16 @@ const LinkShadow: FC<PropsType> = ({ href, label, Svg }) => {
       `}
     >
       {Svg && <Svg className="min-w-[35px] min-h-[35px]" />}
-      {label && <span className="txt__lg">{label}</span>}
+      {label && (
+        <span
+          css={css`
+            ${$customLabelCSS}
+          `}
+          className="txt__lg"
+        >
+          {label}
+        </span>
+      )}
     </Link>
   );
 };

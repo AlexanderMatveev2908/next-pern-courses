@@ -24,12 +24,9 @@ const HeaderConcept: FC<PropsType> = ({ refs }) => {
   const getterInfo = buttonsHeaderBuilder(refs);
   return (
     <div
-      className="w-full grid"
+      className="w-full grid gap-5 max-w-[90%]"
       css={css`
-        grid-template-columns: 1fr;
-        ${resp("sm")} {
-          grid-template-columns: repeat(2, 1fr);
-        }
+        grid-template-columns: repeat(2, 1fr);
       `}
     >
       {ids[0].map((id, i) => {
@@ -38,9 +35,13 @@ const HeaderConcept: FC<PropsType> = ({ refs }) => {
         return (
           <div
             key={id}
-            className="w-full max-w-[200px]"
+            className="w-full"
             css={css`
-              ${info?.$custom.css}
+              max-width: 80px;
+              ${resp("sm")} {
+                max-width: 200px;
+              }
+              ${info?.$custom.css ?? ""}
             `}
           >
             <LinkShadow
@@ -48,6 +49,12 @@ const HeaderConcept: FC<PropsType> = ({ refs }) => {
                 href: info?.href,
                 label: info?.label,
                 Svg: info?.Svg,
+                $customLabelCSS: css`
+                  display: none;
+                  ${resp("sm")} {
+                    display: block;
+                  }
+                `,
               }}
             />
           </div>
