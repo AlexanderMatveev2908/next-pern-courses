@@ -26,10 +26,12 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
   const data =
     watch(`quiz.${outerIdx}`) ?? ({} as FormQuizType["quiz"][number]);
 
-  const analyzed = fallBack.userAnswers.find(
-    (asw) =>
-      asw.questionID === variant.questionID && asw.variantID === variant.id,
-  );
+  const analyzed =
+    isCompleted &&
+    fallBack.userAnswers.find(
+      (asw) =>
+        asw.questionID === variant.questionID && asw.variantID === variant.id,
+    );
   const goodChoice =
     isCompleted &&
     !isObjOK(analyzed) &&
@@ -39,7 +41,11 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
         choice.correctAnswer!.id === variant.id,
     );
 
-  const AnalyzedSVG = analyzed?.isCorrect ? CircleCheckBig : CircleX;
+  const AnalyzedSVG = !analyzed
+    ? null
+    : analyzed?.isCorrect
+      ? CircleCheckBig
+      : CircleX;
 
   const isChecked: boolean =
     isArrOK(data!.answerIDs) &&
@@ -77,7 +83,7 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
         onClick={handleClick}
         className={`min-w-[40px] min-h-[40px] relative enabled:cursor-pointer disabled:cursor-not-allowed`}
       >
-        {analyzed ? (
+        {analyzed && AnalyzedSVG ? (
           <AnalyzedSVG
             className={`${twdCSS} ${analyzed.isCorrect ? "text-green-600" : "text-red-600"}`}
           />
@@ -92,7 +98,11 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
         )}
       </button>
 
-      <span className="txt__md text-[whitesmoke]">{variant.answer}</span>
+      <span
+        className={`txt__md ${analyzed ? (analyzed.isCorrect ? "text-green-600" : "text-red-600 pb-1 border-b-2 border-red-600") : goodChoice ? "text-green-600 border-2 border-green-600 py-2 px-4 rounded-xl" : "text-neutral-200"}`}
+      >
+        {variant.answer}
+      </span>
     </div>
   );
 };

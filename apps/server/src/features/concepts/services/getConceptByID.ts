@@ -23,7 +23,6 @@ export const getConceptByIDSvc = async (id: string) => {
            SELECT row_to_json(cpt_user_outer)
            FROM (
             SELECT cpt_user_inner.id, cpt_user_inner.score,
-
             (
                 SELECT json_agg(row_to_json(answers))
                 
