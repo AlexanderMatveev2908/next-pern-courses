@@ -11,10 +11,7 @@ import { useQuiz } from "./reducer/useQuiz";
 import { FC, useMemo, useRef } from "react";
 import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  FormQuizType,
-  schemaQuiz,
-} from "@shared/first/paperwork/concepts/schema.quiz.js";
+import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionItem from "./components/QuestionItem";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -26,6 +23,8 @@ import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useParams } from "next/navigation";
+import ProgressBar from "@/common/components/elements/ProgressBar/ProgressBar";
+import { useExtendSchemaQuiz } from "./hooks/useExtendSchemaQuiz";
 
 type PropsType = {
   concept: ConceptType;
@@ -48,48 +47,11 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
     optionalDep,
   });
 
-  const syncSchema = schemaQuiz.extend({}).superRefine((data, ctx) => {
-    if (concept.refs?.prev && !concept.refs.prev.isCompleted)
-      ctx.addIssue({
-        code: "custom",
-        path: ["quiz"],
-        message: "You should first finish previous concept",
-      });
-
-    if ((data.quiz.length ?? 0) < questions.length)
-      ctx.addIssue({
-        code: "custom",
-        path: ["quiz"],
-        message: "Quiz is not finished",
-      });
-
-    let i = 0;
-
-    while (i < (data.quiz?.length ?? 0)) {
-      const curr = data.quiz[i];
-
-      if (!curr?.answerIDs?.length)
-        ctx.addIssue({
-          code: "custom",
-          path: [`quiz.${i}.answerIDs`],
-          message: `question idx ${i} need answer`,
-        });
-
-      if ((curr?.answerIDs.length ?? 0) > 1)
-        ctx.addIssue({
-          code: "custom",
-          path: [`quiz.${i}.answerIDs`],
-          message: `question idx ${i} has too many answers`,
-        });
-
-      i++;
-    }
-  });
-
   const [mutate, { isLoading }] =
     conceptsSliceAPI.useCheckQuizAnswersMutation();
   const { wrapMutation } = useWrapMutation();
 
+  const { syncSchema } = useExtendSchemaQuiz({ concept });
   const formCtx = useForm<FormQuizType>({
     resolver: zodResolver(syncSchema),
     mode: "onChange",
@@ -142,6 +104,13 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
             txt: isCompleted
               ? `Your score is ${concept.userConcept!.score}%`
               : "Questions",
+          }}
+        />
+
+        <ProgressBar
+          {...{
+            totSwaps: concept.questions.length,
+            currSwap,
           }}
         />
 
