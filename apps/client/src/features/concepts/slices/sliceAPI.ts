@@ -2,6 +2,7 @@ import { TagsAPI, UnwrappedResAPI } from "@/common/types/api";
 import { api } from "@/core/store/api";
 import { CourseType } from "@/features/courses/types/courses";
 import { ConceptType } from "../types";
+import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 
 const BASE_URL = "/concepts";
 
@@ -46,6 +47,17 @@ export const conceptsSliceAPI = api.injectEndpoints({
         method: "GET",
       }),
       providesTags: [TagsAPI.CONCEPT_ITEM],
+    }),
+
+    checkQuizAnswers: builder.mutation<
+      UnwrappedResAPI<{ result: unknown }>,
+      { data: FormQuizType; conceptID: string }
+    >({
+      query: ({ data, conceptID }) => ({
+        url: `${BASE_URL}/check/${conceptID}`,
+        method: "POST",
+        data,
+      }),
     }),
   }),
 });

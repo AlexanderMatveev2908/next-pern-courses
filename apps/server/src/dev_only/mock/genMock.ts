@@ -48,8 +48,6 @@ export const genMock = async () => {
 
       await Promise.all(
         Array.from({ length: 10 }).map(async (_, cptIdx) => {
-          __cg(`working on cpt idx ${cptIdx}... 🛠️`);
-
           const estimatedTime = genRandomByMinMax(5, 30);
           const pointsGained = genRandomByMinMax(25, 200);
           const newCpt = await db.concept.create({

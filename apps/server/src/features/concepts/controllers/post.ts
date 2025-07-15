@@ -36,3 +36,9 @@ export const postCourseCtrl = async (
     concept,
   });
 };
+
+export const checkQuizCtrl = async (req: FastifyRequest, res: FastifyReply) => {
+  return res.res200({
+    msg: "here u are your degree sir",
+  });
+};
