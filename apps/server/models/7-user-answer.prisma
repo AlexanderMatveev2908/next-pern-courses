@@ -1,6 +1,9 @@
 model UserAnswer {
     id String @id @default(uuid())
 
+    userConceptID String 
+    userConcept UserConcept @relation(fields: [userConceptID],references: [id],name:"UserConceptAnswers")
+
     questionID String
     question Question @relation(fields: [questionID],references: [id],name:"UserQuestion")
 

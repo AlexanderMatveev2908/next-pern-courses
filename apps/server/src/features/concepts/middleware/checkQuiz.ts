@@ -44,11 +44,12 @@ export const checkQuizMdw = async (req: FastifyRequest, res: FastifyReply) => {
   );
 
   for (const inputQ of quiz) {
-    if (!shape.get(inputQ.questionID))
-      return res.err409({ msg: "question does not exists" });
+    const parallelAnswer = shape.get(inputQ.questionID);
+
+    if (!parallelAnswer) return res.err409({ msg: "question does not exists" });
 
     for (const inputID of inputQ.answerIDs) {
-      if (!shape.get(inputQ.questionID)!.find((el) => el.id === inputID))
+      if (!parallelAnswer.find((vrt) => vrt.id === inputID))
         return res.err400({
           msg: "Answers do not correspond to existent data expected",
         });

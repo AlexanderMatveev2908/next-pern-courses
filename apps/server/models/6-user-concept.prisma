@@ -6,6 +6,8 @@ model UserConcept {
 
     score Float @default(0.00)
 
+    userAnswers UserAnswer[] @relation("UserConceptAnswers")
+
     createdAt DateTime @default(now())
     deletedAt DateTime? 
 }
