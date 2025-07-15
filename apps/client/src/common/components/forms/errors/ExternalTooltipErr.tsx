@@ -9,11 +9,11 @@ import ErrFormField from "./ErrFormField";
 type PropsType = {
   top: number;
   left: number;
-  gappedErr?: string;
+  manualErr?: string;
   cssZ?: number;
 };
 
-const ExternalTooltipErr: FC<PropsType> = ({ cssZ, left, top, gappedErr }) => {
+const ExternalTooltipErr: FC<PropsType> = ({ cssZ, left, top, manualErr }) => {
   return (
     <Portal>
       <div
@@ -29,7 +29,7 @@ const ExternalTooltipErr: FC<PropsType> = ({ cssZ, left, top, gappedErr }) => {
             el: {
               name: "",
             },
-            gappedErr,
+            manualErr,
           }}
         />
       </div>

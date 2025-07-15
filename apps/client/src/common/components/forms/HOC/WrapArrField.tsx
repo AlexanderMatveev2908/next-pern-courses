@@ -22,7 +22,7 @@ type PropsType<T extends FieldValues, K extends ArrayPath<T>> = {
   };
   register: UseFormRegister<T>;
   index?: number;
-  gappedErr?: string;
+  manualErr?: string;
 } & PropsDOM;
 
 const WrapArrField = <T extends FieldValues, K extends ArrayPath<T>>({
@@ -32,7 +32,7 @@ const WrapArrField = <T extends FieldValues, K extends ArrayPath<T>>({
   index,
   children,
   register,
-  gappedErr,
+  manualErr,
 }: PropsType<T, K>) => {
   return (
     <label htmlFor={el?.name ?? ""} className="w-full grid grid-cols-1 gap-4">
@@ -47,7 +47,7 @@ const WrapArrField = <T extends FieldValues, K extends ArrayPath<T>>({
         <ErrFormField
           {...{
             el,
-            gappedErr,
+            manualErr,
             errors,
             index,
             $customCSS: {

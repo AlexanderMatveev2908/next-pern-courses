@@ -49,7 +49,7 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
         },
         errors,
         register,
-        gappedErr:
+        manualErr:
           (errors as any)?.quiz?.[outerIdx]?.variants?.root?.message ??
           (errors as any)?.quiz?.[outerIdx]?.variants?.message,
       }}
@@ -102,7 +102,7 @@ const VariantsQuiz: FC<PropsType> = ({ el, outerIdx }) => {
                   control,
                   errors,
                   showLabel: false,
-                  gappedErr: (errors as any)?.[el.field]?.[outerIdx]?.[
+                  manualErr: (errors as any)?.[el.field]?.[outerIdx]?.[
                     opt.field
                   ]?.[varIdx]?.[opt.answer.name]?.val?.message,
                   cb: syncCB,

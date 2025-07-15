@@ -49,7 +49,7 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
           {...{
             top: posParent[0],
             left: posParent[1],
-            gappedErr:
+            manualErr:
               currSwap === outerIdx &&
               (errors as any)?.quiz?.[outerIdx]?.answerIDs?.message,
           }}

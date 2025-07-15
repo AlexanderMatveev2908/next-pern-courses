@@ -56,7 +56,7 @@ const FormQuiz = () => {
         el: fieldQuiz,
         errors,
         register,
-        gappedErr: errors?.quiz?.root?.message ?? errors?.quiz?.message,
+        manualErr: errors?.quiz?.root?.message ?? errors?.quiz?.message,
       }}
     >
       <div className="w-full grid grid-cols-1 gap-8">
@@ -100,7 +100,7 @@ const FormQuiz = () => {
                     name: `${el.field}.${quizItemIdx}.${el.title.name}.val` as ArrayPath<FormConceptType>,
                     type: el.title.type as Exclude<FieldDataType, "file">,
                   },
-                  gappedErr: grabNestedErr(errors, {
+                  manualErr: grabNestedErr(errors, {
                     idx: quizItemIdx,
                     name: el.title.name,
                     field: el.field,
@@ -117,7 +117,7 @@ const FormQuiz = () => {
                     name: `${el.field}.${quizItemIdx}.${el.question.name}.val` as ArrayPath<FormConceptType>,
                     type: el.question.type as Exclude<FieldDataType, "file">,
                   },
-                  gappedErr: grabNestedErr(errors, {
+                  manualErr: grabNestedErr(errors, {
                     idx: quizItemIdx,
                     name: el.question.name,
                     field: el.field,

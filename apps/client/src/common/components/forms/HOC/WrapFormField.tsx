@@ -13,7 +13,7 @@ type PropsType<T extends FieldValues, K extends Path<T>> = {
   errors: FieldErrors<T>;
   children: React.ReactNode;
   index?: number;
-  gappedErr?: string;
+  manualErr?: string;
   notice?: string;
 };
 
@@ -23,7 +23,7 @@ const WrapFormField = <T extends FieldValues, K extends Path<T>>({
   showLabel,
   children,
   index,
-  gappedErr,
+  manualErr,
   notice,
 }: PropsType<T, K>) => {
   return (
@@ -55,7 +55,7 @@ const WrapFormField = <T extends FieldValues, K extends Path<T>>({
       <div className="w-full flex max-w-full relative">
         {children}
 
-        <ErrFormField {...{ el, errors, index, gappedErr }} />
+        <ErrFormField {...{ el, errors, index, manualErr }} />
       </div>
     </label>
   );

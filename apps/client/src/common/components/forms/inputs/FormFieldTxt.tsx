@@ -16,7 +16,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   cb,
   isDisabled,
   index,
-  gappedErr,
+  manualErr,
   notice,
 }: FormFieldPropsType<T, K>) => {
   return !isObjOK(el) ? null : (
@@ -26,7 +26,7 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
         errors,
         showLabel,
         index,
-        gappedErr,
+        manualErr,
         notice,
       }}
     >

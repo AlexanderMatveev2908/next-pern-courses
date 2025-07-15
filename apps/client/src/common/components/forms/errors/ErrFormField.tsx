@@ -20,7 +20,7 @@ type PropsType<T extends FieldValues> = {
   };
   index?: number;
   rootErr?: string;
-  gappedErr?: string;
+  manualErr?: string;
 };
 
 const ErrFormField = <T extends FieldValues>({
@@ -28,13 +28,13 @@ const ErrFormField = <T extends FieldValues>({
   errors,
   $customCSS,
   index,
-  gappedErr,
+  manualErr,
 }: PropsType<T>) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
   const defMsg = errors?.[el?.name as Path<T>]?.message as string | undefined;
-  const msg = isStr(gappedErr)
-    ? gappedErr
+  const msg = isStr(manualErr)
+    ? manualErr
     : typeof index === "number"
       ? ((errors as any)?.[(el as FormFieldType<T>)?.field as string]?.[index]
           ?.val?.message as string | undefined)

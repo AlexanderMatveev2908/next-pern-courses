@@ -122,7 +122,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
           {...{
             top: posParent[0],
             left: posParent[1] - (window.innerWidth > uiBreaks.sm ? 100 : 0),
-            gappedErr: errors?.quiz?.message,
+            manualErr: errors?.quiz?.message,
             cssZ: 750,
           }}
         />

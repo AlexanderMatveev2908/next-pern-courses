@@ -41,7 +41,7 @@ export type FormFieldPropsType<T extends FieldValues, K extends Path<T>> = {
   isDisabled?: boolean;
   cb?: (val: T[K]) => void;
   index?: number;
-  gappedErr?: string;
+  manualErr?: string;
   notice?: string;
 };
 
