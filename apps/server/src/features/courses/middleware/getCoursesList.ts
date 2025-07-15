@@ -10,11 +10,11 @@ export const checkSearchCoursesList: preHandlerHookHandler = async (
 ) => {
   const { myQuery } = req;
 
-  if (!myQuery) return res.err4022({ msg: "missing query at all" });
+  if (!myQuery) return res.err422({ msg: "missing query at all" });
 
   const { isOK, fancyErrsList, msg } = await checkZod(myQuery, {
     schema: schemaSearchCoursesServer,
   });
 
-  if (!isOK) return res.err4022({ msg, fancyErrsList });
+  if (!isOK) return res.err422({ msg, fancyErrsList });
 };

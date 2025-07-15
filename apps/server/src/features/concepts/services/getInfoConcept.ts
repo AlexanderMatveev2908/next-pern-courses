@@ -6,9 +6,7 @@ import sql from "sql-template-tag";
 
 export type ReturnInfoCpt = Promise<{
   concept: Concept & {
-    questions: Question[] & {
-      variants: Variant[];
-    };
+    questions: (Question & { variants: Variant[] })[];
   };
 }>;
 

@@ -66,7 +66,7 @@ declare module "fastify" {
     err404<T>(data?: T): FastifyReply;
     err409<T>(data?: T): FastifyReply;
     res419<T>(data?: T): FastifyReply;
-    err4022<T>(data?: T): FastifyReply;
+    err422<T>(data?: T): FastifyReply;
     err429<T>(data?: T): FastifyReply;
     err500<T>(data?: T): FastifyReply;
   }

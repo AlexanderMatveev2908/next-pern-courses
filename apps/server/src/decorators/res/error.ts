@@ -8,7 +8,7 @@ export default fp(async (app: FastifyInstance) => {
     err403: { code: 403, defMsg: "Forbidden" },
     err404: { code: 404, defMsg: "Not found" },
     err409: { code: 409, defMsg: "Conflict" },
-    err4022: { code: 422, defMsg: "Unprocessable entity" },
+    err422: { code: 422, defMsg: "Unprocessable entity" },
     err429: {
       code: 429,
       defMsg: "Our hamster-powered server took a break — try again later! 🐹",
