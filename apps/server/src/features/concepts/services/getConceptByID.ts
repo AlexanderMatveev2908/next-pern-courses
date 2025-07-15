@@ -19,6 +19,38 @@ export const getConceptByIDSvc = async (id: string) => {
 
         SELECT cpt.*,
 
+        (
+           SELECT row_to_json(cpt_user_outer)
+           FROM (
+            SELECT cpt_user_inner.id, cpt_user_inner.score,
+
+            (
+                SELECT json_agg(row_to_json(answers))
+                
+                FROM (
+                    SELECT user_asw.id, user_asw."isCorrect", user_asw."variantID",
+
+                    (
+                        SELECT row_to_json(vrt_outer)
+                        FROM (
+                            SELECT vrt_inner.id, vrt_inner.answer
+
+                            FROM "Variant" vrt_inner
+                            WHERE vrt_inner.id = user_asw."variantID"  
+                        ) vrt_outer
+                    ) variant
+
+                    FROM "UserAnswer" user_asw 
+                    WHERE user_asw."userConceptID" = cpt_user_inner.id
+                ) answers
+            ) "userAnswers"
+
+            FROM "UserConcept" cpt_user_inner 
+            WHERE  cpt_user_inner."conceptID" = cpt.id
+            LIMIT 1
+           ) cpt_user_outer
+        ) "userConcept",
+
         json_build_object(
         'conceptsCount', (
             SELECT COUNT(*) FROM cpt_list

@@ -16,7 +16,7 @@ model Concept {
 
     questions Question[] @relation("QuestionConcept")
 
-    userConcept UserConcept[] @relation("UserToConcept")
+    userConcepts UserConcept[] @relation("UserToConcept")
 
     @@index([courseID, title])
 

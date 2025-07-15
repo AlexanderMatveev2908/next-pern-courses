@@ -145,7 +145,7 @@ model Concept {
 
     questions Question[] @relation("QuestionConcept")
 
-    userConcept UserConcept[] @relation("UserToConcept")
+    userConcepts UserConcept[] @relation("UserToConcept")
 
     @@index([courseID, title])
 
@@ -165,7 +165,7 @@ model Question {
     concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
-    userQuestions UserAnswer[] @relation("UserQuestion")
+    questionUsers UserAnswer[] @relation("UserQuestion")
 
     @@index([conceptID, title])
 
@@ -184,7 +184,7 @@ model Variant {
     questionID String
     question Question @relation(fields: [questionID],references: [id],name:"QuizVariant")
 
-    userAnswers UserAnswer[]  @relation("UserAnswer")
+    answerUsers UserAnswer[]  @relation("UserAnswer")
 
     @@index([questionID])
 
