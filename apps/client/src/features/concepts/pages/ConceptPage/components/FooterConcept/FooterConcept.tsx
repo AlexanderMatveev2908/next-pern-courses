@@ -132,7 +132,7 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
           css={css`
             /* general hypothetical hight of btns rows for all screens and font sizes */
             max-height: ${maxH + 200}px;
-            max-width: ${MAX_WIDTH};
+            max-width: ${MAX_WIDTH}px;
           `}
         >
           <motion.div
