@@ -16,6 +16,27 @@ export const serviceGetCourseByID = async (id: string) => {
       json_agg(
         json_build_object(
           ${injectKeyValSQL(objKeysConcept.concept, { prefix: "cpt" })},
+
+           'userConcept', (
+            SELECT row_to_json(row_concept_processed)
+            FROM (
+              SELECT user_concept_inner.*,
+
+              (
+                SELECT json_agg(row_to_json(processed_answer))
+                FROM (
+                  SELECT answer_user_inner.*
+                  FROM "UserAnswer" answer_user_inner
+                  WHERE answer_user_inner."userConceptID" = user_concept_inner.id
+                ) processed_answer
+              ) "userAnswers"
+
+              FROM "UserConcept" user_concept_inner
+              WHERE user_concept_inner."conceptID" = cpt.id
+              LIMIT 1
+            ) row_concept_processed
+          ),
+
           'hasVideo', (
             SELECT EXISTS (
               SELECT 1 
