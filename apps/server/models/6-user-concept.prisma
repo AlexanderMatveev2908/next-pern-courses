@@ -4,7 +4,7 @@ model UserConcept {
     conceptID String
     concept Concept @relation(fields: [conceptID],references: [id],name:"UserToConcept")
 
-    score Int @default(0)
+    score Float @default(0.00)
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 

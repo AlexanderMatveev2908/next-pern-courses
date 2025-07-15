@@ -8,6 +8,7 @@ model Question {
     concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
+    userQuestions UserAnswer[] @relation("UserQuestion")
 
     @@index([conceptID, title])
 

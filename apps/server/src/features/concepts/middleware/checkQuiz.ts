@@ -54,11 +54,4 @@ export const checkQuizMdw = async (req: FastifyRequest, res: FastifyReply) => {
         });
     }
   }
-
-  __cg("cpt", concept);
-  __cg("b", quiz);
-
-  return res.res200({
-    concept,
-  });
 };

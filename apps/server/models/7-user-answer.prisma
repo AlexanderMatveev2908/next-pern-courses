@@ -1,8 +1,12 @@
 model UserAnswer {
     id String @id @default(uuid())
 
+    questionID String
+    question Question @relation(fields: [questionID],references: [id],name:"UserQuestion")
+
     variantID String
     answer Variant @relation(fields: [variantID],references: [id],name:"UserAnswer")
+    isCorrect Boolean @default(false)
 
     @@index([variantID])
 

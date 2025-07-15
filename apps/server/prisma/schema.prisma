@@ -165,6 +165,7 @@ model Question {
     concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
+    userQuestions UserAnswer[] @relation("UserQuestion")
 
     @@index([conceptID, title])
 
@@ -199,7 +200,7 @@ model UserConcept {
     conceptID String
     concept Concept @relation(fields: [conceptID],references: [id],name:"UserToConcept")
 
-    score Int @default(0)
+    score Float @default(0.00)
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 
@@ -210,8 +211,12 @@ model UserConcept {
 model UserAnswer {
     id String @id @default(uuid())
 
+    questionID String
+    question Question @relation(fields: [questionID],references: [id],name:"UserQuestion")
+
     variantID String
     answer Variant @relation(fields: [variantID],references: [id],name:"UserAnswer")
+    isCorrect Boolean @default(false)
 
     @@index([variantID])
 
