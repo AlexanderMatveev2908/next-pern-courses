@@ -3,8 +3,7 @@
 
 import MiniCheckBox from "@/common/components/forms/inputs/FormFiledMiniCheck/components/MiniCheckBox";
 import { ConceptType, VariantType } from "@/features/concepts/types";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { __cg } from "@shared/first/lib/logger.js";
+import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { CircleCheckBig, CircleX } from "lucide-react";
 import type { FC } from "react";
@@ -33,10 +32,12 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
   );
   const goodChoice =
     isCompleted &&
-    !analyzed &&
-    concept.questions
-      .find((q) => q.id === variant.questionID)
-      ?.variants.find((vrt) => vrt.isCorrect && vrt.id === variant.id);
+    !isObjOK(analyzed) &&
+    fallBack.userAnswers.find(
+      (choice) =>
+        isObjOK(choice.correctAnswer) &&
+        choice.correctAnswer!.id === variant.id,
+    );
 
   const AnalyzedSVG = analyzed?.isCorrect ? CircleCheckBig : CircleX;
 

@@ -31,6 +31,11 @@ export type UserAnswerType = ServerModel<{
   question: QuestionType;
 
   isCorrect: boolean;
+
+  correctAnswer?: {
+    id: string;
+    answer: string;
+  } | null;
 }>;
 
 export type UserConceptType = ServerModel<{

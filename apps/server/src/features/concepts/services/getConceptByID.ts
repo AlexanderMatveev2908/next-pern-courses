@@ -30,14 +30,30 @@ export const getConceptByIDSvc = async (id: string) => {
                 FROM (
                     SELECT user_asw.id, user_asw."isCorrect", user_asw."variantID", user_asw."questionID",
 
-                    (
-                        SELECT row_to_json(vrt_outer)
-                        FROM (
-                            SELECT vrt_inner.id, vrt_inner.answer, vrt_inner."isCorrect", vrt_inner."questionID"
+                    (   
+                        SELECT CASE 
+                        WHEN user_asw."isCorrect" THEN NULL
+                        ELSE (
+                            SELECT json_build_object(
+                                'id',right_choice.id,
+                                'answer',right_choice.answer
+                            )
+                            FROM "Variant" right_choice
+                            WHERE right_choice."questionID" = user_asw."questionID"
+                            AND right_choice."isCorrect" = true
+                            LIMIT 1
+                        )
+                        END
+                    ) "correctAnswer",
 
-                            FROM "Variant" vrt_inner
-                            WHERE vrt_inner.id = user_asw."variantID"  
-                        ) vrt_outer
+                    (
+                        SELECT row_to_json(variant_joined_processed)
+                        FROM (
+                            SELECT variant_joined.id, variant_joined.answer, variant_joined."isCorrect", variant_joined."questionID"
+
+                            FROM "Variant" variant_joined
+                            WHERE variant_joined.id = user_asw."variantID"  
+                        ) variant_joined_processed
                     ) variant
 
                     FROM "UserAnswer" user_asw 
