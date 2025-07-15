@@ -16,13 +16,13 @@ export const getInfoConceptSvc = async (id: string): ReturnInfoCpt => {
 
     (        
         SELECT COALESCE(
-            json_agg(
-                json_build_object(
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
                     ${injectKeyValSQL(objKeysConcept.question, { prefix: "q" })},
                     'variants',(
                         SELECT COALESCE(
-                            json_agg(
-                                json_build_object(
+                            JSON_AGG(
+                                JSON_BUILD_OBJECT(
                                     ${injectKeyValSQL(objKeysConcept.variant, { prefix: "v" })}
                                 )
                             )

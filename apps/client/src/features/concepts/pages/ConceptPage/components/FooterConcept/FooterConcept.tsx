@@ -11,10 +11,7 @@ import { useQuiz } from "./reducer/useQuiz";
 import { FC, useMemo, useRef } from "react";
 import { useResizeElementHeight } from "@/core/hooks/ui/useResizeElementHeight";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  FormQuizType,
-  schemaQuiz,
-} from "@shared/first/paperwork/concepts/schema.quiz.js";
+import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionItem from "./components/QuestionItem";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -26,6 +23,8 @@ import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useParams } from "next/navigation";
+import ProgressBar from "@/common/components/elements/ProgressBar/ProgressBar";
+import { useExtendSchemaQuiz } from "./hooks/useExtendSchemaQuiz";
 
 type PropsType = {
   concept: ConceptType;
@@ -48,41 +47,11 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
     optionalDep,
   });
 
-  const syncSchema = schemaQuiz.extend({}).superRefine((data, ctx) => {
-    if ((data.quiz.length ?? 0) < questions.length)
-      ctx.addIssue({
-        code: "custom",
-        path: ["quiz"],
-        message: "Quiz is not finished",
-      });
-
-    let i = 0;
-
-    while (i < (data.quiz?.length ?? 0)) {
-      const curr = data.quiz[i];
-
-      if (!curr?.answerIDs?.length)
-        ctx.addIssue({
-          code: "custom",
-          path: [`quiz.${i}.answerIDs`],
-          message: `question idx ${i} need answer`,
-        });
-
-      if ((curr?.answerIDs.length ?? 0) > 1)
-        ctx.addIssue({
-          code: "custom",
-          path: [`quiz.${i}.answerIDs`],
-          message: `question idx ${i} has too many answers`,
-        });
-
-      i++;
-    }
-  });
-
   const [mutate, { isLoading }] =
     conceptsSliceAPI.useCheckQuizAnswersMutation();
   const { wrapMutation } = useWrapMutation();
 
+  const { syncSchema } = useExtendSchemaQuiz({ concept });
   const formCtx = useForm<FormQuizType>({
     resolver: zodResolver(syncSchema),
     mode: "onChange",
@@ -127,6 +96,8 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
     contentRef: parentRef,
   });
 
+  const MAX_WIDTH = 1000;
+
   return (
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
@@ -135,6 +106,14 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
             txt: isCompleted
               ? `Your score is ${concept.userConcept!.score}%`
               : "Questions",
+          }}
+        />
+
+        <ProgressBar
+          {...{
+            totSwaps: concept.questions.length,
+            currSwap,
+            maxW: MAX_WIDTH,
           }}
         />
 
@@ -149,10 +128,11 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
 
         <div
           ref={parentRef}
-          className="mx-auto w-full max-w-[1000px] border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
+          className="mx-auto w-full border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
           css={css`
             /* general hypothetical hight of btns rows for all screens and font sizes */
             max-height: ${maxH + 200}px;
+            max-width: ${MAX_WIDTH}px;
           `}
         >
           <motion.div

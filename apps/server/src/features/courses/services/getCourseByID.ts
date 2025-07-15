@@ -13,17 +13,17 @@ export const serviceGetCourseByID = async (id: string) => {
 
   (
     SELECT COALESCE(
-      json_agg(
-        json_build_object(
+      JSON_AGG(
+        JSON_BUILD_OBJECT(
           ${injectKeyValSQL(objKeysConcept.concept, { prefix: "cpt" })},
 
            'userConcept', (
-            SELECT row_to_json(row_concept_processed)
+            SELECT ROW_TO_JSON(row_concept_processed)
             FROM (
               SELECT user_concept_inner.id,user_concept_inner.score,
 
               (
-                SELECT json_agg(row_to_json(processed_answer))
+                SELECT JSON_AGG(ROW_TO_JSON(processed_answer))
                 FROM (
                   SELECT answer_user_inner.*
                   FROM "UserAnswer" answer_user_inner
@@ -49,13 +49,13 @@ export const serviceGetCourseByID = async (id: string) => {
           'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
           'questions', (
             SELECT COALESCE(
-              json_agg(
-                json_build_object(
+              JSON_AGG(
+                JSON_BUILD_OBJECT(
                   ${injectKeyValSQL(objKeysConcept.question, { prefix: "q" })},
                   'variants', (
                     SELECT COALESCE(
-                      json_agg(
-                        json_build_object(
+                      JSON_AGG(
+                        JSON_BUILD_OBJECT(
                           ${injectKeyValSQL(objKeysConcept.variant, { prefix: "v" })}
                         )
                       ), '[]'::JSON
@@ -77,7 +77,7 @@ export const serviceGetCourseByID = async (id: string) => {
     WHERE cpt."courseID" = c.id
   ) concepts,
 
-   json_build_object(
+   JSON_BUILD_OBJECT(
     'conceptsCount',
       (
         SELECT COUNT(*)::INT
@@ -104,19 +104,19 @@ export const serviceGetCourseByID = async (id: string) => {
 
 //  ${grabAssetsItem("COURSE")},
 
-//  json_agg(
-//   json_build_object(
+//  JSON_AGG(
+//   JSON_BUILD_OBJECT(
 //     ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
 //     'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
-//     'questions', json_agg(
-//       json_build_object(
+//     'questions', JSON_AGG(
+//       JSON_BUILD_OBJECT(
 //         ${injectKeyValSQL(quizKeys, { prefix: "q" })}
 //       )
 //     )
 //   )
 //  ) concepts,
 
-//  json_build_object(
+//  JSON_BUILD_OBJECT(
 //   'conceptsCount',
 //     (
 //       SELECT COUNT(*)::INT
