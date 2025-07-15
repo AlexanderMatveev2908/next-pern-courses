@@ -7,7 +7,7 @@ import sql from "sql-template-tag";
 export const getConceptByIDSvc = async (id: string) => {
   const raw = sql`
         WITH cpt_list AS (
-        SELECT id, title, "courseID", "order"
+        SELECT id, title, "courseID", "order", "isCompleted"
         FROM "Concept"
         WHERE "courseID" = (
             -- could just pass id as arg, i wanted just see how many sql patterns i could

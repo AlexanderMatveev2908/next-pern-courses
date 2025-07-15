@@ -49,6 +49,13 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
   });
 
   const syncSchema = schemaQuiz.extend({}).superRefine((data, ctx) => {
+    if (concept.refs?.prev && !concept.refs.prev.isCompleted)
+      ctx.addIssue({
+        code: "custom",
+        path: ["quiz"],
+        message: "You should first finish previous concept",
+      });
+
     if ((data.quiz.length ?? 0) < questions.length)
       ctx.addIssue({
         code: "custom",
