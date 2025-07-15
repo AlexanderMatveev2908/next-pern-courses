@@ -67,7 +67,9 @@ const FormQuiz = () => {
           >
             <BtnTrash
               {...{
-                handleClick: remove.bind(null, quizItemIdx),
+                handleClick: () => {
+                  remove(quizItemIdx);
+                },
               }}
             />
 
