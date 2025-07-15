@@ -59,7 +59,7 @@ export const coursesSliceAPI = api.injectEndpoints({
         url: `${BASE_URL}/${id}`,
         method: "GET",
       }),
-      providesTags: [TagsAPI.COURSE_ITEM],
+      providesTags: [TagsAPI.COURSE_PAGE],
     }),
   }),
 });

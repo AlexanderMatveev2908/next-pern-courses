@@ -3,7 +3,7 @@
 "use client";
 
 import SubTitle from "@/common/components/elements/SubTitle";
-import { QuestionType } from "@/features/concepts/types";
+import { ConceptType, QuestionType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { forwardRef, RefObject, useMemo } from "react";
 import VariantQuiz from "./components/VariantQuiz";
@@ -18,10 +18,11 @@ type PropsType = {
   currSwap: number;
   question: QuestionType;
   stageSwap: SwapStageType;
+  concept: ConceptType;
 };
 
 const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
-  ({ currSwap, outerIdx, question, stageSwap }, contentRef) => {
+  ({ concept, currSwap, outerIdx, question, stageSwap }, contentRef) => {
     const {
       formState: { errors },
     } = useFormContext<FormQuizType>();
@@ -76,6 +77,7 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
               {...{
                 variant: vrt,
                 outerIdx,
+                concept,
               }}
             />
           ))}

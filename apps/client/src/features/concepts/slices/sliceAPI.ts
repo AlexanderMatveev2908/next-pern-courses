@@ -29,7 +29,7 @@ export const conceptsSliceAPI = api.injectEndpoints({
       }),
       invalidatesTags: (res, err, arg) => {
         return [
-          TagsAPI.COURSE_ITEM,
+          TagsAPI.COURSE_PAGE,
           {
             type: TagsAPI.COURSES_LIST,
             id: arg.courseID,
@@ -46,7 +46,7 @@ export const conceptsSliceAPI = api.injectEndpoints({
         url: `${BASE_URL}/${conceptID}`,
         method: "GET",
       }),
-      providesTags: [TagsAPI.CONCEPT_ITEM],
+      providesTags: [TagsAPI.CONCEPT_PAGE],
     }),
 
     checkQuizAnswers: builder.mutation<
@@ -58,6 +58,7 @@ export const conceptsSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: [TagsAPI.CONCEPT_PAGE],
     }),
   }),
 });
