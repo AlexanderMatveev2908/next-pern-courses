@@ -9,7 +9,7 @@ export const wrapRoute =
     } catch (err: any) {
       __cg("err wrap route", err?.msg ?? err?.message);
 
-      return res.res500({
+      return res.err500({
         msg: err?.msg ?? err?.message,
       });
     }

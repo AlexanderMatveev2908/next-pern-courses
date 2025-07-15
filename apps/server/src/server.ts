@@ -22,7 +22,7 @@ const app = Fastify({
 
 // DEL_ALL();
 
-//  !  145s time required
+//  !  160s time required (sometimes server crash for connection database during promises)
 // genMock();
 
 process.on("SIGTERM", () => {

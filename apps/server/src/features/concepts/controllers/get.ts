@@ -30,7 +30,7 @@ export const getConceptByIDCtrl = async (
   const { concept } = await getConceptByIDSvc(conceptID as string);
 
   if (!concept)
-    return res.res404({
+    return res.err404({
       msg: "Concept not found",
     });
 

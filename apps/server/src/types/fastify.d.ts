@@ -15,6 +15,16 @@ export type FieldSearchClientType = Record<string, any> & {
   id: string;
 };
 
+export type GenericParam = {
+  params: {} & {
+    [key: string]: string;
+  };
+};
+
+export type GenericReq = {
+  body: Record<string, any>;
+} & GenericParam;
+
 declare module "fastify" {
   interface FastifyInstance {
     env: {
@@ -50,14 +60,14 @@ declare module "fastify" {
     res201<T>(data: T): FastifyReply;
     res204(): void;
 
-    res400<T>(data?: T): FastifyReply;
-    res401<T>(data?: T): FastifyReply;
-    res403<T>(data?: T): FastifyReply;
-    res404<T>(data?: T): FastifyReply;
-    res409<T>(data?: T): FastifyReply;
+    err400<T>(data?: T): FastifyReply;
+    err401<T>(data?: T): FastifyReply;
+    err403<T>(data?: T): FastifyReply;
+    err404<T>(data?: T): FastifyReply;
+    err409<T>(data?: T): FastifyReply;
     res419<T>(data?: T): FastifyReply;
-    res422<T>(data?: T): FastifyReply;
-    res429<T>(data?: T): FastifyReply;
-    res500<T>(data?: T): FastifyReply;
+    err422<T>(data?: T): FastifyReply;
+    err429<T>(data?: T): FastifyReply;
+    err500<T>(data?: T): FastifyReply;
   }
 }

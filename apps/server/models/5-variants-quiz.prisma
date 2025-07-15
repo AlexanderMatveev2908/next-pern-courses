@@ -7,6 +7,8 @@ model Variant {
     questionID String
     question Question @relation(fields: [questionID],references: [id],name:"QuizVariant")
 
+    userAnswers UserAnswer[]  @relation("UserAnswer")
+
     @@index([questionID])
 
     createdAt DateTime @default(now())

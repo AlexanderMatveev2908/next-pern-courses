@@ -114,6 +114,8 @@ model Course {
     rootLanguage Boolean @default(false)
     estimatedTime Int @default(0)
     pointsGained Int @default(0)
+
+    isCompleted Boolean @default(false)
     
     createdAt DateTime @default(now())
     deletedAt DateTime?   
@@ -136,10 +138,14 @@ model Concept {
     pointsGained Int
     order Int
 
+    isCompleted Boolean @default(false)
+
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
 
     questions Question[] @relation("QuestionConcept")
+
+    userConcept UserConcept[] @relation("UserToConcept")
 
     @@index([courseID, title])
 
@@ -148,7 +154,7 @@ model Concept {
 }
 /* => end 3-concept-course.prisma */
 
-/* => start 4-quiz-concept.prisma */
+/* => start 4-question-concept.prisma */
 model Question {
     id String @id @default(uuid())
 
@@ -159,13 +165,14 @@ model Question {
     concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
+    userQuestions UserAnswer[] @relation("UserQuestion")
 
     @@index([conceptID, title])
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 
 }
-/* => end 4-quiz-concept.prisma */
+/* => end 4-question-concept.prisma */
 
 /* => start 5-variants-quiz.prisma */
 model Variant {
@@ -177,9 +184,48 @@ model Variant {
     questionID String
     question Question @relation(fields: [questionID],references: [id],name:"QuizVariant")
 
+    userAnswers UserAnswer[]  @relation("UserAnswer")
+
     @@index([questionID])
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 
 }
 /* => end 5-variants-quiz.prisma */
+
+/* => start 6-user-concept.prisma */
+model UserConcept {
+    id String @id @default(uuid())
+
+    conceptID String
+    concept Concept @relation(fields: [conceptID],references: [id],name:"UserToConcept")
+
+    score Float @default(0.00)
+
+    userAnswers UserAnswer[] @relation("UserConceptAnswers")
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
+/* => end 6-user-concept.prisma */
+
+/* => start 7-user-answer.prisma */
+model UserAnswer {
+    id String @id @default(uuid())
+
+    userConceptID String 
+    userConcept UserConcept @relation(fields: [userConceptID],references: [id],name:"UserConceptAnswers")
+
+    questionID String
+    question Question @relation(fields: [questionID],references: [id],name:"UserQuestion")
+
+    variantID String
+    answer Variant @relation(fields: [variantID],references: [id],name:"UserAnswer")
+    isCorrect Boolean @default(false)
+
+    @@index([variantID])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
+/* => end 7-user-answer.prisma */

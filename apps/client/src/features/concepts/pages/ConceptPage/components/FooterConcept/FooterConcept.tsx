@@ -23,7 +23,9 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
-import { uiBreaks } from "@/core/constants/uiBreaks";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
+import { useParams } from "next/navigation";
 
 type PropsType = {
   concept: ConceptType;
@@ -32,6 +34,8 @@ type PropsType = {
 const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
   const { currSwap, maxH, setCurrSwap, contentRef, setMaxH, stageSwap } =
     useQuiz();
+
+  const { conceptID } = useParams();
 
   const parentRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,7 +51,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
       ctx.addIssue({
         code: "custom",
         path: ["quiz"],
-        message: "Question is not finished",
+        message: "Quiz is not finished",
       });
 
     let i = 0;
@@ -73,6 +77,10 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
     }
   });
 
+  const [mutate, { isLoading }] =
+    conceptsSliceAPI.useCheckQuizAnswersMutation();
+  const { wrapMutation } = useWrapMutation();
+
   const formCtx = useForm<FormQuizType>({
     resolver: zodResolver(syncSchema),
     mode: "onChange",
@@ -84,7 +92,11 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
   } = formCtx;
   const handleSave = handleSubmit(
     async (dataRHF) => {
-      __cg("RHF", dataRHF);
+      const res = await wrapMutation({
+        cbAPI: () => mutate({ data: dataRHF, conceptID: conceptID as string }),
+      });
+
+      if (!res) return;
     },
     (errs) => {
       __cg("errs", errs);
@@ -121,7 +133,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
         <ExternalTooltipErr
           {...{
             top: posParent[0],
-            left: posParent[1] - (window.innerWidth > uiBreaks.sm ? 100 : 0),
+            left: posParent[1],
             manualErr: errors?.quiz?.message,
             cssZ: 750,
           }}
@@ -184,7 +196,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
               isEnabled: true,
               label: "Send quiz",
               type: "submit",
-              isLoading: false,
+              isLoading,
             }}
           />
         </div>

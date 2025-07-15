@@ -19,7 +19,7 @@ export const catchErr: FastifyPluginCallback = fp((app) => {
         stack: err?.stack,
       });
 
-      return res.res500({
+      return res.err500({
         msg:
           err?.msg ??
           err?.message ??

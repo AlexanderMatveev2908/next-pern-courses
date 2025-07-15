@@ -11,7 +11,7 @@ export const checkPostCourse = async (
 ) => {
   const { myFormData } = req;
 
-  if (!myFormData) return res.res422({ msg: "missing form at all" });
+  if (!myFormData) return res.err422({ msg: "missing form at all" });
 
   const { fields, files } = myFormData;
   const normalized = {
@@ -24,5 +24,5 @@ export const checkPostCourse = async (
     schema: schemaPostCourseServer,
   });
 
-  if (!isOK) return res.res422({ msg, fancyErrsList });
+  if (!isOK) return res.err422({ msg, fancyErrsList });
 };

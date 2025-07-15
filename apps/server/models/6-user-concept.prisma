@@ -1,0 +1,13 @@
+model UserConcept {
+    id String @id @default(uuid())
+
+    conceptID String
+    concept Concept @relation(fields: [conceptID],references: [id],name:"UserToConcept")
+
+    score Float @default(0.00)
+
+    userAnswers UserAnswer[] @relation("UserConceptAnswers")
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
