@@ -130,7 +130,13 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
   return (
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
-        <SubTitle {...{ txt: "Questions" }} />
+        <SubTitle
+          {...{
+            txt: isCompleted
+              ? `Your score is ${concept.userConcept!.score}%`
+              : "Questions",
+          }}
+        />
 
         <ExternalTooltipErr
           {...{
