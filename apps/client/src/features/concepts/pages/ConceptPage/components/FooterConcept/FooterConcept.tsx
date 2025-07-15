@@ -23,7 +23,6 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
-import { uiBreaks } from "@/core/constants/uiBreaks";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useParams } from "next/navigation";
@@ -52,7 +51,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
       ctx.addIssue({
         code: "custom",
         path: ["quiz"],
-        message: "Question is not finished",
+        message: "Quiz is not finished",
       });
 
     let i = 0;
@@ -134,7 +133,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
         <ExternalTooltipErr
           {...{
             top: posParent[0],
-            left: posParent[1] - (window.innerWidth > uiBreaks.sm ? 100 : 0),
+            left: posParent[1],
             manualErr: errors?.quiz?.message,
             cssZ: 750,
           }}

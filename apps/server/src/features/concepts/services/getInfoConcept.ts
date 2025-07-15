@@ -1,12 +1,20 @@
-import { Concept } from "@prisma/client";
+import { Concept, Question, Variant } from "@prisma/client";
 import db from "@src/conf/db.js";
 import { objKeysConcept } from "@src/features/courses/lib/sqlData.js";
 import { injectKeyValSQL } from "@src/lib/sql.js";
 import sql from "sql-template-tag";
 
-export const getInfoConceptSvc = async (id: string) => {
+export type ReturnInfoCpt = Promise<{
+  concept: Concept & {
+    questions: Question[] & {
+      variants: Variant[];
+    };
+  };
+}>;
+
+export const getInfoConceptSvc = async (id: string): ReturnInfoCpt => {
   const raw = sql`
- SELECT id,
+ SELECT cpt.id,
 
 
     (        
@@ -46,5 +54,5 @@ export const getInfoConceptSvc = async (id: string) => {
 
   return {
     concept,
-  };
+  } as unknown as ReturnInfoCpt;
 };
