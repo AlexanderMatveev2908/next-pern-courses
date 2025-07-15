@@ -24,7 +24,7 @@ export const getCourseByID = async (req: FastifyRequest, res: FastifyReply) => {
   const { course } = await serviceGetCourseByID(courseID);
 
   if (!course)
-    return res.res404({
+    return res.err404({
       msg: "Course not found",
     });
 

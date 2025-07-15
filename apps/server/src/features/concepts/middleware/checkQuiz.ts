@@ -13,11 +13,11 @@ export const checkQuizMdw = async (req: FastifyRequest, res: FastifyReply) => {
   const { concept } = await getInfoConceptSvc(conceptID);
 
   if (!concept)
-    return res.res400({
+    return res.err400({
       msg: "concept not found",
     });
   if ((quiz ?? []).length !== concept.questions.length)
-    return res.res409({
+    return res.err409({
       msg: "Length of input and data in db does not correspond",
     });
 

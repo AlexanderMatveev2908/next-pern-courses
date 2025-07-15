@@ -30,7 +30,7 @@ export const postConceptMdw: preHandlerHookHandler = async (
       schema: schemaConceptServer,
     });
 
-    if (!isOK) return res.res422({ msg, fancyErrsList });
+    if (!isOK) return res.err4022({ msg, fancyErrsList });
 
     genFancyForm(req, normalized);
   } catch (err: any) {

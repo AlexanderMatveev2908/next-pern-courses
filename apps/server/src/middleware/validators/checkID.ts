@@ -9,7 +9,7 @@ export const checkID =
     const id = req.params?.[key as keyof typeof req.params];
 
     if (!isIdOk(id))
-      return res.res400({
+      return res.err400({
         msg: "invalid id ⚔️",
       });
   };
