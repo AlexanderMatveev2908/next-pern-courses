@@ -23,12 +23,13 @@ import { BtnActType } from "@/common/types/uiFactory";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
+import { uiBreaks } from "@/core/constants/uiBreaks";
 
 type PropsType = {
   concept: ConceptType;
 };
 
-const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
+const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
   const { currSwap, maxH, setCurrSwap, contentRef, setMaxH, stageSwap } =
     useQuiz();
 
@@ -42,11 +43,11 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
   });
 
   const syncSchema = schemaQuiz.extend({}).superRefine((data, ctx) => {
-    if ((data.quiz.length ?? 0) < quizzes.length)
+    if ((data.quiz.length ?? 0) < questions.length)
       ctx.addIssue({
         code: "custom",
         path: ["quiz"],
-        message: "Quiz is not finished",
+        message: "Question is not finished",
       });
 
     let i = 0;
@@ -120,7 +121,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
         <ExternalTooltipErr
           {...{
             top: posParent[0],
-            left: posParent[1] - 100,
+            left: posParent[1] - (window.innerWidth > uiBreaks.sm ? 100 : 0),
             gappedErr: errors?.quiz?.message,
             cssZ: 750,
           }}
@@ -137,9 +138,9 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
           <motion.div
             className="grid gap-[10%]"
             css={css`
-              max-width: ${quizzes.length * 100}%;
+              max-width: ${questions.length * 100}%;
               align-items: start;
-              grid-template-columns: repeat(${quizzes.length}, 100%);
+              grid-template-columns: repeat(${questions.length}, 100%);
               justify-items: center;
               max-height: ${maxH}px;
             `}
@@ -153,7 +154,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
               x: `-${currSwap * 110}%`,
             }}
           >
-            {quizzes.map((q, i) => (
+            {questions.map((q, i) => (
               <QuestionItem
                 key={q.id}
                 {...{
@@ -171,7 +172,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { quizzes } }) => {
             {...{
               currSwap,
               setCurrSwap,
-              totSwaps: quizzes.length,
+              totSwaps: questions.length,
             }}
           />
         </div>

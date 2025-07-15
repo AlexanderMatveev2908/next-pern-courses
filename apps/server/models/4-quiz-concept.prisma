@@ -1,11 +1,11 @@
-model Quiz {
+model Question {
     id String @id @default(uuid())
 
     title String
     question String 
 
     conceptID String
-    concept Concept @relation(fields: [conceptID],references: [id],name:"QuizConcept" )
+    concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
 

@@ -61,7 +61,7 @@ export const postConceptSvc = async ({
 
         await Promise.all(
           data.quiz.map(async (q) => {
-            const newQuiz = await trx.quiz.create({
+            const newQuiz = await trx.question.create({
               data: {
                 title: q.title.val,
                 question: q.question.val,
@@ -76,7 +76,7 @@ export const postConceptSvc = async ({
               data: q.variants.map((v) => ({
                 answer: v.answer.val,
                 isCorrect: v.isCorrect.val,
-                quizID: newQuiz.id,
+                questionID: newQuiz.id,
               })),
             });
           }),
@@ -111,7 +111,7 @@ export const postConceptSvc = async ({
             id: newConcept.id,
           },
           include: {
-            quizzes: {
+            questions: {
               include: {
                 variants: true,
               },

@@ -23,7 +23,7 @@ const PreviewVideo: FC<PropsType> = ({ vid }) => {
 
   return (
     <div
-      className="w-full flex aspect-[16/9] max-w-[600px]"
+      className="w-full flex aspect-[16/9] max-w-[600px] border-[3px] border-neutral-800 p-5 rounded-xl"
       css={css`
         margin-top: ${isData ? "1rem" : "0px"};
       `}

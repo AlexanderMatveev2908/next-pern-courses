@@ -16,7 +16,7 @@ export const genRowsInfoConcept = (cpt: ConceptType) => [
   },
   {
     label: "Questions available",
-    val: cpt.quizzes.length,
+    val: cpt.questions.length,
   },
   {
     label: "Video lection",

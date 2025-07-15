@@ -139,7 +139,7 @@ model Concept {
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
 
-    quizzes Quiz[] @relation("QuizConcept")
+    questions Question[] @relation("QuestionConcept")
 
     @@index([courseID, title])
 
@@ -149,14 +149,14 @@ model Concept {
 /* => end 3-concept-course.prisma */
 
 /* => start 4-quiz-concept.prisma */
-model Quiz {
+model Question {
     id String @id @default(uuid())
 
     title String
     question String 
 
     conceptID String
-    concept Concept @relation(fields: [conceptID],references: [id],name:"QuizConcept" )
+    concept Concept @relation(fields: [conceptID],references: [id],name:"QuestionConcept" )
 
     variants Variant[] @relation("QuizVariant")
 
@@ -174,10 +174,10 @@ model Variant {
     isCorrect Boolean @default(false)
     answer String
 
-    quizID String
-    quiz Quiz @relation(fields: [quizID],references: [id],name:"QuizVariant")
+    questionID String
+    question Question @relation(fields: [questionID],references: [id],name:"QuizVariant")
 
-    @@index([quizID])
+    @@index([questionID])
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 

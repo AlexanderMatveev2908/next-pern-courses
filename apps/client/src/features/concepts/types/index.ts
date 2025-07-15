@@ -3,14 +3,14 @@ import { CloudAssetType } from "@/common/types/cloud";
 import { CourseType } from "@/features/courses/types/courses";
 
 export type VariantType = ServerModel<{
-  quizID: string;
-  quiz: QuizType;
+  questionID: string;
+  question: QuestionType;
 
   answer: string;
   isCorrect: boolean;
 }>;
 
-export type QuizType = ServerModel<{
+export type QuestionType = ServerModel<{
   conceptID: string;
   concept: ConceptType;
 
@@ -32,7 +32,7 @@ export type ConceptType = ServerModel<{
   pointsGained: number;
   order: number;
 
-  quizzes: QuizType[];
+  questions: QuestionType[];
 
   images: CloudAssetType[];
   video?: CloudAssetType | null;

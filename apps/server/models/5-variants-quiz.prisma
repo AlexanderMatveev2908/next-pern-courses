@@ -4,10 +4,10 @@ model Variant {
     isCorrect Boolean @default(false)
     answer String
 
-    quizID String
-    quiz Quiz @relation(fields: [quizID],references: [id],name:"QuizVariant")
+    questionID String
+    question Question @relation(fields: [questionID],references: [id],name:"QuizVariant")
 
-    @@index([quizID])
+    @@index([questionID])
 
     createdAt DateTime @default(now())
     deletedAt DateTime? 

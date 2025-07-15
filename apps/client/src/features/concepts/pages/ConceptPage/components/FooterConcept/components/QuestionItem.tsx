@@ -3,7 +3,7 @@
 "use client";
 
 import SubTitle from "@/common/components/elements/SubTitle";
-import { QuizType } from "@/features/concepts/types";
+import { QuestionType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { forwardRef, RefObject, useMemo } from "react";
 import VariantQuiz from "./components/VariantQuiz";
@@ -16,7 +16,7 @@ import { SwapStageType } from "../reducer/initState";
 type PropsType = {
   outerIdx: number;
   currSwap: number;
-  question: QuizType;
+  question: QuestionType;
   stageSwap: SwapStageType;
 };
 

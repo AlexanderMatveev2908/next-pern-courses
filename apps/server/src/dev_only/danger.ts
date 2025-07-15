@@ -7,7 +7,7 @@ export const DEL_ALL = async () => {
 
   await db.cloudAsset.deleteMany();
   await db.variant.deleteMany();
-  await db.quiz.deleteMany();
+  await db.question.deleteMany();
   await db.concept.deleteMany();
   await db.course.deleteMany();
 

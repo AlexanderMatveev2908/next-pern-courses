@@ -8,6 +8,6 @@ export const objKeysConcept = {
     "pointsGained",
     "order",
   ],
-  quiz: ["id", "title", "question"],
+  question: ["id", "title", "question"],
   variant: ["id", "answer", "isCorrect"],
 };

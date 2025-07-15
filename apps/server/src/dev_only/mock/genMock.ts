@@ -88,7 +88,7 @@ export const genMock = async () => {
 
           await Promise.all(
             Array.from({ length: 4 }).map(async (_, quizIdx) => {
-              const newQuiz = await db.quiz.create({
+              const newQuiz = await db.question.create({
                 data: {
                   title: `question idx ${quizIdx} for concept idx ${cptIdx} for course about ${v}`,
                   question: genIpsum(2),
@@ -101,7 +101,7 @@ export const genMock = async () => {
                 data: Array.from({ length: 5 }).map((_, varIdx) => ({
                   answer: `Answer idx ${varIdx} for quiz idx ${quizIdx} for concept ${cptIdx} for course about ${v} (${!varIdx ? "correct" : "false"})`,
                   isCorrect: !varIdx,
-                  quizID: newQuiz.id,
+                  questionID: newQuiz.id,
                   createdAt: new Date(Date.now() + varIdx * 100),
                 })),
               });

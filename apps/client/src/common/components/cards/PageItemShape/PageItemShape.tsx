@@ -71,7 +71,7 @@ const PageItemShape: FC<PropsType> = ({
         {Content}
       </div>
 
-      <div className="w-full aspect-[16/9] max-w-[800px] justify-self-center mt-[25px]">
+      <div className="w-full max-w-[800px] aspect-[16/9] max-h-[400px] justify-self-center mt-[25px] border-[3px] border-neutral-800 p-5 rounded-xl">
         <VideoLoader
           {...{
             src: video?.url,

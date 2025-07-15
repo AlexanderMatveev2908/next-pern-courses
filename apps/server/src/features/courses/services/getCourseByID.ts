@@ -27,11 +27,11 @@ export const serviceGetCourseByID = async (id: string) => {
             )
           ),
           'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
-          'quizzes', (
+          'questions', (
             SELECT COALESCE(
               json_agg(
                 json_build_object(
-                  ${injectKeyValSQL(objKeysConcept.quiz, { prefix: "q" })},
+                  ${injectKeyValSQL(objKeysConcept.question, { prefix: "q" })},
                   'variants', (
                     SELECT COALESCE(
                       json_agg(
@@ -41,12 +41,12 @@ export const serviceGetCourseByID = async (id: string) => {
                       ), '[]'::JSON
                     )
                     FROM "Variant" v
-                    WHERE v."quizID" = q.id
+                    WHERE v."questionID" = q.id
                   )
                 )
               ), '[]'::JSON
             )
-            FROM "Quiz" q
+            FROM "Question" q
             WHERE q."conceptID" = cpt.id
           )
         )
@@ -88,7 +88,7 @@ export const serviceGetCourseByID = async (id: string) => {
 //   json_build_object(
 //     ${injectKeyValSQL(conceptsKeys, { prefix: "cpt" })},
 //     'images', ${sqlStrImages("CONCEPT", { prefix: "cpt" })},
-//     'quizzes', json_agg(
+//     'questions', json_agg(
 //       json_build_object(
 //         ${injectKeyValSQL(quizKeys, { prefix: "q" })}
 //       )
@@ -108,7 +108,7 @@ export const serviceGetCourseByID = async (id: string) => {
 //  FROM "Course" c
 //  LEFT JOIN "Concept" cpt
 //  ON cpt."courseID" = c.id
-//  LEFT JOIN "Quiz" q
+//  LEFT JOIN "Question" q
 //  ON q."conceptID" = cpt.id
 
 //  WHERE c.id = ${id}

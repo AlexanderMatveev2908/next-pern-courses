@@ -30,7 +30,7 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
     setValue(
       `quiz.${outerIdx}`,
       {
-        questionID: variant.quizID,
+        questionID: variant.questionID,
         answerIDs: isAlreadyChosen
           ? [...data!.answerIDs, variant.id]
           : isChecked

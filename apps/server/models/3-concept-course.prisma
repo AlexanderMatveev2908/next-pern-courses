@@ -12,7 +12,7 @@ model Concept {
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
 
-    quizzes Quiz[] @relation("QuizConcept")
+    questions Question[] @relation("QuestionConcept")
 
     @@index([courseID, title])
 
