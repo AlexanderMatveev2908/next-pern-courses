@@ -2,22 +2,50 @@
 "use client";
 
 import MiniCheckBox from "@/common/components/forms/inputs/FormFiledMiniCheck/components/MiniCheckBox";
-import { VariantType } from "@/features/concepts/types";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
+import { ConceptType, VariantType } from "@/features/concepts/types";
+import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
+import { CircleCheckBig, CircleX } from "lucide-react";
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";
 
 type PropsType = {
   variant: VariantType;
   outerIdx: number;
+  concept: ConceptType;
 };
 
-const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
+const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
   const { setValue, watch, trigger } = useFormContext<FormQuizType>();
+
+  const { userConcept, isCompleted } = concept;
+  const fallBack = userConcept ?? {
+    userAnswers: [],
+  };
 
   const data =
     watch(`quiz.${outerIdx}`) ?? ({} as FormQuizType["quiz"][number]);
+
+  const analyzed =
+    isCompleted &&
+    fallBack.userAnswers.find(
+      (asw) =>
+        asw.questionID === variant.questionID && asw.variantID === variant.id,
+    );
+  const goodChoice =
+    isCompleted &&
+    !isObjOK(analyzed) &&
+    fallBack.userAnswers.find(
+      (choice) =>
+        isObjOK(choice.correctAnswer) &&
+        choice.correctAnswer!.id === variant.id,
+    );
+
+  const AnalyzedSVG = !analyzed
+    ? null
+    : analyzed?.isCorrect
+      ? CircleCheckBig
+      : CircleX;
 
   const isChecked: boolean =
     isArrOK(data!.answerIDs) &&
@@ -27,6 +55,8 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
     data!.answerIDs.every((id) => id !== variant.id);
 
   const handleClick = () => {
+    if (isCompleted) return null;
+
     setValue(
       `quiz.${outerIdx}`,
       {
@@ -43,20 +73,37 @@ const VariantQuiz: FC<PropsType> = ({ variant, outerIdx }) => {
     trigger("quiz");
   };
 
+  const twdCSS = "min-w-[40px] min-h-[40px]";
+
   return (
     <div className="w-full flex items-center gap-6">
-      <div
+      <button
+        type="button"
+        aria-label="Chose only one of 5 available variants"
+        disabled={isCompleted}
         onClick={handleClick}
-        className="min-w-[40px] min-h-[40px] relative cursor-pointer"
+        className={`min-w-[40px] min-h-[40px] relative enabled:cursor-pointer disabled:cursor-not-allowed`}
       >
-        <MiniCheckBox
-          {...{
-            isChecked: !!isChecked,
-          }}
-        />
-      </div>
+        {analyzed && AnalyzedSVG ? (
+          <AnalyzedSVG
+            className={`${twdCSS} ${analyzed.isCorrect ? "text-green-600" : "text-red-600"}`}
+          />
+        ) : goodChoice ? (
+          <CircleCheckBig className={`${twdCSS}  text-green-600`} />
+        ) : (
+          <MiniCheckBox
+            {...{
+              isChecked: !!isChecked,
+            }}
+          />
+        )}
+      </button>
 
-      <span className="txt__md text-[whitesmoke]">{variant.answer}</span>
+      <span
+        className={`txt__md ${analyzed ? (analyzed.isCorrect ? "text-green-600" : "text-red-600 pb-1 border-b-2 border-red-600") : goodChoice ? "text-green-600 border-2 border-green-600 py-2 px-4 rounded-xl" : "text-neutral-200"}`}
+      >
+        {variant.answer}
+      </span>
     </div>
   );
 };

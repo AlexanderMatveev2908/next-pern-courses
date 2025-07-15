@@ -20,6 +20,33 @@ export type QuestionType = ServerModel<{
   variants: VariantType[];
 }>;
 
+export type UserAnswerType = ServerModel<{
+  userConceptID: string;
+  userConcept: UserConceptType;
+
+  variantID: string;
+  questionID: string;
+
+  variant: VariantType;
+  question: QuestionType;
+
+  isCorrect: boolean;
+
+  correctAnswer?: {
+    id: string;
+    answer: string;
+  } | null;
+}>;
+
+export type UserConceptType = ServerModel<{
+  conceptID: string;
+  concept: ConceptType;
+
+  score: number;
+
+  userAnswers: UserAnswerType[];
+}>;
+
 export type ConceptType = ServerModel<{
   courseID: string;
   course: CourseType;
@@ -33,9 +60,13 @@ export type ConceptType = ServerModel<{
   order: number;
 
   questions: QuestionType[];
+  isCompleted: boolean;
 
   images: CloudAssetType[];
   video?: CloudAssetType | null;
+
+  userConcepts: UserConceptType[];
+  userConcept: UserConceptType | null;
 
   hasVideo?: boolean;
   refs?: {

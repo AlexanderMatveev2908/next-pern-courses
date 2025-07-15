@@ -5,6 +5,8 @@ import db from "@src/conf/db.js";
 export const DEL_ALL = async () => {
   __cg("start deleting 🕰️");
 
+  await db.userAnswer.deleteMany();
+  await db.userConcept.deleteMany();
   await db.cloudAsset.deleteMany();
   await db.variant.deleteMany();
   await db.question.deleteMany();

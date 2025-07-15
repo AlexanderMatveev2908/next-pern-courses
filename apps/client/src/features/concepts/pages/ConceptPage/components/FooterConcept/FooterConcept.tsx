@@ -31,7 +31,9 @@ type PropsType = {
   concept: ConceptType;
 };
 
-const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
+const FooterConcept: FC<PropsType> = ({ concept }) => {
+  const { questions, isCompleted } = concept;
+
   const { currSwap, maxH, setCurrSwap, contentRef, setMaxH, stageSwap } =
     useQuiz();
 
@@ -128,7 +130,13 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
   return (
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
-        <SubTitle {...{ txt: "Questions" }} />
+        <SubTitle
+          {...{
+            txt: isCompleted
+              ? `Your score is ${concept.userConcept!.score}%`
+              : "Questions",
+          }}
+        />
 
         <ExternalTooltipErr
           {...{
@@ -174,6 +182,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
                   outerIdx: i,
                   question: q,
                   stageSwap,
+                  concept,
                 }}
                 ref={contentRef}
               />
@@ -193,7 +202,7 @@ const FooterConcept: FC<PropsType> = ({ concept: { questions } }) => {
           <BtnShadow
             {...{
               btnActType: BtnActType.SUCCESS,
-              isEnabled: true,
+              isEnabled: !isCompleted,
               label: "Send quiz",
               type: "submit",
               isLoading,
