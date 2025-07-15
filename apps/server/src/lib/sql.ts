@@ -14,6 +14,7 @@ export const objKeysConcept = {
     "estimatedTime",
     "pointsGained",
     "order",
+    "isCompleted",
   ],
   question: ["id", "title", "question"],
   variant: ["id", "answer", "isCorrect"],
