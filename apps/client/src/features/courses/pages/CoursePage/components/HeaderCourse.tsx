@@ -5,6 +5,7 @@ import DropMenu from "@/common/components/dropMenu/DropMenu";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
 import { CourseType } from "@/features/courses/types/courses";
 import { linkCourseActions } from "@/features/courses/uiFactory/cards";
+import { __cg } from "@shared/first/lib/logger.js";
 import Link from "next/link";
 import type { FC } from "react";
 import { FaGear } from "react-icons/fa6";
@@ -18,8 +19,13 @@ const HeaderCourse: FC<PropsType> = ({ course }) => {
     lengths: [1],
   });
 
+  const { concepts = [] } = course;
+  const completedCount = concepts.filter((cpt) => cpt.isCompleted).length;
+  const perc = (completedCount / concepts.length) * 100;
+  __cg("perc", perc);
+
   return (
-    <div className="w-full flex  justify-end">
+    <div className="w-full flex justify-end">
       <div className="w-[300px]">
         <DropMenu
           {...{
