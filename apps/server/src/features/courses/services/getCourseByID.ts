@@ -1,10 +1,9 @@
 import { Course } from "@prisma/client";
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
-import { injectKeyValSQL } from "@src/lib/sql.js";
+import { injectKeyValSQL, objKeysConcept } from "@src/lib/sql.js";
 import { grabAssetsItem, sqlStrImages } from "@src/services/grabAssetsItem.js";
 import sql from "sql-template-tag";
-import { objKeysConcept } from "../lib/sqlData.js";
 
 export const serviceGetCourseByID = async (id: string) => {
   const raw = sql`

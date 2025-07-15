@@ -1,7 +1,6 @@
 import { Concept } from "@prisma/client";
 import db from "@src/conf/db.js";
-import { objKeysConcept } from "@src/features/courses/lib/sqlData.js";
-import { injectKeyValSQL } from "@src/lib/sql.js";
+import { injectKeyValSQL, objKeysConcept } from "@src/lib/sql.js";
 import { grabAssetsItem } from "@src/services/grabAssetsItem.js";
 import sql from "sql-template-tag";
 
