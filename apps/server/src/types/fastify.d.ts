@@ -15,6 +15,16 @@ export type FieldSearchClientType = Record<string, any> & {
   id: string;
 };
 
+export type GenericParam = {
+  params: {} & {
+    [key: string]: string;
+  };
+};
+
+export type GenericReq = {
+  body: Record<string, any>;
+} & GenericParam;
+
 declare module "fastify" {
   interface FastifyInstance {
     env: {

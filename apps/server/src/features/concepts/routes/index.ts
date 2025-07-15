@@ -9,6 +9,7 @@ import {
 import { parseForm } from "@src/middleware/multipart/multipart.js";
 import { checkQuizCtrl, postCourseCtrl } from "../controllers/post.js";
 import { postConceptMdw } from "../middleware/postConcept.js";
+import { checkQuizMdw } from "../middleware/checkQuiz.js";
 
 export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
@@ -40,7 +41,7 @@ export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
     method: "POST",
     url: "/check/:conceptID",
-    preHandler: [wrapRoute(logJSON), checkID("conceptID")],
+    preHandler: [wrapRoute(logJSON), checkID("conceptID"), checkQuizMdw],
     handler: wrapRoute(checkQuizCtrl),
   });
 };
