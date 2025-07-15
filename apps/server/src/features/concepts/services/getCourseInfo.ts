@@ -17,7 +17,7 @@ export const getInfoCourseSvc = async (id: string) => {
 
     SELECT c."id", c."title",
 
-    json_build_object(
+    JSON_BUILD_OBJECT(
         'conceptsCount', stats."conceptsCount",
         'conceptsTime', stats."conceptsTime",
         'conceptsPoints', stats."conceptsPoints"

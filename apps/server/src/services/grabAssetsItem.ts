@@ -8,8 +8,8 @@ export const sqlStrImages = (
   sql([
     `
     (
-    SELECT json_agg(
-          json_build_object(
+    SELECT JSON_AGG(
+          JSON_BUILD_OBJECT(
             'url', ca."url",
             'publicID', ca."publicID"
           )
@@ -35,7 +35,7 @@ export const grabAssetsItem = (
   ${sqlStrImages(entity, { prefix }).text} AS "images",
 
   (
-    SELECT json_build_object(
+    SELECT JSON_BUILD_OBJECT(
       'url', ca."url",
       'publicID', ca."publicID"
     )

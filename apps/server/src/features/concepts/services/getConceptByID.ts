@@ -20,11 +20,11 @@ export const getConceptByIDSvc = async (id: string) => {
         SELECT cpt.*,
 
         (
-           SELECT row_to_json(cpt_user_outer)
+           SELECT ROW_TO_JSON(cpt_user_outer)
            FROM (
             SELECT cpt_user_inner.id, cpt_user_inner.score,
             (
-                SELECT json_agg(row_to_json(answers))
+                SELECT JSON_AGG(ROW_TO_JSON(answers))
                 
                 FROM (
                     SELECT user_asw.id, user_asw."isCorrect", user_asw."variantID", user_asw."questionID",
@@ -33,7 +33,7 @@ export const getConceptByIDSvc = async (id: string) => {
                         SELECT CASE 
                         WHEN user_asw."isCorrect" THEN NULL
                         ELSE (
-                            SELECT json_build_object(
+                            SELECT JSON_BUILD_OBJECT(
                                 'id',right_choice.id,
                                 'answer',right_choice.answer
                             )
@@ -46,7 +46,7 @@ export const getConceptByIDSvc = async (id: string) => {
                     ) "correctAnswer",
 
                     (
-                        SELECT row_to_json(variant_joined_processed)
+                        SELECT ROW_TO_JSON(variant_joined_processed)
                         FROM (
                             SELECT variant_joined.id, variant_joined.answer, variant_joined."isCorrect", variant_joined."questionID"
 
@@ -66,17 +66,17 @@ export const getConceptByIDSvc = async (id: string) => {
            ) cpt_user_outer
         ) "userConcept",
 
-        json_build_object(
+        JSON_BUILD_OBJECT(
         'conceptsCount', (
             SELECT COUNT(*) FROM cpt_list
             ),
         'prev', (
-            SELECT row_to_json(ref)
+            SELECT ROW_TO_JSON(ref)
             FROM cpt_list ref
             WHERE ref."order" = cpt."order" - 1
             ),
         'next', (
-            SELECT row_to_json(ref)
+            SELECT ROW_TO_JSON(ref)
             FROM cpt_list ref
             WHERE ref."order" = cpt."order" + 1
             )
@@ -86,13 +86,13 @@ export const getConceptByIDSvc = async (id: string) => {
 
         (
             SELECT COALESCE( 
-                json_agg(
-                    json_build_object(
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
                         ${injectKeyValSQL([...objKeysConcept.question, "createdAt"], { prefix: "q" })},
                         'variants',(
                             SELECT COALESCE (
-                                json_agg(
-                                    json_build_object(
+                                JSON_AGG(
+                                    JSON_BUILD_OBJECT(
                                         ${injectKeyValSQL([...objKeysConcept.variant, "questionID"], { prefix: "v" })}
                                     )
                                 )

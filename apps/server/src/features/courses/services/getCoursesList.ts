@@ -89,7 +89,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         c."estimatedTime",
         c."pointsGained",
     
-    json_build_object(
+    JSON_BUILD_OBJECT(
       'conceptsCount',
         (
           SELECT COUNT(*)::INT 
