@@ -9,7 +9,6 @@ import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { CircleCheckBig, CircleX } from "lucide-react";
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";
-import { FaCheckCircle } from "react-icons/fa";
 
 type PropsType = {
   variant: VariantType;
@@ -21,17 +20,25 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
   const { setValue, watch, trigger } = useFormContext<FormQuizType>();
 
   const { userConcept, isCompleted } = concept;
+  const fallBack = userConcept ?? {
+    userAnswers: [],
+  };
 
   const data =
     watch(`quiz.${outerIdx}`) ?? ({} as FormQuizType["quiz"][number]);
 
-  const corrected = (userConcept ?? {}).userAnswers?.find(
-    (asw) => asw.questionID === data.questionID && asw.variantID === variant.id,
+  const analyzed = fallBack.userAnswers.find(
+    (asw) =>
+      asw.questionID === variant.questionID && asw.variantID === variant.id,
   );
-  const CorrectedSVG = corrected?.isCorrect ? CircleCheckBig : CircleX;
-  const isCurrChoiceCorrected = isCompleted && corrected;
+  const goodChoice =
+    isCompleted &&
+    !analyzed &&
+    concept.questions
+      .find((q) => q.id === variant.questionID)
+      ?.variants.find((vrt) => vrt.isCorrect && vrt.id === variant.id);
 
-  __cg("crt", corrected);
+  const AnalyzedSVG = analyzed?.isCorrect ? CircleCheckBig : CircleX;
 
   const isChecked: boolean =
     isArrOK(data!.answerIDs) &&
@@ -59,20 +66,22 @@ const VariantQuiz: FC<PropsType> = ({ concept, variant, outerIdx }) => {
     trigger("quiz");
   };
 
+  const twdCSS = "min-w-[40px] min-h-[40px]";
+
   return (
     <div className="w-full flex items-center gap-6">
       <button
         aria-label="Chose only one of 5 available variants"
         disabled={isCompleted}
         onClick={handleClick}
-        className={`min-w-[40px] min-h-[40px] relative enabled:cursor-pointer disabled:cursor-not-allowed ${isCurrChoiceCorrected ? "" : "opacity-50"}`}
+        className={`min-w-[40px] min-h-[40px] relative enabled:cursor-pointer disabled:cursor-not-allowed`}
       >
-        {isCurrChoiceCorrected ? (
-          <CorrectedSVG
-            className={`min-w-[40px] min-h-[40px] ${
-              corrected?.isCorrect ? "text-green-600" : "text-red-600"
-            }`}
+        {analyzed ? (
+          <AnalyzedSVG
+            className={`${twdCSS} ${analyzed.isCorrect ? "text-green-600" : "text-red-600"}`}
           />
+        ) : goodChoice ? (
+          <CircleCheckBig className={`${twdCSS}  text-green-600`} />
         ) : (
           <MiniCheckBox
             {...{

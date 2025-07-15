@@ -28,12 +28,12 @@ export const getConceptByIDSvc = async (id: string) => {
                 SELECT json_agg(row_to_json(answers))
                 
                 FROM (
-                    SELECT user_asw.id, user_asw."isCorrect", user_asw."variantID",
+                    SELECT user_asw.id, user_asw."isCorrect", user_asw."variantID", user_asw."questionID",
 
                     (
                         SELECT row_to_json(vrt_outer)
                         FROM (
-                            SELECT vrt_inner.id, vrt_inner.answer
+                            SELECT vrt_inner.id, vrt_inner.answer, vrt_inner."isCorrect", vrt_inner."questionID"
 
                             FROM "Variant" vrt_inner
                             WHERE vrt_inner.id = user_asw."variantID"  
