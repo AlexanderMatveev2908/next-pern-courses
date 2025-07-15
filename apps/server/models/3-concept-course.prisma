@@ -9,10 +9,14 @@ model Concept {
     pointsGained Int
     order Int
 
+    isCompleted Boolean @default(false)
+
     courseID String
     course Course @relation(fields:[courseID], references: [id],name: "CourseConcept")
 
     questions Question[] @relation("QuestionConcept")
+
+    userConcept UserConcept[] @relation("UserToConcept")
 
     @@index([courseID, title])
 

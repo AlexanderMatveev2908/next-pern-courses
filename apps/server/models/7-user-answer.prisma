@@ -1,0 +1,11 @@
+model UserAnswer {
+    id String @id @default(uuid())
+
+    variantID String
+    answer Variant @relation(fields: [variantID],references: [id],name:"UserAnswer")
+
+    @@index([variantID])
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}

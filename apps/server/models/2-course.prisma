@@ -74,6 +74,8 @@ model Course {
     rootLanguage Boolean @default(false)
     estimatedTime Int @default(0)
     pointsGained Int @default(0)
+
+    isCompleted Boolean @default(false)
     
     createdAt DateTime @default(now())
     deletedAt DateTime?   

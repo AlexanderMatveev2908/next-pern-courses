@@ -1,0 +1,11 @@
+model UserConcept {
+    id String @id @default(uuid())
+
+    conceptID String
+    concept Concept @relation(fields: [conceptID],references: [id],name:"UserToConcept")
+
+    score Int @default(0)
+
+    createdAt DateTime @default(now())
+    deletedAt DateTime? 
+}
