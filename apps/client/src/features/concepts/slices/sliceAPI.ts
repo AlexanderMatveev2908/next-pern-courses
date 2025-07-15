@@ -58,7 +58,10 @@ export const conceptsSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: [TagsAPI.CONCEPT_PAGE],
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      invalidatesTags: (res, err, arg) => {
+        return [TagsAPI.CONCEPT_PAGE];
+      },
     }),
   }),
 });

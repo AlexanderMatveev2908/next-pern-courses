@@ -47,7 +47,7 @@ export const genMock = async () => {
       });
 
       await Promise.all(
-        Array.from({ length: 10 }).map(async (_, cptIdx) => {
+        Array.from({ length: 5 }).map(async (_, cptIdx) => {
           const estimatedTime = genRandomByMinMax(5, 30);
           const pointsGained = genRandomByMinMax(25, 200);
           const newCpt = await db.concept.create({
@@ -85,7 +85,7 @@ export const genMock = async () => {
           });
 
           await Promise.all(
-            Array.from({ length: 4 }).map(async (_, quizIdx) => {
+            Array.from({ length: 3 }).map(async (_, quizIdx) => {
               const newQuiz = await db.question.create({
                 data: {
                   title: `question idx ${quizIdx} for concept idx ${cptIdx} for course about ${v}`,
