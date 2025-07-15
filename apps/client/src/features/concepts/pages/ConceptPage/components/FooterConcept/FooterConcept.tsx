@@ -96,6 +96,8 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
     contentRef: parentRef,
   });
 
+  const MAX_WIDTH = 1000;
+
   return (
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
@@ -111,6 +113,7 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
           {...{
             totSwaps: concept.questions.length,
             currSwap,
+            maxW: MAX_WIDTH,
           }}
         />
 
@@ -125,10 +128,11 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
 
         <div
           ref={parentRef}
-          className="mx-auto w-full max-w-[1000px] border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
+          className="mx-auto w-full border-[3px] border-neutral-600 p-5 rounded-xl grid grid-cols-1 gap-10 overflow-hidden transition-all duration-[0.4s]"
           css={css`
             /* general hypothetical hight of btns rows for all screens and font sizes */
             max-height: ${maxH + 200}px;
+            max-width: ${MAX_WIDTH};
           `}
         >
           <motion.div
