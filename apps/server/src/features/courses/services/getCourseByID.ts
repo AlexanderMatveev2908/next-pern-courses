@@ -20,7 +20,7 @@ export const serviceGetCourseByID = async (id: string) => {
            'userConcept', (
             SELECT row_to_json(row_concept_processed)
             FROM (
-              SELECT user_concept_inner.*,
+              SELECT user_concept_inner.id,user_concept_inner.score,
 
               (
                 SELECT json_agg(row_to_json(processed_answer))
