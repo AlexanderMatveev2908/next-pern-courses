@@ -17,6 +17,7 @@ type PropsType = {
   images: CloudAssetType[];
   Label: React.ReactNode;
   ContentServer: React.ReactNode;
+  FooterImg?: React.ReactNode;
   linksHref: { href: string; id: string }[];
 };
 
@@ -25,6 +26,7 @@ const CardShape: FC<PropsType> = ({
   Label,
   ContentServer,
   linksHref,
+  FooterImg,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [contentH, setContentH] = useState(0);
@@ -102,6 +104,7 @@ const CardShape: FC<PropsType> = ({
             <ImgLoader
               {...{
                 src: images[0].url,
+                FooterImg,
               }}
             />
           </div>
