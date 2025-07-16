@@ -20,7 +20,7 @@ const HeaderCourse: FC<PropsType> = ({ course }) => {
   });
 
   return (
-    <div className="w-full flex flex-col gap-6 overflow-hidden">
+    <div className="w-full flex flex-col gap-6">
       <SpecialProgress
         {...{
           course,

@@ -11,6 +11,7 @@ type PropsType = {
   label?: string | null;
   Svg?: IconType;
   $customLabelCSS?: SerializedStyles;
+  isEnabled?: boolean;
 };
 
 const ContentShadow: FC<PropsType> = ({
@@ -19,19 +20,26 @@ const ContentShadow: FC<PropsType> = ({
   label,
   Svg,
   $customLabelCSS,
+  isEnabled = true,
 }) => {
   return (
     <div
-      className={`el__app w-full max-w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl gap-6 items-center`}
+      className={`${isEnabled && "el__app"} w-full max-w-full border-2 py-[10px] px-[50px] flex justify-center rounded-2xl gap-6 items-center`}
       style={
         {
-          "--scale__up": 1.2,
+          ...(isEnabled && { "--scale__up": 1.2 }),
         } as React.CSSProperties
       }
       css={css`
+        cursor: ${isEnabled ? "default" : "not-allowed"};
         border: 2px solid ${$borderClr};
         color: var(--neutral__300);
+        opacity: ${isEnabled ? 1 : 0.5};
         &:hover {
+          ${!isEnabled
+            ? ""
+            : `
+            cursor: pointer;
           box-shadow:
             0 0 5px ${$borderClr},
             0 0 10px ${$borderClr},
@@ -41,6 +49,7 @@ const ContentShadow: FC<PropsType> = ({
             0 0 30px ${$borderClr};
 
           color: ${$txtClr ?? $borderClr};
+          `}
         }
       `}
     >
