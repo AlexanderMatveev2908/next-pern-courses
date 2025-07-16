@@ -77,7 +77,7 @@ export default async function RootLayout({
         <Providers {...{ preloadedState }}>
           <div
             id="portal-root"
-            className="w-full max-w-full min-h-full  overflow-x-hidden absolute"
+            className="w-full max-w-full min-h-full  overflow-x-hidden absolute pointer-events-none"
           ></div>
 
           <Header />

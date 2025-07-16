@@ -15,7 +15,12 @@ const BtnShadow: FC<
 
   return (
     <WrapBtn {...{ isLoading: !!isLoading }}>
-      <button type={type} disabled={!isEnabled} onClick={handleClick}>
+      <button
+        type={type}
+        disabled={!isEnabled}
+        onClick={handleClick}
+        className="w-full"
+      >
         <ContentShadow
           {...{
             $borderClr: clr,

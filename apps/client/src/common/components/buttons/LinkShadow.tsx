@@ -22,7 +22,7 @@ const LinkShadow: FC<PropsType> = ({ href, label, Svg, $customLabelCSS }) => {
   return !href ? (
     <div className=""></div>
   ) : (
-    <Link href={href}>
+    <Link href={href} className="w-full">
       <ContentShadow
         {...{
           $borderClr: clr,
