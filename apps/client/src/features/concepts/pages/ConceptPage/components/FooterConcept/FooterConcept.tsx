@@ -104,7 +104,7 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
         <SubTitle
           {...{
             txt: isCompleted
-              ? `Your score is ${concept.userConcept!.score}%`
+              ? `You gained ${concept.userConcept!.score} points`
               : "Questions",
           }}
         />

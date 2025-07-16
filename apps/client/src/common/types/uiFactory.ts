@@ -82,3 +82,8 @@ export type FieldMiniCheckType<T extends FieldValues, K extends Path<T>> = {
   field?: string;
   id?: string;
 };
+
+export type ItemLabelValPairType = {
+  val: string | number;
+  label: string;
+};

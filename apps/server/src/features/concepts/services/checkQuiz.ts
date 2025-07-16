@@ -11,8 +11,6 @@ export const checkQuizSvc = async ({
   userAnswersArg: Partial<UserAnswer>[];
   fancyScore: number;
 }) => {
-  __cg("score", fancyScore);
-
   const result = await db.$transaction(async (trx) => {
     const othersConcepts = await trx.concept.findMany({
       where: {

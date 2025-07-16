@@ -7,9 +7,10 @@ import { coursesSliceAPI } from "../../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
-import ContentCourse from "./components/ContentCourse";
 import HeaderCourse from "./components/HeaderCourse";
 import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList";
+import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
+import { genRowsInfoCourse } from "../../uiFactory/cards";
 
 type PropsType = {
   courseID: string;
@@ -43,9 +44,9 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
             markdown: course!.markdown,
             Header: <HeaderCourse {...{ course: course! }} />,
             Content: (
-              <ContentCourse
+              <RowInfoPage
                 {...{
-                  course: course!,
+                  arg: genRowsInfoCourse(course!),
                 }}
               />
             ),

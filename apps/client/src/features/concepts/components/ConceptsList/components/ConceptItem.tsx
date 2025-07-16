@@ -5,8 +5,8 @@ import CardShape from "@/common/components/cards/CardShape/CardShape";
 import { ConceptType } from "@/features/concepts/types";
 import { genLinksCard } from "@/features/courses/uiFactory/cards";
 import type { FC } from "react";
-import ShowInfoRowsBackCard from "@/common/components/cards/fragments/ShowInfoRowsBackCard";
-import LabelCard from "@/common/components/cards/fragments/LabelCard";
+import ShowInfoRowsBackCard from "@/common/components/cards/fragments/card/ShowInfoRowsBackCard";
+import LabelCard from "@/common/components/cards/fragments/card/LabelCard";
 import { genRowsInfoConcept } from "@/features/concepts/uiFactory";
 import FooterImgConcept from "./components/FooterImgConcept";
 

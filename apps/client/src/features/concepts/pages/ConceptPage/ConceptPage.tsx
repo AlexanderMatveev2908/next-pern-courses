@@ -6,6 +6,8 @@ import { ConceptType } from "../../types";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import HeaderConcept from "./components/HeaderConcept";
 import FooterConcept from "./components/FooterConcept/FooterConcept";
+import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
+import { genInfoConceptPage } from "./uiFactory";
 
 type PropsType = {
   concept: ConceptType;
@@ -21,6 +23,7 @@ const ConceptPage: FC<PropsType> = ({ concept }) => {
         description: concept?.description,
         markdown: concept!.markdown,
         Header: <HeaderConcept {...{ refs: concept.refs }} />,
+        Content: <RowInfoPage {...{ arg: genInfoConceptPage(concept) }} />,
         Footer: (
           <FooterConcept
             {...{
