@@ -38,7 +38,7 @@ export const useDebounce = <
   const {
     preValsRef,
     setCheckPreSubmit,
-    checkPreSubmit: { canMakeAPI },
+    checkPreSubmit: { canMakeAPI, isFormValid },
     setPagination,
   } = useSearchCtxConsumer();
 
@@ -51,6 +51,11 @@ export const useDebounce = <
     let isSameData = true;
     const resultZod = zodObj.safeParse(merged);
     const isValid = resultZod.success;
+    if (isValid !== isFormValid)
+      setCheckPreSubmit({
+        el: "isFormValid",
+        val: isValid,
+      });
 
     if (isValid && canMakeAPI && !timerID.current)
       isSameData =
@@ -110,6 +115,7 @@ export const useDebounce = <
     setCheckPreSubmit,
     triggerRTK,
     setPagination,
+    isFormValid,
   ]);
 
   return {};
