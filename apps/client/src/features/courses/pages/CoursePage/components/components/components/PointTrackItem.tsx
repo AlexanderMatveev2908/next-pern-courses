@@ -8,6 +8,7 @@ import { ConceptType } from "@/features/concepts/types";
 import { useMemo, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import Tooltip from "@/common/components/elements/Tooltip";
+import Link from "next/link";
 
 type PropsType = {
   concept: ConceptType;
@@ -58,11 +59,13 @@ const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
         </div>
       </Portal>
 
-      <ImgLoader
-        {...{
-          src: concept.images[0].url,
-        }}
-      />
+      <Link href={`/concepts/${concept.id}`}>
+        <ImgLoader
+          {...{
+            src: concept.images[0].url,
+          }}
+        />
+      </Link>
     </div>
   );
 };
