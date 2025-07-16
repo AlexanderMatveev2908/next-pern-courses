@@ -1,16 +1,17 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
 import { css } from "@emotion/react";
+import type { FC } from "react";
 
 type PropsType = {
-  txt: string;
   $display?: string;
   $styleTwd?: string;
+  txt?: string | null;
+  isTitle?: boolean;
 };
 
-const SubTitle: FC<PropsType> = ({ txt, $display, $styleTwd }) => {
+const JustText: FC<PropsType> = ({ $display, $styleTwd, txt, isTitle }) => {
   return (
     <div
       className="w-full flex"
@@ -18,11 +19,13 @@ const SubTitle: FC<PropsType> = ({ txt, $display, $styleTwd }) => {
         display: ${$display ?? "center"};
       `}
     >
-      <span className={`${$styleTwd ?? "txt__xl text-neutral-200"}`}>
+      <span
+        className={`${isTitle ? "txt__2xl grad__txt" : ($styleTwd ?? "txt__xl text-neutral-200")}`}
+      >
         {txt}
       </span>
     </div>
   );
 };
 
-export default SubTitle;
+export default JustText;

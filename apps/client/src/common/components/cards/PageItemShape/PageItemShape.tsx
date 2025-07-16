@@ -6,9 +6,8 @@ import { type FC } from "react";
 import ImagesSwapper from "../../HOC/ImagesSwapper/ImagesSwapper";
 import VideoLoader from "../../HOC/assets/VideoLoader";
 import ClickTxtLonger from "../../elements/ClickTxtLonger";
-import SubTitle from "../../elements/SubTitle";
 import PreviewMarkdown from "../../HOC/PreviewMarkdown/PreviewMarkdown";
-import Title from "../../elements/Title";
+import JustText from "../../elements/JustText";
 
 type PropsType = {
   title: string;
@@ -33,7 +32,7 @@ const PageItemShape: FC<PropsType> = ({
 }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-10">
-      <Title {...{ title }} />
+      <JustText {...{ title, isTitle: true }} />
 
       {Header}
 
@@ -45,7 +44,7 @@ const PageItemShape: FC<PropsType> = ({
 
       <div className="w-full grid grid-cols-1 gap-6">
         <div className="w-full flex flex-col gap-2">
-          <SubTitle
+          <JustText
             {...{
               txt: "Description",
             }}
@@ -59,7 +58,7 @@ const PageItemShape: FC<PropsType> = ({
         </div>
 
         <div className="w-full grid grid-cols-1 gap-2">
-          <SubTitle
+          <JustText
             {...{
               txt: "Markdown",
             }}

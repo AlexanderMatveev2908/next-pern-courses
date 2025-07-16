@@ -22,8 +22,8 @@ import VariantsQuiz from "./components/VariantsQuiz/VariantsQuiz";
 import { resp } from "@/core/lib/style";
 import BtnShadow from "@/common/components/buttons/BtnShadow/BtnShadow";
 import { MdFormatListBulletedAdd } from "react-icons/md";
-import SubTitle from "@/common/components/elements/SubTitle";
 import BtnTrash from "@/common/components/buttons/BtnTrash";
+import JustText from "@/common/components/elements/JustText";
 
 const grabNestedErr = (
   errs: FieldErrors,
@@ -73,7 +73,7 @@ const FormQuiz = () => {
               }}
             />
 
-            <SubTitle
+            <JustText
               {...{
                 txt: `Question n.${quizItemIdx} `,
               }}

@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import JustText from "@/common/components/elements/JustText";
 import RowInfo from "@/common/components/elements/RowInfo";
-import SubTitle from "@/common/components/elements/SubTitle";
 import { ItemLabelValPairType } from "@/common/types/uiFactory";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
 import { resp } from "@/core/lib/style";
@@ -20,7 +20,7 @@ const RowInfoPage: FC<PropsType> = ({ arg }) => {
 
   return (
     <div className="w-full grid grid-cols-1 gap-4">
-      <SubTitle
+      <JustText
         {...{
           txt: "Info",
         }}

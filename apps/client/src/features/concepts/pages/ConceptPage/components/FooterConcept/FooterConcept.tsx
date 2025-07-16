@@ -2,7 +2,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import SubTitle from "@/common/components/elements/SubTitle";
 import RowSwapBtns from "@/common/components/HOC/RowSwapBtns/RowSwapBtns";
 import { ConceptType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
@@ -25,6 +24,7 @@ import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useParams } from "next/navigation";
 import ProgressBar from "@/common/components/elements/ProgressBar/ProgressBar";
 import { useExtendSchemaQuiz } from "./hooks/useExtendSchemaQuiz";
+import JustText from "@/common/components/elements/JustText";
 
 type PropsType = {
   concept: ConceptType;
@@ -101,7 +101,7 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
   return (
     <FormProvider {...formCtx}>
       <form onSubmit={handleSave} className="w-full grid grid-cols-1 gap-8">
-        <SubTitle
+        <JustText
           {...{
             txt: isCompleted
               ? `You gained ${concept.userConcept!.score} points`
