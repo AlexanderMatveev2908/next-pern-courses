@@ -5,24 +5,25 @@ import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
 import Portal from "@/common/components/HOC/Portal";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import { ConceptType } from "@/features/concepts/types";
-import { useRef, useState, type FC } from "react";
+import { useMemo, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
-import { __cg } from "@shared/first/lib/logger.js";
 import Tooltip from "@/common/components/elements/Tooltip";
 
 type PropsType = {
   concept: ConceptType;
+  currScroll: number;
 };
 
-const PointTrackItem: FC<PropsType> = ({ concept }) => {
+const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [isHover, setIsHover] = useState(false);
 
+  const optDep = useMemo(() => [currScroll], [currScroll]);
+
   const { posParent } = useGetPosPortal({
     contentRef,
+    optDep,
   });
-
-  __cg("pos", posParent);
 
   return (
     <div

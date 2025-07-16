@@ -3,7 +3,7 @@
 
 import { CourseType } from "@/features/courses/types/courses";
 import { __cg } from "@shared/first/lib/logger.js";
-import type { FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
 import PointTrackItem from "./components/PointTrackItem";
@@ -13,11 +13,12 @@ type PropsType = {
 };
 
 const SpecialProgress: FC<PropsType> = ({ course }) => {
+  const [currScroll, setCurrScroll] = useState(0);
+  const parentRefScroll = useRef<HTMLDivElement | null>(null);
+
   const { concepts = [] } = course;
   const completedCount = concepts.filter((cpt) => cpt.isCompleted).length;
   const perc = (completedCount / concepts.length) * 100;
-
-  __cg("perc", perc);
 
   const {
     ids: [ids],
@@ -25,10 +26,26 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
     lengths: [concepts.length],
   });
 
-  __cg("cpts", concepts);
+  useEffect(() => {
+    const el = parentRefScroll.current;
+    if (!el) return;
+
+    const listen = () => setCurrScroll(el.scrollLeft);
+    listen();
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+    };
+  }, []);
 
   return (
-    <div className="w-full overflow-x-scroll pb-3 px-2">
+    <div
+      ref={parentRefScroll}
+      className="w-full overflow-x-scroll pb-3 px-2"
+      onScroll={() => setCurrScroll(parentRefScroll.current?.scrollLeft ?? 0)}
+    >
       <div
         className="w-full max-w-fit border-[3px] border-neutral-800 h-[50px] rounded-full relative mx-auto"
         css={css`
@@ -39,10 +56,10 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
         `}
       >
         {concepts.map((cpt, i) => (
-          <PointTrackItem key={ids[i]} {...{ concept: cpt }} />
+          <PointTrackItem key={ids[i]} {...{ concept: cpt, currScroll }} />
         ))}
 
-        <div className="absolute inset-0 overflow-hidden rounded-full">
+        <div className="absolute inset-0 overflow-hidden rounded-full tb">
           <div
             className="absolute top-0 left-0 h-full bg-neutral-200 rounded-tr-full rounded-br-full"
             css={css`
