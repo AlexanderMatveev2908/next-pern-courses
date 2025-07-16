@@ -11,7 +11,7 @@ export type ReturnInfoCpt = Promise<{
 
 export const getInfoConceptSvc = async (id: string): ReturnInfoCpt => {
   const raw = sql`
- SELECT cpt.id,
+ SELECT cpt.id, cpt."pointsGained",
 
 
     (        
