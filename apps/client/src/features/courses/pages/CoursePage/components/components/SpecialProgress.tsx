@@ -28,37 +28,40 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
   __cg("cpts", concepts);
 
   return (
-    <div
-      className="w-full border-[3px] border-neutral-800 h-[50px] rounded-full relative"
-      css={css`
-        display: grid;
-        grid-template-columns: repeat(${concepts.length}, 1fr);
-        align-items: center;
-      `}
-    >
-      {concepts.map((cpt, i, arg) => (
-        <div
-          key={ids[i]}
-          className="w-[40px] h-[40px] rounded-full overflow-hidden z-60"
-          css={css`
-            justify-self: end;
-          `}
-        >
-          <ImgLoader
-            {...{
-              src: cpt.images[0].url,
-            }}
-          />
-        </div>
-      ))}
+    <div className="w-full overflow-x-scroll pb-3 px-2">
+      <div
+        className="w-full max-w-fit border-[3px] border-neutral-800 h-[50px] rounded-full relative"
+        css={css`
+          display: grid;
+          grid-template-columns: repeat(${concepts.length}, 1fr);
+          align-items: center;
+          min-width: ${concepts.length * 25}%;
+        `}
+      >
+        {concepts.map((cpt, i) => (
+          <div
+            key={ids[i]}
+            className="w-[40px] h-[40px] rounded-full overflow-hidden z-60"
+            css={css`
+              justify-self: end;
+            `}
+          >
+            <ImgLoader
+              {...{
+                src: cpt.images[0].url,
+              }}
+            />
+          </div>
+        ))}
 
-      <div className="absolute inset-0 overflow-hidden rounded-full">
-        <div
-          className="absolute top-0 left-0 h-full bg-neutral-200"
-          css={css`
-            width: ${perc}%;
-          `}
-        ></div>
+        <div className="absolute inset-0 overflow-hidden rounded-full">
+          <div
+            className="absolute top-0 left-0 h-full bg-neutral-200 rounded-tr-full rounded-br-full"
+            css={css`
+              width: ${perc}%;
+            `}
+          ></div>
+        </div>
       </div>
     </div>
   );
