@@ -1,17 +1,56 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
-import { useSelector } from "react-redux";
-import { getLeftSideState } from "./slices/slice";
-import { __cg } from "@shared/first/lib/logger.js";
+import { useRef, type FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getLeftSideState, leftSideSLice } from "./slices/slice";
+import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
+import { easeInOut, motion } from "framer-motion";
+import { css } from "@emotion/react";
+import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
+import CloseBtn from "@/common/components/buttons/CloseBtn";
 
 const LeftSideBar: FC = () => {
+  const sideRef = useRef<HTMLDivElement | null>(null);
   const leftSideState = useSelector(getLeftSideState);
 
-  __cg("left", leftSideState.isSide);
+  const dispatch = useDispatch();
+  useMouseOut({
+    ref: sideRef,
+    cb: () => dispatch(leftSideSLice.actions.setSide(false)),
+  });
 
-  return <div></div>;
+  return (
+    <>
+      <BlackBg
+        {...{
+          isDark: leftSideState.isSide,
+          classIndexCSS: "z__black_bg_left_side",
+        }}
+      />
+
+      <motion.div
+        ref={sideRef}
+        className="z__left_side fixed top-[80px] left-0 h-full w-[80%] md:w-[400px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full grid grid-cols-1"
+        transition={{ duration: 0.3, ease: easeInOut }}
+        animate={{
+          opacity: leftSideState.isSide ? 1 : 0.5,
+          transform: `translateX(${leftSideState.isSide ? "100%" : "0%"})`,
+        }}
+        css={css`
+          pointer-events: ${leftSideState.isSide ? "all" : "none"};
+        `}
+      >
+        <div className="w-[100px] relative h-fit justify-self-end mr-1 pt-10">
+          <CloseBtn
+            {...{
+              handleClick: () => dispatch(leftSideSLice.actions.setSide(false)),
+            }}
+          />
+        </div>
+      </motion.div>
+    </>
+  );
 };
 
 export default LeftSideBar;

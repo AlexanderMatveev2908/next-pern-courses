@@ -2,7 +2,7 @@ import { AppStateTypeSSR } from "@/core/store/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initState = {
-  isSide: false,
+  isSide: true,
 };
 
 export const leftSideSLice = createSlice({

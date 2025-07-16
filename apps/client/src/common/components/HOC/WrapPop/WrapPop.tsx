@@ -51,7 +51,7 @@ const WrapPop: FC<PropsType> = ({
           typeof isShow === "boolean" ? (isShow ? "open" : "close") : undefined
         }
       >
-        <div className="flex flex-col relative gap-10 min-h-0 max-h-full pb-5">
+        <div className="flex flex-col relative max-h-full -mt-2 pb-5">
           <CloseBtn
             {...{
               handleClick: () => setIsShow(false),

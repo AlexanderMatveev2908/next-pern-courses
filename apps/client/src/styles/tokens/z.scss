@@ -1,31 +1,39 @@
-.z__black_bg__sidebar {
+.z__black_bg_left_side {
   z-index: 250;
 }
 
-.z__sidebar {
+.z__left_side {
   z-index: 500;
 }
 
-.z__header {
+.z__black_bg__sidebar {
+  z-index: 750;
+}
+
+.z__sidebar {
   z-index: 1000;
 }
 
-.z__black_bg__search_component {
+.z__header {
   z-index: 2000;
 }
 
-.z__search_component {
+.z__black_bg__search_component {
   z-index: 3000;
 }
 
-.z__black_bg__popup {
+.z__search_component {
   z-index: 4000;
 }
 
-.z__popup {
+.z__black_bg__popup {
   z-index: 5000;
 }
 
-.z__toast {
+.z__popup {
   z-index: 6000;
+}
+
+.z__toast {
+  z-index: 7000;
 }
