@@ -38,7 +38,7 @@ const RowInfoPage: FC<PropsType> = ({ arg }) => {
         {arg.map((el, i) => (
           <div
             key={ids[0][i]}
-            className="w-full border-2 border-neutral-600 p-3 rounded-xl"
+            className="w-full border-2 border-neutral-600 p-3 rounded-xl h-fit"
           >
             <RowInfo
               {...{
