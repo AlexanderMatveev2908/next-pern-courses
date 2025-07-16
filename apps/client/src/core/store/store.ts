@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
@@ -33,7 +32,9 @@ const rootReducer = combineReducers({
   wakeUp: wakeUpSlice.reducer,
 });
 
-export const genStoreRTK = (preloadedState?: any) =>
+export const genStoreRTK = (
+  preloadedState?: Partial<ReturnType<typeof rootReducer>>,
+) =>
   configureStore({
     reducer: rootReducer,
 
