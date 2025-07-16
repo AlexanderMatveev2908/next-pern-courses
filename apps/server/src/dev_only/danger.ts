@@ -1,25 +1,36 @@
 import { __cg } from "@shared/first/lib/logger.js";
 import { cloud } from "@src/conf/cloud.js";
 import db from "@src/conf/db.js";
+import sql from "sql-template-tag";
+
+const TABLES = [
+  "CloudAsset",
+  "UserAnswer",
+  "UserConcept",
+  "Variant",
+  "Question",
+  "Concept",
+  "Course",
+];
 
 export const DEL_ALL = async () => {
   __cg("start deleting 🕰️");
 
-  await db.userAnswer.deleteMany();
-  await db.userConcept.deleteMany();
-  await db.cloudAsset.deleteMany();
-  await db.variant.deleteMany();
-  await db.question.deleteMany();
-  await db.concept.deleteMany();
-  await db.course.deleteMany();
+  const raw = sql([
+    `
+  TRUNCATE TABLE ${TABLES.map((t) => `"${t}"`).join(",\n")}
+  `,
+  ]);
 
-  await cloud.api.delete_resources_by_prefix("next_pern_courses__", {
-    resource_type: "image",
-  });
+  await db.$queryRawUnsafe(raw.text, ...raw.values);
 
-  await cloud.api.delete_resources_by_prefix("next_pern_courses__", {
-    resource_type: "video",
-  });
+  // await cloud.api.delete_resources_by_prefix("next_pern_courses__", {
+  //   resource_type: "image",
+  // });
+
+  // await cloud.api.delete_resources_by_prefix("next_pern_courses__", {
+  //   resource_type: "video",
+  // });
 
   __cg("done deleting ✅");
 };

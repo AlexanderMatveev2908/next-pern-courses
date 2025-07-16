@@ -7,6 +7,7 @@ import { ServerConceptFormType } from "../paperwork/postConept.js";
 import { GenericReq } from "@src/types/fastify.js";
 import db from "@src/conf/db.js";
 import { getInfoConceptSvc } from "../services/getInfoConcept.js";
+import { checkQuizSvc } from "../services/checkQuiz.js";
 
 export const postCourseCtrl = async (
   req: FastifyRequest,
@@ -46,8 +47,6 @@ export const checkQuizCtrl = async (req: FastifyRequest, res: FastifyReply) => {
     params: { conceptID },
   } = req as GenericReq;
 
-  __cg("b", quiz);
-
   const { concept } = await getInfoConceptSvc(conceptID);
   const { questions } = concept;
 
@@ -78,62 +77,12 @@ export const checkQuizCtrl = async (req: FastifyRequest, res: FastifyReply) => {
     score += parallelVariantID!.isCorrect ? 1 : 0;
   }
 
-  const fancyScore = ((score / questions.length) * 100).toFixed(2);
+  const fancyScore = +(
+    (score / questions.length) *
+    concept.pointsGained
+  ).toFixed(2);
 
-  const result = await db.$transaction(async (trx) => {
-    const othersConcepts = await trx.concept.findMany({
-      where: {
-        courseID: concept.courseID,
-        NOT: {
-          id: conceptID,
-        },
-      },
-      select: {
-        id: true,
-        isCompleted: true,
-      },
-    });
-
-    if (othersConcepts.every((cpt) => cpt.isCompleted))
-      await trx.course.update({
-        where: {
-          id: concept.courseID,
-        },
-        data: {
-          isCompleted: true,
-        },
-      });
-
-    await trx.concept.update({
-      where: {
-        id: conceptID,
-      },
-      data: {
-        isCompleted: true,
-      },
-    });
-
-    const userConcept = await trx.userConcept.create({
-      data: {
-        conceptID,
-        score: +fancyScore,
-      },
-    });
-
-    const answersUserCreated = await trx.userAnswer.createMany({
-      data: userAnswersArg.map((asw) => ({
-        isCorrect: asw.isCorrect!,
-        questionID: asw.questionID!,
-        variantID: asw.variantID!,
-        userConceptID: userConcept.id,
-      })),
-    });
-
-    return {
-      ...userConcept,
-      userAnswers: answersUserCreated,
-    };
-  });
+  const result = await checkQuizSvc({ concept, userAnswersArg, fancyScore });
 
   return res.res200({
     msg: "here u are your degree sir",

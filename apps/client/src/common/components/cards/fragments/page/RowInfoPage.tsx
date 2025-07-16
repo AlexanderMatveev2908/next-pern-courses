@@ -1,27 +1,26 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import JustText from "@/common/components/elements/JustText";
 import RowInfo from "@/common/components/elements/RowInfo";
-import SubTitle from "@/common/components/elements/SubTitle";
+import { ItemLabelValPairType } from "@/common/types/uiFactory";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
 import { resp } from "@/core/lib/style";
-import { CourseType } from "@/features/courses/types/courses";
-import { genRowsInfoCourse } from "@/features/courses/uiFactory/cards";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 
 type PropsType = {
-  course: CourseType;
+  arg: ItemLabelValPairType[];
 };
 
-const ContentCourse: FC<PropsType> = ({ course }) => {
+const RowInfoPage: FC<PropsType> = ({ arg }) => {
   const { ids } = useGenIDsV2({
-    lengths: [6],
+    lengths: [arg.length],
   });
 
   return (
     <div className="w-full grid grid-cols-1 gap-4">
-      <SubTitle
+      <JustText
         {...{
           txt: "Info",
         }}
@@ -36,10 +35,10 @@ const ContentCourse: FC<PropsType> = ({ course }) => {
           grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
         `}
       >
-        {genRowsInfoCourse(course).map((el, i) => (
+        {arg.map((el, i) => (
           <div
             key={ids[0][i]}
-            className="w-full border-2 border-neutral-600 p-3 rounded-xl"
+            className="w-full border-2 border-neutral-600 p-3 rounded-xl h-fit"
           >
             <RowInfo
               {...{
@@ -53,4 +52,4 @@ const ContentCourse: FC<PropsType> = ({ course }) => {
   );
 };
 
-export default ContentCourse;
+export default RowInfoPage;

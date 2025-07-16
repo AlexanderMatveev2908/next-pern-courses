@@ -1,5 +1,6 @@
 import { ConceptType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
+import { formatMinutes } from "@shared/first/lib/formatters.js";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 
 export const buttonsHeaderBuilder = (refs: ConceptType["refs"]) =>
@@ -31,3 +32,22 @@ export const buttonsHeaderBuilder = (refs: ConceptType["refs"]) =>
       },
     ],
   ]);
+
+export const genInfoConceptPage = (concept: ConceptType) => [
+  {
+    label: "Order",
+    val: concept.order,
+  },
+  {
+    label: "Time estimated",
+    val: formatMinutes(concept.estimatedTime),
+  },
+  {
+    label: "Points gained",
+    val: concept.pointsGained,
+  },
+  {
+    label: "Question available",
+    val: concept.questions.length,
+  },
+];

@@ -2,7 +2,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import SubTitle from "@/common/components/elements/SubTitle";
 import { ConceptType, QuestionType } from "@/features/concepts/types";
 import { css } from "@emotion/react";
 import { forwardRef, RefObject, useMemo } from "react";
@@ -12,6 +11,7 @@ import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 import { SwapStageType } from "../reducer/initState";
+import JustText from "@/common/components/elements/JustText";
 
 type PropsType = {
   outerIdx: number;
@@ -56,14 +56,14 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
           }}
         />
 
-        <SubTitle
+        <JustText
           {...{
             txt: question.title,
             $styleTwd: "txt__lg text-neutral-200",
           }}
         />
 
-        <SubTitle
+        <JustText
           {...{
             txt: question.question,
             $styleTwd: "txt__md text-neutral-400",

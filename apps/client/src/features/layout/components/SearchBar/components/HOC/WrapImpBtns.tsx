@@ -27,6 +27,7 @@ const WrapImpBtns = <T extends FieldValues>({
 
   const {
     isSearchPending: { clear, submit },
+    checkPreSubmit: { isFormValid },
   } = useSearchCtxConsumer();
 
   return (
@@ -43,6 +44,7 @@ const WrapImpBtns = <T extends FieldValues>({
           labelConf: [650, "search"],
           type: "submit",
           isLoading: submit,
+          isEnabled: isFormValid,
         }}
       />
       <WrapSearchBarBtn

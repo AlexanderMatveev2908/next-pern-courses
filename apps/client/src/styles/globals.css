@@ -217,6 +217,10 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 button {
   appearance: none;
 }

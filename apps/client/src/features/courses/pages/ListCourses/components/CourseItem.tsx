@@ -5,8 +5,8 @@ import type { FC } from "react";
 import CardShape from "@/common/components/cards/CardShape/CardShape";
 import { genLinksCard, genRowsInfoCourse } from "../../../uiFactory/cards";
 import { CourseType } from "@/features/courses/types/courses";
-import ShowInfoRowsBackCard from "@/common/components/cards/fragments/ShowInfoRowsBackCard";
-import LabelCard from "@/common/components/cards/fragments/LabelCard";
+import ShowInfoRowsBackCard from "@/common/components/cards/fragments/card/ShowInfoRowsBackCard";
+import LabelCard from "@/common/components/cards/fragments/card/LabelCard";
 import { difficultiesAssets } from "@/core/uiFactory/style";
 
 type PropsType = {

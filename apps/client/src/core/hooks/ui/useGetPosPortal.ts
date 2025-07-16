@@ -12,11 +12,23 @@ export const useGetPosPortal = ({ contentRef, optDep }: Params) => {
   useEffect(() => {
     if (!contentRef?.current || typeof contentRef === "function") return;
     const el = contentRef.current;
+    const listen = () => {
+      const { top, left } = el.getBoundingClientRect();
+      const windowH = window.scrollY;
 
-    const { top, left } = el.getBoundingClientRect();
-    const windowH = window.scrollY;
+      setPosParent([top + windowH, left]);
+    };
+    listen();
 
-    setPosParent([top + windowH, left]);
+    const obs = new ResizeObserver(listen);
+    obs.observe(el);
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+      obs.disconnect();
+    };
   }, [contentRef, optDep]);
 
   return {

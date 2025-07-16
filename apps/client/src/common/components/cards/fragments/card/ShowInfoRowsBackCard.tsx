@@ -2,7 +2,7 @@
 "use client";
 
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
-import RowInfo from "../../elements/RowInfo";
+import RowInfo from "../../../elements/RowInfo";
 import { FC } from "react";
 
 type PropsType = {
