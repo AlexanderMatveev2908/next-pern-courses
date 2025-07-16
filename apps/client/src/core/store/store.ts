@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { configureStore, Reducer } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 import { wakeUpSlice } from "@/features/wakeUp/slices/slice";
+import { leftSideSLice } from "@/features/layout/components/LeftSideBar/slices/slice";
 
 // export const store = configureStore({
 //   reducer: {
@@ -24,16 +25,17 @@ import { wakeUpSlice } from "@/features/wakeUp/slices/slice";
 // export type AppStateType = ReturnType<typeof store.getState>;
 // export type AppDispatchType = typeof store.dispatch;
 
-const rootReducer = {
+const rootReducer = combineReducers({
   api: api.reducer,
   side: sideSlice.reducer,
+  leftSide: leftSideSLice.reducer,
   toast: toastSlice.reducer,
   wakeUp: wakeUpSlice.reducer,
-};
+});
 
 export const genStoreRTK = (preloadedState?: any) =>
   configureStore({
-    reducer: rootReducer as unknown as Reducer<any>,
+    reducer: rootReducer,
 
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
@@ -46,8 +48,6 @@ export const genStoreRTK = (preloadedState?: any) =>
     },
   });
 
-export type AppStateTypeSSR = ReturnType<
-  ReturnType<typeof genStoreRTK>["getState"]
->;
-
-export type DispatchTypeSSR = AppStateTypeSSR["dispatch"];
+export type StoreTypeSSR = ReturnType<typeof genStoreRTK>;
+export type AppStateTypeSSR = ReturnType<StoreTypeSSR["getState"]>;
+export type DispatchTypeSSR = StoreTypeSSR["dispatch"];
