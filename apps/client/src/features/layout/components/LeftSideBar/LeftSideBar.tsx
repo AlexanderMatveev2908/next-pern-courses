@@ -11,8 +11,12 @@ import { genIpsum } from "@/core/lib/etc";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import ColSide from "./components/ColSide";
+import { usePathname } from "next/navigation";
 
 const LeftSideBar: FC = () => {
+  const path = usePathname();
+  const isPathOK = /^\/courses\/[0-9a-fA-F-]{36}/.test(path);
+
   const sideRef = useRef<HTMLDivElement | null>(null);
   const leftSideState = useSelector(getLeftSideState);
 
@@ -22,7 +26,7 @@ const LeftSideBar: FC = () => {
     cb: () => dispatch(leftSideSLice.actions.setSide(false)),
   });
 
-  return (
+  return !isPathOK ? null : (
     <>
       <BlackBg
         {...{
@@ -43,12 +47,14 @@ const LeftSideBar: FC = () => {
           height: calc(100% - 80px);
         `}
       >
-        <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden b">
+        <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden">
           <ToggleSide />
 
           <div className="w-full min-h-[50px] tb"></div>
 
-          <div className="w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden">
+          <div
+            className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
+          >
             <ColSide>{genIpsum(50)}</ColSide>
 
             <div className="w-full bg-neutral-800 min-h-full"></div>

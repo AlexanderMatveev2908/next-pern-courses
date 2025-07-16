@@ -5,6 +5,8 @@ import type { FC } from "react";
 import SpinnerNoHooks from "../spinners/SpinnerNoHooks/SpinnerNoHooks";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import PrependTitle from "./PrependTitle";
+import { SerializedStyles } from "@emotion/react";
+import { css } from "@emotion/react";
 
 type PropsType = {
   isLoading: boolean;
@@ -15,6 +17,7 @@ type PropsType = {
   CustomSpinner?: React.ReactNode;
   title?: string;
   throwErr?: boolean;
+  $genCustomCSS?: (isSpinning?: boolean) => SerializedStyles;
 };
 
 const WrapPendingClient: FC<PropsType> = ({
@@ -26,18 +29,36 @@ const WrapPendingClient: FC<PropsType> = ({
   CustomSpinner,
   title,
   throwErr,
+  $genCustomCSS,
 }) => {
   const { isHydrated } = useListenHydration();
 
   if (isHydrated && !isLoading && !isSuccess && throwErr)
     throw new Error("Miss data expected from server");
 
-  return isLoading || (waitHydration && !isHydrated) ? (
-    CustomSpinner || <SpinnerNoHooks />
-  ) : (
-    <PrependTitle {...{ title }}>
-      {isSuccess && typeof children === "function" && children({ isHydrated })}
-    </PrependTitle>
+  const isSpinning = isLoading || (waitHydration && !isHydrated);
+
+  return (
+    <div
+      className="flex flex-col"
+      css={css`
+        ${typeof $genCustomCSS === "function" ? $genCustomCSS(isSpinning) : ""};
+      `}
+    >
+      {isSpinning ? (
+        CustomSpinner || <SpinnerNoHooks />
+      ) : (
+        <PrependTitle
+          {...{
+            title,
+          }}
+        >
+          {isSuccess &&
+            typeof children === "function" &&
+            children({ isHydrated })}
+        </PrependTitle>
+      )}
+    </div>
   );
 };
 

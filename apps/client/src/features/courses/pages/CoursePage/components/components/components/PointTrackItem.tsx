@@ -46,7 +46,7 @@ const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
             left: ${posParent[1] - 75 - 20}px;
             width: 250px;
             height: 80px;
-            z-index: 2000;
+            z-index: 3000;
             pointer-events: none;
           `}
         >
