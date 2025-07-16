@@ -2,7 +2,6 @@
 "use client";
 
 import { CourseType } from "@/features/courses/types/courses";
-import { __cg } from "@shared/first/lib/logger.js";
 import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
