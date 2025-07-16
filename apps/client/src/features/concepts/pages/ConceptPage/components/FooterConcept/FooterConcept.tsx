@@ -122,7 +122,6 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
             top: posParent[0],
             left: posParent[1],
             manualErr: errors?.quiz?.message,
-            cssZ: 750,
           }}
         />
 
