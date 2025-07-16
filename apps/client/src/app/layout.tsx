@@ -75,7 +75,10 @@ export default async function RootLayout({
         className={`${fira_code.className}  antialiased bg-neutral-950 min-h-screen min-w-screen`}
       >
         <Providers {...{ preloadedState }}>
-          <div id="portal-root"></div>
+          <div
+            id="portal-root"
+            className="w-full max-w-full min-h-full  overflow-x-hidden absolute"
+          ></div>
 
           <Header />
 
