@@ -15,6 +15,7 @@ type PropsType = {
 
   $borderClr?: string;
   $txtClr?: string;
+  $triangleCSS?: SerializedStyles;
 };
 
 const Tooltip: FC<PropsType> = ({
@@ -23,6 +24,7 @@ const Tooltip: FC<PropsType> = ({
   $txtClr,
   isHover,
   $borderClr,
+  $triangleCSS,
 }) => {
   return (
     <motion.div
@@ -52,7 +54,15 @@ const Tooltip: FC<PropsType> = ({
         </span>
       </div>
 
-      <div className="w-[40px] h-[40px] absolute right-[10%] top-full overflow-hidden">
+      <div
+        className="w-[40px] h-[40px] absolute top-full overflow-hidden"
+        css={css`
+          ${$triangleCSS ??
+          `
+            right:10%;
+          `}
+        `}
+      >
         <div
           css={css`
             border: 2px solid var(--${$borderClr ?? "blue__600"});

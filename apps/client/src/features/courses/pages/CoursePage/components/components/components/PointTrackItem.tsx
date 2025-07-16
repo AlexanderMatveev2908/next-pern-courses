@@ -43,7 +43,7 @@ const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
             position: absolute;
             top: ${posParent[0]}px;
             /* half of width established as minimum between  each track point + width of track point that is also container for image thumb inside */
-            left: ${posParent[1] - 165}px;
+            left: ${posParent[1] - 75 - 20}px;
             width: 250px;
             height: 80px;
             z-index: 2000;
@@ -54,6 +54,10 @@ const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
             {...{
               isHover,
               txt: concept.title,
+              $triangleCSS: css`
+                right: 50%;
+                transform: translateX(50%);
+              `,
             }}
           />
         </div>

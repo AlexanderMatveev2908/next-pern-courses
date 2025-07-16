@@ -51,7 +51,7 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
           display: grid;
           grid-template-columns: repeat(${concepts.length}, 1fr);
           align-items: center;
-          min-width: ${concepts.length * 250}px;
+          min-width: ${concepts.length * 150}px;
         `}
       >
         {concepts.map((cpt, i) => (
