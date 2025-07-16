@@ -6,7 +6,7 @@ import { __cg } from "@shared/first/lib/logger.js";
 import type { FC } from "react";
 import { css } from "@emotion/react";
 import { useGenIDsV2 } from "@/core/hooks/ui/useGenIDsV2";
-import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
+import PointTrackItem from "./components/PointTrackItem";
 
 type PropsType = {
   course: CourseType;
@@ -30,28 +30,16 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
   return (
     <div className="w-full overflow-x-scroll pb-3 px-2">
       <div
-        className="w-full max-w-fit border-[3px] border-neutral-800 h-[50px] rounded-full relative"
+        className="w-full max-w-fit border-[3px] border-neutral-800 h-[50px] rounded-full relative mx-auto"
         css={css`
           display: grid;
           grid-template-columns: repeat(${concepts.length}, 1fr);
           align-items: center;
-          min-width: ${concepts.length * 25}%;
+          min-width: ${concepts.length * 250}px;
         `}
       >
         {concepts.map((cpt, i) => (
-          <div
-            key={ids[i]}
-            className="w-[40px] h-[40px] rounded-full overflow-hidden z-60"
-            css={css`
-              justify-self: end;
-            `}
-          >
-            <ImgLoader
-              {...{
-                src: cpt.images[0].url,
-              }}
-            />
-          </div>
+          <PointTrackItem key={ids[i]} {...{ concept: cpt }} />
         ))}
 
         <div className="absolute inset-0 overflow-hidden rounded-full">
