@@ -55,11 +55,7 @@ export default async function RootLayout({
     ),
 
     wrapCallSSR(() =>
-      store.dispatch(
-        coursesSliceAPI.endpoints.getCoursesSummary.initiate({
-          courseID: "ee150b31-0bb1-4511-bda2-9078fb5d4efe",
-        }),
-      ),
+      store.dispatch(coursesSliceAPI.endpoints.getCoursesSummary.initiate({})),
     ),
   ]);
 

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import ColSide from "../ColSide";
 import SideCourseItem from "./components/SideCourseItem";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
@@ -20,8 +20,12 @@ const CoursesSideList: FC = () => {
     }),
   });
 
-  const hook = coursesSliceAPI.useLazyGetCoursesSummaryQuery();
-  const [triggerRTK, res] = hook;
+  const res = coursesSliceAPI.useGetCoursesSummaryQuery(
+    { courseID: currentCourseID },
+    {
+      refetchOnMountOrArgChange: false,
+    },
+  );
   const {
     data: { courses } = {},
     isLoading: coursesLoading,
@@ -38,10 +42,6 @@ const CoursesSideList: FC = () => {
       : courses) ?? [];
 
   const findOutChosenCourse = (id: string) => id === currentCourseID;
-
-  useEffect(() => {
-    triggerRTK({});
-  }, [triggerRTK]);
 
   return (
     <ColSide
