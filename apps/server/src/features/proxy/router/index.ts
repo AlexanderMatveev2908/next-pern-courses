@@ -1,5 +1,10 @@
 import { FastifyInstance } from "fastify";
-import { grabAssetsBlob, grabImages, grabMarkdown } from "../controller/get.js";
+import {
+  getZipData,
+  grabAssetsBlob,
+  grabImages,
+  grabMarkdown,
+} from "../controller/get.js";
 import { wrapRoute } from "@src/middleware/wrapRoute.js";
 
 export const routerProxy = async (app: FastifyInstance) => {
@@ -19,5 +24,11 @@ export const routerProxy = async (app: FastifyInstance) => {
     url: "/markdown",
     method: "GET",
     handler: wrapRoute(grabMarkdown),
+  });
+
+  app.route({
+    url: "/zip",
+    method: "GET",
+    handler: wrapRoute(getZipData),
   });
 };
