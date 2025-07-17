@@ -14,6 +14,8 @@ import ColSide from "./components/ColSide";
 import { usePathname } from "next/navigation";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { __cg } from "@shared/first/lib/logger.js";
+import { useCachedData } from "@/core/hooks/api/useCachedData";
 
 const LeftSideBar: FC = () => {
   const path = usePathname();
@@ -28,8 +30,14 @@ const LeftSideBar: FC = () => {
     cb: () => dispatch(leftSideSLice.actions.setSide(false)),
   });
 
+  const { cachedData } = useCachedData({
+    selector: coursesSliceAPI.endpoints.getCoursesSummary.select({}),
+  });
+  __cg("cached", cachedData);
+
   const hook = coursesSliceAPI.useLazyGetCoursesSummaryQuery();
   const [triggerRTK, res] = hook;
+  const { data, isLoading, isUninitialized } = res;
   useWrapQuery({
     ...res,
     showToast: true,

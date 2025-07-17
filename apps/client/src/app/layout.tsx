@@ -38,33 +38,24 @@ export default async function RootLayout({
 
   await Promise.all([
     wrapCallSSR(() =>
-      store.dispatch(
-        wakeUpSliceAPI.endpoints.wakeUpFly.initiate(undefined, {
-          forceRefetch: true,
-        }),
-      ),
+      store.dispatch(wakeUpSliceAPI.endpoints.wakeUpFly.initiate()),
     ),
     wrapCallSSR(() =>
+      store.dispatch(wakeUpSliceAPI.endpoints.getListDummyItems.initiate()),
+    ),
+
+    wrapCallSSR(() =>
       store.dispatch(
-        wakeUpSliceAPI.endpoints.getListDummyItems.initiate(undefined, {
-          forceRefetch: true,
+        coursesSliceAPI.endpoints.getCourses.initiate({
+          vals: genURLSearchParams(
+            gabFormValsPagination({ page: 0, limit: 2 }),
+          ),
         }),
       ),
     ),
 
     wrapCallSSR(() =>
-      store.dispatch(
-        coursesSliceAPI.endpoints.getCourses.initiate(
-          {
-            vals: genURLSearchParams(
-              gabFormValsPagination({ page: 0, limit: 2 }),
-            ),
-          },
-          {
-            forceRefetch: true,
-          },
-        ),
-      ),
+      store.dispatch(coursesSliceAPI.endpoints.getCoursesSummary.initiate({})),
     ),
   ]);
 
