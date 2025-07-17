@@ -2,6 +2,7 @@ import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { handleRawSQL } from "../services/getCoursesList.js";
 import { serviceGetCourseByID } from "../services/getCourseByID.js";
+import { getSummaryCoursesSvc } from "../services/getSummaryCourses.js";
 
 export const getListCoursesCtrl = async (
   req: FastifyRequest,
@@ -35,7 +36,10 @@ export const getCoursesSummary = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
+  const { summary } = await getSummaryCoursesSvc(req);
+
   return res.res200({
     msg: "Here u are the summary...",
+    summary,
   });
 };

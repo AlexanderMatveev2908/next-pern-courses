@@ -31,7 +31,9 @@ const LeftSideBar: FC = () => {
   });
 
   const { cachedData } = useCachedData({
-    selector: coursesSliceAPI.endpoints.getCoursesSummary.select({}),
+    selector: coursesSliceAPI.endpoints.getCoursesSummary.select({
+      courseID: "ee150b31-0bb1-4511-bda2-9078fb5d4efe",
+    }),
   });
   __cg("cached", cachedData);
 
