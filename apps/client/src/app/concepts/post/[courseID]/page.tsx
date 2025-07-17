@@ -31,6 +31,7 @@ const Page: FC = () => {
         : { quiz: [{ ...grabQuestionShape() }] }),
     },
   });
+
   const { handleSubmit, setValue } = formCtx;
 
   const { isValid, id: courseID } = useCheckID({ keyID: "courseID" });

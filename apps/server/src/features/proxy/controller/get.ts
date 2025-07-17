@@ -80,7 +80,9 @@ export const getZipData = async (req: FastifyRequest, res: FastifyReply) => {
   do {
     const curr = picked[i];
 
-    const response = await axios.get((curr as any).download_url);
+    const response = await axios.get((curr as any).download_url, {
+      responseType: "arraybuffer",
+    });
 
     const contentType = response.headers["content-type"];
     const ext = mime.extension(contentType);

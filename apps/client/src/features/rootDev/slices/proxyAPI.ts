@@ -5,6 +5,7 @@ import { api } from "@/core/store/api";
 import { __cg } from "@shared/first/lib/logger.js";
 import axios from "axios";
 import jsZIP from "jszip";
+import { lookup } from "mime-types";
 
 const BASE_URL = "/proxy";
 
@@ -75,7 +76,11 @@ export const proxySliceAPI = api.injectEndpoints({
               parsedFiles[k] = await file.async("text");
             } else {
               const blob = await file.async("blob");
-              parsedFiles[k] = URL.createObjectURL(blob);
+              // parsedFiles[k] = URL.createObjectURL(blob);
+
+              parsedFiles[k] = new File([blob], k, {
+                type: lookup(k) || "application/octet-stream",
+              });
             }
           }
 

@@ -55,7 +55,10 @@ export const schemaVideo = () =>
     .instanceof(File)
     .nullable()
     .optional()
-    .refine((v) => !v || v.type.startsWith("video"), "File must be a video")
+    .refine(
+      (v) => !v || v.type.startsWith("video") || v?.name?.endsWith(".mp4"),
+      "File must be a video",
+    )
     .refine(
       (v) => !v || v.size < 10 * 1024 * 1024,
       "Video size must be less than 10MB",
