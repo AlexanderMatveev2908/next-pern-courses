@@ -12,7 +12,6 @@ import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList
 import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
 import { genRowsInfoCourse } from "../../uiFactory/cards";
 import { css } from "@emotion/react";
-import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   courseID: string;
@@ -41,8 +40,6 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
         isLoading,
         isSuccess: isObjOK(course),
         $genCustomCSS: (isSpinning) => {
-          __cg("spin", isSpinning);
-
           return css`
             padding-left: ${isSpinning ? "0" : "60px"};
           `;

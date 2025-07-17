@@ -3,8 +3,8 @@
 "use client";
 
 import { useState, type FC } from "react";
-import Image from "next/image";
 import AssetHandler from "./AssetHandler";
+import Image from "next/image";
 
 type PropsType = {
   src: string;
@@ -17,17 +17,19 @@ const ImgLoader: FC<PropsType> = ({ src, alt, FooterImg }) => {
   const [isError, setIsError] = useState(false);
 
   return (
-    <div className="relative min-h-full min-w-full rounded-xl overflow-hidden">
+    <div className="relative h-full min-h-full min-w-full rounded-xl overflow-hidden">
       <AssetHandler {...{ loaded, isError }} />
       <Image
         src={src}
         alt={alt ?? ""}
-        className={`transition-all duration-500 object-cover ${
+        className={`transition-all duration-500 object-cover h-full w-full ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
         fill
         onLoad={() => setIsLoaded(true)}
-        onError={() => setIsError(true)}
+        onError={() => {
+          setIsError(true);
+        }}
       />
 
       {FooterImg}

@@ -40,7 +40,7 @@ const WrapPendingClient: FC<PropsType> = ({
 
   return (
     <div
-      className="flex flex-col"
+      className="flex flex-col w-full min-w-full"
       css={css`
         ${typeof $genCustomCSS === "function" ? $genCustomCSS(isSpinning) : ""};
       `}

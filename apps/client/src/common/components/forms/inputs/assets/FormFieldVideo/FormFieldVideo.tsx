@@ -35,7 +35,9 @@ const FormFieldVideo = <T extends FieldValues, K extends Path<T>>({
 
   const vid = watch(el.name);
   const isURL = isStr(vid);
-  const isFile = (vid as File) instanceof File && vid.type.startsWith("video");
+  const isFile =
+    ((vid as File) instanceof File && vid.type.startsWith("video")) ||
+    vid?.name?.endsWith(".mp4");
   const isData = isURL || isFile;
 
   const handleUpload = () => {

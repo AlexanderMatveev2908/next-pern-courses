@@ -10,7 +10,7 @@ import ConceptForm from "@/features/concepts/forms/ConceptForm/ConceptForm";
 import { grabPlaceholderConcept } from "@/features/concepts/forms/ConceptForm/lib";
 import { grabQuestionShape } from "@/features/concepts/forms/ConceptForm/uiFactory";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
-import { useFillAssetsDev } from "@/features/rootDev/hooks/useFillAssetsDev";
+import { useZip } from "@/features/rootDev/hooks/useZIp";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
@@ -31,6 +31,7 @@ const Page: FC = () => {
         : { quiz: [{ ...grabQuestionShape() }] }),
     },
   });
+
   const { handleSubmit, setValue } = formCtx;
 
   const { isValid, id: courseID } = useCheckID({ keyID: "courseID" });
@@ -45,7 +46,11 @@ const Page: FC = () => {
     // showToast: true,
   });
 
-  const { isLoadingProxy } = useFillAssetsDev({ setValue });
+  const { isLoadingProxy } = useZip({
+    setValue,
+  });
+
+  // const { isLoadingProxy } = useFillAssetsDev({ setValue });
 
   const [mutate, { isLoading: isMutating }] =
     conceptsSliceAPI.useAddConceptMutation();

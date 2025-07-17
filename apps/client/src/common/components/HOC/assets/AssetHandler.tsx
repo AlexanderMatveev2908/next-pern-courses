@@ -15,7 +15,7 @@ type PropsType = {
 const AssetHandler: FC<PropsType> = ({ loaded, isError }) => {
   return (
     <>
-      {!loaded && (
+      {!loaded && !isError && (
         <motion.div
           className="absolute inset-0"
           css={css`
@@ -40,7 +40,7 @@ const AssetHandler: FC<PropsType> = ({ loaded, isError }) => {
 
       {isError && (
         <div
-          className="w-full h-full flex flex-col gap-3 justify-center items-center py-3 rounded-2xl"
+          className="flex flex-col gap-3 justify-center items-center py-3 rounded-2xl min-h-full min-w-full"
           css={css`
             border: 2px solid var(--neutral__700);
           `}

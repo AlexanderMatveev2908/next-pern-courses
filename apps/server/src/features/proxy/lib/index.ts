@@ -4,8 +4,8 @@ import axios from "axios";
 export const grabJsonDummyAssets = async () => {
   const { data: jsonData } = await axios.get(`https://picsum.photos/v2/list`, {
     params: {
-      page: genRandomByMinMax(0, 5),
-      limit: 50,
+      page: genRandomByMinMax(0, 10),
+      limit: 10,
     },
   });
 
