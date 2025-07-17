@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeftSideState, leftSideSLice } from "./slices/slice";
+import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { easeInOut, motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -11,22 +11,37 @@ import { genIpsum } from "@/core/lib/etc";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import ColSide from "./components/ColSide";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
+import CoursesSideList from "./components/CoursesList/CoursesSideList";
+import { isStr } from "@shared/first/lib/dataStructure.js";
+import { __cg } from "@shared/first/lib/logger.js";
 
-const LeftSideBar: FC = () => {
+const StrategicSidebar: FC = () => {
   const path = usePathname();
-  const isPathOK = /^\/courses\/[0-9a-fA-F-]{36}/.test(path);
+  const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
+
+  const { courseID } = useParams();
 
   const sideRef = useRef<HTMLDivElement | null>(null);
-  const leftSideState = useSelector(getLeftSideState);
+  const leftSideState = useSelector(getStrategicSliceState);
 
   const dispatch = useDispatch();
   useMouseOut({
     ref: sideRef,
-    cb: () => dispatch(leftSideSLice.actions.setSide(false)),
+    cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
-  return !isPathOK ? null : (
+  useEffect(() => {
+    if (isStr(courseID as string))
+      dispatch(strategicSlice.actions.setCurrCourseID(courseID as string));
+  }, [courseID, dispatch]);
+
+  const { isHydrated } = useListenHydration();
+
+  __cg("rerender");
+
+  return !isPathOK || !isHydrated ? null : (
     <>
       <BlackBg
         {...{
@@ -55,7 +70,7 @@ const LeftSideBar: FC = () => {
           <div
             className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
           >
-            <ColSide>{genIpsum(50)}</ColSide>
+            <CoursesSideList />
 
             <div className="w-full bg-neutral-800 min-h-full"></div>
 
@@ -67,4 +82,4 @@ const LeftSideBar: FC = () => {
   );
 };
 
-export default LeftSideBar;
+export default StrategicSidebar;

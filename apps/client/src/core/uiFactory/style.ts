@@ -41,3 +41,13 @@ export const $listItemsCSS = css`
     grid-template-columns: repeat(auto-fit, 350px);
   }
 `;
+
+export const $pageWithSideCSS = css`
+  /* margin-left: 75px; */
+  margin-right: 0;
+  justify-self: end;
+  width: calc(100% - 50px);
+  padding: 0 20px;
+  /* border: 3px solid white; */
+  overflow-x: hidden;
+`;

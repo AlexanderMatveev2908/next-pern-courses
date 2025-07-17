@@ -7,7 +7,7 @@ import AssetHandler from "./AssetHandler";
 import Image from "next/image";
 
 type PropsType = {
-  src: string;
+  src?: string;
   alt?: string;
   FooterImg?: React.ReactNode;
 };
@@ -16,11 +16,11 @@ const ImgLoader: FC<PropsType> = ({ src, alt, FooterImg }) => {
   const [loaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  return (
+  return !src ? null : (
     <div className="relative h-full min-h-full min-w-full rounded-xl overflow-hidden">
       <AssetHandler {...{ loaded, isError }} />
       <Image
-        src={src}
+        src={src ?? ""}
         alt={alt ?? ""}
         className={`transition-all duration-500 object-cover h-full w-full ${
           loaded ? "opacity-100" : "opacity-0"

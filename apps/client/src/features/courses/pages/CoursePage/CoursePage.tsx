@@ -11,7 +11,7 @@ import HeaderCourse from "./components/HeaderCourse";
 import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList";
 import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
 import { genRowsInfoCourse } from "../../uiFactory/cards";
-import { css } from "@emotion/react";
+import { $pageWithSideCSS } from "@/core/uiFactory/style";
 
 type PropsType = {
   courseID: string;
@@ -39,15 +39,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(course),
-        $customCSS: css`
-          /* margin-left: 75px; */
-          margin-right: 0;
-          justify-self: end;
-          width: calc(100% - 50px);
-          padding: 0 20px;
-          /* border: 3px solid white; */
-          overflow-x: hidden;
-        `,
+        $customCSS: $pageWithSideCSS,
       }}
     >
       {() => (

@@ -42,7 +42,7 @@ const WrapPendingClient: FC<PropsType> = ({
     <div
       className="flex flex-col"
       css={css`
-        ${$customCSS
+        ${$customCSS && !isSpinning
           ? $customCSS
           : css`
               width: 100%;
