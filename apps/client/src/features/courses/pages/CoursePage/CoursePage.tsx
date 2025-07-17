@@ -11,6 +11,8 @@ import HeaderCourse from "./components/HeaderCourse";
 import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList";
 import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
 import { genRowsInfoCourse } from "../../uiFactory/cards";
+import { css } from "@emotion/react";
+import { __cg } from "@shared/first/lib/logger.js";
 
 type PropsType = {
   courseID: string;
@@ -25,13 +27,26 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
     throwErr: true,
   });
 
+  // ! THE MAIN GOAL OF WRITING THE WRAPPER AS HOC THAT ACCEPT CB THAT
+  // ! RETURN NODE IS THAT THIS WAY I CAN DELEGATE LOADING AND SUCCESS STATUS TO
+  // ! A PARENT THAT NOT ONLY RENDER CONDITIONALLY THE REACT.NODE BUT BEING A
+  // ! FUNCTION IT ALSO CALL IT CONDITIONALLY SO I CAN ACCESS PROPERTIES THAT
+  // ! WOULD BE UNDEFINED AT RUNTIME BUT CODE WILL BE EVALUATED BY REACT JUST
+  // ! AFTER FUNCTION IS ALLOWED BY BY PARENT TO BE CALLED
+
   return (
-    // ! THE MAIN GOAL OF WRITING THE WRAPPER AS HOC THAT ACCEPT CB THAT RETURN NODE IS THAT THIS WAY I CAN DELEGATE LOADING AND SUCCESS STATUS TO A PARENT THAT NOT ONLY RENDER CONDITIONALLY THE REACT.NODE BUT BEING A FUNCTION IT ALSO CALL IT CONDITIONALLY SO I CAN ACCESS PROPERTIES THAT WOULD BE UNDEFINED AT RUNTIME BUT CODE WILL BE EVALUATED BY REACT JUST AFTER FUNCTION IS ALLOWED BY BY PARENT TO BE CALLED
     <WrapPendingClient
       {...{
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(course),
+        $genCustomCSS: (isSpinning) => {
+          __cg("spin", isSpinning);
+
+          return css`
+            padding-left: ${isSpinning ? "0" : "60px"};
+          `;
+        },
       }}
     >
       {() => (

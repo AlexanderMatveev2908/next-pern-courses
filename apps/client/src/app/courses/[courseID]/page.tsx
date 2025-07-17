@@ -16,11 +16,13 @@ const Page: FC<PropsType> = async ({ params }) => {
   if (!isValidID) notFound();
 
   return (
-    <CoursePage
-      {...{
-        courseID,
-      }}
-    />
+    <div className="w-full">
+      <CoursePage
+        {...{
+          courseID,
+        }}
+      />
+    </div>
   );
 };
 

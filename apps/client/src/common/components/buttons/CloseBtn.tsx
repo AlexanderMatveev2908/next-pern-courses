@@ -14,7 +14,7 @@ const CloseBtn: FC<PropsType> = ({ isEnabled = true, handleClick }) => {
     <button
       type="button"
       onClick={handleClick}
-      className="btn__app absolute -top-3 -right-1 cursor-pointer"
+      className="btn__app absolute top-0 right-0 cursor-pointer"
       disabled={!isEnabled}
       style={
         {

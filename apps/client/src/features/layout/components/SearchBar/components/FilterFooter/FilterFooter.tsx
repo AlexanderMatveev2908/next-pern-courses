@@ -93,7 +93,7 @@ const FilterFooter = <T extends FieldValues, K extends Path<T>>({
             Filter
           </span>
 
-          <div className="w-[100px] justify-self-end pt-2 pr-3 relative">
+          <div className="w-[100px] justify-self-end -mt-2 pr-3 relative">
             <CloseBtn
               {...{
                 handleClick: () => setBar({ el: "filterBar", val: false }),
