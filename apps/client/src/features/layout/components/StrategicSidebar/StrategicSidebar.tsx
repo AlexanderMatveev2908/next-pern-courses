@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeftSideState, leftSideSLice } from "./slices/slice";
+import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { easeInOut, motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -19,17 +19,17 @@ import { useCachedData } from "@/core/hooks/api/useCachedData";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
 
-const LeftSideBar: FC = () => {
+const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/courses\/[0-9a-fA-F-]{36}/.test(path);
 
   const sideRef = useRef<HTMLDivElement | null>(null);
-  const leftSideState = useSelector(getLeftSideState);
+  const leftSideState = useSelector(getStrategicSliceState);
 
   const dispatch = useDispatch();
   useMouseOut({
     ref: sideRef,
-    cb: () => dispatch(leftSideSLice.actions.setSide(false)),
+    cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
   const { cachedData } = useCachedData({
@@ -120,4 +120,4 @@ const LeftSideBar: FC = () => {
   );
 };
 
-export default LeftSideBar;
+export default StrategicSidebar;

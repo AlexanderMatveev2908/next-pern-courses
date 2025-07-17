@@ -3,7 +3,7 @@ import { api } from "./api";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { toastSlice } from "@/features/layout/components/Toast/slice";
 import { wakeUpSlice } from "@/features/wakeUp/slices/slice";
-import { leftSideSLice } from "@/features/layout/components/LeftSideBar/slices/slice";
+import { strategicSlice } from "@/features/layout/components/StrategicSidebar/slices/slice";
 
 // export const store = configureStore({
 //   reducer: {
@@ -27,7 +27,7 @@ import { leftSideSLice } from "@/features/layout/components/LeftSideBar/slices/s
 const rootReducer = combineReducers({
   api: api.reducer,
   side: sideSlice.reducer,
-  leftSide: leftSideSLice.reducer,
+  strategicSide: strategicSlice.reducer,
   toast: toastSlice.reducer,
   wakeUp: wakeUpSlice.reducer,
 });

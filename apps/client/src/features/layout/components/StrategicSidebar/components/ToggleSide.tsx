@@ -3,11 +3,11 @@
 
 import type { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeftSideState, leftSideSLice } from "../slices/slice";
+import { getStrategicSliceState, strategicSlice } from "../slices/slice";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 const ToggleSide: FC = () => {
-  const leftSideState = useSelector(getLeftSideState);
+  const leftSideState = useSelector(getStrategicSliceState);
 
   const Svg = leftSideState.isSide ? FaAngleDoubleLeft : FaAngleDoubleRight;
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const ToggleSide: FC = () => {
           } as React.CSSProperties
         }
         onClick={() =>
-          dispatch(leftSideSLice.actions.setSide(!leftSideState.isSide))
+          dispatch(strategicSlice.actions.setSide(!leftSideState.isSide))
         }
       >
         <Svg className="text-neutral-200 min-w-[50px] min-h-[50px]" />

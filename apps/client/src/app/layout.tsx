@@ -13,7 +13,7 @@ import { wrapCallSSR } from "@/core/lib/api";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { genURLSearchParams } from "@/core/lib/processForm";
 import { gabFormValsPagination } from "@/features/layout/components/SearchBar/lib/style";
-import LeftSideBar from "@/features/layout/components/LeftSideBar/LeftSideBar";
+import StrategicSidebar from "@/features/layout/components/StrategicSidebar/StrategicSidebar";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -82,7 +82,7 @@ export default async function RootLayout({
 
           <Sidebar />
 
-          <LeftSideBar />
+          <StrategicSidebar />
           <div className="pad__app pt-[20px] sm:pt-30px pb-[100px] sm:pb-[150px] w-full h-full flex flex-col">
             {children}
           </div>

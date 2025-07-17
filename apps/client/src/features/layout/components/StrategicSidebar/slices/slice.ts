@@ -5,8 +5,8 @@ const initState = {
   isSide: false,
 };
 
-export const leftSideSLice = createSlice({
-  name: "leftSide",
+export const strategicSlice = createSlice({
+  name: "strategicSide",
   initialState: initState,
   reducers: {
     setSide: (state, action: PayloadAction<boolean>) => {
@@ -15,4 +15,5 @@ export const leftSideSLice = createSlice({
   },
 });
 
-export const getLeftSideState = (state: AppStateTypeSSR) => state.leftSide;
+export const getStrategicSliceState = (state: AppStateTypeSSR) =>
+  state.strategicSide;
