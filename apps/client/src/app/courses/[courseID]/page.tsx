@@ -16,7 +16,7 @@ const Page: FC<PropsType> = async ({ params }) => {
   if (!isValidID) notFound();
 
   return (
-    <div className="w-full">
+    <div className="w-full grid ">
       <CoursePage
         {...{
           courseID,

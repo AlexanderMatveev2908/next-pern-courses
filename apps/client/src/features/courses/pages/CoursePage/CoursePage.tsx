@@ -39,11 +39,15 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
         waitHydration: true,
         isLoading,
         isSuccess: isObjOK(course),
-        $genCustomCSS: (isSpinning) => {
-          return css`
-            padding-left: ${isSpinning ? "0" : "60px"};
-          `;
-        },
+        $customCSS: css`
+          /* margin-left: 75px; */
+          margin-right: 0;
+          justify-self: end;
+          width: calc(100% - 50px);
+          padding: 0 20px;
+          /* border: 3px solid white; */
+          overflow-x: hidden;
+        `,
       }}
     >
       {() => (

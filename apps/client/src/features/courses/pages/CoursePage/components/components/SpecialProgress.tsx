@@ -42,7 +42,7 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
   return (
     <div
       ref={parentRefScroll}
-      className="w-full overflow-x-scroll pb-3 px-2"
+      className="w-full overflow-x-scroll py-3 px-2"
       onScroll={() => setCurrScroll(parentRefScroll.current?.scrollLeft ?? 0)}
     >
       <div
@@ -51,11 +51,19 @@ const SpecialProgress: FC<PropsType> = ({ course }) => {
           display: grid;
           grid-template-columns: repeat(${concepts.length}, 1fr);
           align-items: center;
+          align-content: center;
           min-width: ${concepts.length * 150}px;
         `}
       >
         {concepts.map((cpt, i) => (
-          <PointTrackItem key={ids[i]} {...{ concept: cpt, currScroll }} />
+          <PointTrackItem
+            key={ids[i]}
+            {...{
+              concept: cpt,
+              currScroll,
+              isCurrLastCompleted: i === completedCount - 1,
+            }}
+          />
         ))}
 
         <div className="absolute inset-0 overflow-hidden rounded-full tb">

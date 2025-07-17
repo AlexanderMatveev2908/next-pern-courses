@@ -44,6 +44,7 @@ const CardShape: FC<PropsType> = ({
       return;
     }
 
+    // ? 20 is top and bottom padding
     const cb = () => setContentH(el.scrollHeight + 20 * 2);
 
     cb();
@@ -100,7 +101,7 @@ const CardShape: FC<PropsType> = ({
         <div ref={contentRef} className="client">
           {Label}
 
-          <div className="w-[300px] h-[300px]">
+          <div className="w-full max-w-[350px] h-full aspect-[1/1] max-h-[350px]">
             <ImgLoader
               {...{
                 src: images[0].url,
@@ -109,7 +110,12 @@ const CardShape: FC<PropsType> = ({
             />
           </div>
         </div>
-        <div className="server">
+        <div
+          className="server overflow-y-auto min-h-0 pb-6"
+          css={css`
+            height: ${contentH - 20 * 2}px;
+          `}
+        >
           {ContentServer}
 
           <div className="w-full grid grid-cols-1 gap-6 mt-4">

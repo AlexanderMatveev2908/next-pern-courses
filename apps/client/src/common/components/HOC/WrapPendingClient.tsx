@@ -17,7 +17,7 @@ type PropsType = {
   CustomSpinner?: React.ReactNode;
   title?: string;
   throwErr?: boolean;
-  $genCustomCSS?: (isSpinning?: boolean) => SerializedStyles;
+  $customCSS?: SerializedStyles;
 };
 
 const WrapPendingClient: FC<PropsType> = ({
@@ -29,7 +29,7 @@ const WrapPendingClient: FC<PropsType> = ({
   CustomSpinner,
   title,
   throwErr,
-  $genCustomCSS,
+  $customCSS,
 }) => {
   const { isHydrated } = useListenHydration();
 
@@ -40,9 +40,14 @@ const WrapPendingClient: FC<PropsType> = ({
 
   return (
     <div
-      className="flex flex-col w-full min-w-full"
+      className="flex flex-col"
       css={css`
-        ${typeof $genCustomCSS === "function" ? $genCustomCSS(isSpinning) : ""};
+        ${$customCSS
+          ? $customCSS
+          : css`
+              width: 100%;
+              max-width: 100%;
+            `.styles}
       `}
     >
       {isSpinning ? (
