@@ -16,6 +16,8 @@ import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { __cg } from "@shared/first/lib/logger.js";
 import { useCachedData } from "@/core/hooks/api/useCachedData";
+import { isArrOK } from "@shared/first/lib/dataStructure.js";
+import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
 
 const LeftSideBar: FC = () => {
   const path = usePathname();
@@ -39,11 +41,16 @@ const LeftSideBar: FC = () => {
 
   const hook = coursesSliceAPI.useLazyGetCoursesSummaryQuery();
   const [triggerRTK, res] = hook;
-  const { data, isLoading, isUninitialized } = res;
+  const { data: { courses } = {}, isLoading, isUninitialized } = res;
   useWrapQuery({
     ...res,
     showToast: true,
   });
+
+  const coursesArg =
+    (isUninitialized && isArrOK(cachedData?.courses)
+      ? cachedData?.courses
+      : courses) ?? [];
 
   useEffect(() => {
     triggerRTK({});
@@ -78,7 +85,30 @@ const LeftSideBar: FC = () => {
           <div
             className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
           >
-            <ColSide>{genIpsum(50)}</ColSide>
+            <ColSide>
+              <div className="w-full grid grid-cols-1 gap-8">
+                {coursesArg.map((el) => (
+                  <div key={el.id} className="w-full flex items-center gap-5">
+                    <div className="min-w-[40px] w-[40px] h-[40px] min-h-[40px] relative">
+                      <ImgLoader
+                        {...{
+                          src: el?.images?.[0]?.url,
+                        }}
+                      />
+                    </div>
+
+                    <span
+                      className="txt__lg text-neutral-200 clamp__txt"
+                      style={{
+                        WebkitLineClamp: 2,
+                      }}
+                    >
+                      {el.title?.repeat(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </ColSide>
 
             <div className="w-full bg-neutral-800 min-h-full"></div>
 

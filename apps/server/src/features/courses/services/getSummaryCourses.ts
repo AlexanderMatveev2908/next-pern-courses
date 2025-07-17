@@ -12,6 +12,25 @@ export const getSummaryCoursesSvc = async (req: FastifyRequest) => {
   const raw = sql`
     SELECT c.id, c.title,
 
+    ${sqlStrImages("COURSE", { prefix: "c" })} images
+
+    FROM "Course" c
+    WHERE TRUE
+    `;
+
+  __cg("raw txt", raw);
+
+  const summary = await db.$queryRawUnsafe(raw.text, ...raw.values);
+
+  return {
+    summary,
+  };
+};
+
+/*
+  const raw = sql`
+    SELECT c.id, c.title,
+
     ${sqlStrImages("COURSE", { prefix: "c" })} images,
 
     (
@@ -36,13 +55,4 @@ export const getSummaryCoursesSvc = async (req: FastifyRequest) => {
 
     FROM "Course" c
     WHERE TRUE
-    `;
-
-  __cg("raw txt", raw);
-
-  const summary = await db.$queryRawUnsafe(raw.text, ...raw.values);
-
-  return {
-    summary,
-  };
-};
+    `;*/

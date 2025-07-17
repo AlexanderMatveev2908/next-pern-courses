@@ -69,7 +69,7 @@ export const coursesSliceAPI = api.injectEndpoints({
     }),
 
     getCoursesSummary: builder.query<
-      UnwrappedResAPI<{ courses: CourseType[] }>,
+      UnwrappedResAPI<{ courses: Partial<CourseType>[] }>,
       { vals?: unknown; courseID?: string }
     >({
       query: ({ vals, courseID }) => ({

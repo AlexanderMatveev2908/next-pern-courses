@@ -40,6 +40,6 @@ export const getCoursesSummary = async (
 
   return res.res200({
     msg: "Here u are the summary...",
-    summary,
+    courses: summary,
   });
 };
