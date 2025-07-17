@@ -19,7 +19,13 @@ export const coursesSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: [{ type: TagsAPI.COURSES_LIST, id: "LIST" }],
+      invalidatesTags: [
+        { type: TagsAPI.COURSES_LIST, id: "LIST" },
+        {
+          type: TagsAPI.COURSES_SUMMARY_LIST,
+          id: "LIST",
+        },
+      ],
     }),
 
     getCourses: builder.query<
@@ -60,6 +66,28 @@ export const coursesSliceAPI = api.injectEndpoints({
         method: "GET",
       }),
       providesTags: [TagsAPI.COURSE_PAGE],
+    }),
+
+    getCoursesSummary: builder.query<
+      UnwrappedResAPI<{ courses: CourseType[] }>,
+      { vals?: unknown; courseID?: string }
+    >({
+      query: ({ vals, courseID }) => ({
+        url: `${BASE_URL}/summary/${courseID ?? ""}?${vals}`,
+        method: "GET",
+      }),
+      providesTags: (res) => [
+        ...(!isArrOK(res?.courses)
+          ? []
+          : res!.courses.map((cpt) => ({
+              type: TagsAPI.COURSES_SUMMARY_LIST,
+              id: cpt.id,
+            }))),
+        {
+          type: TagsAPI.COURSES_SUMMARY_LIST,
+          id: "LIST",
+        },
+      ],
     }),
   }),
 });

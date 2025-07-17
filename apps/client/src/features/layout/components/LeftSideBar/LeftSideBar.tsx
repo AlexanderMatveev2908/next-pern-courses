@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLeftSideState, leftSideSLice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
@@ -12,6 +12,8 @@ import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import ColSide from "./components/ColSide";
 import { usePathname } from "next/navigation";
+import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 
 const LeftSideBar: FC = () => {
   const path = usePathname();
@@ -25,6 +27,17 @@ const LeftSideBar: FC = () => {
     ref: sideRef,
     cb: () => dispatch(leftSideSLice.actions.setSide(false)),
   });
+
+  const hook = coursesSliceAPI.useLazyGetCoursesSummaryQuery();
+  const [triggerRTK, res] = hook;
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
+
+  useEffect(() => {
+    triggerRTK({});
+  }, [triggerRTK]);
 
   return !isPathOK ? null : (
     <>
