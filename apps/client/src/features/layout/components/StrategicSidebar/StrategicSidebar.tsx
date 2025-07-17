@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, type FC } from "react";
+import { useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
@@ -11,17 +11,14 @@ import { genIpsum } from "@/core/lib/etc";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import ColSide from "./components/ColSide";
-import { usePathname } from "next/navigation";
-import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
-import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { __cg } from "@shared/first/lib/logger.js";
-import { useCachedData } from "@/core/hooks/api/useCachedData";
-import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import ImgLoader from "@/common/components/HOC/assets/ImgLoader";
+import { useParams, usePathname } from "next/navigation";
+import { useListenHydration } from "@/core/hooks/api/useListenHydration";
+import CoursesSideList from "./components/CoursesList/CoursesSideList";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/courses\/[0-9a-fA-F-]{36}/.test(path);
+  const { courseID } = useParams();
 
   const sideRef = useRef<HTMLDivElement | null>(null);
   const leftSideState = useSelector(getStrategicSliceState);
@@ -32,31 +29,9 @@ const StrategicSidebar: FC = () => {
     cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
-  const { cachedData } = useCachedData({
-    selector: coursesSliceAPI.endpoints.getCoursesSummary.select({
-      courseID: "ee150b31-0bb1-4511-bda2-9078fb5d4efe",
-    }),
-  });
-  __cg("cached", cachedData);
+  const { isHydrated } = useListenHydration();
 
-  const hook = coursesSliceAPI.useLazyGetCoursesSummaryQuery();
-  const [triggerRTK, res] = hook;
-  const { data: { courses } = {}, isLoading, isUninitialized } = res;
-  useWrapQuery({
-    ...res,
-    showToast: true,
-  });
-
-  const coursesArg =
-    (isUninitialized && isArrOK(cachedData?.courses)
-      ? cachedData?.courses
-      : courses) ?? [];
-
-  useEffect(() => {
-    triggerRTK({});
-  }, [triggerRTK]);
-
-  return !isPathOK ? null : (
+  return !isPathOK || !isHydrated ? null : (
     <>
       <BlackBg
         {...{
@@ -85,30 +60,11 @@ const StrategicSidebar: FC = () => {
           <div
             className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
           >
-            <ColSide>
-              <div className="w-full grid grid-cols-1 gap-8">
-                {coursesArg.map((el) => (
-                  <div key={el.id} className="w-full flex items-center gap-5">
-                    <div className="min-w-[40px] w-[40px] h-[40px] min-h-[40px] relative">
-                      <ImgLoader
-                        {...{
-                          src: el?.images?.[0]?.url,
-                        }}
-                      />
-                    </div>
-
-                    <span
-                      className="txt__lg text-neutral-200 clamp__txt"
-                      style={{
-                        WebkitLineClamp: 2,
-                      }}
-                    >
-                      {el.title?.repeat(2)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </ColSide>
+            <CoursesSideList
+              {...{
+                courseID: courseID as string,
+              }}
+            />
 
             <div className="w-full bg-neutral-800 min-h-full"></div>
 
