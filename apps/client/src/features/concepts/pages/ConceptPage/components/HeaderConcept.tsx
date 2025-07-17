@@ -21,7 +21,7 @@ const HeaderConcept: FC<PropsType> = ({ refs }) => {
   const getterInfo = buttonsHeaderBuilder(refs);
   return (
     <div
-      className="w-full grid gap-5 max-w-[90%]"
+      className="w-full grid gap-5 max-w-[90%] mx-auto"
       css={css`
         grid-template-columns: repeat(2, 1fr);
       `}
