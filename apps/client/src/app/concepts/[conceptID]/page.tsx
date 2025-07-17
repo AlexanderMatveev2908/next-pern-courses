@@ -7,6 +7,7 @@ import ConceptPage from "@/features/concepts/pages/ConceptPage/ConceptPage";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { isObjOK } from "@shared/first/lib/dataStructure.js";
 import type { FC } from "react";
+import { $pageWithSideCSS } from "@/core/uiFactory/style";
 
 const Page: FC = () => {
   const { isValid, id: conceptID } = useCheckID({ keyID: "conceptID" });
@@ -21,21 +22,24 @@ const Page: FC = () => {
   });
 
   return (
-    <WrapPendingClient
-      {...{
-        waitHydration: true,
-        isLoading,
-        isSuccess: isObjOK(concept),
-      }}
-    >
-      {() => (
-        <ConceptPage
-          {...{
-            concept: concept!,
-          }}
-        />
-      )}
-    </WrapPendingClient>
+    <div className="w-full grid">
+      <WrapPendingClient
+        {...{
+          waitHydration: true,
+          isLoading,
+          isSuccess: isObjOK(concept),
+          $customCSS: $pageWithSideCSS,
+        }}
+      >
+        {() => (
+          <ConceptPage
+            {...{
+              concept: concept!,
+            }}
+          />
+        )}
+      </WrapPendingClient>
+    </div>
   );
 };
 

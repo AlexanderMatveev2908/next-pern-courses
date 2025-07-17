@@ -19,7 +19,7 @@ const SideCourseItem: FC<PropsType> = ({ el, isChosen }) => {
   return (
     <Link
       onClick={() => dispatch(strategicSlice.actions.setSide(false))}
-      href={el.id ?? ""}
+      href={`/courses/${el.id}`}
       className={`w-full flex items-center gap-5 transition-all duration-300 py-2 px-3 rounded-xl cursor-pointer group   hover:bg-neutral-200 ${isChosen ? "bg-neutral-200" : ""}`}
     >
       <div className="min-w-[40px] w-[40px] h-[40px] min-h-[40px] relative">

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initState = {
   isSide: false,
+  currentCourseID: "",
 };
 
 export const strategicSlice = createSlice({
@@ -11,6 +12,9 @@ export const strategicSlice = createSlice({
   reducers: {
     setSide: (state, action: PayloadAction<boolean>) => {
       state.isSide = action.payload;
+    },
+    setCurrCourseID: (state, action: PayloadAction<string>) => {
+      state.currentCourseID = action.payload;
     },
   },
 });

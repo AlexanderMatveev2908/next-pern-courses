@@ -8,12 +8,12 @@ import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import { useCachedData } from "@/core/hooks/api/useCachedData";
+import { getStrategicSliceState } from "../../slices/slice";
+import { useSelector } from "react-redux";
 
-type PropsType = {
-  courseID?: string;
-};
+const CoursesSideList: FC = () => {
+  const { currentCourseID } = useSelector(getStrategicSliceState);
 
-const CoursesSideList: FC<PropsType> = ({ courseID }) => {
   const { cachedData } = useCachedData({
     selector: coursesSliceAPI.endpoints.getCoursesSummary.select({
       courseID: "ee150b31-0bb1-4511-bda2-9078fb5d4efe",
@@ -37,7 +37,7 @@ const CoursesSideList: FC<PropsType> = ({ courseID }) => {
       ? cachedData?.courses
       : courses) ?? [];
 
-  const findOutChosenCourse = (id: string) => id === courseID;
+  const findOutChosenCourse = (id: string) => id === currentCourseID;
 
   useEffect(() => {
     triggerRTK({});
