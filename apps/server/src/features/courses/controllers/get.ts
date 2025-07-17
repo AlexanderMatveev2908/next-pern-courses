@@ -30,3 +30,12 @@ export const getCourseByID = async (req: FastifyRequest, res: FastifyReply) => {
 
   return res.res200({ msg: "here u are the course", course });
 };
+
+export const getCoursesSummary = async (
+  req: FastifyRequest,
+  res: FastifyReply,
+) => {
+  return res.res200({
+    msg: "Here u are the summary...",
+  });
+};
