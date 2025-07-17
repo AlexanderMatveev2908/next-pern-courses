@@ -29,7 +29,6 @@ export const CardShapeStyled = styled.div`
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
-      height: fit-content;
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
@@ -38,6 +37,7 @@ export const CardShapeStyled = styled.div`
 
     .client {
       transform: rotateY(0deg);
+      height: fit-content;
     }
 
     .server {

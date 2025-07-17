@@ -6,16 +6,21 @@ import Portal from "@/common/components/HOC/Portal";
 import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import { ConceptType } from "@/features/concepts/types";
 import { useMemo, useRef, useState, type FC } from "react";
-import { css } from "@emotion/react";
 import Tooltip from "@/common/components/elements/Tooltip";
 import Link from "next/link";
+import { css } from "@emotion/react";
 
 type PropsType = {
   concept: ConceptType;
   currScroll: number;
+  isCurrLastCompleted: boolean;
 };
 
-const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
+const PointTrackItem: FC<PropsType> = ({
+  concept,
+  currScroll,
+  isCurrLastCompleted,
+}) => {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [isHover, setIsHover] = useState(false);
 
@@ -31,9 +36,12 @@ const PointTrackItem: FC<PropsType> = ({ concept, currScroll }) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       ref={contentRef}
-      className="w-[40px] h-[40px] rounded-full overflow-hidden z-60"
+      className={`rounded-full overflow-hidden z-60 ${
+        isCurrLastCompleted ? "w-[60px] h-[60px]" : "w-[40px] h-[40px]"
+      }`}
       css={css`
         justify-self: end;
+        align-self: center;
       `}
     >
       <Portal>

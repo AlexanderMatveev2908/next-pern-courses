@@ -3,6 +3,7 @@ import { IoTriangleSharp } from "react-icons/io5";
 import { MdPentagon } from "react-icons/md";
 import { BsFillHexagonFill } from "react-icons/bs";
 import { css } from "@emotion/react";
+import { resp } from "../lib/style";
 
 export const btnColors = {
   [BtnActType.SUCCESS]: "var(--green__600)",
@@ -32,5 +33,11 @@ export const $listItemsCSS = css`
   display: grid;
   gap: 2.5rem;
   justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  place-content: center;
+
+  grid-template-columns: 1fr;
+
+  ${resp("sm")} {
+    grid-template-columns: repeat(auto-fit, 350px);
+  }
 `;
