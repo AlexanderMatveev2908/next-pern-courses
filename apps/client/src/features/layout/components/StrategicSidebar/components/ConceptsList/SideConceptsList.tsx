@@ -8,13 +8,16 @@ import { useSelector } from "react-redux";
 import { getStrategicSliceState } from "../../slices/slice";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import ColSide from "../ColSide";
+import { ConceptType } from "@/features/concepts/types";
 
 const SideConceptsList: FC = () => {
-  const { currentCourseID } = useSelector(getStrategicSliceState);
+  const { currentCourseID, currentConceptID } = useSelector(
+    getStrategicSliceState,
+  );
 
   const hooks = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();
   const [triggerRTK, res] = hooks;
-  const { data, isLoading, isUninitialized } = res;
+  const { data: { concepts = [] } = {}, isLoading } = res;
   useWrapQuery({
     ...res,
     showToast: true,
@@ -27,7 +30,18 @@ const SideConceptsList: FC = () => {
       });
   }, [currentCourseID, triggerRTK]);
 
-  return <div className=""></div>;
+  const calcIsChosen = (el: Partial<ConceptType>) => el.id === currentConceptID;
+
+  return (
+    <ColSide
+      {...{
+        basePath: "concepts",
+        isLoading,
+        arg: concepts,
+        calcIsChosen,
+      }}
+    />
+  );
 };
 
 export default SideConceptsList;

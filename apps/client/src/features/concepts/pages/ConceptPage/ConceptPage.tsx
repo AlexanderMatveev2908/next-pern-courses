@@ -11,6 +11,7 @@ import { genInfoConceptPage } from "./uiFactory";
 import { useDispatch } from "react-redux";
 import { strategicSlice } from "@/features/layout/components/StrategicSidebar/slices/slice";
 import { isStr } from "@shared/first/lib/dataStructure.js";
+import { useParams } from "next/navigation";
 
 type PropsType = {
   concept: ConceptType;
@@ -18,11 +19,16 @@ type PropsType = {
 
 const ConceptPage: FC<PropsType> = ({ concept }) => {
   const dispatch = useDispatch();
+  const { conceptID } = useParams();
 
   useEffect(() => {
     if (isStr(concept.courseID))
       dispatch(strategicSlice.actions.setCurrCourseID(concept.courseID));
   }, [concept, dispatch]);
+  useEffect(() => {
+    if (isStr(conceptID as string))
+      dispatch(strategicSlice.actions.setCurrConceptID(conceptID as string));
+  }, [conceptID, dispatch]);
 
   return (
     <PageItemShape
