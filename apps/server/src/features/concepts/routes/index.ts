@@ -11,6 +11,7 @@ import { parseForm } from "@src/middleware/multipart/multipart.js";
 import { checkQuizCtrl, postCourseCtrl } from "../controllers/post.js";
 import { postConceptMdw } from "../middleware/postConcept.js";
 import { checkQuizMdw } from "../middleware/checkQuiz.js";
+import { parseQuery } from "@src/middleware/parseQuery.js";
 
 export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
@@ -49,7 +50,7 @@ export const conceptsRouter = async (app: FastifyInstance) => {
   app.route({
     method: "GET",
     url: "/summary/:courseID",
-    preHandler: [logJSON, checkID("courseID")],
+    preHandler: [parseQuery, logJSON, checkID("courseID")],
     handler: wrapRoute(getSummaryConceptsByCourse),
   });
 };

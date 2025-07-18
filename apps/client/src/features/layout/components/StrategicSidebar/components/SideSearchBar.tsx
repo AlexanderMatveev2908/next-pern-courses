@@ -24,6 +24,7 @@ import {
   UnwrappedResAPI,
 } from "@/common/types/api";
 import { ConceptType } from "@/features/concepts/types";
+import { genURLSearchParams } from "@/core/lib/processForm";
 
 type ArgType = { courseID: string; vals?: unknown; _?: number };
 
@@ -71,7 +72,7 @@ const SideSearchBar: FC<PropsType> = ({ hook }) => {
 
   const [triggerRTK, res] = hook;
 
-  useWrapQuery({
+  const { triggerRef } = useWrapQuery({
     ...res,
     showToast: true,
   });
@@ -92,9 +93,11 @@ const SideSearchBar: FC<PropsType> = ({ hook }) => {
     timerID.current = setTimeout(() => {
       prevValsRef.current = vls;
       clearT(timerID);
+      triggerRef();
       triggerRTK(
         {
           courseID: currentCourseID,
+          vals: genURLSearchParams(vls),
           _: Date.now(),
         },
         false,
@@ -105,7 +108,7 @@ const SideSearchBar: FC<PropsType> = ({ hook }) => {
     return () => {
       clearT(timerID);
     };
-  }, [vls, prevValsRef, triggerRTK, currentCourseID]);
+  }, [vls, prevValsRef, triggerRef, triggerRTK, currentCourseID]);
 
   useEffect(() => {
     if (!isStr(currentCourseID)) return;
