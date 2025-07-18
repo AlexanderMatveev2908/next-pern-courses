@@ -44,9 +44,9 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
   private fillGenericKeys(
     name: string,
     opt: {
-      label?: string;
       type: FieldDataType;
       required: boolean;
+      label?: string;
       place?: string;
     },
   ) {
@@ -60,6 +60,8 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
     };
   }
 
+  // ? i had to create 2 identical fn because i had some issue with types and generics so i thought it would be faster to just be more redundant but to go next task
+
   public genHardCode(
     name: K,
     opt: {
@@ -69,13 +71,15 @@ export class FieldGenerator<T extends FieldValues, K extends Path<T>> {
       chainLabel?: boolean;
     },
   ): FormFieldType<T> {
+    const label = `${opt.chainLabel ? this.prefixLabel : ""} ${opt.label || name} `;
+
     return {
       ...this.fillGenericKeys(name, {
         label: opt.label,
         type: opt.type,
         required: opt.required,
+        place: label,
       }),
-      label: `${opt.chainLabel ? this.prefixLabel : ""} ${opt.label ?? name} ${opt.required ? "*" : ""}`,
     } as FormFieldType<T>;
   }
 

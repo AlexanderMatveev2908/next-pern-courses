@@ -15,8 +15,10 @@ export const checkQuizSvc = async ({
     const othersConcepts = await trx.concept.findMany({
       where: {
         courseID: concept.courseID,
-        NOT: {
-          id: concept.id,
+        AND: {
+          NOT: {
+            id: concept.id,
+          },
         },
       },
       select: {
