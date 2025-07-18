@@ -75,7 +75,7 @@ export const conceptsSliceAPI = api.injectEndpoints({
 
     getSideSummaryConcepts: builder.query<
       UnwrappedResAPI<{ concepts: Partial<ConceptType>[] }>,
-      { vals?: unknown; courseID: string }
+      { vals?: unknown; courseID: string; _?: number }
     >({
       query: ({ courseID, vals }) => ({
         url: `${BASE_URL}/summary/${courseID}?${vals ?? ""}`,

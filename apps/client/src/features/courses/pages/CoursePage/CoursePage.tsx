@@ -2,16 +2,18 @@
 "use client";
 
 import WrapPendingClient from "@/common/components/HOC/WrapPendingClient";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { coursesSliceAPI } from "../../slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { isObjOK } from "@shared/first/lib/dataStructure.js";
+import { isObjOK, isStr } from "@shared/first/lib/dataStructure.js";
 import PageItemShape from "@/common/components/cards/PageItemShape/PageItemShape";
 import HeaderCourse from "./components/HeaderCourse";
 import ConceptsList from "../../../concepts/components/ConceptsList/ConceptsList";
 import RowInfoPage from "@/common/components/cards/fragments/page/RowInfoPage";
 import { genRowsInfoCourse } from "../../uiFactory/cards";
 import { $pageWithSideCSS } from "@/core/uiFactory/style";
+import { strategicSlice } from "@/features/layout/components/StrategicSidebar/slices/slice";
+import { useDispatch } from "react-redux";
 
 type PropsType = {
   courseID: string;
@@ -25,6 +27,13 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
     // showToast: true,
     throwErr: true,
   });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isStr(courseID as string))
+      dispatch(strategicSlice.actions.setCurrCourseID(courseID as string));
+  }, [courseID, dispatch]);
 
   // ! THE MAIN GOAL OF WRITING THE WRAPPER AS HOC THAT ACCEPT CB THAT
   // ! RETURN NODE IS THAT THIS WAY I CAN DELEGATE LOADING AND SUCCESS STATUS TO

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, type FC } from "react";
+import { useMemo, useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
@@ -9,12 +9,10 @@ import { easeInOut, motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
-import CoursesSideList from "./components/CoursesList/CoursesSideList";
-import { isStr } from "@shared/first/lib/dataStructure.js";
-import { __cg } from "@shared/first/lib/logger.js";
-import SideConceptsList from "./components/ConceptsList/SideConceptsList";
+import CoursesSideList from "./components/CoursesSideList";
+import SideConceptsList from "./components/SideConceptsList";
 import SideSearchBar from "./components/SideSearchBar";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,15 +20,15 @@ import {
   schemaSideSummaryForm,
   SideSummaryFormType,
 } from "@shared/first/paperwork/concepts/schema.summary.js";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { useSyncUiDelay } from "@/core/hooks/ui/useSyncUiDelay";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
-
-  const { courseID } = useParams();
-
   const sideRef = useRef<HTMLDivElement | null>(null);
-  const leftSideState = useSelector(getStrategicSliceState);
+
+  const strategicSideState = useSelector(getStrategicSliceState);
 
   const dispatch = useDispatch();
   useMouseOut({
@@ -38,35 +36,41 @@ const StrategicSidebar: FC = () => {
     cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
-  useEffect(() => {
-    if (isStr(courseID as string))
-      dispatch(strategicSlice.actions.setCurrCourseID(courseID as string));
-  }, [courseID, dispatch]);
-
   const { isHydrated } = useListenHydration();
-
-  __cg("rerender");
 
   const formCtx = useForm<SideSummaryFormType>({
     resolver: zodResolver(schemaSideSummaryForm),
     mode: "onChange",
   });
 
+  const optDep = useMemo(
+    () => [strategicSideState.isSide],
+    [strategicSideState.isSide],
+  );
+  useSyncUiDelay({
+    delay: 300,
+    cb: () => dispatch(strategicSlice.actions.endSwapState()),
+    optDep,
+  });
+
+  const hook = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();
+
   return !isPathOK || !isHydrated ? null : (
     <>
       <BlackBg
         {...{
-          isDark: leftSideState.isSide,
+          isDark: strategicSideState.isSide,
           classIndexCSS: "z__black_bg_left_side",
         }}
       />
 
+      {/* ? i really do not know when strategic sidebar should become always open 🥸 */}
       <motion.div
         ref={sideRef}
-        className="z__left_side fixed top-[80px] left-0 w-full sm:w-[500px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
+        className="z__left_side fixed top-[80px] left-0 w-full md:w-[600px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
         transition={{ duration: 0.3, ease: easeInOut }}
         animate={{
-          transform: `translateX(${leftSideState.isSide ? "100%" : "60px"})`,
+          transform: `translateX(${strategicSideState.isSide ? "100%" : "60px"})`,
         }}
         css={css`
           max-height: calc(100% - 80px);
@@ -74,21 +78,29 @@ const StrategicSidebar: FC = () => {
         `}
       >
         <FormProvider {...formCtx}>
-          <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden">
+          <div className="w-full flex flex-col h-full max-h-full gap-4 overflow-hidden">
             <ToggleSide />
 
-            <div className="w-full min-h-[50px]">
-              <SideSearchBar />
-            </div>
-
             <div
-              className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
+              className={`w-full flex flex-col gap-6 transition-all duration-300 overflow-y-auto pt-2 ${strategicSideState.isSide ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             >
-              <CoursesSideList />
+              <div className="w-full min-h-[50px]">
+                <SideSearchBar {...{ hook }} />
+              </div>
 
-              <div className="w-full bg-neutral-800 min-h-full"></div>
+              <div
+                className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden`}
+              >
+                <CoursesSideList />
 
-              <SideConceptsList />
+                <div className="w-full bg-neutral-800 min-h-full"></div>
+
+                <SideConceptsList
+                  {...{
+                    hook,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </FormProvider>

@@ -10,15 +10,23 @@ type PropsType = {
   top: number;
   left: number;
   manualErr?: string;
+  zCSS?: number;
+  condHide?: boolean;
 };
 
-const ExternalTooltipErr: FC<PropsType> = ({ left, top, manualErr }) => {
-  return (
+const ExternalTooltipErr: FC<PropsType> = ({
+  zCSS,
+  left,
+  top,
+  manualErr,
+  condHide,
+}) => {
+  return condHide ? null : (
     <Portal>
       <div
         className="absolute w-[200px] sm:w-[300px]"
         css={css`
-          z-index: ${250};
+          z-index: ${zCSS ?? 250};
           top: ${top}px;
           left: ${left}px;
         `}

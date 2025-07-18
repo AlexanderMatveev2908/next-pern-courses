@@ -2,12 +2,12 @@
 "use client";
 
 import { type FC } from "react";
-import ColSide from "../ColSide";
+import ColSide from "./ColSide";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import { useCachedData } from "@/core/hooks/api/useCachedData";
-import { getStrategicSliceState } from "../../slices/slice";
+import { getStrategicSliceState } from "../slices/slice";
 import { useSelector } from "react-redux";
 import { CourseType } from "@/features/courses/types/courses";
 
