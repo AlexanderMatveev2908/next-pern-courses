@@ -18,8 +18,6 @@ export const getSummaryCoursesSvc = async (req: FastifyRequest) => {
     WHERE TRUE
     `;
 
-  __cg("raw txt", raw);
-
   const summary = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
   return {

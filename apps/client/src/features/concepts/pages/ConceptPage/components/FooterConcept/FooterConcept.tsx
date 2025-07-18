@@ -40,7 +40,10 @@ const FooterConcept: FC<PropsType> = ({ concept }) => {
 
   const parentRef = useRef<HTMLDivElement | null>(null);
 
-  const optionalDep = useMemo(() => [currSwap], [currSwap]);
+  const optionalDep = useMemo(
+    () => [currSwap, isCompleted],
+    [currSwap, isCompleted],
+  );
   useResizeElementHeight({
     contentRef,
     setMaxH,
