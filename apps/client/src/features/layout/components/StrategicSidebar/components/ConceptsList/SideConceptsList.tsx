@@ -7,12 +7,14 @@ import { useEffect, type FC } from "react";
 import { useSelector } from "react-redux";
 import { getStrategicSliceState } from "../../slices/slice";
 import { isStr } from "@shared/first/lib/dataStructure.js";
+import ColSide from "../ColSide";
 
 const SideConceptsList: FC = () => {
   const { currentCourseID } = useSelector(getStrategicSliceState);
 
   const hooks = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();
   const [triggerRTK, res] = hooks;
+  const { data, isLoading, isUninitialized } = res;
   useWrapQuery({
     ...res,
     showToast: true,
@@ -25,7 +27,7 @@ const SideConceptsList: FC = () => {
       });
   }, [currentCourseID, triggerRTK]);
 
-  return <div></div>;
+  return <div className=""></div>;
 };
 
 export default SideConceptsList;

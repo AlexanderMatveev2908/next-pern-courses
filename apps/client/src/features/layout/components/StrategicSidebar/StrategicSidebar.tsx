@@ -74,9 +74,7 @@ const StrategicSidebar: FC = () => {
 
             <div className="w-full bg-neutral-800 min-h-full"></div>
 
-            <ColSide>
-              <SideConceptsList />
-            </ColSide>
+            <SideConceptsList />
           </div>
         </div>
       </motion.div>
