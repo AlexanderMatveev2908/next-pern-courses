@@ -3,10 +3,10 @@
 
 import { FormFieldPropsType } from "@/common/types/uiFactory";
 import { Path } from "react-hook-form";
-import { Controller, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import WrapFormField from "../HOC/WrapFormField";
-import { getSomePlaceholder } from "@/core/lib/etc";
 import { isObjOK } from "@shared/first/lib/dataStructure";
+import RawFieldTxt from "./RawFieldTxt";
 
 const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
   el,
@@ -30,31 +30,13 @@ const FormFieldTxt = <T extends FieldValues, K extends Path<T>>({
         notice,
       }}
     >
-      <Controller
-        name={el.name as K}
-        control={control}
-        render={({ field }) => (
-          <input
-            {...field}
-            ref={field.ref}
-            // name={el.name}
-            required={el.required}
-            type={el.type ?? "text"}
-            placeholder={getSomePlaceholder(el)}
-            value={field.value ?? ""}
-            onChange={(e) => {
-              const {
-                target: { value },
-              } = e;
-
-              field.onChange(value);
-
-              if (typeof cb === "function") cb(value as T[K]);
-            }}
-            disabled={isDisabled}
-            className="el__input txt__md"
-          />
-        )}
+      <RawFieldTxt
+        {...{
+          control,
+          el,
+          cb,
+          isDisabled,
+        }}
       />
     </WrapFormField>
   );

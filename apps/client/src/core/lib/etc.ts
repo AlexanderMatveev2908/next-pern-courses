@@ -13,7 +13,7 @@ export const addID = <T>(arg: T[]): (T & { id: string })[] =>
 export const getSomePlaceholder = <T extends FieldValues, K extends Path<T>>(
   el: FormFieldType<T> | FieldArrType<T, K>,
 ): string => {
-  const place = el.place ?? el.label ?? el.name;
+  const place = el.place || el.label || el.name;
   const parsed = capt(place.replace("*", ""));
 
   return parsed + "...";

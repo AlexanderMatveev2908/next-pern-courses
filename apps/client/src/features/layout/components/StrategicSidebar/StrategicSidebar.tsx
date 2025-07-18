@@ -15,6 +15,13 @@ import CoursesSideList from "./components/CoursesList/CoursesSideList";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import SideConceptsList from "./components/ConceptsList/SideConceptsList";
+import SideSearchBar from "./components/SideSearchBar";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  schemaSideSummaryForm,
+  SideSummaryFormType,
+} from "@shared/first/paperwork/concepts/schema.summary.js";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
@@ -40,6 +47,11 @@ const StrategicSidebar: FC = () => {
 
   __cg("rerender");
 
+  const formCtx = useForm<SideSummaryFormType>({
+    resolver: zodResolver(schemaSideSummaryForm),
+    mode: "onChange",
+  });
+
   return !isPathOK || !isHydrated ? null : (
     <>
       <BlackBg
@@ -61,21 +73,25 @@ const StrategicSidebar: FC = () => {
           height: calc(100% - 80px);
         `}
       >
-        <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden">
-          <ToggleSide />
+        <FormProvider {...formCtx}>
+          <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden">
+            <ToggleSide />
 
-          <div className="w-full min-h-[50px] tb"></div>
+            <div className="w-full min-h-[50px]">
+              <SideSearchBar />
+            </div>
 
-          <div
-            className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
-          >
-            <CoursesSideList />
+            <div
+              className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
+            >
+              <CoursesSideList />
 
-            <div className="w-full bg-neutral-800 min-h-full"></div>
+              <div className="w-full bg-neutral-800 min-h-full"></div>
 
-            <SideConceptsList />
+              <SideConceptsList />
+            </div>
           </div>
-        </div>
+        </FormProvider>
       </motion.div>
     </>
   );

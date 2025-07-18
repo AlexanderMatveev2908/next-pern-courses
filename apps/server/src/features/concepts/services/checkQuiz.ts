@@ -27,8 +27,6 @@ export const checkQuizSvc = async ({
       },
     });
 
-    __cg("others", othersConcepts);
-
     if (othersConcepts.every((cpt) => cpt.isCompleted))
       await trx.course.update({
         where: {
