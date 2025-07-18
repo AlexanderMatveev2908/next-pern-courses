@@ -12,7 +12,6 @@ import { useGetPosPortal } from "@/core/hooks/ui/useGetPosPortal";
 import ExternalTooltipErr from "@/common/components/forms/errors/ExternalTooltipErr";
 import { SwapStageType } from "../reducer/initState";
 import JustText from "@/common/components/elements/JustText";
-import { genIpsum } from "@/core/lib/etc";
 
 type PropsType = {
   outerIdx: number;
@@ -50,7 +49,6 @@ const QuestionItem = forwardRef<HTMLDivElement, PropsType>(
           pointer-events: ${outerIdx === currSwap ? "all" : "none"};
         `}
       >
-        {!(outerIdx % 2) ? genIpsum(10) : ""}
         <ExternalTooltipErr
           {...{
             top: posParent[0],

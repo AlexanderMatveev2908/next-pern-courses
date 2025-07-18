@@ -15,8 +15,10 @@ export const checkQuizSvc = async ({
     const othersConcepts = await trx.concept.findMany({
       where: {
         courseID: concept.courseID,
-        NOT: {
-          id: concept.id,
+        AND: {
+          NOT: {
+            id: concept.id,
+          },
         },
       },
       select: {
@@ -24,6 +26,8 @@ export const checkQuizSvc = async ({
         isCompleted: true,
       },
     });
+
+    __cg("others", othersConcepts);
 
     if (othersConcepts.every((cpt) => cpt.isCompleted))
       await trx.course.update({
