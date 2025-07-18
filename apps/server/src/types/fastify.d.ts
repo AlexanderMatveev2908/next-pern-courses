@@ -21,9 +21,7 @@ export type GenericParam = {
   };
 };
 
-export type GenericReq = {
-  body: Record<string, any>;
-} & GenericParam;
+export type GenericReq = GenericParam & FastifyRequest;
 
 declare module "fastify" {
   interface FastifyInstance {

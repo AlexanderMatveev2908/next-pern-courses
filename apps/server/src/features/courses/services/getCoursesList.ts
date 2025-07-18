@@ -1,16 +1,12 @@
 import { FieldSearchClientType } from "@src/types/fastify.js";
 import { FastifyRequest } from "fastify";
-import {
-  calcPagination,
-  handlePagination,
-  parseArrSQL,
-  parseTxtSql,
-} from "../lib/etc.js";
+import { handlePagination } from "../lib/etc.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import db from "@src/conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import sql, { Sql } from "sql-template-tag";
 import { grabAssetsItem } from "@src/services/grabAssetsItem.js";
+import { parseTxtSql } from "@src/lib/sql.js";
 
 export const handleRawSQL = async (req: FastifyRequest) => {
   const { myQuery } = req;
