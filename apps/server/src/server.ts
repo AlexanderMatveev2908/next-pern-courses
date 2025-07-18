@@ -5,6 +5,7 @@ import db from "./conf/db.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import { DEL_ALL } from "./dev_only/danger.js";
 import { genMock } from "./dev_only/mock/genMock.js";
+import { v4 } from "uuid";
 
 const app = Fastify({
   logger: {
@@ -19,6 +20,8 @@ const app = Fastify({
     // },
   },
 });
+
+// __cg("v4", v4());
 
 // DEL_ALL();
 

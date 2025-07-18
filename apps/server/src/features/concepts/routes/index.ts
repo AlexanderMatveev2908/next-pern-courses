@@ -5,6 +5,7 @@ import { FastifyInstance } from "fastify";
 import {
   getConceptByIDCtrl,
   getMinInfoCourseByID,
+  getSummaryConceptsByCourse,
 } from "../controllers/get.js";
 import { parseForm } from "@src/middleware/multipart/multipart.js";
 import { checkQuizCtrl, postCourseCtrl } from "../controllers/post.js";
@@ -43,5 +44,12 @@ export const conceptsRouter = async (app: FastifyInstance) => {
     url: "/check/:conceptID",
     preHandler: [wrapRoute(logJSON), checkID("conceptID"), checkQuizMdw],
     handler: wrapRoute(checkQuizCtrl),
+  });
+
+  app.route({
+    method: "GET",
+    url: "/summary/:courseID",
+    preHandler: [logJSON, checkID("courseID")],
+    handler: wrapRoute(getSummaryConceptsByCourse),
   });
 };

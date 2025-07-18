@@ -39,3 +39,12 @@ export const getConceptByIDCtrl = async (
     concept,
   });
 };
+
+export const getSummaryConceptsByCourse = async (
+  req: FastifyRequest,
+  res: FastifyReply,
+) => {
+  return res.res200({
+    msg: "Here u are concepts filtered by course...",
+  });
+};
