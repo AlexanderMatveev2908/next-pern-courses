@@ -49,6 +49,6 @@ export const getSummaryConceptsByCourse = async (
 
   return res.res200({
     msg: "Here u are concepts filtered by course...",
-    summary,
+    concepts: summary,
   });
 };

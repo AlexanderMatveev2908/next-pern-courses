@@ -1,9 +1,30 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
+import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { useEffect, type FC } from "react";
+import { useSelector } from "react-redux";
+import { getStrategicSliceState } from "../../slices/slice";
+import { isStr } from "@shared/first/lib/dataStructure.js";
 
 const SideConceptsList: FC = () => {
+  const { currentCourseID } = useSelector(getStrategicSliceState);
+
+  const hooks = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();
+  const [triggerRTK, res] = hooks;
+  useWrapQuery({
+    ...res,
+    showToast: true,
+  });
+
+  useEffect(() => {
+    if (isStr(currentCourseID))
+      triggerRTK({
+        courseID: currentCourseID,
+      });
+  }, [currentCourseID, triggerRTK]);
+
   return <div></div>;
 };
 

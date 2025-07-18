@@ -33,7 +33,7 @@ const CoursesSideList: FC = () => {
   } = res;
   useWrapQuery({
     ...res,
-    showToast: true,
+    // showToast: true,
   });
 
   const coursesArg =
