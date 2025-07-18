@@ -9,6 +9,7 @@ const BASE_URL = "/concepts";
 
 export const conceptsSliceAPI = api.injectEndpoints({
   endpoints: (builder) => ({
+    // ? generic info to keep track of curr order points ecc...
     grabStatsCourse: builder.query<
       UnwrappedResAPI<{ course: Partial<CourseType> }>,
       string
@@ -35,6 +36,7 @@ export const conceptsSliceAPI = api.injectEndpoints({
             type: TagsAPI.COURSES_LIST,
             id: arg.courseID,
           },
+          { type: TagsAPI.CONCEPTS_SUMMARY_LIST, id: "LIST" },
         ];
       },
     }),
@@ -59,9 +61,15 @@ export const conceptsSliceAPI = api.injectEndpoints({
         method: "POST",
         data,
       }),
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      invalidatesTags: (res, err, arg) => {
-        return [TagsAPI.CONCEPT_PAGE];
+      invalidatesTags: (res, err, { conceptID }) => {
+        return [
+          TagsAPI.CONCEPT_PAGE,
+          TagsAPI.COURSE_PAGE,
+          {
+            type: TagsAPI.CONCEPTS_SUMMARY_LIST,
+            id: conceptID,
+          },
+        ];
       },
     }),
 
