@@ -11,10 +11,10 @@ import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import { useParams, usePathname } from "next/navigation";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
-import CoursesSideList from "./components/CoursesList/CoursesSideList";
+import CoursesSideList from "./components/CoursesSideList";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
-import SideConceptsList from "./components/ConceptsList/SideConceptsList";
+import SideConceptsList from "./components/SideConceptsList";
 import SideSearchBar from "./components/SideSearchBar";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -74,21 +74,25 @@ const StrategicSidebar: FC = () => {
         `}
       >
         <FormProvider {...formCtx}>
-          <div className="w-full flex flex-col h-full max-h-full gap-3 overflow-hidden">
+          <div className="w-full flex flex-col h-full max-h-full gap-6 overflow-hidden">
             <ToggleSide />
 
-            <div className="w-full min-h-[50px]">
-              <SideSearchBar />
-            </div>
-
             <div
-              className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0"}`}
+              className={`w-full flex flex-col gap-6 transition-all duration-300 ${leftSideState.isSide ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             >
-              <CoursesSideList />
+              <div className="w-full min-h-[50px]">
+                <SideSearchBar />
+              </div>
 
-              <div className="w-full bg-neutral-800 min-h-full"></div>
+              <div
+                className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden`}
+              >
+                <CoursesSideList />
 
-              <SideConceptsList />
+                <div className="w-full bg-neutral-800 min-h-full"></div>
+
+                <SideConceptsList />
+              </div>
             </div>
           </div>
         </FormProvider>

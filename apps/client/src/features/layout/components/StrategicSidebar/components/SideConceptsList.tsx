@@ -5,9 +5,9 @@ import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { useEffect, type FC } from "react";
 import { useSelector } from "react-redux";
-import { getStrategicSliceState } from "../../slices/slice";
+import { getStrategicSliceState } from "../slices/slice";
 import { isStr } from "@shared/first/lib/dataStructure.js";
-import ColSide from "../ColSide";
+import ColSide from "./ColSide";
 import { ConceptType } from "@/features/concepts/types";
 
 const SideConceptsList: FC = () => {
