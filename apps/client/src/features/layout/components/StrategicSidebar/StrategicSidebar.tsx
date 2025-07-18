@@ -36,6 +36,13 @@ const StrategicSidebar: FC = () => {
     cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
+  const { isHydrated } = useListenHydration();
+
+  const formCtx = useForm<SideSummaryFormType>({
+    resolver: zodResolver(schemaSideSummaryForm),
+    mode: "onChange",
+  });
+
   const optDep = useMemo(
     () => [strategicSideState.isSide],
     [strategicSideState.isSide],
@@ -44,13 +51,6 @@ const StrategicSidebar: FC = () => {
     delay: 300,
     cb: () => dispatch(strategicSlice.actions.endSwapState()),
     optDep,
-  });
-
-  const { isHydrated } = useListenHydration();
-
-  const formCtx = useForm<SideSummaryFormType>({
-    resolver: zodResolver(schemaSideSummaryForm),
-    mode: "onChange",
   });
 
   const hook = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();

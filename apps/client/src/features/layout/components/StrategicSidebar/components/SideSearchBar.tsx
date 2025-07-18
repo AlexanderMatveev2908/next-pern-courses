@@ -63,7 +63,7 @@ const SideSearchBar: FC<PropsType> = ({ hook }) => {
     Path<SideSummaryFormType>
   >("Concept");
 
-  const optDep = useMemo(() => [swapState], [swapState]);
+  const optDep = useMemo(() => [swapState, errors], [swapState, errors]);
   const { posParent } = useGetPosPortal({
     contentRef: inputRef,
     optDep,
