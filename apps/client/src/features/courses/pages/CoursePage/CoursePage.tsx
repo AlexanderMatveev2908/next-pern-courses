@@ -22,7 +22,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
   const { isLoading, data: { course } = {} } = res;
   useWrapQuery({
     ...res,
-    showToast: true,
+    // showToast: true,
     throwErr: true,
   });
 

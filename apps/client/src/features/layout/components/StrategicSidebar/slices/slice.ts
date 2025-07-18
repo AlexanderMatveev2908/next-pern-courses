@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initState = {
   isSide: false,
   currentCourseID: "",
+  currentConceptID: "",
 };
 
 export const strategicSlice = createSlice({
@@ -15,6 +16,9 @@ export const strategicSlice = createSlice({
     },
     setCurrCourseID: (state, action: PayloadAction<string>) => {
       state.currentCourseID = action.payload;
+    },
+    setCurrConceptID: (state, action: PayloadAction<string>) => {
+      state.currentConceptID = action.payload;
     },
   },
 });

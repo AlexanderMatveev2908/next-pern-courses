@@ -3,13 +3,13 @@
 
 import { type FC } from "react";
 import ColSide from "../ColSide";
-import SideCourseItem from "./components/SideCourseItem";
 import { coursesSliceAPI } from "@/features/courses/slices/apiSlice";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import { useCachedData } from "@/core/hooks/api/useCachedData";
 import { getStrategicSliceState } from "../../slices/slice";
 import { useSelector } from "react-redux";
+import { CourseType } from "@/features/courses/types/courses";
 
 const CoursesSideList: FC = () => {
   const { currentCourseID } = useSelector(getStrategicSliceState);
@@ -33,7 +33,7 @@ const CoursesSideList: FC = () => {
   } = res;
   useWrapQuery({
     ...res,
-    showToast: true,
+    // showToast: true,
   });
 
   const coursesArg =
@@ -41,23 +41,18 @@ const CoursesSideList: FC = () => {
       ? cachedData?.courses
       : courses) ?? [];
 
-  const findOutChosenCourse = (id: string) => id === currentCourseID;
+  const findOutChosenCourse = (el: Partial<CourseType>) =>
+    el?.id === currentCourseID;
 
   return (
     <ColSide
       {...{
         isLoading: coursesLoading,
+        arg: coursesArg,
+        basePath: "courses",
+        calcIsChosen: findOutChosenCourse,
       }}
-    >
-      <div className="w-full grid grid-cols-1 gap-4">
-        {coursesArg.map((el) => (
-          <SideCourseItem
-            key={el.id}
-            {...{ el, isChosen: findOutChosenCourse(el.id!) }}
-          />
-        ))}
-      </div>
-    </ColSide>
+    />
   );
 };
 

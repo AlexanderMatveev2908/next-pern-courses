@@ -3,6 +3,7 @@ import { api } from "@/core/store/api";
 import { CourseType } from "@/features/courses/types/courses";
 import { ConceptType } from "../types";
 import { FormQuizType } from "@shared/first/paperwork/concepts/schema.quiz.js";
+import { isArrOK } from "@shared/first/lib/dataStructure.js";
 
 const BASE_URL = "/concepts";
 
@@ -62,6 +63,28 @@ export const conceptsSliceAPI = api.injectEndpoints({
       invalidatesTags: (res, err, arg) => {
         return [TagsAPI.CONCEPT_PAGE];
       },
+    }),
+
+    getSideSummaryConcepts: builder.query<
+      UnwrappedResAPI<{ concepts: Partial<ConceptType>[] }>,
+      { vals?: unknown; courseID: string }
+    >({
+      query: ({ courseID, vals }) => ({
+        url: `${BASE_URL}/summary/${courseID}?${vals ?? ""}`,
+        method: "GET",
+      }),
+      providesTags: (res) => [
+        ...(!isArrOK(res?.concepts)
+          ? []
+          : res!.concepts.map((cpt) => ({
+              type: TagsAPI.CONCEPTS_SUMMARY_LIST,
+              id: cpt.id,
+            }))),
+        {
+          type: TagsAPI.CONCEPTS_SUMMARY_LIST,
+          id: "LIST",
+        },
+      ],
     }),
   }),
 });
