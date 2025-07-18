@@ -7,7 +7,6 @@ import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
 import { easeInOut, motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
-import { genIpsum } from "@/core/lib/etc";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
 import ColSide from "./components/ColSide";
@@ -16,6 +15,7 @@ import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import CoursesSideList from "./components/CoursesList/CoursesSideList";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
+import SideConceptsList from "./components/ConceptsList/SideConceptsList";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
@@ -74,7 +74,9 @@ const StrategicSidebar: FC = () => {
 
             <div className="w-full bg-neutral-800 min-h-full"></div>
 
-            <ColSide>{genIpsum(10)}</ColSide>
+            <ColSide>
+              <SideConceptsList />
+            </ColSide>
           </div>
         </div>
       </motion.div>

@@ -31,7 +31,7 @@ const PageItemShape: FC<PropsType> = ({
   Footer,
 }) => {
   return (
-    <div className="w-full grid grid-cols-1 gap-10">
+    <div className="w-full grid grid-cols-1 gap-10 ">
       <JustText {...{ title, isTitle: true }} />
 
       {Header}
