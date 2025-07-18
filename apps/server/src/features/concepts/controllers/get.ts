@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getInfoCourseSvc } from "../services/getCourseInfo.js";
 import { getConceptByIDSvc } from "../services/getConceptByID.js";
+import { getSummaryConceptsSvc } from "../services/getSummaryConcepts.js";
 
 export const getMinInfoCourseByID = async (
   req: FastifyRequest,
@@ -44,7 +45,10 @@ export const getSummaryConceptsByCourse = async (
   req: FastifyRequest,
   res: FastifyReply,
 ) => {
+  const { summary } = await getSummaryConceptsSvc(req);
+
   return res.res200({
     msg: "Here u are concepts filtered by course...",
+    summary,
   });
 };
