@@ -28,7 +28,6 @@ const StrategicSidebar: FC = () => {
   const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
   const sideRef = useRef<HTMLDivElement | null>(null);
   const timerID = useRef<NodeJS.Timeout | null>(null);
-  const prevValsRef = useRef<Record<string, string>>({});
 
   const strategicSideState = useSelector(getStrategicSliceState);
 
@@ -89,7 +88,7 @@ const StrategicSidebar: FC = () => {
               className={`w-full flex flex-col gap-6 transition-all duration-300 overflow-y-auto pt-2 ${strategicSideState.isSide ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             >
               <div className="w-full min-h-[50px]">
-                <SideSearchBar {...{ prevValsRef, hook }} />
+                <SideSearchBar {...{ hook }} />
               </div>
 
               <div

@@ -10,7 +10,7 @@ import {
   schemaSideSummaryForm,
   SideSummaryFormType,
 } from "@shared/first/paperwork/concepts/schema.summary.js";
-import { RefObject, useEffect, useMemo, useRef, type FC } from "react";
+import { useEffect, useMemo, useRef, type FC } from "react";
 import { Path, useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { getStrategicSliceState } from "../slices/slice";
@@ -28,7 +28,6 @@ import { ConceptType } from "@/features/concepts/types";
 type ArgType = { courseID: string; vals?: unknown; _?: number };
 
 type PropsType = {
-  prevValsRef: RefObject<Record<string, string>>;
   hook: [
     TriggerTypeRTK<
       UnwrappedResAPI<{ concepts: Partial<ConceptType>[] }>,
@@ -42,8 +41,9 @@ type PropsType = {
   ];
 };
 
-const SideSearchBar: FC<PropsType> = ({ prevValsRef, hook }) => {
+const SideSearchBar: FC<PropsType> = ({ hook }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const prevValsRef = useRef<Record<string, string>>({});
   const timerID = useRef<NodeJS.Timeout | null>(null);
 
   const {
