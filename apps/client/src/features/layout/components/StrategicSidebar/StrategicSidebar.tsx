@@ -12,7 +12,6 @@ import { css } from "@emotion/react";
 import { usePathname } from "next/navigation";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import CoursesSideList from "./components/CoursesSideList";
-import { __cg } from "@shared/first/lib/logger.js";
 import SideConceptsList from "./components/SideConceptsList";
 import SideSearchBar from "./components/SideSearchBar";
 import { FormProvider, useForm } from "react-hook-form";
@@ -22,15 +21,16 @@ import {
   SideSummaryFormType,
 } from "@shared/first/paperwork/concepts/schema.summary.js";
 import { clearT } from "@/core/lib/etc";
+import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
   const sideRef = useRef<HTMLDivElement | null>(null);
   const timerID = useRef<NodeJS.Timeout | null>(null);
+  const prevValsRef = useRef<Record<string, string>>({});
 
   const strategicSideState = useSelector(getStrategicSliceState);
-  const { currentCourseID } = strategicSideState;
 
   const dispatch = useDispatch();
   useMouseOut({
@@ -53,17 +53,12 @@ const StrategicSidebar: FC = () => {
 
   const { isHydrated } = useListenHydration();
 
-  __cg("rerender");
-
   const formCtx = useForm<SideSummaryFormType>({
     resolver: zodResolver(schemaSideSummaryForm),
     mode: "onChange",
   });
-  const { setValue } = formCtx;
 
-  useEffect(() => {
-    setValue("title", "", { shouldValidate: true });
-  }, [currentCourseID, setValue]);
+  const hook = conceptsSliceAPI.useLazyGetSideSummaryConceptsQuery();
 
   return !isPathOK || !isHydrated ? null : (
     <>
@@ -94,7 +89,7 @@ const StrategicSidebar: FC = () => {
               className={`w-full flex flex-col gap-6 transition-all duration-300 overflow-y-auto pt-2 ${strategicSideState.isSide ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             >
               <div className="w-full min-h-[50px]">
-                <SideSearchBar />
+                <SideSearchBar {...{ prevValsRef, hook }} />
               </div>
 
               <div
@@ -104,7 +99,11 @@ const StrategicSidebar: FC = () => {
 
                 <div className="w-full bg-neutral-800 min-h-full"></div>
 
-                <SideConceptsList />
+                <SideConceptsList
+                  {...{
+                    hook,
+                  }}
+                />
               </div>
             </div>
           </div>
