@@ -35,6 +35,8 @@ const ColSide = <
         </div>
       ) : (
         <div className="w-full grid grid-cols-1 gap-4">
+          {/* {genIpsum(20)} */}
+
           {arg.map((el) => {
             const isChosen = calcIsChosen(el);
 

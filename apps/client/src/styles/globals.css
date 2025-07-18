@@ -9,7 +9,7 @@
 }
 
 .pad__app {
-  @apply px-[20px] sm:px-[30px];
+  @apply px-[10px] sm:px-[20px];
 }
 
 .li__drop {

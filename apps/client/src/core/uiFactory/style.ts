@@ -44,8 +44,8 @@ export const $listItemsCSS = css`
 
 export const $pageWithSideCSS = css`
   justify-self: end;
-  width: calc(100% - 50px);
-  padding-bottom: 75px;
+  width: calc(100% - 60px);
+  padding: 0 10px 75px 0;
   /* border: 3px solid white; */
   overflow-x: hidden;
 `;

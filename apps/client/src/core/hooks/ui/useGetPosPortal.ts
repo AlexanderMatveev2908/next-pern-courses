@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RefObject, useEffect, useState } from "react";
+import { useListenHydration } from "../api/useListenHydration";
 
 type Params = {
   contentRef: RefObject<HTMLElement | null>;
@@ -9,9 +10,13 @@ type Params = {
 export const useGetPosPortal = ({ contentRef, optDep }: Params) => {
   const [posParent, setPosParent] = useState<[number, number]>([0, 0]);
 
+  const { isHydrated } = useListenHydration();
+
   useEffect(() => {
-    if (!contentRef?.current || typeof contentRef === "function") return;
+    if (!isHydrated || !contentRef?.current || typeof contentRef === "function")
+      return;
     const el = contentRef.current;
+
     const listen = () => {
       const { top, left } = el.getBoundingClientRect();
       const windowH = window.scrollY;
@@ -29,7 +34,7 @@ export const useGetPosPortal = ({ contentRef, optDep }: Params) => {
       window.removeEventListener("resize", listen);
       obs.disconnect();
     };
-  }, [contentRef, optDep]);
+  }, [contentRef, optDep, isHydrated]);
 
   return {
     posParent,
