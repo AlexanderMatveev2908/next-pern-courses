@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, type FC } from "react";
+import { useMemo, useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
@@ -20,14 +20,13 @@ import {
   schemaSideSummaryForm,
   SideSummaryFormType,
 } from "@shared/first/paperwork/concepts/schema.summary.js";
-import { clearT } from "@/core/lib/etc";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
+import { useSyncUiDelay } from "@/core/hooks/ui/useSyncUiDelay";
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
   const sideRef = useRef<HTMLDivElement | null>(null);
-  const timerID = useRef<NodeJS.Timeout | null>(null);
 
   const strategicSideState = useSelector(getStrategicSliceState);
 
@@ -37,18 +36,15 @@ const StrategicSidebar: FC = () => {
     cb: () => dispatch(strategicSlice.actions.setSide(false)),
   });
 
-  useEffect(() => {
-    clearT(timerID);
-
-    timerID.current = setTimeout(() => {
-      dispatch(strategicSlice.actions.endSwapState());
-      clearT(timerID);
-    }, 300);
-
-    return () => {
-      clearT(timerID);
-    };
-  }, [dispatch, strategicSideState.isSide]);
+  const optDep = useMemo(
+    () => [strategicSideState.isSide],
+    [strategicSideState.isSide],
+  );
+  useSyncUiDelay({
+    delay: 300,
+    cb: () => dispatch(strategicSlice.actions.endSwapState()),
+    optDep,
+  });
 
   const { isHydrated } = useListenHydration();
 
@@ -68,9 +64,10 @@ const StrategicSidebar: FC = () => {
         }}
       />
 
+      {/* ? i really do not know when strategic sidebar should become always open 🥸 */}
       <motion.div
         ref={sideRef}
-        className="z__left_side fixed top-[80px] left-0 w-full sm:w-[500px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
+        className="z__left_side fixed top-[80px] left-0 w-full md:w-[600px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
         transition={{ duration: 0.3, ease: easeInOut }}
         animate={{
           transform: `translateX(${strategicSideState.isSide ? "100%" : "60px"})`,
