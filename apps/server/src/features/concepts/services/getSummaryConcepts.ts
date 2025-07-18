@@ -1,5 +1,5 @@
 import { REG_INTEGER } from "@shared/first/constants/regex.js";
-import { isArrOK, isStr } from "@shared/first/lib/dataStructure.js";
+import { isArrOK } from "@shared/first/lib/dataStructure.js";
 import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { parseTxtSql } from "@src/lib/sql.js";
@@ -29,8 +29,6 @@ export const getSummaryConceptsSvc = async (req: FastifyRequest) => {
            ])
      }
     `;
-
-  __cg("raw", raw);
 
   const summary = await db.$queryRawUnsafe(raw.text, ...raw.values);
 
