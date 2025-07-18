@@ -9,7 +9,6 @@ import { easeInOut, motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import ToggleSide from "./components/ToggleSide";
 import { css } from "@emotion/react";
-import ColSide from "./components/ColSide";
 import { useParams, usePathname } from "next/navigation";
 import { useListenHydration } from "@/core/hooks/api/useListenHydration";
 import CoursesSideList from "./components/CoursesList/CoursesSideList";
