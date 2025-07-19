@@ -10,8 +10,7 @@
 
 - **Next.js** – App directory routing, SSR/CSR mix
 - **React** – Core UI library
-- **TypeScript** – Full type safety across the stack
-- **react-hook-form** – Minimal and performant form state management with native validation integration
+- **react-hook-form** – Minimal and performant form state management
 - **Redux Toolkit** – Global state management
 - **RTK Query** – Data fetching and caching
 - **Axios** – Used for HTTP requests and configured as RTK Query's base query
@@ -26,10 +25,14 @@
 
 - **Fastify** – High-performance Node.js web framework
 - **Prisma** – Type-safe ORM for PostgreSQL
-- **Zod** – Runtime validation for inputs and schemas (schemas shared between client and server via the `packages/` folder)
 - **PostgreSQL** – Relational database
 - **Cloudinary** – Media hosting and delivery (used for uploading and storing course/concept images or videos)
 - **sql-template-tag** – Safe, readable raw SQL syntax for advanced custom queries outside Prisma's API
+
+### Frontend && Backend
+
+- **TypeScript** – Full type safety across the stack
+- **Zod** – Runtime validation for inputs and schemas (schemas shared between client and server via the `packages/` folder)
 
 ### DevOps & Infrastructure
 
@@ -132,10 +135,27 @@ This allows me to:
 - Test CORS issues directly in development
 - Simulate deployment flow more realistically
 
+💡 **Note:** — You’ll need to configure Node.js to trust self-signed certs.
+
+Add the following line to your `.bashrc`, `.zshrc`, or shell config:
+
+```bash
+export NODE_OPTIONS="--use-system-ca"
+```
+
+For Self-signed certs I used `mkcert` and `nss`(optional for `Chrome` — required just for `Firefox`).
+Setup includes:
+
+```bash
+sudo pacman -S mkcert nss && \
+mkcert -install && \
+mkcert localhost
+```
+
 ### 📜 NGINX Config Script
 
-💡 Wherever you see `ninja` in paths (e.g. `/home/ninja/`), replace it with **your Linux username**, which you chose during OS installation.  
- You can check your current username with:
+💡 Wherever you see `ninja` in paths (e.g. `/home/ninja/`), replace it with **your Linux username**, which you chose during OS installation.
+You can check your current username with:
 
 ```bash
 echo $USER
@@ -224,6 +244,17 @@ http {
         }
     }
 }
+```
+
+## Branches 🌴
+
+Even side branches were deleted after merge,they can still be recognized in Git log because I pass as option `--no-ff` to ensure a merge commit is always created.
+I use a script to append the branch name I am working in to the start of commit message so it will be easy to recognize in future.
+
+Result is something like:
+
+```bash
+sidebar_logic => created redux slice of sidebar
 ```
 
 ## App Logic ⚙️
