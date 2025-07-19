@@ -8,7 +8,7 @@ import type { FC } from "react";
 import ShowInfoRowsBackCard from "@/common/components/cards/fragments/card/ShowInfoRowsBackCard";
 import LabelCard from "@/common/components/cards/fragments/card/LabelCard";
 import { genRowsInfoConcept } from "@/features/concepts/uiFactory";
-import FooterImgConcept from "./components/FooterImgConcept";
+import CompletedRowMark from "@/common/components/elements/CompletedRowMark";
 
 type PropsType = {
   concept: ConceptType;
@@ -25,7 +25,7 @@ const ConceptItem: FC<PropsType> = ({ concept }) => {
         ContentServer: (
           <ShowInfoRowsBackCard {...{ arg: genRowsInfoConcept(concept) }} />
         ),
-        FooterImg: <FooterImgConcept {...{ concept }} />,
+        FooterImg: concept.isCompleted && <CompletedRowMark />,
         linksHref: genLinksCard(`/concepts/${concept.id}`),
       }}
     />

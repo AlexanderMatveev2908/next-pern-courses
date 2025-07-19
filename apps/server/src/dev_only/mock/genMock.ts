@@ -47,65 +47,67 @@ export const genMock = async () => {
       });
 
       await Promise.all(
-        Array.from({ length: 5 }).map(async (_, cptIdx) => {
-          const estimatedTime = genRandomByMinMax(5, 30);
-          const pointsGained = genRandomByMinMax(25, 200);
-          const newCpt = await db.concept.create({
-            data: {
-              estimatedTime,
-              pointsGained,
-              order: cptIdx,
-              title: `This is concept idx ${cptIdx} for course about ${v}`,
-              description: genIpsum(10),
-              markdown: md,
-              courseID: newCourse.id,
-              createdAt: new Date(Date.now() + cptIdx * 100),
-            },
-          });
-
-          await addCloudAssetsModel({
-            entityID: newCpt.id,
-            entityType: EntityType.CONCEPT,
-            nameFolder: v,
-            maxImages: 1,
-          });
-
-          await await db.course.update({
-            where: {
-              id: newCourse.id,
-            },
-            data: {
-              estimatedTime: {
-                increment: estimatedTime,
+        Array.from({ length: genRandomByMinMax(1, 5) }).map(
+          async (_, cptIdx) => {
+            const estimatedTime = genRandomByMinMax(5, 30);
+            const pointsGained = genRandomByMinMax(25, 200);
+            const newCpt = await db.concept.create({
+              data: {
+                estimatedTime,
+                pointsGained,
+                order: cptIdx,
+                title: `This is concept idx ${cptIdx} for course about ${v}`,
+                description: genIpsum(10),
+                markdown: md,
+                courseID: newCourse.id,
+                createdAt: new Date(Date.now() + cptIdx * 100),
               },
-              pointsGained: {
-                increment: pointsGained,
-              },
-            },
-          });
+            });
 
-          await Promise.all(
-            Array.from({ length: 3 }).map(async (_, quizIdx) => {
-              const newQuiz = await db.question.create({
-                data: {
-                  title: `question idx ${quizIdx} for concept idx ${cptIdx} for course about ${v}`,
-                  question: genIpsum(2),
-                  conceptID: newCpt.id,
-                  createdAt: new Date(Date.now() + quizIdx * 100),
+            await addCloudAssetsModel({
+              entityID: newCpt.id,
+              entityType: EntityType.CONCEPT,
+              nameFolder: v,
+              maxImages: 1,
+            });
+
+            await await db.course.update({
+              where: {
+                id: newCourse.id,
+              },
+              data: {
+                estimatedTime: {
+                  increment: estimatedTime,
                 },
-              });
+                pointsGained: {
+                  increment: pointsGained,
+                },
+              },
+            });
 
-              await db.variant.createMany({
-                data: Array.from({ length: 5 }).map((_, varIdx) => ({
-                  answer: `Answer idx ${varIdx} for quiz idx ${quizIdx} for concept ${cptIdx} for course about ${v} (${!varIdx ? "correct" : "false"})`,
-                  isCorrect: !varIdx,
-                  questionID: newQuiz.id,
-                  createdAt: new Date(Date.now() + varIdx * 100),
-                })),
-              });
-            }),
-          );
-        }),
+            await Promise.all(
+              Array.from({ length: 3 }).map(async (_, quizIdx) => {
+                const newQuiz = await db.question.create({
+                  data: {
+                    title: `question idx ${quizIdx} for concept idx ${cptIdx} for course about ${v}`,
+                    question: genIpsum(2),
+                    conceptID: newCpt.id,
+                    createdAt: new Date(Date.now() + quizIdx * 100),
+                  },
+                });
+
+                await db.variant.createMany({
+                  data: Array.from({ length: 5 }).map((_, varIdx) => ({
+                    answer: `Answer idx ${varIdx} for quiz idx ${quizIdx} for concept ${cptIdx} for course about ${v} (${!varIdx ? "correct" : "false"})`,
+                    isCorrect: !varIdx,
+                    questionID: newQuiz.id,
+                    createdAt: new Date(Date.now() + varIdx * 100),
+                  })),
+                });
+              }),
+            );
+          },
+        ),
       );
     }
   } catch (err) {

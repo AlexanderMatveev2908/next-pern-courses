@@ -84,6 +84,7 @@ export const handleRawSQL = async (req: FastifyRequest) => {
         c."tech",
         c."estimatedTime",
         c."pointsGained",
+        c."isCompleted",
     
     JSON_BUILD_OBJECT(
       'conceptsCount',

@@ -24,6 +24,8 @@ export type CourseType = ServerModel<{
   video: CloudAssetType | null;
   images: CloudAssetType[];
 
+  isCompleted: boolean;
+
   conceptsStats?: {
     conceptsTime: number;
     conceptsCount: number;

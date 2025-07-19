@@ -69,6 +69,10 @@ export const conceptsSliceAPI = api.injectEndpoints({
             type: TagsAPI.CONCEPTS_SUMMARY_LIST,
             id: conceptID,
           },
+          {
+            type: TagsAPI.COURSES_LIST,
+            id: "LIST",
+          },
         ];
       },
     }),
