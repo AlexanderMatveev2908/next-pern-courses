@@ -218,3 +218,71 @@ http {
     }
 }
 ```
+
+## App Logic ⚙️
+
+### Typescript config 🟦
+
+The client and server share Zod schemas, TypeScript types, and utility functions via a common package:
+
+- Located at: `packages/shared`
+- Imported using a path alias: `@shared/first`
+
+📘 Any `tsconfig.json` used as a reference in other packages **must include**:
+
+```json
+{
+  "compilerOptions": {
+    "composite": true
+  }
+}
+```
+
+his makes shared packages (like `packages/shared`) usable across the monorepo — allowing you to alias and import them cleanly
+
+### 📂 Folders Architecture
+
+Both client and server follow a **feature-based architecture** that aims to encapsulate logic per domain while keeping shared utilities and reusable logic at the root level.
+
+- On the **client**:
+  - Folders like `components/` and `lib/` may exist both:
+    - At `src` root level (shared across features)
+    - Inside specific feature folders like `concepts/` (feature-scoped components)
+
+- On the **server**:
+  - The `middleware/` folder may appear:
+    - At `src` root level for global middleware
+    - Inside feature folders (e.g. `concepts/`) for domain-specific logic
+
+### Validation ⚔️
+
+Every form in the app is validated on **both the client and the server** using the same `Zod` schemas — shared via the `@shared/first` package.
+
+- On the **client**, schemas validate user input immediately to improve UX.
+- On the **server**, those same schemas are typically **extended** to handle backend-specific logic.
+
+Special case: **file validation**
+
+- On the **server**, files are **parsed** — which gives them a **different shape** than the browser's `File` object.
+- As a result, the server uses a **custom Zod extension** to validate the parsed file structure correctly.
+
+### Model Validations 📝
+
+With **Sequelize**, you can inject custom `JavaScript` logic directly into your model definitions — for example, validating fields dynamically during creation. This allows you to define a field as a generic `STRING` and rely on pre-create validation to enforce correctness.
+
+In contrast, the **domain-specific language (DSL)** of **Prisma** doesn't allow embedding JavaScript logic inside the schema so I had to be stricter on model definition
+
+- Fields that define a `category` or even `sub category` are defined using strict `enum` types.
+- This guarantees type safety at the database level and prevents accidental insertion of invalid values
+
+### Assets 📷
+
+Assets stored in the cloud follow a **polymorphic model** — meaning there's a single `CloudAsset` entity instead of creating separate asset tables for each model (like `CourseImage` or `ConceptVideo`).
+
+`Prisma` does not support polymorphic relationships so you will need to join them manually with a custom aggregation
+
+To organize asset metadata and support flexible querying, the `CloudAsset` model includes:
+
+- **`entityType`** — Indicates whether the asset belongs to a `COURSE` or a `CONCEPT`
+- **`type`** — Specifies the asset type, such as `IMAGE` or `VIDEO`
+- **`entityId`** — The UUID of the associated record
