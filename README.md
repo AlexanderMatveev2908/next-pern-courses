@@ -320,9 +320,20 @@ There are some fields with information that could be useful:
 - **pointsGained** — how many points is possible to gain until now with course
 - **order** — index of current concept your are adding
 
-I established a generic range of `3 - 10` for questions you can add for a concept but you can just modify the range in `@shared/first`
+I established a generic range of `3 - 10` for questions you can add for a concept but you can easily modify the range in `@shared/first`
 
-Each question will have its own `title` to gave question some context, the `question` itself of course and `5 variants` with one answer correct only
+Each question includes:
 
-In database each question will be bind to a concept, each answer then will be bind to certain question.
-The result will be that a concept will have an `Array` on questions and each `question` will have an `Array` of `variants`
+- A **title** (to give the question some context)
+- The **question** text itself
+- Exactly **5 variants**, with only **1 correct** answer
+
+In the database:
+
+- Each question is linked to a `Concept`
+- Each answer (variant) is linked to a specific `Question`
+
+This structure results in:
+
+- A `Concept` having an **array of questions**
+- Each `Question` having an **array of variants**
