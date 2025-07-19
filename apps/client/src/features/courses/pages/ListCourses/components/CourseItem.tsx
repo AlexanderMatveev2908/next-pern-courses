@@ -8,6 +8,7 @@ import { CourseType } from "@/features/courses/types/courses";
 import ShowInfoRowsBackCard from "@/common/components/cards/fragments/card/ShowInfoRowsBackCard";
 import LabelCard from "@/common/components/cards/fragments/card/LabelCard";
 import { difficultiesAssets } from "@/core/uiFactory/style";
+import CompletedRowMark from "@/common/components/elements/CompletedRowMark";
 
 type PropsType = {
   course: CourseType;
@@ -31,6 +32,7 @@ const CourseItem: FC<PropsType> = ({ course }) => {
         ContentServer: (
           <ShowInfoRowsBackCard {...{ arg: genRowsInfoCourse(course) }} />
         ),
+        FooterImg: course.isCompleted && <CompletedRowMark />,
         linksHref: genLinksCard(`/courses/${course.id}`),
       }}
     />

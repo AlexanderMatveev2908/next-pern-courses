@@ -28,6 +28,7 @@ export const getSummaryConceptsSvc = async (req: FastifyRequest) => {
              splitted!.map((str) => `cpt.title ILIKE '${str}'`).join("\n AND "),
            ])
      }
+     ORDER BY cpt.order ASC
     `;
 
   const summary = await db.$queryRawUnsafe(raw.text, ...raw.values);
