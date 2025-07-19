@@ -10,13 +10,7 @@ export const genSizeCSS = (size: number) => css`
     .join("\n")}
 `;
 
-export const getImgParSwap = () =>
+export const getImgParSwap = (sizeImg: number, exception: number = 0) =>
   !isWindow()
     ? 1
-    : window.innerWidth > 1650
-      ? 4
-      : window.innerWidth > 1250
-        ? 3
-        : window.innerWidth > 550
-          ? 2
-          : 1;
+    : Math.max(1, Math.floor((window.innerWidth - 200 - exception) / sizeImg));
