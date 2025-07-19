@@ -11,7 +11,11 @@ import { getStrategicSliceState } from "../slices/slice";
 import { useSelector } from "react-redux";
 import { CourseType } from "@/features/courses/types/courses";
 
-const CoursesSideList: FC = () => {
+type PropsType = {
+  isAlwaysOpen: boolean;
+};
+
+const CoursesSideList: FC<PropsType> = ({ isAlwaysOpen }) => {
   const { currentCourseID } = useSelector(getStrategicSliceState);
 
   const { cachedData } = useCachedData({
@@ -47,6 +51,7 @@ const CoursesSideList: FC = () => {
   return (
     <ColSide
       {...{
+        isAlwaysOpen,
         isLoading: coursesLoading,
         arg: coursesArg,
         basePath: "courses",

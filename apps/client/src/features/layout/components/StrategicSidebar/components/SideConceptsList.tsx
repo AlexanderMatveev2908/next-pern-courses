@@ -25,9 +25,10 @@ type PropsType = {
     >,
     any,
   ];
+  isAlwaysOpen: boolean;
 };
 
-const SideConceptsList: FC<PropsType> = ({ hook }) => {
+const SideConceptsList: FC<PropsType> = ({ isAlwaysOpen, hook }) => {
   const { currentConceptID } = useSelector(getStrategicSliceState);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,6 +40,7 @@ const SideConceptsList: FC<PropsType> = ({ hook }) => {
   return (
     <ColSide
       {...{
+        isAlwaysOpen,
         basePath: "concepts",
         isLoading: isLoading || isFetching,
         arg: concepts,

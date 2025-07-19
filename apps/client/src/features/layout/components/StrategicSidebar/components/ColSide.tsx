@@ -15,6 +15,7 @@ type PropsType<
   arg: T[];
   basePath: string;
   calcIsChosen: (el: T) => boolean;
+  isAlwaysOpen: boolean;
 };
 
 const ColSide = <
@@ -24,6 +25,7 @@ const ColSide = <
   isLoading,
   basePath,
   calcIsChosen,
+  isAlwaysOpen,
 }: PropsType<T>) => {
   const dispatch = useDispatch();
 
@@ -43,7 +45,11 @@ const ColSide = <
             return (
               <Link
                 key={el.id}
-                onClick={() => dispatch(strategicSlice.actions.setSide(false))}
+                onClick={() =>
+                  isAlwaysOpen
+                    ? null
+                    : dispatch(strategicSlice.actions.setSide(false))
+                }
                 href={`/${basePath}/${el.id}`}
                 className={`w-full flex items-center gap-5 transition-all duration-300 py-2 px-3 rounded-xl cursor-pointer group   hover:bg-neutral-200 ${isChosen ? "bg-neutral-200" : ""}`}
               >

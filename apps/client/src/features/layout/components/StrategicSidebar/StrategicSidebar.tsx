@@ -120,13 +120,18 @@ const StrategicSidebar: FC = () => {
               <div
                 className={`w-full grid grid-cols-[1fr_3px_1fr] h-full max-h-full overflow-y-hidden`}
               >
-                <CoursesSideList />
+                <CoursesSideList
+                  {...{
+                    isAlwaysOpen,
+                  }}
+                />
 
                 <div className="w-full bg-neutral-800 min-h-full"></div>
 
                 <SideConceptsList
                   {...{
                     hook,
+                    isAlwaysOpen,
                   }}
                 />
               </div>
