@@ -55,6 +55,16 @@ const StrategicSidebar: FC = () => {
         : dispatch(strategicSlice.actions.setSide(false)),
   });
 
+  useEffect(() => {
+    const listen = () => dispatch(strategicSlice.actions.setSide(isAlwaysOpen));
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+    };
+  }, [dispatch, isAlwaysOpen]);
+
   const { isHydrated } = useListenHydration();
 
   const formCtx = useForm<SideSummaryFormType>({
