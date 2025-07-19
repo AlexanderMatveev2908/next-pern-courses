@@ -1,5 +1,4 @@
 import { Concept, UserAnswer } from "@prisma/client";
-import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 
 export const checkQuizSvc = async ({

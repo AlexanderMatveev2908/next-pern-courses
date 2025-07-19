@@ -3,8 +3,6 @@ import { FastifyRequest } from "fastify";
 import sql from "sql-template-tag";
 import { GenericReq } from "@src/types/fastify.js";
 import db from "@src/conf/db.js";
-import { isStr } from "@shared/first/lib/dataStructure.js";
-import { __cg } from "@shared/first/lib/logger.js";
 
 export const getSummaryCoursesSvc = async (req: FastifyRequest) => {
   const { params: { courseID } = {} } = req as GenericReq;

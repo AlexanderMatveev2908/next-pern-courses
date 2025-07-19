@@ -1,7 +1,5 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest, preHandlerHookHandler } from "fastify";
 import { schemaSearchCoursesServer } from "../paperwork/getCoursesList.js";
-import { grabErrMsgZOD } from "@shared/first/lib/etc.js";
 import { checkZod } from "@src/middleware/validators/zodCheck.js";
 
 export const checkSearchCoursesList: preHandlerHookHandler = async (

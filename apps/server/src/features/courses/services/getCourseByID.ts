@@ -1,5 +1,4 @@
 import { Course } from "@prisma/client";
-import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { injectKeyValSQL, objKeysConcept } from "@src/lib/sql.js";
 import { grabAssetsItem, sqlStrImages } from "@src/services/grabAssetsItem.js";

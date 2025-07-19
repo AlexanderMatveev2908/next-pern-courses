@@ -1,4 +1,3 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { app_dir } from "@src/lib/system/index.js";
 import fs from "fs";

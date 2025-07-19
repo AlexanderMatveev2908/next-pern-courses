@@ -1,5 +1,3 @@
-import { __cg } from "@shared/first/lib/logger.js";
-import db from "@src/conf/db.js";
 import { GenericReq } from "@src/types/fastify.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getInfoConceptSvc } from "../services/getInfoConcept.js";

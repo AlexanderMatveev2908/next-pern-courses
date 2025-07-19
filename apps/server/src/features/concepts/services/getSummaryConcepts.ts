@@ -1,6 +1,5 @@
 import { REG_INTEGER } from "@shared/first/constants/regex.js";
 import { isArrOK } from "@shared/first/lib/dataStructure.js";
-import { __cg } from "@shared/first/lib/logger.js";
 import db from "@src/conf/db.js";
 import { parseTxtSql } from "@src/lib/sql.js";
 import { sqlStrImages } from "@src/services/grabAssetsItem.js";

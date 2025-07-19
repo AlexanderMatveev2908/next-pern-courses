@@ -2,7 +2,6 @@ import { CloudAsset, Course, EntityType, TypeAsset } from "@prisma/client";
 import db from "@src/conf/db.js";
 import { isArrOK, isObjOK } from "@shared/first/lib/dataStructure.js";
 import { capt } from "@shared/first/lib/formatters.js";
-import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "@src/types/fastify.js";
 import { ServerSideFormCourse } from "../controllers/post.js";
 import { boolObj } from "@shared/first/lib/etc.js";

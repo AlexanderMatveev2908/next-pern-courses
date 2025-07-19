@@ -1,11 +1,9 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { handleUploadAssets } from "@src/lib/assetsHOF.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { postConceptSvc } from "../services/postConcept.js";
-import { Concept, Prisma, UserAnswer, UserConcept } from "@prisma/client";
+import { UserAnswer } from "@prisma/client";
 import { ServerConceptFormType } from "../paperwork/postConept.js";
 import { GenericReq } from "@src/types/fastify.js";
-import db from "@src/conf/db.js";
 import { getInfoConceptSvc } from "../services/getInfoConcept.js";
 import { checkQuizSvc } from "../services/checkQuiz.js";
 

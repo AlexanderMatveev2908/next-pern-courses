@@ -1,13 +1,8 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CourseFormServerType } from "../paperwork/postCourse.js";
 import { postCourseService } from "../services/postCourse.js";
 import { AppFile } from "@src/types/fastify.js";
-import {
-  clearAssets,
-  clearLocalAssets,
-  grabFilesByMime,
-} from "@src/lib/etc.js";
+import { grabFilesByMime } from "@src/lib/etc.js";
 import { handleUploadAssets } from "@src/lib/assetsHOF.js";
 
 export type ServerSideFormCourse = Omit<

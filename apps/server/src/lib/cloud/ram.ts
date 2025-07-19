@@ -1,5 +1,4 @@
 import { CloudAsset } from "@prisma/client";
-import { __cg } from "@shared/first/lib/logger.js";
 import { cloud } from "@src/conf/cloud.js";
 import { AppFile } from "@src/types/fastify.js";
 

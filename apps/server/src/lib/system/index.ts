@@ -1,8 +1,7 @@
-import fs, { readFile, readFileSync } from "fs";
+import fs, { readFileSync } from "fs";
 import path from "path";
 import "dotenv/config";
 import { fileURLToPath } from "url";
-import { __cg } from "@shared/first/lib/logger.js";
 
 export const app_dir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

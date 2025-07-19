@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { schemaPostCourseServer } from "../paperwork/postCourse.js";
-import { __cg } from "@shared/first/lib/logger.js";
 import { boolObj } from "@shared/first/lib/etc.js";
 import { grabFilesByMime } from "@src/lib/etc.js";
 import { checkZod } from "@src/middleware/validators/zodCheck.js";

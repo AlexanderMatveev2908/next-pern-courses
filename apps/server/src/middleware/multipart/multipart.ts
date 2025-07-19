@@ -1,7 +1,6 @@
 import fp from "fastify-plugin";
-import multipart, { MultipartFile } from "@fastify/multipart";
+import multipart from "@fastify/multipart";
 import { FastifyPluginCallback, FastifyRequest } from "fastify";
-import { __cg } from "@shared/first/lib/logger.js";
 import { AppFile } from "@src/types/fastify.js";
 import fs from "fs";
 import path from "path";

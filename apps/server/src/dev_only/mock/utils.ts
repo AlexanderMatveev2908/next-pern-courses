@@ -1,5 +1,3 @@
-import { __cg } from "@shared/first/lib/logger.js";
-
 export const repeatKey = <T>(obj: T, key: keyof T) =>
   Object.fromEntries(
     Object.entries(obj as {})

@@ -1,4 +1,3 @@
-import { __cg } from "@shared/first/lib/logger.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { handleRawSQL } from "../services/getCoursesList.js";
 import { serviceGetCourseByID } from "../services/getCourseByID.js";
