@@ -18,6 +18,8 @@ type PropsType = {
   Content?: React.ReactNode;
   Header?: React.ReactNode;
   Footer?: React.ReactNode;
+  // ? how much to cut from window
+  exceptionSwapperImg?: number;
 };
 
 const PageItemShape: FC<PropsType> = ({
@@ -29,6 +31,7 @@ const PageItemShape: FC<PropsType> = ({
   Content,
   Header,
   Footer,
+  exceptionSwapperImg,
 }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-10 ">
@@ -39,6 +42,7 @@ const PageItemShape: FC<PropsType> = ({
       <ImagesSwapper
         {...{
           urls: images.map((img) => img.url),
+          exceptionSwapperImg,
         }}
       />
 

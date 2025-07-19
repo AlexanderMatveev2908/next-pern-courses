@@ -20,12 +20,15 @@ import { clearT } from "@/core/lib/etc";
 
 type PropsType = {
   urls: string[];
+  exceptionSwapperImg?: number;
 };
 
-const ImagesSwapper: FC<PropsType> = ({ urls }) => {
+const ImagesSwapper: FC<PropsType> = ({ urls, exceptionSwapperImg }) => {
   const [currSLide, setCurrSLide] = useState(0);
   const [imgW, setImgW] = useState(grabImgWSlider());
-  const [imgPerSwap, setImgPerSwap] = useState(getImgParSwap());
+  const [imgPerSwap, setImgPerSwap] = useState(
+    getImgParSwap(imgW, exceptionSwapperImg),
+  );
 
   const timerID = useRef<NodeJS.Timeout | null>(null);
   const [pause, setPause] = useState(false);
@@ -45,7 +48,7 @@ const ImagesSwapper: FC<PropsType> = ({ urls }) => {
   useEffect(() => {
     const listen = () => {
       setImgW(grabImgWSlider());
-      setImgPerSwap(getImgParSwap());
+      setImgPerSwap(getImgParSwap(imgW, exceptionSwapperImg));
 
       if (currSLide >= maxSwapsPossible) setCurrSLide(maxSwapsPossible - 1);
     };
@@ -55,7 +58,7 @@ const ImagesSwapper: FC<PropsType> = ({ urls }) => {
     return () => {
       window.removeEventListener("resize", listen);
     };
-  }, [currSLide, maxSwapsPossible]);
+  }, [currSLide, maxSwapsPossible, imgW, exceptionSwapperImg]);
 
   const { ids } = useGenIDs({
     lengths: [urls.length],

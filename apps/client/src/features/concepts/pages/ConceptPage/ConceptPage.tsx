@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { strategicSlice } from "@/features/layout/components/StrategicSidebar/slices/slice";
 import { isStr } from "@shared/first/lib/dataStructure.js";
 import { useParams } from "next/navigation";
+import { useCalcCutWindow } from "@/features/layout/components/StrategicSidebar/hooks/useCalcCutWindow";
 
 type PropsType = {
   concept: ConceptType;
@@ -30,12 +31,14 @@ const ConceptPage: FC<PropsType> = ({ concept }) => {
       dispatch(strategicSlice.actions.setCurrConceptID(conceptID as string));
   }, [conceptID, dispatch]);
 
+  const { windowCut } = useCalcCutWindow();
   return (
     <PageItemShape
       {...{
         images: concept!.images,
         title: concept!.title,
         video: concept?.video,
+        exceptionSwapperImg: windowCut,
         description: concept?.description,
         markdown: concept!.markdown,
         Header: <HeaderConcept {...{ refs: concept.refs }} />,

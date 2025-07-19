@@ -14,6 +14,7 @@ import { genRowsInfoCourse } from "../../uiFactory/cards";
 import { $pageWithSideCSS } from "@/core/uiFactory/style";
 import { strategicSlice } from "@/features/layout/components/StrategicSidebar/slices/slice";
 import { useDispatch } from "react-redux";
+import { useCalcCutWindow } from "@/features/layout/components/StrategicSidebar/hooks/useCalcCutWindow";
 
 type PropsType = {
   courseID: string;
@@ -42,6 +43,8 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
   // ! WOULD BE UNDEFINED AT RUNTIME BUT CODE WILL BE EVALUATED BY REACT JUST
   // ! AFTER FUNCTION IS ALLOWED BY BY PARENT TO BE CALLED
 
+  const { windowCut } = useCalcCutWindow();
+
   return (
     <WrapPendingClient
       {...{
@@ -56,6 +59,7 @@ const CoursePage: FC<PropsType> = ({ courseID }) => {
           {...{
             images: course!.images,
             title: course!.title,
+            exceptionSwapperImg: windowCut,
             video: course?.video,
             description: course?.description,
             markdown: course!.markdown,
