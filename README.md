@@ -115,3 +115,106 @@ dmm() {
   yarn prisma migrate dev --name "$1"
 }
 ```
+
+## 🛡️ Reverse Proxy (optional)
+
+As part of my local development setup, I prefer to start an `NGINX` server so the environment closely mirrors the production setup.
+
+This allows me to:
+
+- Test CORS issues directly in development
+- Simulate deployment flow more realistically
+
+### 📜 NGINX Config Script
+
+💡 Wherever you see `ninja` in paths (e.g. `/home/ninja/`), replace it with **your Linux username**, which you chose during OS installation.  
+ You can check your current username with:
+
+```bash
+echo $USER
+```
+
+```bash
+# http is the default NGINX user on Manjaro (Arch-based distros).
+# It's preferred over 'root' to avoid permission issues
+user http;
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    # Load MIME types from file to recognize extensions
+    include mime.types;
+
+    # Default to raw binary if MIME type is unknown
+    default_type application/octet-stream;
+
+    # Let the kernel handle file transfers for performance
+    sendfile on;
+
+    # Keep connections open for 65s before timing out
+    keepalive_timeout 65;
+
+    # Hide the NGINX version (like Helmet does for Node)
+    server_tokens off;
+
+    # Allocate more memory for MIME type hash table
+    types_hash_max_size 2048;
+    types_hash_bucket_size 128;
+
+    # HTTP → HTTPS redirect
+    server {
+        listen 80;
+        server_name localhost;
+
+    # 301 code is a permanent redirection
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    # ✅ HTTPS server with reverse proxy
+    server {
+        listen 443 ssl;
+        server_name localhost;
+
+        # Increase body size limit (useful for file uploads)
+        client_max_body_size 200M;
+
+        # Restrict to modern TLS versions only
+        ssl_protocols TLSv1.2 TLSv1.3;
+        # exclude ciphers that allow anonymous key exchange and weak hashing algorithms
+        ssl_ciphers HIGH:!aNULL:!MD5;
+
+        # Basic logging
+        access_log /var/log/nginx/access.log;
+        error_log  /var/log/nginx/error.log warn;
+
+        # 🔐 SSL cert paths (use absolute paths)
+        ssl_certificate     /home/ninja/certs/nginx-dev/localhost.pem;
+        ssl_certificate_key /home/ninja/certs/nginx-dev/localhost-key.pem;
+
+        # 🔁 Backend API (Fastify on :3000)
+        location /api/v1/ {
+            proxy_pass http://localhost:3000/api/v1/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+
+        # 🌐 Frontend App (Next.js on :3001)
+        location / {
+            proxy_pass http://localhost:3001/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+}
+```
