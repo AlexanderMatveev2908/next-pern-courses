@@ -1,5 +1,5 @@
 Fancy Chars
 
-CTRL + SHIT +
+CTRL + SHIT + u +
 2129 →
-2104 —
+2014 —
