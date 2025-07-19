@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useMemo, useRef, type FC } from "react";
+import { useEffect, useMemo, useRef, useState, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStrategicSliceState, strategicSlice } from "./slices/slice";
 import BlackBg from "@/common/components/elements/BlackBg/BlackBg";
@@ -22,18 +22,37 @@ import {
 } from "@shared/first/paperwork/concepts/schema.summary.js";
 import { conceptsSliceAPI } from "@/features/concepts/slices/sliceAPI";
 import { useSyncUiDelay } from "@/core/hooks/ui/useSyncUiDelay";
+import { isWindow } from "@/core/lib/etc";
+import { uiBreaks } from "@/core/constants/uiBreaks";
+
+export const calcIsAlwaysOpen = () =>
+  !isWindow() ? false : window.innerWidth > uiBreaks.lg;
 
 const StrategicSidebar: FC = () => {
   const path = usePathname();
   const isPathOK = /^\/(courses|concepts)\/[0-9a-fA-F-]{36}/.test(path);
   const sideRef = useRef<HTMLDivElement | null>(null);
+  const [isAlwaysOpen, setIsAlwaysOpen] = useState(calcIsAlwaysOpen());
+
+  useEffect(() => {
+    const listen = () => setIsAlwaysOpen(calcIsAlwaysOpen());
+
+    window.addEventListener("resize", listen);
+
+    return () => {
+      window.removeEventListener("resize", listen);
+    };
+  }, []);
 
   const strategicSideState = useSelector(getStrategicSliceState);
 
   const dispatch = useDispatch();
   useMouseOut({
     ref: sideRef,
-    cb: () => dispatch(strategicSlice.actions.setSide(false)),
+    cb: () =>
+      calcIsAlwaysOpen()
+        ? null
+        : dispatch(strategicSlice.actions.setSide(false)),
   });
 
   const { isHydrated } = useListenHydration();
@@ -59,7 +78,7 @@ const StrategicSidebar: FC = () => {
     <>
       <BlackBg
         {...{
-          isDark: strategicSideState.isSide,
+          isDark: strategicSideState.isSide && !isAlwaysOpen,
           classIndexCSS: "z__black_bg_left_side",
         }}
       />
@@ -67,7 +86,7 @@ const StrategicSidebar: FC = () => {
       {/* ? i really do not know when strategic sidebar should become always open 🥸 */}
       <motion.div
         ref={sideRef}
-        className="z__left_side fixed top-[80px] left-0 w-full md:w-[600px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
+        className="z__left_side fixed top-[80px] left-0 w-full sm:w-[90%] lg:w-[500px] md:w-[600px] bg-[#000] border-r-[3px] border-neutral-800 -translate-x-full overflow-y-hidden"
         transition={{ duration: 0.3, ease: easeInOut }}
         animate={{
           transform: `translateX(${strategicSideState.isSide ? "100%" : "60px"})`,
@@ -79,7 +98,7 @@ const StrategicSidebar: FC = () => {
       >
         <FormProvider {...formCtx}>
           <div className="w-full flex flex-col h-full max-h-full gap-4 overflow-hidden">
-            <ToggleSide />
+            {!calcIsAlwaysOpen() && <ToggleSide />}
 
             <div
               className={`w-full flex flex-col gap-6 transition-all duration-300 overflow-y-auto pt-2 ${strategicSideState.isSide ? "opacity-100" : "opacity-0 pointer-events-none"}`}

@@ -1,8 +1,10 @@
+"use client";
 import { AppStateTypeSSR } from "@/core/store/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { calcIsAlwaysOpen } from "../StrategicSidebar";
 
 const initState = {
-  isSide: false,
+  isSide: calcIsAlwaysOpen(),
   swapState: "swapped",
   currentCourseID: "",
   currentConceptID: "",
