@@ -11,11 +11,16 @@
 - **Next.js** – App directory routing, SSR/CSR mix
 - **React** – Core UI library
 - **TypeScript** – Full type safety across the stack
+- **react-hook-form** – Minimal and performant form state management with native validation integration
 - **Redux Toolkit** – Global state management
 - **RTK Query** – Data fetching and caching
+- **Axios** – Used for HTTP requests and configured as RTK Query's base query
 - **Tailwind CSS** – Utility-first styling
 - **Framer Motion** – Smooth animations
 - **Emotion** – CSS-in-JS for dynamic styles
+- **Sass** – Used for global styling and design tokens
+- **react-markdown** – Render markdown content in React
+- **DOMPurify** – Sanitizes markdown HTML output to prevent XSS attacks
 
 ### Backend
 
@@ -23,6 +28,8 @@
 - **Prisma** – Type-safe ORM for PostgreSQL
 - **Zod** – Runtime validation for inputs and schemas (schemas shared between client and server via the `packages/` folder)
 - **PostgreSQL** – Relational database
+- **Cloudinary** – Media hosting and delivery (used for uploading and storing course/concept images or videos)
+- **sql-template-tag** – Safe, readable raw SQL syntax for advanced custom queries outside Prisma's API
 
 ### DevOps & Infrastructure
 
@@ -279,10 +286,12 @@ In contrast, the **domain-specific language (DSL)** of **Prisma** doesn't allow 
 
 Assets stored in the cloud follow a **polymorphic model** — meaning there's a single `CloudAsset` entity instead of creating separate asset tables for each model (like `CourseImage` or `ConceptVideo`).
 
-`Prisma` does not support polymorphic relationships so you will need to join them manually with a custom aggregation
+`Prisma` does not support polymorphic relationships as `Sequelize` so you will need to join assets manually with a custom aggregation in a `raw query`
 
-To organize asset metadata and support flexible querying, the `CloudAsset` model includes:
+To organize asset metadata and support flexible query, the `CloudAsset` model includes:
 
 - **`entityType`** — Indicates whether the asset belongs to a `COURSE` or a `CONCEPT`
 - **`type`** — Specifies the asset type, such as `IMAGE` or `VIDEO`
 - **`entityId`** — The UUID of the associated record
+- **`publicID`** — so you will be able also to delete assets from cloud if you want to implement a `PUT` or `DELETE` route ofr `courses` or `concepts`
+- **`url`** — safe url returned by `cloudinary` on `upload`
