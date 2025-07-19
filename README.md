@@ -337,3 +337,35 @@ This structure results in:
 
 - A `Concept` having an **array of questions**
 - Each `Question` having an **array of variants**
+
+## Quiz 😫
+
+The user can consolidate their knowledge at the end of the `Concept` page — after reading the `markdown` and watching if present the optional `video` — by completing a `quiz` containing all the questions defined for that specific concept.
+
+After submit and successful validation will be created a `UserConcept`, I made it with thoughts abut a real environment with users so each `Concept` have many `UserConcept` that is possible to join via `conceptID` key constraint.
+
+Each `UserConcept` includes:
+
+- A **score**, calculated based on the `pointsGained` you defined for the related `Concept`
+- An array of **UserAnswer** entries
+
+Each `UserAnswer`:
+
+- Includes a reference to the original `Variant` that was selected
+- Has an `isCorrect` boolean flag so correctness can be checked without requiring a `join`
+- Contains a reference to the related `Question` for easier aggregation
+
+Then beside creating the `UserConcept` I marked the `Concept` as `completed` but is a step you could skip with real users, just the existence of `UserConcept` is enough to know the `Concept` has been completed
+
+As well, is also done a check to know how many `concepts` of `Course` a user did and if all others `concepts` has been completed excluding current one then also `Course` will be marked as `completed`, but here also probably in a environment with `users` would be much better create a `UserCourse` table
+
+### 🖍️ UX
+
+Updates related to **course** or **concept completion** are immediately reflected in the UI.
+
+This is achieved by **invalidating the Redux Toolkit Query (RTK Query) cache**, which ensures the frontend always stays in sync with the most up-to-date server data.
+
+## Final notes 🧐
+
+I hope you find project interesting, if not the app does not have a refund policy 💰
+Any kind of advice or suggestion is welcome to improve some parts of app or just my coding approach in general
