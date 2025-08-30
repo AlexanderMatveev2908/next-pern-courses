@@ -25,6 +25,8 @@ const app = Fastify({
 
 // DEL_ALL();
 
+// force
+
 //  !  120s time required (sometimes server crash for connection database during promises)
 // genMock();
 
